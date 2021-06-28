@@ -18,7 +18,7 @@ class Migration(migrations.Migration):
             fields=[
                 ('id', models.BigAutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
                 ('name', models.CharField(max_length=120, verbose_name='Document Name')),
-                ('image', models.ImageField(upload_to='document_image', verbose_name='Document Image')),
+                ('image', models.ImageField(upload_to='document_field', verbose_name='Document Image')),
             ],
         ),
         migrations.CreateModel(

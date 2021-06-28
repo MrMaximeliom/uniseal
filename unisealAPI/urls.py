@@ -6,6 +6,9 @@ from uniseal import views as uniseal_views
 from django.conf import settings
 
 router = routers.DefaultRouter()
+router.register(r'accounts/signUp', uniseal_views.RegisterUserViewSet,basename='CreateUser')
+router.register(r'accounts/modifyUsersData', uniseal_views.ModifyUserDataViewSet,basename='ModifyUser')
+router.register(r'accounts/me', uniseal_views.CurrentUserDataViewSet, basename='CurrentUser')
 router.register(r'supplier', uniseal_views.SupplierViewSet,basename='CreateSupplier')
 router.register(r'product', uniseal_views.ProductViewSet,basename='CreateProduct')
 router.register(r'productImage', uniseal_views.ProductViewSet,basename='CreateProductImage')
@@ -15,6 +18,9 @@ router.register(r'project', uniseal_views.ProjectViewSet,basename='CreateProject
 router.register(r'projectImage', uniseal_views.ProjectImagesViewSet,basename='CreateProjectImages')
 router.register(r'projectVideo', uniseal_views.ProjectVideoViewSet,basename='CreateProjectVideo')
 router.register(r'sellingPoint', uniseal_views.SellingPointViewSet,basename='CreateSellingPoint')
+router.register(r'sellingPoint/contact Info', uniseal_views.SellingPointsContactInfoViewSet,basename='CreateSellingPointContactInfo')
+router.register(r'brochures', uniseal_views.BrochuresViewSet,basename='CreateBrochures')
+router.register(r'contactUs', uniseal_views.ContactUsViewSet,basename='CreateContactUsMessage')
 
 
 

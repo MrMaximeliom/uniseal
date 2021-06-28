@@ -39,8 +39,15 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'uniseal',
     'rest_framework',
-]
+    'accounts',
+    'brochures',
+    'product',
+    'project',
+    'sellingPoint',
+    'supplier',
 
+]
+AUTH_USER_MODEL = 'uniseal.User'
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',

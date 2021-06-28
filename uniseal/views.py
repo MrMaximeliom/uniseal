@@ -1,9 +1,12 @@
 from rest_framework import viewsets
-from .permissions import IsAdminOrReadOnly
-from .permissions import UnisealPermission
+from rest_framework.views import APIView
 
+from .permissions import IsAdminOrReadOnly, IsAnonymousUser, \
+    UnisealPermission, IsSystemBackEndUser
 
 from django.utils.translation import gettext_lazy as _
+
+
 # Create your views here.
 class SupplierViewSet(viewsets.ModelViewSet):
     """API endpoint to add or modify suppliers' data by admin
@@ -20,13 +23,16 @@ class SupplierViewSet(viewsets.ModelViewSet):
      supplier/<supplier's_id>
      Format of data will be as the previous data format for GET function
     """
+
     def get_view_name(self):
         return _("Create/Modify Suppliers' Data")
+
     from .serializers import SupplierSerializer
     serializer_class = SupplierSerializer
     from .models import Supplier
     permission_classes = [IsAdminOrReadOnly]
     queryset = Supplier.objects.all()
+
 
 class ProductViewSet(viewsets.ModelViewSet):
     """API endpoint to add or modify products' data by admin
@@ -48,13 +54,16 @@ class ProductViewSet(viewsets.ModelViewSet):
      product/<product's_id>
      Format of data will be as the previous data format for GET function
     """
+
     def get_view_name(self):
         return _("Create/Modify Products' Data")
+
     from .serializers import ProductSerializer
     serializer_class = ProductSerializer
     from .models import Product
     permission_classes = [UnisealPermission]
     queryset = Product.objects.all()
+
 
 class ProductImagesViewSet(viewsets.ModelViewSet):
     """API endpoint to add or modify products' images by admin
@@ -71,16 +80,19 @@ class ProductImagesViewSet(viewsets.ModelViewSet):
      productImage/<productImage's_id>
      Format of data will be as the previous data format for GET function
     """
+
     def get_view_name(self):
         return _("Create/Modify Products Images")
+
     from .serializers import ProductImageSerializer
     serializer_class = ProductImageSerializer
     from .models import ProductImages
     permission_classes = [UnisealPermission]
     queryset = ProductImages.objects.all()
 
+
 class ProductVideoViewSet(viewsets.ModelViewSet):
-        """API endpoint to add or modify products' videos by admin
+    """API endpoint to add or modify products' videos by admin
         this endpoint allows GET,PUT,PATCH,DELETE functions
         permissions to this view is restricted as the following:
         - Only admin users can use all functions on this endpoint
@@ -95,14 +107,14 @@ class ProductVideoViewSet(viewsets.ModelViewSet):
          Format of data will be as the previous data format for GET function
         """
 
-        def get_view_name(self):
-            return _("Create/Modify Products Videos")
+    def get_view_name(self):
+        return _("Create/Modify Products Videos")
 
-        from .serializers import ProductVideoSerializer
-        serializer_class = ProductVideoSerializer
-        from .models import ProductVideos
-        permission_classes = [UnisealPermission]
-        queryset = ProductVideos.objects.all()
+    from .serializers import ProductVideoSerializer
+    serializer_class = ProductVideoSerializer
+    from .models import ProductVideos
+    permission_classes = [UnisealPermission]
+    queryset = ProductVideos.objects.all()
 
 
 class SimilarProductViewSet(viewsets.ModelViewSet):
@@ -129,6 +141,7 @@ class SimilarProductViewSet(viewsets.ModelViewSet):
     from .models import SimilarProduct
     permission_classes = [UnisealPermission]
     queryset = SimilarProduct.objects.all()
+
 
 class ProjectViewSet(viewsets.ModelViewSet):
     """API endpoint to allow the admin to add or modify projects' data
@@ -173,16 +186,19 @@ class ProjectImagesViewSet(viewsets.ModelViewSet):
      projectImage/<project's_id>
      Format of data will be as the previous data format for GET function
     """
+
     def get_view_name(self):
         return _("Create/Modify Project Images")
+
     from .serializers import ProjectImageSerializer
     serializer_class = ProjectImageSerializer
     from .models import ProjectImages
     permission_classes = [UnisealPermission]
     queryset = ProjectImages.objects.all()
 
+
 class ProjectVideoViewSet(viewsets.ModelViewSet):
-        """API endpoint to add or modify project' videos by admin
+    """API endpoint to add or modify project' videos by admin
         this endpoint allows GET,PUT,PATCH,DELETE functions
         permissions to this view is restricted as the following:
         - Only admin users can use all functions on this endpoint
@@ -197,14 +213,14 @@ class ProjectVideoViewSet(viewsets.ModelViewSet):
          Format of data will be as the previous data format for GET function
         """
 
-        def get_view_name(self):
-            return _("Create/Modify Projects Videos")
+    def get_view_name(self):
+        return _("Create/Modify Projects Videos")
 
-        from .serializers import ProjectVideoSerializer
-        serializer_class = ProjectVideoSerializer
-        from .models import ProjectVideos
-        permission_classes = [UnisealPermission]
-        queryset = ProjectVideos.objects.all()
+    from .serializers import ProjectVideoSerializer
+    serializer_class = ProjectVideoSerializer
+    from .models import ProjectVideos
+    permission_classes = [UnisealPermission]
+    queryset = ProjectVideos.objects.all()
 
 
 class SellingPointViewSet(viewsets.ModelViewSet):
@@ -233,3 +249,111 @@ class SellingPointViewSet(viewsets.ModelViewSet):
     from .models import SellingPoint
     permission_classes = [UnisealPermission]
     queryset = SellingPoint.objects.all()
+
+
+class Logout(APIView):
+    def post(self, request):
+        from rest_framework_simplejwt.tokens import RefreshToken
+        from rest_framework.response import Response
+        from rest_framework import status
+        try:
+            refresh_token = request.data["refresh_token"]
+            token = RefreshToken(refresh_token)
+            token.blacklist()
+            return Response(status=status.HTTP_205_RESET_CONTENT)
+        except Exception as e:
+            return Response(status=status.HTTP_400_BAD_REQUEST)
+
+
+class  SellingPointsContactInfoViewSet(viewsets.ModelViewSet):
+    """
+        API endpoint that allows to add selling points contact info
+        this endpoint allows  GET,POST,PUT,PATCH,DELETE function
+        permissions to this view is restricted as the following:
+        - only admin users can access this api
+         Data will be retrieved in the following format using GET function:
+       {
+        "id": 26,
+        "primary_phone": primary_phone,
+        "secondary_phone": secondary_phone,
+    }
+    Use PUT function by accessing this url:
+    /sellingPoint/contactInfo/<sellingPointContactInfo's_id>
+    Format of data will be as the previous data format for GET function
+
+      """
+    from uniseal.serializers import SellingPointsContactInfoSerializer
+
+    def get_view_name(self):
+        return _("Create/Modify Selling Point Contact Info")
+
+    from uniseal.models import SellingPointsContactInfo
+    queryset = SellingPointsContactInfo.objects.all()
+    serializer_class = SellingPointsContactInfoSerializer
+    permission_classes = [UnisealPermission]
+
+
+class  BrochuresViewSet(viewsets.ModelViewSet):
+    """
+        API endpoint that allows to add or modify brochures by
+        the admin
+        this endpoint allows  GET,POST,PUT,PATCH,DELETE function
+        permissions to this view is restricted as the following:
+        - only admin users can access this api
+         Data will be retrieved in the following format using GET function:
+       {
+        "id": 26,
+        "title": "title",
+        "attachment": "document_url_image",
+    }
+    Use PUT function by accessing this url:
+    /brochures/<brochures's_id>
+    Format of data will be as the previous data format for GET function
+
+      """
+    from uniseal.serializers import SellingPointsContactInfoSerializer
+
+    def get_view_name(self):
+        return _("Create/Modify Selling Point Contact Info")
+
+    from uniseal.models import SellingPointsContactInfo
+    queryset = SellingPointsContactInfo.objects.all()
+    serializer_class = SellingPointsContactInfoSerializer
+    permission_classes = [UnisealPermission]
+
+
+class  ContactUsViewSet(viewsets.ModelViewSet):
+    """
+        API endpoint that allows to add or modify messages by
+        registered users
+        this endpoint allows  GET,POST,PUT,PATCH,DELETE function
+        permissions  this view is restricted as the following:
+        - only admin users can access this api
+         Data will be retrieved in the following format using GET function:
+       {
+        "id": 26,
+        "phone_number": phone_number,
+        "email": "email",
+        "name": "name",
+        "address": "address",
+        "message": "message",
+        "website": "website_url",
+        "facebook": "facebook_url",
+        "twitter": "twitter_url",
+        "linkedin": "linkedin_url",
+        "instagram": "instagram_url",
+    }
+    Use PUT function by accessing this url:
+    /contactUs/<contactUsMessages's_id>
+    Format of data will be as the previous data format for GET function
+
+      """
+    from uniseal.serializers import SellingPointsContactInfoSerializer
+
+    def get_view_name(self):
+        return _("Create/Modify Selling Point Contact Info")
+
+    from uniseal.models import SellingPointsContactInfo
+    queryset = SellingPointsContactInfo.objects.all()
+    serializer_class = SellingPointsContactInfoSerializer
+    permission_classes = [UnisealPermission]

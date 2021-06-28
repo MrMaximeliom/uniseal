@@ -4,8 +4,6 @@ import string
 import random
 from django.utils.translation import gettext_lazy as _
 
-
-# Create your models here.
 class Supplier(models.Model):
     name = models.CharField(
         max_length=100,
@@ -16,14 +14,22 @@ class Supplier(models.Model):
     )
 
 
+class Category(models.Model):
+    name = models.CharField(
+        verbose_name=_('Category Name'),
+        max_length=150
+    )
+
+
 class Product(models.Model):
     name = models.CharField(
         max_length=100, verbose_name=_('Product Name'))
     image = models.ImageField(
         upload_to='product_images/',
         verbose_name=_('Product Image'))
-    category = models.CharField(
-        max_length=150,
+    category = models.ForeignKey(
+        Category,
+        on_delete=models.CASCADE,
         verbose_name=_('Product Category')
     )
     product_file = models.FileField(
@@ -36,7 +42,7 @@ class Product(models.Model):
         blank=True,
         verbose_name=_('Product Description')
     )
-    supplier_name = models.ForeignKey(
+    supplier = models.ForeignKey(
         Supplier,
         on_delete=models.CASCADE,
         verbose_name=_('Supplier Name')
@@ -98,9 +104,17 @@ class Project(models.Model):
         max_length=100,
         verbose_name=_('Project Name')
     )
+    title = models.CharField(
+        max_length=120,
+        verbose_name=_('Project Title')
+    )
     category = models.CharField(
         max_length=100,
-        verbose_name=_('Product Category')
+        verbose_name=_('Project Category')
+    )
+    beneficiary = models.CharField(
+        max_length=100,
+        verbose_name=_('Project Beneficiary')
     )
     image = models.ImageField(
         upload_to='project_images',
@@ -114,6 +128,41 @@ class Project(models.Model):
 
     def __str__(self):
         return self.name
+
+
+class Solution(models.Model):
+    title = models.CharField(
+        verbose_name=_('Solution Title'),
+        max_length=150
+    )
+    description = models.TextField(
+        verbose_name=_('Solution Description'),
+        null=True,
+        blank=True
+    )
+
+
+class SolutionImages(models.Model):
+    image = models.ImageField(
+        upload_to="solution_images",
+        verbose_name=_('Solution Image')
+    )
+    solution = models.ForeignKey(
+        Solution,
+        on_delete=models.CASCADE,
+        verbose_name=_('Solution')
+    )
+
+
+class SolutionVideos(models.Model):
+    video = models.URLField(
+        verbose_name=_('Solution Video Url')
+    )
+    solution = models.ForeignKey(
+        Solution,
+        on_delete=models.CASCADE,
+        verbose_name=_('Solution')
+    )
 
 
 class ProjectImages(models.Model):
@@ -140,6 +189,7 @@ class ProjectVideos(models.Model):
 
 
 class SellingPoint(models.Model):
+    from Util.ListsOfData import CITIES_CHOICES, AREA_CHOICES
     name = models.CharField(
         max_length=150,
         verbose_name=_('Sale Point Name')
@@ -156,6 +206,34 @@ class SellingPoint(models.Model):
         max_length=250,
         verbose_name=_('Sale Point Address')
     )
+    city = models.CharField(
+        verbose_name=_('City'),
+        blank=False,
+        null=False,
+        choices=CITIES_CHOICES,
+        max_length=350,
+        default=1
+    )
+    area = models.CharField(
+        verbose_name=_("Area"),
+        blank=False,
+        null=False,
+        choices=AREA_CHOICES,
+        max_length=300,
+        default=1
+    )
+    phone_number = models.CharField(
+        verbose_name=_('Phone Number'),
+        blank=False,
+        null=False,
+        max_length=100,
+        unique=True
+    )
+    email = models.EmailField(
+        verbose_name=_('Email Address'),
+        max_length=255,
+        unique=True,
+    )
 
 
 class SellingPointsContactInfo(models.Model):
@@ -170,11 +248,60 @@ class SellingPointsContactInfo(models.Model):
 
 
 class Brochures(models.Model):
-    name = models.CharField(
+    title = models.CharField(
         max_length=120,
-        verbose_name=_('Document Name')
+        verbose_name=_('Document Title')
     )
-    image = models.ImageField(
-        verbose_name=_('Document Image'),
-        upload_to='document_image'
+    attachment = models.FileField(
+        verbose_name=_('Document Attachment'),
+        upload_to='document_field'
     )
+
+class ContactUs(models.Model):
+    from Util.ListsOfData import CITIES_CHOICES, AREA_CHOICES
+    from django.core.validators import RegexValidator
+    phone_regex = RegexValidator(regex=r'^9\d{8}$|^1\d{8}$',
+                                 message=_("Phone number must start with 9 or 1 (no zeros) and includes 9 numbers."))
+
+    phone_number = models.CharField(
+        verbose_name=_('Phone Number'),
+        blank=False,
+        null=False,
+        max_length=100,
+        unique=True
+    )
+
+    email = models.EmailField(
+        verbose_name=_('Email Address'),
+        max_length=255,
+        unique=True,
+    )
+    name = models.CharField(
+        max_length=150,
+        verbose_name=_('Name')
+    )
+    address = models.CharField(
+        max_length=250,
+        verbose_name=_('Address')
+    )
+    message = models.TextField(
+        verbose_name=_('Message'),
+    )
+    website = models.URLField(
+        verbose_name=_('Website')
+    )
+    facebook = models.URLField(
+        verbose_name=_('Facebook')
+    )
+    twitter = models.URLField(
+        verbose_name=_('Twitter')
+    )
+    linkedin = models.URLField(
+        verbose_name=_('LinkedIn')
+    )
+    instagram = models.URLField(
+        verbose_name=_('Instagram')
+    )
+
+
+
