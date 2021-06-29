@@ -161,3 +161,52 @@ class User(AbstractBaseUser):
         # return self.user_role == 1
         return self.admin
 
+
+class ContactUs(models.Model):
+    from Util.ListsOfData import CITIES_CHOICES, AREA_CHOICES
+    from django.core.validators import RegexValidator
+    phone_regex = RegexValidator(regex=r'^9\d{8}$|^1\d{8}$',
+                                 message=_("Phone number must start with 9 or 1 (no zeros) and includes 9 numbers."))
+
+    phone_number = models.CharField(
+        verbose_name=_('Phone Number'),
+        blank=False,
+        null=False,
+        max_length=100,
+        unique=True
+    )
+
+    email = models.EmailField(
+        verbose_name=_('Email Address'),
+        max_length=255,
+        unique=True,
+    )
+    name = models.CharField(
+        max_length=150,
+        verbose_name=_('Name')
+    )
+    address = models.CharField(
+        max_length=250,
+        verbose_name=_('Address')
+    )
+    message = models.TextField(
+        verbose_name=_('Message'),
+    )
+    website = models.URLField(
+        verbose_name=_('Website')
+    )
+    facebook = models.URLField(
+        verbose_name=_('Facebook')
+    )
+    twitter = models.URLField(
+        verbose_name=_('Twitter')
+    )
+    linkedin = models.URLField(
+        verbose_name=_('LinkedIn')
+    )
+    instagram = models.URLField(
+        verbose_name=_('Instagram')
+    )
+
+
+

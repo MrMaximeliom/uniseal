@@ -45,9 +45,11 @@ INSTALLED_APPS = [
     'project',
     'sellingPoint',
     'supplier',
+    'category',
+    'solution',
 
 ]
-AUTH_USER_MODEL = 'uniseal.User'
+AUTH_USER_MODEL = 'accounts.User'
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
