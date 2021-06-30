@@ -46,6 +46,9 @@ admin_router.register(r'manageBrochures', admin_views.ManageBrochuresViewSet, ba
 
 
 
+
+
+
 urlpatterns = [
     path('', include(router.urls)),
     path('admin_panel/',include(admin_router.urls)),
