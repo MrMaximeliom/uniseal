@@ -1,1 +1,1 @@
-web: gunicorn uniseal.wsgi
+web: gunicorn unisealAPI.wsgi
