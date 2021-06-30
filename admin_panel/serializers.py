@@ -20,6 +20,12 @@ class  ManageSolutionSerializer(serializers.ModelSerializer):
         model =  ManageSolution
         fields = "__all__"
 
+class  ManageSellingPointsSerializer(serializers.ModelSerializer):
+    class Meta:
+        from .models import  ManageSellingPoints
+        model =  ManageSellingPoints
+        fields = "__all__"
+
 class  ManageBrochuresSerializer(serializers.ModelSerializer):
     class Meta:
         from .models import  ManageBrochures

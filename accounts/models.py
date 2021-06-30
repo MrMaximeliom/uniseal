@@ -125,7 +125,7 @@ class User(AbstractBaseUser):
 
     USERNAME_FIELD = 'email'
     REQUIRED_FIELDS = ['password', 'full_name', 'gender',
-                       'username']  # Email & Password are required by default.
+                       'username','phone_number']  # Email & Password are required by default.
     objects = UserAccountManager()
 
     def get_full_name(self):

@@ -11,10 +11,12 @@ from project import views as project_views
 from sellingPoint import views as selling_point_views
 from brochures import views as brochures_views
 from solution import views as solution_views
+from admin_panel import views as admin_views
 from django.conf import settings
 
 router = routers.DefaultRouter()
-router2 = routers.DefaultRouter()
+admin_router = routers.DefaultRouter()
+
 router.register(r'accounts/signUp', accounts_views.RegisterUserViewSet, basename='CreateUser')
 router.register(r'accounts/modifyUsersData', accounts_views.ModifyUserDataViewSet, basename='ModifyUser')
 router.register(r'accounts/me', accounts_views.CurrentUserDataViewSet, basename='CurrentUser')
@@ -36,13 +38,17 @@ router.register(r'contactUs', accounts_views.ContactUsViewSet, basename='CreateC
 router.register(r'solution/createSolution', solution_views.SolutionViewSet, basename='CreateSolution')
 router.register(r'solution/solutionImages', solution_views.SolutionImagesViewSet, basename='CreateSolutionImages')
 router.register(r'solution/solutionVideosViewSet', solution_views.SolutionVideosViewSet, basename='CreateSolutionVideo')
-router2.register(r'accounts/signUp_admin', accounts_views.RegisterUserViewSet, basename='CreateUser')
+admin_router.register(r'manageProducts', admin_views.ManageProductsViewSet, basename='ManageProducts')
+admin_router.register(r'manageProjects', admin_views.ManageProjectsViewSet, basename='ManageProjects')
+admin_router.register(r'manageSolution', admin_views.ManageSolutionViewSet, basename='ManageSolution')
+admin_router.register(r'manageSellingPoints', admin_views.ManageSellingPointsViewSet, basename='ManageSellingPoints')
+admin_router.register(r'manageBrochures', admin_views.ManageBrochuresViewSet, basename='MManageBrochures')
 
 
 
 urlpatterns = [
     path('', include(router.urls)),
-    path('admin_panel/',include(router2.urls)),
+    path('admin_panel/',include(admin_router.urls)),
     path('admin/', admin.site.urls),
 ]
 
