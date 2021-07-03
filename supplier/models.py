@@ -7,6 +7,10 @@ class Supplier(models.Model):
         verbose_name=_('Supplier Name')
     )
     image = models.ImageField(
-        verbose_name=_('Supplier Image')
+        verbose_name=_('Supplier Image'),
+        upload_to= 'supplier_images/',
     )
+
+    def __str__(self):
+        return self.name
 

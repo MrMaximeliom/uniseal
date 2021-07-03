@@ -15,6 +15,9 @@ class Solution(models.Model):
         blank=True
     )
 
+    def __str__(self):
+        return self.title
+
 
 class SolutionImages(models.Model):
     image = models.ImageField(

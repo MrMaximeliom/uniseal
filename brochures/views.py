@@ -27,7 +27,7 @@ class  BrochuresViewSet(viewsets.ModelViewSet):
     from brochures.serializers import BrochuresSerializer
 
     def get_view_name(self):
-        return _("Create/Modify Selling Point Contact Info")
+        return _("Create/Modify Brochures Data")
 
     from brochures.models import Brochures
     queryset = Brochures.objects.all()

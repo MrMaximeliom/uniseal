@@ -16,6 +16,7 @@ from django.conf import settings
 
 router = routers.DefaultRouter()
 admin_router = routers.DefaultRouter()
+router.APIRootView.__name__ = 'Uniseal API'
 
 router.register(r'accounts/signUp', accounts_views.RegisterUserViewSet, basename='CreateUser')
 router.register(r'accounts/modifyUsersData', accounts_views.ModifyUserDataViewSet, basename='ModifyUser')
@@ -37,7 +38,7 @@ router.register(r'brochures', brochures_views.BrochuresViewSet, basename='Create
 router.register(r'contactUs', accounts_views.ContactUsViewSet, basename='CreateContactUsMessage')
 router.register(r'solution/createSolution', solution_views.SolutionViewSet, basename='CreateSolution')
 router.register(r'solution/solutionImages', solution_views.SolutionImagesViewSet, basename='CreateSolutionImages')
-router.register(r'solution/solutionVideosViewSet', solution_views.SolutionVideosViewSet, basename='CreateSolutionVideo')
+router.register(r'solution/solutionVideos', solution_views.SolutionVideosViewSet, basename='CreateSolutionVideo')
 admin_router.register(r'manageProducts', admin_views.ManageProductsViewSet, basename='ManageProducts')
 admin_router.register(r'manageProjects', admin_views.ManageProjectsViewSet, basename='ManageProjects')
 admin_router.register(r'manageSolution', admin_views.ManageSolutionViewSet, basename='ManageSolution')

@@ -9,5 +9,5 @@ class Brochures(models.Model):
     )
     attachment = models.FileField(
         verbose_name=_('Document Attachment'),
-        upload_to='document_field'
+        upload_to='brochures_document'
     )

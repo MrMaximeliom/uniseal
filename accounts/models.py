@@ -162,6 +162,8 @@ class User(AbstractBaseUser):
         return self.admin
 
 
+
+
 class ContactUs(models.Model):
     from Util.ListsOfData import CITIES_CHOICES, AREA_CHOICES
     from django.core.validators import RegexValidator
@@ -207,6 +209,9 @@ class ContactUs(models.Model):
     instagram = models.URLField(
         verbose_name=_('Instagram')
     )
+
+    def __str__(self):
+        return self.email
 
 
 

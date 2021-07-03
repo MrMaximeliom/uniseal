@@ -8,4 +8,6 @@ class Category(models.Model):
         verbose_name=_('Category Name'),
         max_length=150
     )
+    def __str__(self):
+        return self.name
 
