@@ -17,7 +17,6 @@ from django.conf import settings
 router = routers.DefaultRouter()
 admin_router = routers.DefaultRouter()
 router.APIRootView.__name__ = 'Uniseal API'
-
 router.register(r'accounts/signUp', accounts_views.RegisterUserViewSet, basename='CreateUser')
 router.register(r'accounts/modifyUsersData', accounts_views.ModifyUserDataViewSet, basename='ModifyUser')
 router.register(r'accounts/me', accounts_views.CurrentUserDataViewSet, basename='CurrentUser')
