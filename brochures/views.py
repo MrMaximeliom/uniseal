@@ -1,6 +1,5 @@
 from rest_framework import viewsets
-from uniseal.permissions import IsAdminOrReadOnly, IsAnonymousUser, \
-    UnisealPermission, IsSystemBackEndUser
+from Util.permissions import UnisealPermission
 
 from django.utils.translation import gettext_lazy as _
 

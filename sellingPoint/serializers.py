@@ -5,9 +5,3 @@ class SellingPointSerializer(serializers.ModelSerializer):
         model = SellingPoint
         fields = "__all__"
 
-
-# class  SellingPointsContactInfoSerializer(serializers.ModelSerializer):
-#     class Meta:
-#         from .models import  SellingPointsContactInfo
-#         model =  SellingPointsContactInfo
-#         fields = "__all__"

@@ -1,5 +1,4 @@
-from uniseal.permissions import IsAdminOrReadOnly, IsAnonymousUser, \
-    UnisealPermission, IsSystemBackEndUser
+from Util.permissions import UnisealPermission
 # Create your views here.
 from rest_framework import viewsets
 from django.utils.translation import gettext_lazy as _
@@ -13,13 +12,16 @@ class ProjectViewSet(viewsets.ModelViewSet):
     - Registered users are only allowed to use GET function
     Data will be retrieved in the following format for GET function:
     {
+     "id":id,
      "name": "project_name",
+     "title":"project_title",
      "category":"project_category",
+     "beneficiary":"beneficiary_name",
      "image":"project_image_url",
      "description":"project_description",
      }
      Use other functions by accessing this url:
-     project/<project's_id>
+     project/createProject/<project's_id>
      Format of data will be as the previous data format for GET function
     """
 
@@ -41,11 +43,12 @@ class ProjectImagesViewSet(viewsets.ModelViewSet):
     - Registered users are only allowed to use GET function
     Data will be retrieved in the following format for GET function:
     {
+     "id":5,
      "image": "project_image_url",
      "project":project_id
      }
      Use other functions by accessing this url:
-     projectImage/<project's_id>
+     project/projectImage/<project's_id>
      Format of data will be as the previous data format for GET function
     """
 
@@ -67,11 +70,12 @@ class ProjectVideoViewSet(viewsets.ModelViewSet):
         - Registered users are only allowed to use GET function
         Data will be retrieved in the following format for GET function:
         {
+         "id":7,
          "video": "project_video_url",
-         "product":project_id
+         "project":project_id
          }
          Use other functions by accessing this url:
-         projectVideo/<projectVideo's_id>
+         project/projectVideo/<projectVideo's_id>
          Format of data will be as the previous data format for GET function
         """
 
@@ -83,3 +87,29 @@ class ProjectVideoViewSet(viewsets.ModelViewSet):
     from .models import ProjectVideos
     permission_classes = [UnisealPermission]
     queryset = ProjectVideos.objects.all()
+
+class ProjectSolutionViewSet(viewsets.ModelViewSet):
+    """API endpoint to add solutions to projects by admin
+        this endpoint allows GET,PUT,PATCH,DELETE functions
+        permissions to this view is restricted as the following:
+        - Only admin users can use all functions on this endpoint
+        - Registered users are only allowed to use GET function
+        Data will be retrieved in the following format for GET function:
+        {
+         "id": 9,
+         "project":project_id,
+         "solution":solution_id,
+         }
+         Use other functions by accessing this url:
+         project/projectSolution/<projectSolution's_id>
+         Format of data will be as the previous data format for GET function
+        """
+
+    def get_view_name(self):
+        return _("Add/Remove Projects Solutions")
+
+    from .serializers import ProjectSolutionSerializer
+    serializer_class = ProjectSolutionSerializer
+    from .models import ProjectSolutions
+    permission_classes = [UnisealPermission]
+    queryset = ProjectSolutions.objects.all()

@@ -1,4 +1,6 @@
+
 from django.contrib.auth.password_validation import validate_password
+
 from rest_framework import serializers
 from django.utils.translation import gettext_lazy as _
 
@@ -8,13 +10,15 @@ class UserSerializer(serializers.ModelSerializer):
     fields should be available to any user
     full_name , phone_number ,gender,email,
     """
+    from Util.ListsOfData import CITIES_CHOICES,AREA_CHOICES
     password2 = serializers.CharField(write_only=True, required=True, label=_('Confirm Password'))
 
     class Meta:
         from accounts.models import User
         model = User
         fields = (
-            'id', 'username', 'full_name','organization', 'email', 'gender', 'phone_number', 'password', 'password2')
+            'id', 'username', 'full_name','organization', 'email', 'gender', 'phone_number', 'password', 'password2','city','area')
+
 
     def validate(self, attrs):
         if attrs['password'] != attrs['password2']:

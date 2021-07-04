@@ -1,8 +1,6 @@
-from django.shortcuts import render
 from rest_framework import viewsets
 from django.utils.translation import gettext_lazy as _
-from uniseal.permissions import IsAdminOrReadOnly, IsAnonymousUser, \
-    UnisealPermission, IsSystemBackEndUser
+from Util.permissions import UnisealPermission
 
 
 # Create your views here.
@@ -15,6 +13,7 @@ class SolutionViewSet(viewsets.ModelViewSet):
     - Registered users are only allowed to use GET function
     Data will be retrieved in the following format for GET function:
     {
+     "id":12,
      "title": "solution_title",
      "description":"solution_description",
      }
@@ -40,7 +39,7 @@ class SolutionImagesViewSet(viewsets.ModelViewSet):
     - Registered users are only allowed to use GET function
     Data will be retrieved in the following format for GET function:
     {
-     "id":solution_image_id,
+     "id":11,
      "image": "solution_image_url",
      "solution":solution_id,
      }
@@ -66,7 +65,7 @@ class SolutionVideosViewSet(viewsets.ModelViewSet):
     - Registered users are only allowed to use GET function
     Data will be retrieved in the following format for GET function:
     {
-     "id":solution_image_id,
+     "id":11,
      "video": "solution_video_url",
      "solution":solution_id,
      }

@@ -1,7 +1,8 @@
 from rest_framework import viewsets
 from django.utils.translation import gettext_lazy as _
-from uniseal.permissions import IsAdminOrReadOnly, IsAnonymousUser, \
-    UnisealPermission, IsSystemBackEndUser
+from Util.permissions import IsAdminOrReadOnly
+
+
 # Create your views here.
 class SupplierViewSet(viewsets.ModelViewSet):
     """API endpoint to add or modify suppliers' data by admin
@@ -11,6 +12,7 @@ class SupplierViewSet(viewsets.ModelViewSet):
     - Other users can only use GET function on this endpoint
     Data will be retrieved in the following format for GET function:
     {
+     "id":11,
      "name": "supplier_name",
      "image": "supplier_image_url",
      }

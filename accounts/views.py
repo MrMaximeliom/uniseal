@@ -1,8 +1,7 @@
-# from django.shortcuts import render
 from django.utils.translation import gettext_lazy as _
 from rest_framework import viewsets
 from rest_framework import mixins
-from uniseal.permissions import IsAdminOrReadOnly,IsSystemBackEndUser, IsAnonymousUser,UnisealPermission
+from Util.permissions import IsSystemBackEndUser, IsAnonymousUser,UnisealPermission
 # Create your views here.
 from rest_framework.views import APIView
 
@@ -29,6 +28,23 @@ class ModifyUserDataViewSet(viewsets.GenericViewSet, mixins.ListModelMixin,
           permissions to this view is restricted as the following:
           - Only admin users can use GET,PUT,DELETE functions on this endpoint
           - Other types of users are not allowed to use this endpoint
+          Data will be retrieved in the following format using GET function:
+        {
+        "id": 26,
+        "username": "ali",
+        "full_name": "ali hassan hamid",
+        "organization": "organization_name",
+         "email": "ali@gmail.com",
+         "gender": "male",
+         "phone_number": "0922367654",
+         "city": "city_id",
+         "area": "area_id",
+
+    }
+    Use PUT function by accessing this url:
+    /accounts/modifyUsersData/<user's_id>
+    Format of data will be as the previous data format for GET function
+
         """
     from accounts.serializers import RegisterSerializer
     from .models import User
@@ -47,6 +63,20 @@ class RegisterUserViewSet(viewsets.GenericViewSet, mixins.CreateModelMixin):
         permissions to this view is restricted as the following:
         - anonymous users and system backend users (Admin and Staff )
          only can access this api to create an account
+         Data will be submitted in the following format using POST function:
+       {
+        "id": 26,
+        "username": "ali",
+        "full_name": "ali hassan hamid",
+        "organization": "organization_name",
+        "password":"password",
+        "confirm_password":"confirm_password",
+        "email": "ali@gmail.com",
+        "gender": "male",
+        "phone_number": "922367654",
+        "city":"city_id",
+        "area":"area_id"
+        }
       """
     from accounts.serializers import RegisterSerializer
 
@@ -75,13 +105,16 @@ class CurrentUserDataViewSet(viewsets.GenericViewSet,
         "id": 26,
         "username": "ali",
         "full_name": "ali hassan hamid",
+        "organization": "organization_name",
         "email": "ali@gmail.com",
         "gender": "male",
-        "user_role": 1,
-        "phone_number": "0922367654"
-    }
+        "phone_number": "922367654",
+        "password":"encrypted_password"
+        "city":"city_id",
+        "area":"area_id"
+        }
     Use PUT function by accessing this url:
-    /account/me/<user's_id>
+    /accounts/me/<user's_id>
     Format of data will be as the previous data format for GET function
     """
     from accounts.serializers import UserSerializer

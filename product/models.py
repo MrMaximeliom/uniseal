@@ -30,7 +30,7 @@ class Product(models.Model):
         on_delete=models.CASCADE,
         verbose_name=_('Supplier Name')
     )
-    added_date = models.DateTimeField(
+    added_date = models.DateField(
         default=timezone.now,
         verbose_name=_('Added Date'))
 

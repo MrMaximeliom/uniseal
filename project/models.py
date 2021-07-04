@@ -30,7 +30,7 @@ class Project(models.Model):
     )
 
     def __str__(self):
-        return self.name + str(self.id)
+        return self.name
 
 class ProjectImages(models.Model):
     image = models.ImageField(
@@ -52,4 +52,16 @@ class ProjectVideos(models.Model):
         Project,
         on_delete=models.CASCADE,
         verbose_name=_('Project')
+    )
+
+class ProjectSolutions(models.Model):
+    project = models.ForeignKey(
+        Project,
+        verbose_name=_('Project Solution'),
+        on_delete=models.CASCADE,
+    )
+    solution = models.ForeignKey(
+        "solution.Solution",
+        verbose_name=_('Project Solution'),
+        on_delete=models.CASCADE,
     )

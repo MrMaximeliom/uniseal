@@ -98,7 +98,8 @@ class User(AbstractBaseUser):
         null=False,
         choices=CITIES_CHOICES,
         max_length=350,
-        default=1
+        default=1,
+
     )
     area = models.CharField(
         verbose_name=_("Area"),

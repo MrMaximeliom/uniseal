@@ -21,3 +21,8 @@ class ProjectVideoSerializer(serializers.ModelSerializer):
         model = ProjectVideos
         fields = "__all__"
 
+class ProjectSolutionSerializer(serializers.ModelSerializer):
+    class Meta:
+        from .models import ProjectSolutions
+        model = ProjectSolutions
+        fields = "__all__"

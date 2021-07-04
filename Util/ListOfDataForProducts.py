@@ -1,4 +1,4 @@
-# add data from remaz's sheets
+
 from django.utils.translation import gettext_lazy as _
 
 BRANDS_MAKEUP_PRODUCTS = (

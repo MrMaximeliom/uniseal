@@ -1,8 +1,8 @@
-from django.shortcuts import render
 from rest_framework import viewsets
 from django.utils.translation import gettext_lazy as _
-from uniseal.permissions import IsAdminOrReadOnly, IsAnonymousUser, \
-    UnisealPermission, IsSystemBackEndUser
+from Util.permissions import UnisealPermission
+
+
 # Create your views here.
 
 class ProductViewSet(viewsets.ModelViewSet):
@@ -13,16 +13,17 @@ class ProductViewSet(viewsets.ModelViewSet):
     - Registered users are only allowed to use GET function
     Data will be retrieved in the following format for GET function:
     {
+     "id":11,
      "name": "product_name",
      "image": "product_image_url",
-     "category":"product_category",
      "product_file":"product_file_url",
      "description":"Product_description",
-     "supplier_name":"supplier_name",
-     "added_name":"added_dated"
+     "added_date":"added_date"
+     "category":category_id,
+     "supplier":"supplier_id",
      }
      Use other functions by accessing this url:
-     product/<product's_id>
+     product/createProduct/<product's_id>
      Format of data will be as the previous data format for GET function
     """
 
@@ -44,6 +45,7 @@ class ProductImagesViewSet(viewsets.ModelViewSet):
     - Registered users are only allowed to use GET function
     Data will be retrieved in the following format for GET function:
     {
+     "id":10,
      "image": "product_image_url",
      "product":product_id
      }
@@ -71,6 +73,7 @@ class ProductVideoViewSet(viewsets.ModelViewSet):
         - Registered users are only allowed to use GET function
         Data will be retrieved in the following format for GET function:
         {
+         "id":id,
          "video": "product_video_url",
          "product":product_id
          }
@@ -97,6 +100,7 @@ class SimilarProductViewSet(viewsets.ModelViewSet):
     - Registered users are only allowed to use GET function
     Data will be retrieved in the following format for GET function:
     {
+     "id":9,
      "original_product": product_id,
      "similar_product":product_id
      }

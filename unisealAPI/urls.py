@@ -2,7 +2,6 @@ from django.conf.urls.static import static
 from django.contrib import admin
 from django.urls import path, include
 from rest_framework import routers
-from uniseal import views as uniseal_views
 from accounts import views as accounts_views
 from supplier import views as supplier_views
 from category import views as category_views
@@ -29,6 +28,7 @@ router.register(r'product/similarProduct', product_views.SimilarProductViewSet, 
 router.register(r'project/createProject', project_views.ProjectViewSet, basename='CreateProject')
 router.register(r'project/projectImage', project_views.ProjectImagesViewSet, basename='CreateProjectImages')
 router.register(r'project/projectVideo', project_views.ProjectVideoViewSet, basename='CreateProjectVideo')
+router.register(r'project/projectSolution', project_views.ProjectSolutionViewSet, basename='CreateProjectSolution')
 router.register(r'sellingPoint/createSellingPoint', selling_point_views.SellingPointViewSet,
                 basename='CreateSellingPoint')
 # router.register(r'sellingPoint/contactInfo', selling_point_views.SellingPointsContactInfoViewSet,
