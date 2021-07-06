@@ -45,7 +45,8 @@ INSTALLED_APPS = [
     'supplier',
     'category',
     'solution',
-    'admin_panel'
+    'admin_panel',
+    'slider',
 
 ]
 AUTH_USER_MODEL = 'accounts.User'

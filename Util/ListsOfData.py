@@ -133,3 +133,8 @@ PAYMENT_STATUSES = (
     ('Payed',_('Payed')),
     ('UnPayed',_('UnPayed')),
 )
+WORKING_FILED = (
+    ('Civil Engineering',_('Civil Engineering')),
+    ('Architecture Engineering',_('Architecture Engineering')),
+
+)

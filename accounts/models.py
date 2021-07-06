@@ -53,7 +53,7 @@ class UserAccountManager(BaseUserManager):
 
 
 class User(AbstractBaseUser):
-    from Util.ListsOfData import CITIES_CHOICES, AREA_CHOICES
+    from Util.ListsOfData import CITIES_CHOICES, WORKING_FILED
     from Util.ListsOfData import GENDER_CHOICES
     from django.core.validators import RegexValidator
     phone_regex = RegexValidator(regex=r'^9\d{8}$|^1\d{8}$',
@@ -78,6 +78,12 @@ class User(AbstractBaseUser):
         blank=False,
         null=False
     )
+    working_field = models.CharField(
+        max_length=150,
+        verbose_name=_('Working Field'),
+        blank=True,
+        null=True,
+    )
     phone_number = models.CharField(
         verbose_name=_('Phone Number'),
         blank=False,
@@ -101,14 +107,7 @@ class User(AbstractBaseUser):
         default=1,
 
     )
-    area = models.CharField(
-        verbose_name=_("Area"),
-        blank=False,
-        null=False,
-        choices=AREA_CHOICES,
-        max_length=300,
-        default=1
-    )
+
 
     email = models.EmailField(
         verbose_name=_('Email Address'),
