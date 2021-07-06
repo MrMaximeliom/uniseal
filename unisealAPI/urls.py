@@ -4,6 +4,7 @@ from django.urls import path, include
 from rest_framework import routers
 from accounts import views as accounts_views
 from supplier import views as supplier_views
+from slider import views as slider_views
 from category import views as category_views
 from product import views as product_views
 from project import views as project_views
@@ -21,6 +22,7 @@ router.register(r'accounts/modifyUsersData', accounts_views.ModifyUserDataViewSe
 router.register(r'accounts/me', accounts_views.CurrentUserDataViewSet, basename='CurrentUser')
 router.register(r'supplier', supplier_views.SupplierViewSet, basename='CreateSupplier')
 router.register(r'category', category_views.CategoryViewSet, basename='CreateCategory')
+router.register(r'slider', slider_views.SliderViewSet, basename='CreateSlider')
 router.register(r'product/createProduct', product_views.ProductViewSet, basename='CreateProduct')
 router.register(r'product/productImage', product_views.ProductImagesViewSet, basename='CreateProductImage')
 router.register(r'product/productVideo', product_views.ProductVideoViewSet, basename='CreateProductVideo')
