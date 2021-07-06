@@ -31,7 +31,7 @@ class Product(models.Model):
         verbose_name=_('Supplier Name')
     )
     added_date = models.DateField(
-        default=timezone.now,
+       auto_now= True,
         verbose_name=_('Added Date'))
 
     def __str__(self):

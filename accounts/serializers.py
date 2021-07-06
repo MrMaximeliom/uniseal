@@ -96,6 +96,9 @@ class RegisterSerializer(serializers.ModelSerializer):
                 full_name=validated_data['full_name'],
                 gender=validated_data['gender'],
                 phone_number=validated_data['phone_number'],
+                organization=validated_data['organization'],
+                working_field=validated_data['working_field'],
+                city=validated_data['city'],
 
             )
 
@@ -110,6 +113,9 @@ class RegisterSerializer(serializers.ModelSerializer):
         instance.email = validated_data['email']
         instance.username = validated_data['username']
         instance.set_password(validated_data['password'])
+        instance.organization = validated_data['organization']
+        instance.working_field = validated_data['working_field']
+        instance.city = validated_data['city']
 
         instance.save()
         return instance

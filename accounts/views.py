@@ -38,7 +38,7 @@ class ModifyUserDataViewSet(viewsets.GenericViewSet, mixins.ListModelMixin,
          "gender": "male",
          "phone_number": "0922367654",
          "city": "city_id",
-         "area": "area_id",
+
 
     }
     Use PUT function by accessing this url:
@@ -75,7 +75,7 @@ class RegisterUserViewSet(viewsets.GenericViewSet, mixins.CreateModelMixin):
         "gender": "male",
         "phone_number": "922367654",
         "city":"city_id",
-        "area":"area_id"
+
         }
       """
     from accounts.serializers import RegisterSerializer
@@ -111,7 +111,7 @@ class CurrentUserDataViewSet(viewsets.GenericViewSet,
         "phone_number": "922367654",
         "password":"encrypted_password"
         "city":"city_id",
-        "area":"area_id"
+
         }
     Use PUT function by accessing this url:
     /accounts/me/<user's_id>

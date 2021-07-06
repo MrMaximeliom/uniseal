@@ -11,3 +11,7 @@ class Brochures(models.Model):
         verbose_name=_('Document Attachment'),
         upload_to='brochures_document'
     )
+    image = models.ImageField(
+        verbose_name=_('Image'),
+        upload_to='brochures_images',
+    )

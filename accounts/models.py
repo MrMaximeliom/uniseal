@@ -83,6 +83,7 @@ class User(AbstractBaseUser):
         verbose_name=_('Working Field'),
         blank=True,
         null=True,
+        choices=WORKING_FILED
     )
     phone_number = models.CharField(
         verbose_name=_('Phone Number'),
