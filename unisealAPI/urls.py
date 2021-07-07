@@ -14,6 +14,9 @@ from solution import views as solution_views
 from admin_panel import views as admin_views
 from django.conf import settings
 from dashboard.views import dashboard
+from django.views.generic.base import RedirectView
+from django.contrib.staticfiles.storage import staticfiles_storage
+
 
 router = routers.DefaultRouter()
 admin_router = routers.DefaultRouter()
@@ -34,8 +37,6 @@ router.register(r'project/projectVideo', project_views.ProjectVideoViewSet, base
 router.register(r'project/projectSolution', project_views.ProjectSolutionViewSet, basename='CreateProjectSolution')
 router.register(r'sellingPoint/createSellingPoint', selling_point_views.SellingPointViewSet,
                 basename='CreateSellingPoint')
-# router.register(r'sellingPoint/contactInfo', selling_point_views.SellingPointsContactInfoViewSet,
-#                 basename='CreateSellingPointContactInfo')
 router.register(r'brochures', brochures_views.BrochuresViewSet, basename='CreateBrochures')
 router.register(r'contactUs', accounts_views.ContactUsViewSet, basename='CreateContactUsMessage')
 router.register(r'solution/createSolution', solution_views.SolutionViewSet, basename='CreateSolution')
@@ -54,6 +55,8 @@ urlpatterns = [
     path('admin_panel/',include(admin_router.urls)),
     path('admin/', admin.site.urls),
     path('dashboard/', dashboard),
+    path('favicon.ico', RedirectView.as_view(url=staticfiles_storage.url('dashboard/images/favicon.ico'))),
+
 ]
 
 if settings.DEBUG:
