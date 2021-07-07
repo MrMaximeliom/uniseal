@@ -10,6 +10,10 @@ class Supplier(models.Model):
         verbose_name=_('Supplier Image'),
         upload_to= 'supplier_images/',
     )
+    link = models.URLField(
+        verbose_name=_('Link'),
+        default=''
+    )
 
     def __str__(self):
         return self.name

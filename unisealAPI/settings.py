@@ -47,6 +47,7 @@ INSTALLED_APPS = [
     'solution',
     'admin_panel',
     'slider',
+    'dashboard',
 
 ]
 AUTH_USER_MODEL = 'accounts.User'

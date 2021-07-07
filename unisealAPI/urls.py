@@ -13,6 +13,7 @@ from brochures import views as brochures_views
 from solution import views as solution_views
 from admin_panel import views as admin_views
 from django.conf import settings
+from dashboard.views import dashboard
 
 router = routers.DefaultRouter()
 admin_router = routers.DefaultRouter()
@@ -52,6 +53,7 @@ urlpatterns = [
     path('', include(router.urls)),
     path('admin_panel/',include(admin_router.urls)),
     path('admin/', admin.site.urls),
+    path('dashboard/', dashboard),
 ]
 
 if settings.DEBUG:
