@@ -1,5 +1,6 @@
-from rest_framework import viewsets
 from django.utils.translation import gettext_lazy as _
+from rest_framework import viewsets
+from django_filters.rest_framework import DjangoFilterBackend
 from Util.permissions import UnisealPermission
 
 
@@ -23,8 +24,15 @@ class ProductViewSet(viewsets.ModelViewSet):
      "supplier":"supplier_id",
      }
      Use other functions by accessing this url:
-     product/createProduct/<product's_id>
+     product/modifyProduct/<product's_id>
      Format of data will be as the previous data format for GET function
+     To Get Products By Category use this url:
+     product/modifyProduct/?category=<category_id>
+     To Get Products By Supplier use this url:
+     product/modifyProduct/?supplier=<supplier_id>
+     To Get Products By Both Category and Supplier use this url:
+     product/modifyProduct/?category=<category_id>&supplier=<supplier_id>
+
     """
 
     def get_view_name(self):
@@ -35,6 +43,8 @@ class ProductViewSet(viewsets.ModelViewSet):
     from .models import Product
     permission_classes = [UnisealPermission]
     queryset = Product.objects.all()
+    filter_backends = [DjangoFilterBackend]
+    filterset_fields = ['category','supplier']
 
 
 class ProductImagesViewSet(viewsets.ModelViewSet):
@@ -52,6 +62,8 @@ class ProductImagesViewSet(viewsets.ModelViewSet):
      Use other functions by accessing this url:
      product/productImage/<productImage's_id>
      Format of data will be as the previous data format for GET function
+     To Get All Product's Images for one product use this url:
+     product/productImage/?product=<product_id>
     """
 
     def get_view_name(self):
@@ -62,7 +74,8 @@ class ProductImagesViewSet(viewsets.ModelViewSet):
     from .models import ProductImages
     permission_classes = [UnisealPermission]
     queryset = ProductImages.objects.all()
-
+    filter_backends = [DjangoFilterBackend]
+    filterset_fields = ['product']
 
 
 class ProductVideoViewSet(viewsets.ModelViewSet):
@@ -80,6 +93,8 @@ class ProductVideoViewSet(viewsets.ModelViewSet):
          Use other functions by accessing this url:
          product/productVideo/<productVideo's_id>
          Format of data will be as the previous data format for GET function
+         To Get All Product's Videos for one product use this url:
+         product/productVideo/?product=<product_id>
         """
 
     def get_view_name(self):
@@ -90,6 +105,8 @@ class ProductVideoViewSet(viewsets.ModelViewSet):
     from .models import ProductVideos
     permission_classes = [UnisealPermission]
     queryset = ProductVideos.objects.all()
+    filter_backends = [DjangoFilterBackend]
+    filterset_fields = ['product']
 
 
 class SimilarProductViewSet(viewsets.ModelViewSet):
@@ -117,4 +134,44 @@ class SimilarProductViewSet(viewsets.ModelViewSet):
     from .models import SimilarProduct
     permission_classes = [UnisealPermission]
     queryset = SimilarProduct.objects.all()
+
+
+# class FetchProductsByCategoryViewSet(viewsets.GenericViewSet,mixins.ListModelMixin):
+#     """API endpoint to allow the admin to link or unlink similar products together
+#     this endpoint allows GET,PUT,PATCH,DELETE functions
+#     permissions to this view is restricted as the following:
+#     - Only admin users can use all functions on this endpoint
+#     - Registered users are only allowed to use GET function
+#     Data will be retrieved in the following format for GET function:
+#     {
+#      "id":9,
+#      "original_product": product_id,
+#      "similar_product":product_id
+#      }
+#      Use other functions by accessing this url:
+#      product/similarProducts/<similar_products's_id>
+#      Format of data will be as the previous data format for GET function
+#     """
+#
+#     def get_view_name(self):
+#         return _("Fetch Products By Category")
+#
+#     from .serializers import ProductSerializer
+#     serializer_class = ProductSerializer
+#
+#     permission_classes = [UnisealPermission]
+#
+#     # from .models import Product
+#     # queryset = Product.objects.all()
+#
+#     def get_queryset(self):
+#         from .models import Product
+#         queryset = Product.objects.all()
+#         # category = self.request.query_params.get('category_id')
+#         category = self.kwargs['category_id']
+#         if category is not None:
+#             queryset = queryset.filter(category=category)
+#         return queryset
+
+
 

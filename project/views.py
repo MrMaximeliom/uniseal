@@ -1,5 +1,5 @@
 from Util.permissions import UnisealPermission
-# Create your views here.
+from django_filters.rest_framework import DjangoFilterBackend
 from rest_framework import viewsets
 from django.utils.translation import gettext_lazy as _
 
@@ -50,6 +50,8 @@ class ProjectImagesViewSet(viewsets.ModelViewSet):
      Use other functions by accessing this url:
      project/projectImage/<project's_id>
      Format of data will be as the previous data format for GET function
+     To Get All Project's Images use this url:
+     project/projectImage/?project=<project's_id>
     """
 
     def get_view_name(self):
@@ -60,6 +62,8 @@ class ProjectImagesViewSet(viewsets.ModelViewSet):
     from .models import ProjectImages
     permission_classes = [UnisealPermission]
     queryset = ProjectImages.objects.all()
+    filter_backends = [DjangoFilterBackend]
+    filterset_fields = ['project']
 
 
 class ProjectVideoViewSet(viewsets.ModelViewSet):
@@ -77,6 +81,9 @@ class ProjectVideoViewSet(viewsets.ModelViewSet):
          Use other functions by accessing this url:
          project/projectVideo/<projectVideo's_id>
          Format of data will be as the previous data format for GET function
+         To Get All Project's Videos use this url:
+         project/projectVideo/?project=<project's_id>
+
         """
 
     def get_view_name(self):
@@ -87,6 +94,8 @@ class ProjectVideoViewSet(viewsets.ModelViewSet):
     from .models import ProjectVideos
     permission_classes = [UnisealPermission]
     queryset = ProjectVideos.objects.all()
+    filter_backends = [DjangoFilterBackend]
+    filterset_fields = ['project']
 
 class ProjectSolutionViewSet(viewsets.ModelViewSet):
     """API endpoint to add solutions to projects by admin
@@ -103,6 +112,10 @@ class ProjectSolutionViewSet(viewsets.ModelViewSet):
          Use other functions by accessing this url:
          project/projectSolution/<projectSolution's_id>
          Format of data will be as the previous data format for GET function
+         To Get All projects that have used the same solution use this url:
+         project/projectSolution/?solution=<solution_id>
+         To Get All solutions that have been used in the same project :
+         project/projectSolution/?project=<project_id>
         """
 
     def get_view_name(self):
@@ -113,3 +126,5 @@ class ProjectSolutionViewSet(viewsets.ModelViewSet):
     from .models import ProjectSolutions
     permission_classes = [UnisealPermission]
     queryset = ProjectSolutions.objects.all()
+    filter_backends = [DjangoFilterBackend]
+    filterset_fields = ['project','solution']

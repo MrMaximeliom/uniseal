@@ -1,6 +1,7 @@
 from rest_framework import viewsets
 from django.utils.translation import gettext_lazy as _
 from Util.permissions import UnisealPermission
+from django_filters.rest_framework import DjangoFilterBackend
 
 
 # Create your views here.
@@ -72,6 +73,8 @@ class SolutionVideosViewSet(viewsets.ModelViewSet):
      Use other functions by accessing this url:
      solution/solutionVideos/<solutionVideos'_id>
      Format of data will be as the previous data format for GET function
+     To Get All Solution's Videos for one solution use this url:
+     solution/solutionVideos/?solution=<solution_id>
     """
 
     def get_view_name(self):
@@ -82,3 +85,5 @@ class SolutionVideosViewSet(viewsets.ModelViewSet):
     from .models import SolutionVideos
     permission_classes = [UnisealPermission]
     queryset = SolutionVideos.objects.all()
+    filter_backends = [DjangoFilterBackend]
+    filterset_fields = ['solution']

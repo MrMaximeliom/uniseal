@@ -1,6 +1,6 @@
 from django.conf.urls.static import static
 from django.contrib import admin
-from django.urls import path, include
+from django.urls import path, include, re_path
 from rest_framework import routers
 from accounts import views as accounts_views
 from supplier import views as supplier_views
@@ -16,7 +16,10 @@ from django.conf import settings
 from dashboard.views import dashboard
 from django.views.generic.base import RedirectView
 from django.contrib.staticfiles.storage import staticfiles_storage
-
+from rest_framework_simplejwt.views import (
+    TokenObtainPairView,
+    TokenRefreshView,
+)
 
 router = routers.DefaultRouter()
 admin_router = routers.DefaultRouter()
@@ -27,7 +30,7 @@ router.register(r'accounts/me', accounts_views.CurrentUserDataViewSet, basename=
 router.register(r'supplier', supplier_views.SupplierViewSet, basename='CreateSupplier')
 router.register(r'category', category_views.CategoryViewSet, basename='CreateCategory')
 router.register(r'slider', slider_views.SliderViewSet, basename='CreateSlider')
-router.register(r'product/createProduct', product_views.ProductViewSet, basename='CreateProduct')
+router.register(r'product/modifyProduct', product_views.ProductViewSet, basename='CreateProduct')
 router.register(r'product/productImage', product_views.ProductImagesViewSet, basename='CreateProductImage')
 router.register(r'product/productVideo', product_views.ProductVideoViewSet, basename='CreateProductVideo')
 router.register(r'product/similarProduct', product_views.SimilarProductViewSet, basename='LinkSimilarProducts')
@@ -48,13 +51,15 @@ admin_router.register(r'manageSolution', admin_views.ManageSolutionViewSet, base
 admin_router.register(r'manageSellingPoints', admin_views.ManageSellingPointsViewSet, basename='ManageSellingPoints')
 admin_router.register(r'manageBrochures', admin_views.ManageBrochuresViewSet, basename='MManageBrochures')
 
-
-
 urlpatterns = [
     path('', include(router.urls)),
-    path('admin_panel/',include(admin_router.urls)),
+    path('admin_panel/', include(admin_router.urls)),
     path('admin/', admin.site.urls),
     path('dashboard/', dashboard),
+    path('login/', TokenObtainPairView.as_view(), name='token_obtain_pair'),
+    path('login/refresh/', TokenRefreshView.as_view(), name='token_refresh'),
+    path('logout/', accounts_views.Logout.as_view(), name='logout'),
+    # re_path('^product/(?P<category_id>.+)/$',product_views.FetchProductsByCategoryViewSet,name='FetchProduct'),
     path('favicon.ico', RedirectView.as_view(url=staticfiles_storage.url('dashboard/images/favicon.ico'))),
 
 ]

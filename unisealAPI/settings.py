@@ -48,6 +48,8 @@ INSTALLED_APPS = [
     'admin_panel',
     'slider',
     'dashboard',
+    'django_filters',
+
 
 ]
 AUTH_USER_MODEL = 'accounts.User'
@@ -122,6 +124,7 @@ AUTH_PASSWORD_VALIDATORS = [
         'NAME': 'django.contrib.auth.password_validation.NumericPasswordValidator',
     },
 ]
+
 REST_FRAMEWORK = {
 
     'DEFAULT_AUTHENTICATION_CLASSES': [
@@ -131,6 +134,8 @@ REST_FRAMEWORK = {
 
 
     ],
+    'DEFAULT_FILTER_BACKENDS': ['django_filters.rest_framework.DjangoFilterBackend']
+
 }
 
 

@@ -17,10 +17,10 @@ class  BrochuresViewSet(viewsets.ModelViewSet):
         "id": 26,
         "title": "title",
         "attachment": "document_url_image",
-    }
-    Use PUT function by accessing this url:
-    /brochures/<brochures'_id>
-    Format of data will be as the previous data format for GET function
+       }
+      Use PUT function by accessing this url:
+      /brochures/<brochures'_id>
+      Format of data will be as the previous data format for GET function
 
       """
     from brochures.serializers import BrochuresSerializer

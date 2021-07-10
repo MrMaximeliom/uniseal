@@ -1,6 +1,8 @@
 from rest_framework import viewsets
 from django.utils.translation import gettext_lazy as _
 from Util.permissions import IsAdminOrReadOnly
+from django_filters.rest_framework import DjangoFilterBackend
+
 
 
 # Create your views here.
@@ -19,6 +21,8 @@ class SupplierViewSet(viewsets.ModelViewSet):
      Use other functions by accessing this url:
      supplier/<supplier's_id>
      Format of data will be as the previous data format for GET function
+     To Search for particular supplier by its name use this url:
+     supplier/?name=<supplier_name>
     """
 
     def get_view_name(self):
@@ -29,3 +33,5 @@ class SupplierViewSet(viewsets.ModelViewSet):
     from .models import Supplier
     permission_classes = [IsAdminOrReadOnly]
     queryset = Supplier.objects.all()
+    filter_backends = [DjangoFilterBackend]
+    filterset_fields = ['name']
