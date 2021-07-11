@@ -135,6 +135,5 @@ PAYMENT_STATUSES = (
 )
 WORKING_FILED = (
     ('Civil Engineering',_('Civil Engineering')),
-    ('Architecture Engineering',_('Architecture Engineering')),
-
+    ('Chemical Engineering',_('Chemical Engineering')),
 )
