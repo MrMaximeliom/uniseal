@@ -14,7 +14,7 @@
 <body>
     <nav class="navbar nav-light nav-dark p-3">
         <div class="d-flex col-12 col-md-3 col-lg-2 mb-2 mb-lg-0 flex-wrap flex-md-nowrap justify-content-between">
-            <a class="navbar-brand-light navbar-brand-dark" href="#">
+            <a class="navbar-brand-light navbar-brand-dark" href="{% url 'dashboard' %}">
                 Uniseal Dashboard
             </a>
             <button class="navbar-toggler d-md-none collapsed mb-3" type="button" data-toggle="collapse" data-target="#sidebar" aria-controls="sidebar" aria-expanded="false" aria-label="Toggle navigation">
@@ -44,11 +44,11 @@
     </nav>
     <div class="container-fluid">
         <div class="row">
-            <nav id="sidebar" class="col-md-3 col-lg-2 d-md-block nav-light nav-dark sidebar collapse">
+            <nav id="sidebar" class="col-md-3 col-lg-2 d-md-block nav-light nav-dark sidebar collapse ">
                 <div class="position-sticky">
                     <ul class="nav flex-column">
                         <li class="nav-item">
-                          <a class="nav-link-light nav-link-dark active" aria-current="page" href="#">
+                          <a class="nav-link-light nav-link-dark {{dashboard}}" aria-current="page" href="{% url 'dashboard' %}">
                             <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-home"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"></path><polyline points="9 22 9 12 15 12 15 22"></polyline></svg>
                             <span class="ml-2">{% trans 'Dashboard' %}</span>
                           </a>
@@ -59,38 +59,66 @@
 <!--                            <span class="ml-2">{% trans 'Orders' %}</span>-->
 <!--                          </a>-->
 <!--                        </li>-->
-                        <li class="nav-item">
-                          <a class="nav-link-light nav-link-dark" href="#">
-                            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-shopping-cart"><circle cx="9" cy="21" r="1"></circle><circle cx="20" cy="21" r="1"></circle><path d="M1 1h4l2.68 13.39a2 2 0 0 0 2 1.61h9.72a2 2 0 0 0 2-1.61L23 6H6"></path></svg>
+      <li class="nav-item">
+        <a class=" nav-link-light nav-link-dark collapsed dropdown-toggle" data-bs-toggle="collapse" data-bs-target="#dashboard-collapse" aria-expanded="false">
+           <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-shopping-cart"><circle cx="9" cy="21" r="1"></circle><circle cx="20" cy="21" r="1"></circle><path d="M1 1h4l2.68 13.39a2 2 0 0 0 2 1.61h9.72a2 2 0 0 0 2-1.61L23 6H6"></path></svg>
                             <span class="ml-2">{% trans 'Products' %}</span>
-                          </a>
-                        </li>
+        </a>
+        <div class="collapse" id="dashboard-collapse">
+          <ul class="btn-toggle-nav list-unstyled fw-normal pb-1">
+              <li class="nav-item">
+                <a href="#" class="nav-link-light nav-link-dark">
+                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-hash"><line x1="4" y1="9" x2="20" y2="9"></line><line x1="4" y1="15" x2="20" y2="15"></line><line x1="10" y1="3" x2="8" y2="21"></line><line x1="16" y1="3" x2="14" y2="21"></line></svg>
+                 <span class="ml-2">{% trans 'All Products' %}</span>
+            </a>
+            </li>
+            <li class="nav-item"><a href="#" class="nav-link-light nav-link-dark">
+            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-plus"><line x1="12" y1="5" x2="12" y2="19"></line><line x1="5" y1="12" x2="19" y2="12"></line></svg>
+            <span class="ml-2">{% trans 'Add Products' %}</span>
+            </a>
+            </li>
+            <li class="nav-item"><a href="#" class="nav-link-light nav-link-dark">
+                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-minus"><line x1="5" y1="12" x2="19" y2="12"></line></svg>
+                 <span class="ml-2">{% trans 'Delete Products' %}</span>
+            </a>
+            </li>
+
+            <li class="nav-item" ><a href="#" class="nav-link-light nav-link-dark">
+            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-edit"><path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"></path><path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"></path></svg>
+                 <span class="ml-2">{% trans 'Edit Products' %}</span>
+            </a>
+            </li>
+          </ul>
+        </div>
+      </li>
+
+
                         <li class="nav-item">
-                          <a class="nav-link-light nav-link-dark" href="#">
+                          <a class="nav-link-light nav-link-dark {{users}}" href="#">
                             <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-users"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"></path><circle cx="9" cy="7" r="4"></circle><path d="M23 21v-2a4 4 0 0 0-3-3.87"></path><path d="M16 3.13a4 4 0 0 1 0 7.75"></path></svg>
                             <span class="ml-2">{% trans 'Users' %}</span>
                           </a>
                         </li>
                           <li class="nav-item">
-                            <a class="nav-link-light nav-link-dark" href="#">
+                            <a class="nav-link-light nav-link-dark {{projects}}" href="#">
                                 <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-archive"><polyline points="21 8 21 21 3 21 3 8"></polyline><rect x="1" y="3" width="22" height="5"></rect><line x1="10" y1="12" x2="14" y2="12"></line></svg>
                             <span class="ml-2">{% trans 'Projects' %}</span>
                           </a>
                         </li>
                          <li class="nav-item">
-                            <a class="nav-link-light nav-link-dark" href="#">
+                            <a class="nav-link-light nav-link-dark {{solutions}}" href="#">
                                 <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-star"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"></polygon></svg>
                             <span class="ml-2">{% trans 'Solutions' %}</span>
                           </a>
                         </li>
                         <li class="nav-item">
-                          <a class="nav-link-light nav-link-dark" href="#">
+                          <a class="nav-link-light nav-link-dark {{categories}}" href="#">
                             <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-layers"><polygon points="12 2 2 7 12 12 22 7 12 2"></polygon><polyline points="2 17 12 22 22 17"></polyline><polyline points="2 12 12 17 22 12"></polyline></svg>
                             <span class="ml-2">{% trans 'Categories' %}</span>
                           </a>
                         </li>
                         <li class="nav-item">
-                            <a class="nav-link-light nav-link-dark" href="#">
+                            <a class="nav-link-light nav-link-dark {{address}}" href="#">
                           <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-map"><polygon points="1 6 1 22 8 18 16 22 23 18 23 2 16 6 8 2 1 6"></polygon><line x1="8" y1="2" x2="8" y2="18"></line><line x1="16" y1="6" x2="16" y2="22"></line></svg>
                             <span class="ml-2">{% trans 'Address' %}</span>
                           </a>
@@ -102,38 +130,38 @@
                           </a>
                         </li>
                           <li class="nav-item">
-                            <a class="nav-link-light nav-link-dark" href="#">
+                            <a class="nav-link-light nav-link-dark {{selling_points}}" href="#">
                                 <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-map-pin"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"></path><circle cx="12" cy="10" r="3"></circle></svg>
                             <span class="ml-2">{% trans 'Selling Points' %}</span>
                           </a>
                         </li>
                              <li class="nav-item">
-                            <a class="nav-link-light nav-link-dark" href="#">
+                            <a class="nav-link-light nav-link-dark {{brochures}}" href="#">
                                 <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-book-open"><path d="M2 3h6a4 4 0 0 1 4 4v14a3 3 0 0 0-3-3H2z"></path><path d="M22 3h-6a4 4 0 0 0-4 4v14a3 3 0 0 1 3-3h7z"></path></svg>
                             <span class="ml-2">{% trans 'Brochures' %}</span>
                           </a>
                         </li>
                                 <li class="nav-item">
-                            <a class="nav-link-light nav-link-dark" href="#">
+                            <a class="nav-link-light nav-link-dark {{contact_us}}" href="#">
                                 <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-inbox"><polyline points="22 12 16 12 14 15 10 15 8 12 2 12"></polyline><path d="M5.45 5.11L2 12v6a2 2 0 0 0 2 2h16a2 2 0 0 0 2-2v-6l-3.45-6.89A2 2 0 0 0 16.76 4H7.24a2 2 0 0 0-1.79 1.11z"></path></svg>
                             <span class="ml-2">{% trans 'Contact Us' %}</span>
                           </a>
                         </li>
                                  <li class="nav-item">
-                            <a class="nav-link-light nav-link-dark" href="#">
+                            <a class="nav-link-light nav-link-dark {{notifications}}" href="#">
                                 <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-bell"><path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9"></path><path d="M13.73 21a2 2 0 0 1-3.46 0"></path></svg>
                             <span class="ml-2">{% trans 'Notifications' %}</span>
                           </a>
                         </li>
                         <li class="nav-item">
-                            <a class="nav-link-light nav-link-dark" href="#">
+                            <a class="nav-link-light nav-link-dark {{sms_notifications}}" href="#">
                                 <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-bell"><path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9"></path><path d="M13.73 21a2 2 0 0 1-3.46 0"></path></svg>
                             <span class="ml-2">{% trans 'SMS Notifications' %}</span>
                           </a>
                         </li>
 
                           <li class="nav-item">
-                            <a class="nav-link-light nav-link-dark" href="#">
+                            <a class="nav-link-light nav-link-dark {{reports}}" href="#">
                             <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-bar-chart-2"><line x1="18" y1="20" x2="18" y2="10"></line><line x1="12" y1="20" x2="12" y2="4"></line><line x1="6" y1="20" x2="6" y2="14"></line></svg>
                             <span class="ml-2">{% trans 'Reports' %}</span>
                           </a>
@@ -143,12 +171,9 @@
                 </div>
             </nav>
             <main class="col-md-9 ml-sm-auto col-lg-10 px-md-4 py-4">
-                <nav aria-label="crumb">
-                    <ol class="crumb breadcrumb-light breadcrumb-dark">
-                        <li class="breadcrumb-item"><a href="#">{% trans 'Home' %}</a></li>
-                        <li class="breadcrumb-item active" aria-current="page">{% trans 'Overview' %}</li>
-                    </ol>
-                </nav>
+                     {% block breadcrumb_content %}
+                {% endblock breadcrumb_content %}
+
                 {% block content %}
                 {% endblock content %}
                 <footer class="pt-5 d-flex justify-content-between">
@@ -172,11 +197,8 @@
             </main>
         </div>
     </div>
-
-    <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js" integrity="sha384-Q6E9RHvbIyZFJoft+2mJbHaEWldlvI9IOYy5n3zV9zzTtmI3UksdQRVvoxMfooAo" crossorigin="anonymous"></script>
-    <script src="https://stackpath.bootstrapcdn.com/bootstrap/5.0.0-alpha1/js/bootstrap.min.js" integrity="sha384-oesi62hOLfzrys4LxRF63OJCXdXDipiYWBnvTl9Y9/TRlw5xlKIEHpNyvvDShgf/" crossorigin="anonymous"></script>
-    <script src="https://cdn.jsdelivr.net/chartist.js/latest/chartist.min.js"></script>
     <script src="https://code.jquery.com/jquery-3.6.0.slim.min.js" integrity="sha256-u7e5khyithlIdTpu22PHhENmPcRdFiHRjhAuHcs05RI=" crossorigin="anonymous"></script>
     <script src="{% static 'dashboard/js/index.js' %}"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM" crossorigin="anonymous"></script>
 </body>
 </html>

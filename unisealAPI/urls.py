@@ -13,7 +13,7 @@ from brochures import views as brochures_views
 from solution import views as solution_views
 from admin_panel import views as admin_views
 from django.conf import settings
-from dashboard.views import dashboard
+from dashboard import views as dashboard_views
 from django.views.generic.base import RedirectView
 from django.contrib.staticfiles.storage import staticfiles_storage
 from rest_framework_simplejwt.views import (
@@ -55,7 +55,8 @@ urlpatterns = [
     path('', include(router.urls)),
     path('admin_panel/', include(admin_router.urls)),
     path('admin/', admin.site.urls),
-    path('dashboard/', dashboard),
+    path('dashboard/', dashboard_views.dashboard,name='dashboard'),
+    path('dashboard/products', dashboard_views.products,name='products'),
     path('login/', TokenObtainPairView.as_view(), name='token_obtain_pair'),
     path('login/refresh/', TokenRefreshView.as_view(), name='token_refresh'),
     path('logout/', accounts_views.Logout.as_view(), name='logout'),

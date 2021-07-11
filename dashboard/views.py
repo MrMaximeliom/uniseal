@@ -12,12 +12,9 @@ def dashboard(request):
     projects_count = all_projects.count()
     short_list_of_projects = all_projects[:5]
     brochures_count = Brochures.objects.all().count()
-
-
-
     context = {
         'title':  _('Uniseal API Admin Dashboard'),
-        'home' : 'active',
+        'dashboard' : 'active',
         'users_count':users_count,
         'products_count':products_count,
         'projects_count':projects_count,
@@ -25,5 +22,10 @@ def dashboard(request):
         'all_projects':short_list_of_projects,
 
     }
-
     return render(request, 'dashboard/index.html', context)
+def products(request):
+    context = {
+        'title':_('Products'),
+        'products':'active',
+    }
+    return render(request,'dashboard/products.html',context)
