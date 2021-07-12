@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+{% extends "dashboard/base.html" %}
+{% load static %}
+{% load static i18n %}
+{% block title %}
+{{title}}
+{% endblock title %}
+         {% block breadcrumb_content %}
+   <nav aria-label="crumb">
+                    <ol class="crumb breadcrumb-light breadcrumb-dark">
+                        <li class="breadcrumb-item"><a href="{% url 'dashboard' %}">{% trans 'Dashboard' %}</a></li>
+                        <li class="breadcrumb-item" aria-current="page">{% trans 'Solutions' %}</li>
+                        <li class="breadcrumb-item" aria-current="page">{% trans 'Edit Solutions' %}</li>
+                    </ol>
+                </nav>
+                {% endblock breadcrumb_content %}
+{% block content %}
+                <h1 class="h2">Edit Solutions</h1>
+                <p>{% trans 'Here you can edit solutions of Uniseal company' %}</p>
+
+{% endblock content %}

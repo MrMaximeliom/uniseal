@@ -5,7 +5,10 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Uniseal API Admin Dashboard</title>
+
+     <title>{% block title %}{% endblock title %}</title>
+
+
     <link rel="stylesheet" href="{% static 'dashboard/css/index.css' %}">
     <link rel="stylesheet" id="theme" href="{% static 'dashboard/css/dark-theme.css' %}">
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/5.0.0-alpha1/css/bootstrap.min.css" integrity="sha384-r4NyP46KrjDleawBgD5tp8Y7UzmLA05oM1iAEQ17CSuDqnUK2+k9luXQOfXJCJ4I" crossorigin="anonymous">
@@ -45,7 +48,7 @@
     <div class="container-fluid">
         <div class="row">
             <nav id="sidebar" class="col-md-3 col-lg-2 d-md-block nav-light nav-dark sidebar collapse ">
-                <div class="position-sticky">
+                <div class="position-sticky nav-items-div">
                     <ul class="nav flex-column">
                         <li class="nav-item">
                           <a class="nav-link-light nav-link-dark {{dashboard}}" aria-current="page" href="{% url 'dashboard' %}">
@@ -67,23 +70,23 @@
         <div class="collapse" id="dashboard-collapse">
           <ul class="btn-toggle-nav list-unstyled fw-normal pb-1">
               <li class="nav-item">
-                <a href="#" class="nav-link-light nav-link-dark">
+                <a href="{% url 'allProducts' %}" class="nav-link-light nav-link-dark {{all_products}}">
                 <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-hash"><line x1="4" y1="9" x2="20" y2="9"></line><line x1="4" y1="15" x2="20" y2="15"></line><line x1="10" y1="3" x2="8" y2="21"></line><line x1="16" y1="3" x2="14" y2="21"></line></svg>
                  <span class="ml-2">{% trans 'All Products' %}</span>
             </a>
             </li>
-            <li class="nav-item"><a href="#" class="nav-link-light nav-link-dark">
+            <li class="nav-item"><a href="{% url 'addProducts' %}" class="nav-link-light nav-link-dark {{add_products}}">
             <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-plus"><line x1="12" y1="5" x2="12" y2="19"></line><line x1="5" y1="12" x2="19" y2="12"></line></svg>
             <span class="ml-2">{% trans 'Add Products' %}</span>
             </a>
             </li>
-            <li class="nav-item"><a href="#" class="nav-link-light nav-link-dark">
+            <li class="nav-item"><a href="{% url 'deleteProducts' %}" class="nav-link-light nav-link-dark {{delete_products}}">
                 <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-minus"><line x1="5" y1="12" x2="19" y2="12"></line></svg>
                  <span class="ml-2">{% trans 'Delete Products' %}</span>
             </a>
             </li>
 
-            <li class="nav-item" ><a href="#" class="nav-link-light nav-link-dark">
+            <li class="nav-item" ><a href="{% url 'editProducts' %}" class="nav-link-light nav-link-dark {{edit_products}}">
             <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-edit"><path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"></path><path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"></path></svg>
                  <span class="ml-2">{% trans 'Edit Products' %}</span>
             </a>
@@ -91,50 +94,252 @@
           </ul>
         </div>
       </li>
+                           <li class="nav-item">
+        <a class=" nav-link-light nav-link-dark collapsed dropdown-toggle" data-bs-toggle="collapse" data-bs-target="#dashboard-collapse-users" aria-expanded="false">
+        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-users"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"></path><circle cx="9" cy="7" r="4"></circle><path d="M23 21v-2a4 4 0 0 0-3-3.87"></path><path d="M16 3.13a4 4 0 0 1 0 7.75"></path></svg>
+                            <span class="ml-2">{% trans 'Users'%}</span>
+        </a>
+        <div class="collapse" id="dashboard-collapse-users">
+          <ul class="btn-toggle-nav list-unstyled fw-normal pb-1">
+              <li class="nav-item">
+                <a href="{% url 'allUsers' %}" class="nav-link-light nav-link-dark {{all_users}}">
+                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-hash"><line x1="4" y1="9" x2="20" y2="9"></line><line x1="4" y1="15" x2="20" y2="15"></line><line x1="10" y1="3" x2="8" y2="21"></line><line x1="16" y1="3" x2="14" y2="21"></line></svg>
+                 <span class="ml-2">{% trans 'All Users' %} </span>
+            </a>
+            </li>
+            <li class="nav-item"><a href="{% url 'addUsers' %}" class="nav-link-light nav-link-dark {{add_users}}">
+            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-plus"><line x1="12" y1="5" x2="12" y2="19"></line><line x1="5" y1="12" x2="19" y2="12"></line></svg>
+            <span class="ml-2">{% trans 'Add Users' %}</span>
+            </a>
+            </li>
+            <li class="nav-item"><a href="{% url 'deleteUsers' %}" class="nav-link-light nav-link-dark {{delete_users}}">
+                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-minus"><line x1="5" y1="12" x2="19" y2="12"></line></svg>
+                 <span class="ml-2">{% trans 'Delete Users' %}</span>
+            </a>
+            </li>
 
+            <li class="nav-item" ><a href="{% url 'editUsers' %}" class="nav-link-light nav-link-dark {{edit_users}}">
+            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-edit"><path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"></path><path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"></path></svg>
+                 <span class="ml-2">{% trans 'Edit Users' %}</span>
+            </a>
+            </li>
+          </ul>
+        </div>
+      </li>
+                           <li class="nav-item">
+        <a class=" nav-link-light nav-link-dark collapsed dropdown-toggle" data-bs-toggle="collapse" data-bs-target="#dashboard-collapse-projects" aria-expanded="false">
+                                            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-archive"><polyline points="21 8 21 21 3 21 3 8"></polyline><rect x="1" y="3" width="22" height="5"></rect><line x1="10" y1="12" x2="14" y2="12"></line></svg>
+                            <span class="ml-2">{% trans 'Projects'%}</span>
+        </a>
+        <div class="collapse" id="dashboard-collapse-projects">
+          <ul class="btn-toggle-nav list-unstyled fw-normal pb-1">
+              <li class="nav-item">
+                <a href="{% url 'allProjects' %}" class="nav-link-light nav-link-dark {{all_projects}}">
+                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-hash"><line x1="4" y1="9" x2="20" y2="9"></line><line x1="4" y1="15" x2="20" y2="15"></line><line x1="10" y1="3" x2="8" y2="21"></line><line x1="16" y1="3" x2="14" y2="21"></line></svg>
+                 <span class="ml-2">{% trans 'All Projects' %} </span>
+            </a>
+            </li>
+            <li class="nav-item"><a href="{% url 'addProjects' %}" class="nav-link-light nav-link-dark {{add_projects}}">
+            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-plus"><line x1="12" y1="5" x2="12" y2="19"></line><line x1="5" y1="12" x2="19" y2="12"></line></svg>
+            <span class="ml-2">{% trans 'Add Projects' %}</span>
+            </a>
+            </li>
+            <li class="nav-item"><a href="{% url 'deleteProjects' %}" class="nav-link-light nav-link-dark {{delete_projects}}">
+                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-minus"><line x1="5" y1="12" x2="19" y2="12"></line></svg>
+                 <span class="ml-2">{% trans 'Delete Projects' %}</span>
+            </a>
+            </li>
 
-                        <li class="nav-item">
-                          <a class="nav-link-light nav-link-dark {{users}}" href="#">
-                            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-users"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"></path><circle cx="9" cy="7" r="4"></circle><path d="M23 21v-2a4 4 0 0 0-3-3.87"></path><path d="M16 3.13a4 4 0 0 1 0 7.75"></path></svg>
-                            <span class="ml-2">{% trans 'Users' %}</span>
-                          </a>
-                        </li>
-                          <li class="nav-item">
-                            <a class="nav-link-light nav-link-dark {{projects}}" href="#">
-                                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-archive"><polyline points="21 8 21 21 3 21 3 8"></polyline><rect x="1" y="3" width="22" height="5"></rect><line x1="10" y1="12" x2="14" y2="12"></line></svg>
-                            <span class="ml-2">{% trans 'Projects' %}</span>
-                          </a>
-                        </li>
+            <li class="nav-item" ><a href="{% url 'editProjects' %}" class="nav-link-light nav-link-dark {{edit_projects}}">
+            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-edit"><path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"></path><path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"></path></svg>
+                 <span class="ml-2">{% trans 'Edit Projects' %}</span>
+            </a>
+            </li>
+          </ul>
+        </div>
+      </li>
+                           <li class="nav-item">
+        <a class=" nav-link-light nav-link-dark collapsed dropdown-toggle" data-bs-toggle="collapse" data-bs-target="#dashboard-collapse-solutions" aria-expanded="false">
+        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-star"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"></polygon></svg>
+
+                            <span class="ml-2">{% trans 'Solutions'%}</span>
+        </a>
+        <div class="collapse" id="dashboard-collapse-solutions">
+          <ul class="btn-toggle-nav list-unstyled fw-normal pb-1">
+              <li class="nav-item">
+                <a href="{% url 'allSolutions' %}" class="nav-link-light nav-link-dark {{all_solutions}}">
+                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-hash"><line x1="4" y1="9" x2="20" y2="9"></line><line x1="4" y1="15" x2="20" y2="15"></line><line x1="10" y1="3" x2="8" y2="21"></line><line x1="16" y1="3" x2="14" y2="21"></line></svg>
+                 <span class="ml-2">{% trans 'All Solutions' %} </span>
+            </a>
+            </li>
+            <li class="nav-item"><a href="{% url 'addSolutions' %}" class="nav-link-light nav-link-dark {{add_solutions}}">
+            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-plus"><line x1="12" y1="5" x2="12" y2="19"></line><line x1="5" y1="12" x2="19" y2="12"></line></svg>
+            <span class="ml-2">{% trans 'Add Solutions' %}</span>
+            </a>
+            </li>
+            <li class="nav-item"><a href="{% url 'deleteSolutions' %}" class="nav-link-light nav-link-dark {{delete_solutions}}">
+                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-minus"><line x1="5" y1="12" x2="19" y2="12"></line></svg>
+                 <span class="ml-2">{% trans 'Delete Solutions' %}</span>
+            </a>
+            </li>
+            <li class="nav-item" ><a href="{% url 'editSolutions' %}" class="nav-link-light nav-link-dark {{edit_solutions}}">
+            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-edit"><path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"></path><path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"></path></svg>
+                 <span class="ml-2">{% trans 'Edit Solutions' %}</span>
+            </a>
+            </li>
+          </ul>
+        </div>
+      </li>
                          <li class="nav-item">
-                            <a class="nav-link-light nav-link-dark {{solutions}}" href="#">
-                                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-star"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"></polygon></svg>
-                            <span class="ml-2">{% trans 'Solutions' %}</span>
-                          </a>
-                        </li>
-                        <li class="nav-item">
-                          <a class="nav-link-light nav-link-dark {{categories}}" href="#">
+        <a class=" nav-link-light nav-link-dark collapsed dropdown-toggle" data-bs-toggle="collapse" data-bs-target="#dashboard-collapse-categories" aria-expanded="false">
                             <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-layers"><polygon points="12 2 2 7 12 12 22 7 12 2"></polygon><polyline points="2 17 12 22 22 17"></polyline><polyline points="2 12 12 17 22 12"></polyline></svg>
-                            <span class="ml-2">{% trans 'Categories' %}</span>
-                          </a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link-light nav-link-dark {{address}}" href="#">
+
+                            <span class="ml-2">{% trans 'Categories'%}</span>
+        </a>
+        <div class="collapse" id="dashboard-collapse-categories">
+          <ul class="btn-toggle-nav list-unstyled fw-normal pb-1">
+              <li class="nav-item">
+                <a href="{% url 'allCategories' %}" class="nav-link-light nav-link-dark {{all_categories}}">
+                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-hash"><line x1="4" y1="9" x2="20" y2="9"></line><line x1="4" y1="15" x2="20" y2="15"></line><line x1="10" y1="3" x2="8" y2="21"></line><line x1="16" y1="3" x2="14" y2="21"></line></svg>
+                 <span class="ml-2">{% trans 'All Categories' %} </span>
+            </a>
+            </li>
+            <li class="nav-item"><a href="{% url 'addCategories' %}" class="nav-link-light nav-link-dark {{add_categories}}">
+            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-plus"><line x1="12" y1="5" x2="12" y2="19"></line><line x1="5" y1="12" x2="19" y2="12"></line></svg>
+            <span class="ml-2">{% trans 'Add Categories' %}</span>
+            </a>
+            </li>
+            <li class="nav-item"><a href="{% url 'deleteCategories' %}" class="nav-link-light nav-link-dark {{delete_categories}}">
+                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-minus"><line x1="5" y1="12" x2="19" y2="12"></line></svg>
+                 <span class="ml-2">{% trans 'Delete Categories' %}</span>
+            </a>
+            </li>
+            <li class="nav-item" ><a href="{% url 'editCategories' %}" class="nav-link-light nav-link-dark {{edit_categories}}">
+            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-edit"><path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"></path><path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"></path></svg>
+                 <span class="ml-2">{% trans 'Edit Categories' %}</span>
+            </a>
+            </li>
+          </ul>
+        </div>
+      </li>
+                           <li class="nav-item">
+        <a class=" nav-link-light nav-link-dark collapsed dropdown-toggle" data-bs-toggle="collapse" data-bs-target="#dashboard-collapse-address" aria-expanded="false">
                           <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-map"><polygon points="1 6 1 22 8 18 16 22 23 18 23 2 16 6 8 2 1 6"></polygon><line x1="8" y1="2" x2="8" y2="18"></line><line x1="16" y1="6" x2="16" y2="22"></line></svg>
-                            <span class="ml-2">{% trans 'Address' %}</span>
-                          </a>
-                        </li>
-                            <li class="nav-item">
-                            <a class="nav-link-light nav-link-dark" href="#">
+
+                            <span class="ml-2">{% trans 'Address'%}</span>
+        </a>
+        <div class="collapse" id="dashboard-collapse-address">
+          <ul class="btn-toggle-nav list-unstyled fw-normal pb-1">
+                   <li class="nav-item">
+                <a href="{% url 'allCountries' %}" class="nav-link-light nav-link-dark {{all_countries}}">
+                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-hash"><line x1="4" y1="9" x2="20" y2="9"></line><line x1="4" y1="15" x2="20" y2="15"></line><line x1="10" y1="3" x2="8" y2="21"></line><line x1="16" y1="3" x2="14" y2="21"></line></svg>
+                 <span class="ml-2">{% trans 'All Countries' %} </span>
+            </a>
+            </li>
+              <li class="nav-item">
+                <a href="{% url 'allCities' %}" class="nav-link-light nav-link-dark {{all_cities}}">
+                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-hash"><line x1="4" y1="9" x2="20" y2="9"></line><line x1="4" y1="15" x2="20" y2="15"></line><line x1="10" y1="3" x2="8" y2="21"></line><line x1="16" y1="3" x2="14" y2="21"></line></svg>
+                 <span class="ml-2">{% trans 'All Cities' %} </span>
+            </a>
+            </li>
+
+            <li class="nav-item"><a href="{% url 'addCountries' %}" class="nav-link-light nav-link-dark {{add_countries}}">
+            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-plus"><line x1="12" y1="5" x2="12" y2="19"></line><line x1="5" y1="12" x2="19" y2="12"></line></svg>
+            <span class="ml-2">{% trans 'Add Countries' %}</span>
+            </a>
+            </li>
+                <li class="nav-item"><a href="{% url 'addCities' %}" class="nav-link-light nav-link-dark {{add_cities}}">
+            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-plus"><line x1="12" y1="5" x2="12" y2="19"></line><line x1="5" y1="12" x2="19" y2="12"></line></svg>
+            <span class="ml-2">{% trans 'Add Cities' %}</span>
+            </a>
+            </li>
+            <li class="nav-item"><a href="{% url 'deleteCountries' %}" class="nav-link-light nav-link-dark {{delete_countries}}">
+                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-minus"><line x1="5" y1="12" x2="19" y2="12"></line></svg>
+                 <span class="ml-2">{% trans 'Delete Countries' %}</span>
+            </a>
+            </li>
+                <li class="nav-item"><a href="{% url 'deleteCities' %}" class="nav-link-light nav-link-dark {{delete_cities}}">
+                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-minus"><line x1="5" y1="12" x2="19" y2="12"></line></svg>
+                 <span class="ml-2">{% trans 'Delete Cities' %}</span>
+            </a>
+            </li>
+            <li class="nav-item" ><a href="{% url 'editCountries' %}" class="nav-link-light nav-link-dark {{edit_categories}}">
+            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-edit"><path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"></path><path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"></path></svg>
+                 <span class="ml-2">{% trans 'Edit Countries' %}</span>
+            </a>
+            </li>
+                 <li class="nav-item" ><a href="{% url 'editCities' %}" class="nav-link-light nav-link-dark {{edit_cities}}">
+            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-edit"><path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"></path><path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"></path></svg>
+                 <span class="ml-2">{% trans 'Edit Cities' %}</span>
+            </a>
+            </li>
+          </ul>
+        </div>
+      </li>
+                               <li class="nav-item">
+        <a class=" nav-link-light nav-link-dark collapsed dropdown-toggle" data-bs-toggle="collapse" data-bs-target="#dashboard-collapse-sliders" aria-expanded="false">
                                 <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-sliders"><line x1="4" y1="21" x2="4" y2="14"></line><line x1="4" y1="10" x2="4" y2="3"></line><line x1="12" y1="21" x2="12" y2="12"></line><line x1="12" y1="8" x2="12" y2="3"></line><line x1="20" y1="21" x2="20" y2="16"></line><line x1="20" y1="12" x2="20" y2="3"></line><line x1="1" y1="14" x2="7" y2="14"></line><line x1="9" y1="8" x2="15" y2="8"></line><line x1="17" y1="16" x2="23" y2="16"></line></svg>
-                            <span class="ml-2">{% trans 'Slider' %}</span>
-                          </a>
-                        </li>
-                          <li class="nav-item">
-                            <a class="nav-link-light nav-link-dark {{selling_points}}" href="#">
+
+                            <span class="ml-2">{% trans 'Sliders'%}</span>
+        </a>
+        <div class="collapse" id="dashboard-collapse-sliders">
+          <ul class="btn-toggle-nav list-unstyled fw-normal pb-1">
+              <li class="nav-item">
+                <a href="{% url 'allSliders' %}" class="nav-link-light nav-link-dark {{all_sliders}}">
+                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-hash"><line x1="4" y1="9" x2="20" y2="9"></line><line x1="4" y1="15" x2="20" y2="15"></line><line x1="10" y1="3" x2="8" y2="21"></line><line x1="16" y1="3" x2="14" y2="21"></line></svg>
+                 <span class="ml-2">{% trans 'All Sliders' %} </span>
+            </a>
+            </li>
+            <li class="nav-item"><a href="{% url 'addSliders' %}" class="nav-link-light nav-link-dark {{add_sliders}}">
+            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-plus"><line x1="12" y1="5" x2="12" y2="19"></line><line x1="5" y1="12" x2="19" y2="12"></line></svg>
+            <span class="ml-2">{% trans 'Add Sliders' %}</span>
+            </a>
+            </li>
+            <li class="nav-item"><a href="{% url 'deleteSliders' %}" class="nav-link-light nav-link-dark {{delete_sliders}}">
+                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-minus"><line x1="5" y1="12" x2="19" y2="12"></line></svg>
+                 <span class="ml-2">{% trans 'Delete Sliders' %}</span>
+            </a>
+            </li>
+            <li class="nav-item" ><a href="{% url 'editSliders' %}" class="nav-link-light nav-link-dark {{edit_sliders}}">
+            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-edit"><path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"></path><path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"></path></svg>
+                 <span class="ml-2">{% trans 'Edit Sliders' %}</span>
+            </a>
+            </li>
+          </ul>
+        </div>
+      </li>
+                        <li class="nav-item">
+        <a class=" nav-link-light nav-link-dark collapsed dropdown-toggle" data-bs-toggle="collapse" data-bs-target="#dashboard-collapse-selling-points" aria-expanded="false">
                                 <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-map-pin"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"></path><circle cx="12" cy="10" r="3"></circle></svg>
-                            <span class="ml-2">{% trans 'Selling Points' %}</span>
-                          </a>
-                        </li>
+
+                            <span class="ml-2">{% trans 'Selling Points'%}</span>
+        </a>
+        <div class="collapse" id="dashboard-collapse-selling-points">
+          <ul class="btn-toggle-nav list-unstyled fw-normal pb-1">
+              <li class="nav-item">
+                <a href="{% url 'allSellingPoints' %}" class="nav-link-light nav-link-dark {{all_selling_points}}">
+                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-hash"><line x1="4" y1="9" x2="20" y2="9"></line><line x1="4" y1="15" x2="20" y2="15"></line><line x1="10" y1="3" x2="8" y2="21"></line><line x1="16" y1="3" x2="14" y2="21"></line></svg>
+                 <span class="ml-2">{% trans 'All Selling Points' %} </span>
+            </a>
+            </li>
+            <li class="nav-item"><a href="{% url 'addSellingPoints' %}" class="nav-link-light nav-link-dark {{add_selling_points}}">
+            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-plus"><line x1="12" y1="5" x2="12" y2="19"></line><line x1="5" y1="12" x2="19" y2="12"></line></svg>
+            <span class="ml-2">{% trans 'Add Selling Points' %}</span>
+            </a>
+            </li>
+            <li class="nav-item"><a href="{% url 'deleteSellingPoints' %}" class="nav-link-light nav-link-dark {{delete_selling_points}}">
+                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-minus"><line x1="5" y1="12" x2="19" y2="12"></line></svg>
+                 <span class="ml-2">{% trans 'Delete Selling Points' %}</span>
+            </a>
+            </li>
+            <li class="nav-item" ><a href="{% url 'editSellingPoints' %}" class="nav-link-light nav-link-dark {{edit_selling_points}}">
+            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-edit"><path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"></path><path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"></path></svg>
+                 <span class="ml-2">{% trans 'Edit Selling points' %}</span>
+            </a>
+            </li>
+          </ul>
+        </div>
+      </li>
                              <li class="nav-item">
                             <a class="nav-link-light nav-link-dark {{brochures}}" href="#">
                                 <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-book-open"><path d="M2 3h6a4 4 0 0 1 4 4v14a3 3 0 0 0-3-3H2z"></path><path d="M22 3h-6a4 4 0 0 0-4 4v14a3 3 0 0 1 3-3h7z"></path></svg>

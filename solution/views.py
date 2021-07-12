@@ -2,7 +2,7 @@ from rest_framework import viewsets
 from django.utils.translation import gettext_lazy as _
 from Util.permissions import UnisealPermission
 from django_filters.rest_framework import DjangoFilterBackend
-
+from django.shortcuts import render
 
 # Create your views here.
 
@@ -87,3 +87,42 @@ class SolutionVideosViewSet(viewsets.ModelViewSet):
     queryset = SolutionVideos.objects.all()
     filter_backends = [DjangoFilterBackend]
     filterset_fields = ['solution']
+
+#Views for dashboard
+from solution.models import Solution
+solutions = Solution.objects.all()
+def all_solutions(request):
+    # from solution.models import Solution
+    # all_solutions = Solution.objects.all()
+    context = {
+        'title': _('All Solutions'),
+        'all_solutions': 'active',
+        'all_solutions_data': solutions,
+    }
+    return render(request, 'solution/all_solutions.html', context)
+
+def add_solutions(request):
+
+    context = {
+        'title': _('Add Solutions'),
+        'add_solutions': 'active',
+        'all_solutions': solutions,
+    }
+    return render(request, 'solution/add_solutions.html', context)
+
+def delete_solutions(request):
+
+    context = {
+        'title': _('Delete Solutions'),
+        'delete_solutions': 'active',
+        'all_solutions': solutions,
+    }
+    return render(request, 'solution/delete_solutions.html', context)
+
+def edit_solutions(request):
+    context = {
+        'title': _('Edit Solutions'),
+        'edit_solutions': 'active',
+        'all_solutions': solutions,
+    }
+    return render(request, 'solution/edit_solutions.html', context)

@@ -49,6 +49,7 @@ INSTALLED_APPS = [
     'slider',
     'dashboard',
     'django_filters',
+    'address',
 
 
 ]

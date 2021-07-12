@@ -4,6 +4,8 @@ from rest_framework import mixins
 from Util.permissions import IsSystemBackEndUser, IsAnonymousUser,UnisealPermission
 # Create your views here.
 from rest_framework.views import APIView
+from django.shortcuts import render
+
 
 
 class Logout(APIView):
@@ -166,3 +168,43 @@ class  ContactUsViewSet(viewsets.ModelViewSet):
     queryset = ContactUs.objects.all()
     serializer_class = ContactUsSerializer
     permission_classes = [UnisealPermission]
+
+# Views for dashboard
+def all_users(request):
+    from accounts.models import User
+    all_users = User.objects.all()
+    context = {
+        'title': _('All Users'),
+        'all_users': 'active',
+        'all_users_data': all_users,
+    }
+    return render(request, 'accounts/all_users.html', context)
+def add_users(request):
+    from accounts.models import User
+    all_users = User.objects.all()
+    context = {
+        'title': _('Add Projects'),
+        'add_users': 'active',
+        'all_users': all_users,
+    }
+    return render(request, 'accounts/add_users.html', context)
+
+def edit_users(request):
+    from accounts.models import User
+    all_users = User.objects.all()
+    context = {
+        'title': _('Edit Users'),
+        'edit_users': 'active',
+        'all_users': all_users,
+    }
+    return render(request, 'accounts/edit_users.html', context)
+
+def delete_users(request):
+    from accounts.models import User
+    all_users = User.objects.all()
+    context = {
+        'title': _('Delete Users'),
+        'delete_users': 'active',
+        'all_users': all_users,
+    }
+    return render(request, 'accounts/delete_users.html', context)

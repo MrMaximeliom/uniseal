@@ -2,6 +2,7 @@ from Util.permissions import UnisealPermission
 from django_filters.rest_framework import DjangoFilterBackend
 from rest_framework import viewsets
 from django.utils.translation import gettext_lazy as _
+from django.shortcuts import render
 
 
 class ProjectViewSet(viewsets.ModelViewSet):
@@ -128,3 +129,45 @@ class ProjectSolutionViewSet(viewsets.ModelViewSet):
     queryset = ProjectSolutions.objects.all()
     filter_backends = [DjangoFilterBackend]
     filterset_fields = ['project','solution']
+
+#Views for dashboard
+
+def all_projects(request):
+    from project.models import Project
+    all_projects = Project.objects.all()
+    context = {
+        'title': _('All Projects'),
+        'all_projects': 'active',
+        'all_projects_data': all_projects,
+    }
+    return render(request, 'project/all_projects.html', context)
+
+def add_projects(request):
+    from project.models import Project
+    all_projects = Project.objects.all()
+    context = {
+        'title': _('Add Projects'),
+        'add_projects': 'active',
+        'all_projects': all_projects,
+    }
+    return render(request, 'project/add_projects.html', context)
+
+def delete_projects(request):
+    from project.models import Project
+    all_projects = Project.objects.all()
+    context = {
+        'title': _('Delete Projects'),
+        'delete_projects': 'active',
+        'all_projects': all_projects,
+    }
+    return render(request, 'project/delete_projects.html', context)
+
+def edit_projects(request):
+    from project.models import Project
+    all_projects = Project.objects.all()
+    context = {
+        'title': _('Edit Projects'),
+        'edit_projects': 'active',
+        'all_projects': all_projects,
+    }
+    return render(request, 'project/edit_projects.html', context)

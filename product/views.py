@@ -2,6 +2,7 @@ from django.utils.translation import gettext_lazy as _
 from rest_framework import viewsets
 from django_filters.rest_framework import DjangoFilterBackend
 from Util.permissions import UnisealPermission
+from django.shortcuts import render
 
 
 # Create your views here.
@@ -174,4 +175,41 @@ class SimilarProductViewSet(viewsets.ModelViewSet):
 #         return queryset
 
 
+#Views for product
 
+def all_products(request):
+    from product.models import Product
+    all_products = Product.objects.all()
+    context = {
+        'title': _('All Products'),
+        'all_products': 'active',
+        'all_products_data': all_products,
+    }
+    return render(request, 'product/all_products.html', context)
+def add_products(request):
+    from product.models import Product
+    all_products = Product.objects.all()
+    context = {
+        'title': _('Add Products'),
+        'add_products': 'active',
+        'all_products': all_products,
+    }
+    return render(request, 'product/add_products.html', context)
+def delete_products(request):
+    from product.models import Product
+    all_products = Product.objects.all()
+    context = {
+        'title': _('Delete Products'),
+        'delete_products': 'active',
+        'all_products': all_products,
+    }
+    return render(request, 'product/delete_products.html', context)
+def edit_products(request):
+    from product.models import Product
+    all_products = Product.objects.all()
+    context = {
+        'title': _('Edit Products'),
+        'edit_products': 'active',
+        'all_products': all_products,
+    }
+    return render(request, 'product/edit_products.html', context)

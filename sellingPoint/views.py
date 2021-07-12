@@ -1,6 +1,6 @@
 from Util.permissions import UnisealPermission
 from rest_framework import viewsets
-
+from django.shortcuts import render
 # Create your views here.
 from django.utils.translation import gettext_lazy as _
 
@@ -67,3 +67,41 @@ class SellingPointViewSet(viewsets.ModelViewSet):
 #     serializer_class = SellingPointsContactInfoSerializer
 #     permission_classes = [UnisealPermission]
 #
+
+# Views for dashboard
+from sellingPoint.models import SellingPoint
+sellingPoints = SellingPoint.objects.all()
+def all_selling_points(request):
+    context = {
+        'title': _('All Selling Points'),
+        'all_selling_points': 'active',
+        'all_selling_points_data': sellingPoints,
+    }
+    return render(request, 'sellingPoints/all_selling_points.html', context)
+
+def add_selling_points(request):
+
+    context = {
+        'title': _('Add Selling Points'),
+        'add_selling_points': 'active',
+        'all_selling_points': sellingPoints,
+    }
+    return render(request, 'sellingPoints/add_selling_points.html', context)
+
+def delete_selling_points(request):
+
+    context = {
+        'title': _('Delete Selling Points'),
+        'delete_selling_points': 'active',
+        'all_selling_points': sellingPoints,
+    }
+    return render(request, 'sellingPoints/delete_selling_points.html', context)
+
+def edit_selling_points(request):
+    context = {
+        'title': _('Edit Selling Points'),
+        'edit_selling_points': 'active',
+        'all_selling_points': sellingPoints,
+    }
+    return render(request, 'sellingPoints/edit_selling_points.html', context)
+

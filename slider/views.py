@@ -1,6 +1,6 @@
 from rest_framework import viewsets
 from Util.permissions import UnisealPermission
-
+from django.shortcuts import render
 from django.utils.translation import gettext_lazy as _
 
 
@@ -33,3 +33,39 @@ class  SliderViewSet(viewsets.ModelViewSet):
     serializer_class = SliderSerializer
     permission_classes = [UnisealPermission]
 
+#Views for dashboard
+from slider.models import Slider
+sliders = Slider.objects.all()
+def all_sliders(request):
+    context = {
+        'title': _('All Sliders'),
+        'all_sliders': 'active',
+        'all_sliders_data': sliders,
+    }
+    return render(request, 'slider/all_sliders.html', context)
+
+def add_sliders(request):
+
+    context = {
+        'title': _('Add Sliders'),
+        'add_sliders': 'active',
+        'all_sliders': sliders,
+    }
+    return render(request, 'slider/add_sliders.html', context)
+
+def delete_sliders(request):
+
+    context = {
+        'title': _('Delete Sliders'),
+        'delete_sliders': 'active',
+        'all_sliders': sliders,
+    }
+    return render(request, 'slider/delete_sliders.html', context)
+
+def edit_sliders(request):
+    context = {
+        'title': _('Edit Slider'),
+        'edit_sliders': 'active',
+        'all_sliders': sliders,
+    }
+    return render(request, 'slider/edit_sliders.html', context)

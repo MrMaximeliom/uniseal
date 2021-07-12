@@ -3,7 +3,7 @@ from rest_framework import viewsets
 from Util.permissions import  UnisealPermission
 
 from django.utils.translation import gettext_lazy as _
-
+from django.shortcuts import render
 
 class CategoryViewSet(viewsets.ModelViewSet):
     """API endpoint to add or modify categories' data by admin
@@ -29,3 +29,39 @@ class CategoryViewSet(viewsets.ModelViewSet):
     from .models import Category
     permission_classes = [UnisealPermission]
     queryset = Category.objects.all()
+#Views for dashboard
+from category.models import Category
+categories = Category.objects.all()
+def all_categories(request):
+    context = {
+        'title': _('All Categories'),
+        'all_categories': 'active',
+        'all_categories_data': categories,
+    }
+    return render(request, 'category/all_categories.html', context)
+
+def add_categories(request):
+
+    context = {
+        'title': _('Add Categories'),
+        'add_categories': 'active',
+        'all_categories': categories,
+    }
+    return render(request, 'category/add_categories.html', context)
+
+def delete_categories(request):
+
+    context = {
+        'title': _('Delete Categories'),
+        'delete_categories': 'active',
+        'all_categories': categories,
+    }
+    return render(request, 'category/delete_categories.html', context)
+
+def edit_categories(request):
+    context = {
+        'title': _('Edit Category'),
+        'edit_categories': 'active',
+        'all_categories': categories,
+    }
+    return render(request, 'category/edit_categories.html', context)
