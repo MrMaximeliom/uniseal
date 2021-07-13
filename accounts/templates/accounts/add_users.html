@@ -17,5 +17,70 @@
 {% block content %}
                 <h1 class="h2">All Users</h1>
                 <p>{% trans 'Here you can add users to the system' %}</p>
+<div class="card ">
+  <div class="card-body">
+    <h5 class="card-title">Please Add your product details here</h5>
+<!--    <p class="card-text">Some quick example text to build on the card title and make up the bulk of the card's content.</p>-->
+  <form class="card-form">
+  <div class="mb-4 row">
+    <label for="username" class="col-sm-3 col-form-label">{% trans 'Username' %}</label>
+    <div class="col-sm-6">
+      <input type="text"  class="form-control" id="username" value="username">
+    </div>
+  </div>
+       <div class="mb-4 row">
+    <label for="email" class="col-sm-3 col-form-label">{% trans 'Email' %}</label>
+    <div class="col-sm-6">
+      <input type="text"  class="form-control" id="email" value="email@example.com">
+    </div>
+  </div>
+  <div class="mb-4 row">
+    <label for="fullName" class="col-sm-3 col-form-label">{% trans 'Full Name' %}</label>
+    <div class="col-sm-6">
+      <input type="file" class="form-control" id="fullName" placeholder="full name">
+    </div>
+  </div>
+        <div class="mb-4 row">
+    <label for="organization" class="col-sm-3 col-form-label">{% trans 'Organization' %}</label>
+    <div class="col-sm-6">
+      <input type="file" class="form-control" id="organization" placeholder="organization">
+    </div>
+  </div>
+              <div class="mb-4 row">
+    <label for="phoneNumber" class="col-sm-3 col-form-label">{% trans 'Phone Number' %}</label>
+    <div class="col-sm-6">
+      <input type="tel" class="form-control" id="phoneNumber" placeholder="phone number">
+    </div>
+  </div>
+              <div class="mb-4 row">
+    <label for="gender"  class="col-sm-3 col-form-label">{% trans 'Gender' %}</label>
+             <div class="col-sm-6">
+    <select class="form-control" id="gender">
+
+      <option>Male</option>
+      <option>Female</option>
+
+    </select>
+             </div>
+  </div>
+                    <div class="mb-4 row">
+    <label for="city"  class="col-sm-3 col-form-label">{% trans 'City' %}</label>
+             <div class="col-sm-6">
+    <select class="form-control" id="city" >
+{% for city in all_cities %}
+      <option>{{city.name}}</option>
+
+{% endfor %}
+    </select>
+             </div>
+  </div>
+
+       <div class="col-auto">
+    <button type="submit" class="btn btn-primary ">{% trans 'Register User' %}</button>
+  </div>
+</form>
+  </div>
+</div>
+
 
 {% endblock content %}

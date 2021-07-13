@@ -1,3 +1,7 @@
+@import url('https://fonts.googleapis.com/css2?family=Poppins&display=swap');
+body{
+    font-family: 'Poppins', sans-serif;
+}
 @media (max-width: 767.98px) {
   /*.sidebar {
     top: 11.5rem;
@@ -35,7 +39,7 @@ z-index: 99;
 width:20rem;
 }
 .card-form{
-width:50rem;
+margin:5rem;
 }
 .card-fields{
 width:20rem;

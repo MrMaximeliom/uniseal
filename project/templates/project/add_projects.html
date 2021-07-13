@@ -17,5 +17,59 @@
 {% block content %}
                 <h1 class="h2">All Projects</h1>
                 <p>{% trans 'This is the projects of Uniseal Company' %}</p>
+<div class="card ">
+  <div class="card-body">
+    <h5 class="card-title">Please Add your project details here</h5>
+<!--    <p class="card-text">Some quick example text to build on the card title and make up the bulk of the card's content.</p>-->
+  <form class="card-form">
+  <div class="mb-4 row">
+    <label for="name" class="col-sm-3 col-form-label">{% trans 'Project Name' %}</label>
+    <div class="col-sm-6">
+      <input type="text"  class="form-control" id="name" value="project name">
+    </div>
+  </div>
+       <div class="mb-4 row">
+    <label for="title" class="col-sm-3 col-form-label">{% trans 'Project Title' %}</label>
+    <div class="col-sm-6">
+      <input type="text"  class="form-control" id="title" value="project title">
+    </div>
+  </div>
+  <div class="mb-4 row">
+    <label for="category" class="col-sm-3 col-form-label">{% trans 'Category' %}</label>
+    <div class="col-sm-6">
+      <input type="text" class="form-control" id="category" placeholder="category">
+    </div>
+  </div>
+        <div class="mb-4 row">
+    <label for="beneficiary" class="col-sm-3 col-form-label">{% trans 'Beneficiary' %}</label>
+    <div class="col-sm-6">
+      <input type="text" class="form-control" id="beneficiary" placeholder="beneficiary">
+    </div>
+  </div>
+            <div class="mb-4 row">
+    <label for="beneficiaryDescription" class="col-sm-3 col-form-label">{% trans 'Beneficiary Description' %}</label>
+    <div class="col-sm-6">
+        <textarea  class="form-control" id="beneficiaryDescription" placeholder="beneficiary description"></textarea>
+    </div>
+  </div>
+            <div class="mb-4 row">
+    <label for="beneficiary" class="col-sm-3 col-form-label">{% trans 'Image' %}</label>
+    <div class="col-sm-6">
+      <input type="file" class="form-control" id="image" placeholder="image">
+    </div>
+  </div>
+                  <div class="mb-4 row">
+    <label for="projectDescription" class="col-sm-3 col-form-label">{% trans 'Project Description' %}</label>
+    <div class="col-sm-6">
+        <textarea  class="form-control" id="projectDescription" placeholder="project description"></textarea>
+    </div>
+  </div>
+
+       <div class="col-auto">
+    <button type="submit" class="btn btn-primary ">{% trans 'Add Project' %}</button>
+  </div>
+</form>
+  </div>
+</div>
 
 {% endblock content %}

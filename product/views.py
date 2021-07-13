@@ -188,11 +188,17 @@ def all_products(request):
     return render(request, 'product/all_products.html', context)
 def add_products(request):
     from product.models import Product
+    from category.models import Category
+    from supplier.models import Supplier
+    all_categories = Category.objects.all()
     all_products = Product.objects.all()
+    all_suppliers =Supplier.objects.all()
     context = {
         'title': _('Add Products'),
         'add_products': 'active',
         'all_products': all_products,
+        'all_categories':all_categories,
+        'all_suppliers':all_suppliers,
     }
     return render(request, 'product/add_products.html', context)
 def delete_products(request):

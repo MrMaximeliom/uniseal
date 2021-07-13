@@ -219,11 +219,15 @@ def all_users(request):
     return render(request, 'accounts/all_users.html', context)
 def add_users(request):
     from accounts.models import User
+    from address.models import City
     all_users = User.objects.all()
+    all_cities = City.objects.all()
+
     context = {
-        'title': _('Add Projects'),
+        'title': _('Add Users'),
         'add_users': 'active',
         'all_users': all_users,
+        'all_cities':all_cities,
     }
     return render(request, 'accounts/add_users.html', context)
 

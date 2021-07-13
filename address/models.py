@@ -7,6 +7,9 @@ class Country(models.Model):
         verbose_name=_('Country Name'),
         max_length=200,
     )
+
+    def __str__(self):
+        return self.name
 class City(models.Model):
     name = models.CharField(
         verbose_name=_('City Name'),
@@ -17,3 +20,5 @@ class City(models.Model):
         on_delete=models.CASCADE,
         verbose_name=_('Country')
     )
+    def __str__(self):
+        return self.name
