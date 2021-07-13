@@ -2,6 +2,8 @@ from django.utils.translation import gettext_lazy as _
 from rest_framework import viewsets
 from rest_framework import mixins
 from Util.permissions import IsSystemBackEndUser, IsAnonymousUser,UnisealPermission
+from rest_framework.permissions import IsAuthenticated
+
 # Create your views here.
 from rest_framework.views import APIView
 from django.shortcuts import render
@@ -20,6 +22,7 @@ class Logout(APIView):
             return Response(status=status.HTTP_205_RESET_CONTENT)
         except Exception as e:
             return Response(status=status.HTTP_400_BAD_REQUEST)
+
 
 
 class ModifyUserDataViewSet(viewsets.GenericViewSet, mixins.ListModelMixin,
@@ -91,11 +94,7 @@ class RegisterUserViewSet(viewsets.GenericViewSet, mixins.CreateModelMixin):
     permission_classes = [IsAnonymousUser]
 
 
-class CurrentUserDataViewSet(viewsets.GenericViewSet,
-                             mixins.RetrieveModelMixin,
-
-                             mixins.UpdateModelMixin,
-                             mixins.ListModelMixin):
+class CurrentUserDataViewSet(viewsets.ModelViewSet):
     """
       API endpoint that allows to view current user data
       this endpoint allows GET,PUT,PATCH functions
@@ -122,7 +121,7 @@ class CurrentUserDataViewSet(viewsets.GenericViewSet,
     from accounts.serializers import UserSerializer
     serializer_class = UserSerializer
 
-    # permission_classes = [permissions.IsAuthenticated]
+    permission_classes = [IsAuthenticated]
     # http_method_names = ['get']
 
     def get_queryset(self):

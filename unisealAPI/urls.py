@@ -97,6 +97,7 @@ urlpatterns = [
     path('dashboard/editSellingPoints', selling_point_views.edit_selling_points, name='editSellingPoints'),
     path('login/', TokenObtainPairView.as_view(), name='token_obtain_pair'),
     path('login/refresh/', TokenRefreshView.as_view(), name='token_refresh'),
+    path('api-auth/', include('rest_framework.urls', namespace='rest_framework')),
     path('logout/', accounts_views.Logout.as_view(), name='logout'),
     # re_path('^product/(?P<category_id>.+)/$',product_views.FetchProductsByCategoryViewSet,name='FetchProduct'),
     path('favicon.ico', RedirectView.as_view(url=staticfiles_storage.url('dashboard/images/favicon.ico'))),
