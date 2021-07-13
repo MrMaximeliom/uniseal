@@ -1,6 +1,6 @@
 from rest_framework import viewsets
 from Util.permissions import UnisealPermission
-
+from django.shortcuts import render
 from django.utils.translation import gettext_lazy as _
 
 
@@ -32,3 +32,41 @@ class  BrochuresViewSet(viewsets.ModelViewSet):
     queryset = Brochures.objects.all()
     serializer_class = BrochuresSerializer
     permission_classes = [UnisealPermission]
+
+# Dashboard Views
+from .models import Brochures
+brochures = Brochures.objects.all()
+def all_brochures(request):
+    context = {
+        'title': _('All Brochures'),
+        'all_brochures': 'active',
+        'all_brochures_data': brochures,
+    }
+    return render(request, 'brochures/all_brochures.html', context)
+
+def add_brochures(request):
+
+    context = {
+        'title': _('Add Brochures'),
+        'add_brochures': 'active',
+        'all_brochures': brochures,
+    }
+    return render(request, 'brochures/add_brochures.html', context)
+
+def delete_brochures(request):
+
+    context = {
+        'title': _('Delete Brochures'),
+        'delete_brochures': 'active',
+        'all_brochures': brochures,
+    }
+    return render(request, 'brochures/delete_brochures.html', context)
+
+def edit_brochures(request):
+    context = {
+        'title': _('Edit Brochures'),
+        'edit_brochures': 'active',
+        'all_brochures': brochures,
+    }
+    return render(request, 'brochures/edit_brochures.html', context)
+
