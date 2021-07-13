@@ -1,6 +1,9 @@
 from django.utils.translation import gettext_lazy as _
-from rest_framework import viewsets
+from rest_framework import viewsets, status
 from rest_framework import mixins
+from rest_framework.response import Response
+
+from Util.utils import EnablePartialUpdateMixin
 from Util.permissions import IsSystemBackEndUser, IsAnonymousUser,UnisealPermission
 from rest_framework.permissions import IsAuthenticated
 
@@ -93,13 +96,22 @@ class RegisterUserViewSet(viewsets.GenericViewSet, mixins.CreateModelMixin):
     serializer_class = RegisterSerializer
     permission_classes = [IsAnonymousUser]
 
+class ChangePasswordView(viewsets.GenericViewSet,mixins.UpdateModelMixin):
+        """
+        An endpoint for changing password.
+        """
+        from accounts.serializers import ChangePasswordSerializer
 
-class CurrentUserDataViewSet(viewsets.GenericViewSet,
-                             mixins.RetrieveModelMixin,
 
-                             mixins.UpdateModelMixin,
-                             mixins.ListModelMixin,
+        serializer_class = ChangePasswordSerializer
+        permission_classes = [IsAuthenticated]
 
+        def get_queryset(self):
+            from .models import User
+            return User.objects.filter(id=self.request.user.id)
+
+
+class CurrentUserDataViewSet(EnablePartialUpdateMixin,viewsets.ModelViewSet
                              ):
     """
       API endpoint that allows to view current user data
@@ -128,14 +140,35 @@ class CurrentUserDataViewSet(viewsets.GenericViewSet,
     serializer_class = UserSerializer
 
     permission_classes = [IsAuthenticated]
+
     # http_method_names = ['get']
 
     def get_queryset(self):
         from .models import User
         return User.objects.filter(id=self.request.user.id)
 
+    # def partial_update(self, request, *args, **kwargs):
+    #     kwargs['partial'] = True
+    #
+    #     return self.update(request, *args, **kwargs)
+
+    # def partial_update(self, request, *args, **kwargs):
+    #     from accounts.serializers import UserSerializer
+    #     serialized = UserSerializer(request.user, data=request.data, partial=True)
+    #     return self.update(request, *args, **kwargs)
+    # def patch(self, request, pk):
+    #     from accounts.serializers import UserSerializer
+    #     object = self.get_object(pk)
+    #     serializer = UserSerializer(object, data=request.data,
+    #                                      partial=True)  # set partial=True to update a data partially
+    #     if serializer.is_valid():
+    #         serializer.save()
+    #         return JsonResponse(code=201, data=serializer.data)
+
+
     def get_view_name(self):
         return _("Current User's Data")
+
 
 
 class  ContactUsViewSet(viewsets.ModelViewSet):
