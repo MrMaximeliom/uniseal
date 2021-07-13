@@ -94,7 +94,13 @@ class RegisterUserViewSet(viewsets.GenericViewSet, mixins.CreateModelMixin):
     permission_classes = [IsAnonymousUser]
 
 
-class CurrentUserDataViewSet(viewsets.ModelViewSet):
+class CurrentUserDataViewSet(viewsets.GenericViewSet,
+                             mixins.RetrieveModelMixin,
+
+                             mixins.UpdateModelMixin,
+                             mixins.ListModelMixin,
+
+                             ):
     """
       API endpoint that allows to view current user data
       this endpoint allows GET,PUT,PATCH functions
