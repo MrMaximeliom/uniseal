@@ -189,8 +189,11 @@ def all_products(request):
     if request.method == "GET":
         print("hi")
         params = request.GET
-        param_list = list(params)
+        param_list = list(params.items())
         print(param_list)
+        for value in request.GET.items():
+            print(value)
+        # print(request.GET['a'])
     return render(request, 'product/all_products.html', context)
 def add_products(request):
     from product.models import Product
