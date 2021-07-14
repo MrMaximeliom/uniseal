@@ -186,6 +186,11 @@ def all_products(request):
         'all_products': 'active',
         'all_products_data': all_products,
     }
+    if request.method == "GET":
+        print("hi")
+        params = request.GET
+        param_list = list(params)
+        print(param_list)
     return render(request, 'product/all_products.html', context)
 def add_products(request):
     from product.models import Product
