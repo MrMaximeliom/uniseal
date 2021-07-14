@@ -1,5 +1,5 @@
 from django.utils.translation import gettext_lazy as _
-from rest_framework import viewsets
+from rest_framework import viewsets , mixins
 from django_filters.rest_framework import DjangoFilterBackend
 from Util.permissions import UnisealPermission
 from django.shortcuts import render
@@ -137,42 +137,43 @@ class SimilarProductViewSet(viewsets.ModelViewSet):
     queryset = SimilarProduct.objects.all()
 
 
-# class FetchProductsByCategoryViewSet(viewsets.GenericViewSet,mixins.ListModelMixin):
-#     """API endpoint to allow the admin to link or unlink similar products together
-#     this endpoint allows GET,PUT,PATCH,DELETE functions
-#     permissions to this view is restricted as the following:
-#     - Only admin users can use all functions on this endpoint
-#     - Registered users are only allowed to use GET function
-#     Data will be retrieved in the following format for GET function:
-#     {
-#      "id":9,
-#      "original_product": product_id,
-#      "similar_product":product_id
-#      }
-#      Use other functions by accessing this url:
-#      product/similarProducts/<similar_products's_id>
-#      Format of data will be as the previous data format for GET function
-#     """
-#
-#     def get_view_name(self):
-#         return _("Fetch Products By Category")
-#
-#     from .serializers import ProductSerializer
-#     serializer_class = ProductSerializer
-#
-#     permission_classes = [UnisealPermission]
-#
-#     # from .models import Product
-#     # queryset = Product.objects.all()
-#
-#     def get_queryset(self):
-#         from .models import Product
-#         queryset = Product.objects.all()
-#         # category = self.request.query_params.get('category_id')
-#         category = self.kwargs['category_id']
-#         if category is not None:
-#             queryset = queryset.filter(category=category)
-#         return queryset
+class FetchProductsByCategoryViewSet(viewsets.GenericViewSet,mixins.ListModelMixin):
+    """API endpoint to allow the admin to link or unlink similar products together
+    this endpoint allows GET,PUT,PATCH,DELETE functions
+    permissions to this view is restricted as the following:
+    - Only admin users can use all functions on this endpoint
+    - Registered users are only allowed to use GET function
+    Data will be retrieved in the following format for GET function:
+    {
+     "id":9,
+     "original_product": product_id,
+     "similar_product":product_id
+     }
+     Use other functions by accessing this url:
+     product/similarProducts/<similar_products's_id>
+     Format of data will be as the previous data format for GET function
+    """
+
+    def get_view_name(self):
+        return _("Fetch Products By Category")
+
+    from .serializers import ProductSerializer
+    serializer_class = ProductSerializer
+
+    permission_classes = [UnisealPermission]
+
+    # from .models import Product
+    # queryset = Product.objects.all()
+
+    def get_queryset(self):
+        from .models import Product
+        # returning default result if anything goes wrong
+        queryset = Product.objects.all()
+        # category = self.request.query_params.get('category_id')
+        category = self.kwargs['category_id']
+        if category is not None:
+            queryset = queryset.filter(category=category)
+        return queryset
 
 
 #Views for product
