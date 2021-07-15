@@ -105,6 +105,7 @@ urlpatterns = [
     path('api-auth/', include('rest_framework.urls', namespace='rest_framework')),
     path('logout/', accounts_views.Logout.as_view(), name='logout'),
     # re_path('^product/(?P<category_id>.+)/$',product_views.FetchProductsByCategoryViewSet,name='FetchProduct'),
+    # re_path('product/(?P[0-9][,].+)/$',product_views.FetchProductsByCategoryViewSet.as_view(),name='FetchProducts'),
     path('favicon.ico', RedirectView.as_view(url=staticfiles_storage.url('dashboard/images/favicon.ico'))),
 
 ]

@@ -1,5 +1,5 @@
 from django.utils.translation import gettext_lazy as _
-from rest_framework import viewsets , mixins
+from rest_framework import viewsets , mixins , generics
 from django_filters.rest_framework import DjangoFilterBackend
 from Util.permissions import UnisealPermission
 from django.shortcuts import render
@@ -137,7 +137,7 @@ class SimilarProductViewSet(viewsets.ModelViewSet):
     queryset = SimilarProduct.objects.all()
 
 
-class FetchProductsByCategoryViewSet(viewsets.GenericViewSet,mixins.ListModelMixin):
+class FetchProductsByCategoryViewSet(generics.ListAPIView):
     """API endpoint to allow the admin to link or unlink similar products together
     this endpoint allows GET,PUT,PATCH,DELETE functions
     permissions to this view is restricted as the following:
@@ -162,9 +162,9 @@ class FetchProductsByCategoryViewSet(viewsets.GenericViewSet,mixins.ListModelMix
 
     permission_classes = [UnisealPermission]
 
-    # from .models import Product
-    # queryset = Product.objects.all()
-
+    from .models import Product
+    queryset = Product.objects.all()
+    # original get_queryset
     def get_queryset(self):
         from .models import Product
         # returning default result if anything goes wrong
@@ -174,6 +174,28 @@ class FetchProductsByCategoryViewSet(viewsets.GenericViewSet,mixins.ListModelMix
         if category is not None:
             queryset = queryset.filter(category=category)
         return queryset
+    # def get_queryset(self):
+    #     # from itertools import chain
+    #     from product.models import Product
+    #     querysets = list()
+    #     print(self.request.GET)
+    #     print(self.request.query_params)
+    #     if len(self.request.GET) != 0 :
+    #         params = str(self.request.GET['category_id']).split(",")
+    #         for param in params:
+    #             listItems = Product.objects.filter(category__id=param)
+    #             querysets += listItems
+    #     else:
+    #         queryset = Product.objects.all()
+    #         querysets += queryset
+    #
+    #     # for product in resulting_list:
+    #     #     print(product.product_file)
+    #     # returning default result if anything goes wrong
+    #     # category = self.request.query_params.get('category_id')
+    #     # category = self.kwargs['category_id']
+    #     # 00
+    #     return querysets
 
 
 #Views for product
@@ -186,14 +208,39 @@ def all_products(request):
         'all_products': 'active',
         'all_products_data': all_products,
     }
-    if request.method == "GET":
-        print("hi")
-        params = request.GET
-        param_list = list(params.items())
-        print(param_list)
-        for value in request.GET.items():
-            print(value)
-        # print(request.GET['a'])
+    # if request.method == "GET":
+    #     print(len(request.GET))
+
+
+
+        # print("third param")
+        # print(params[2])
+        # for letter in params_string.split(","):
+        #     print(letter)
+
+        # combine tow query sets
+        # logic of getting more than one result
+        # from itertools import chain
+        # from product.models import Product
+        # params = str(request.GET['a']).split(",")
+        # resulting_list = list()
+        # for param in params:
+        #     listItems = Product.objects.filter(category__id=param)
+        #     resulting_list += listItems
+        # print(resulting_list)
+        # for product in resulting_list:
+        #     print(product.product_file)
+        # list1 = Product.objects.filter(category__id=params[0])
+        # list2 =Product.objects.filter(category__id=params[1])
+        # print("first list")
+        # print(list1)
+        # print("second list")
+        # print(list2)
+        # result_list = list(chain(list1,list2))
+        # print("combined")
+        # for product in result_list:
+        #     print(product.image)
+
     return render(request, 'product/all_products.html', context)
 def add_products(request):
     from product.models import Product
