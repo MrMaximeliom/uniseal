@@ -5,9 +5,9 @@ GENDER_CHOICES = (
 )
 
 CITIES_CHOICES = (
-    ('Al-Khartoum',_('Al-Khartoum')),
-                 ('Bahry',_('Bahry')),
-    ('Om-Durman',_('Om-Durman')),
+    (1,_('Al-Khartoum')),
+                 (2,_('Bahry')),
+    (3,_('Om-Durman')),
 )
 COUNTRIES = (
     ('Sudan',_('Sudan')),

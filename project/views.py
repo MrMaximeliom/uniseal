@@ -134,13 +134,38 @@ class ProjectSolutionViewSet(viewsets.ModelViewSet):
 
 def all_projects(request):
     from project.models import Project
-    all_projects = Project.objects.all()
-    context = {
-        'title': _('All Projects'),
-        'all_projects': 'active',
-        'all_projects_data': all_projects,
-    }
-    return render(request, 'project/all_projects.html', context)
+    from django.core.paginator import Paginator, PageNotAnInteger, EmptyPage
+    all_projects = Project.objects.all().order_by("id")
+    paginator = Paginator(all_projects, 5)
+
+    if request.GET.get('page'):
+        # Grab the current page from query parameter
+        page = int(request.GET.get('page'))
+    else:
+        page = None
+
+    try:
+        projects = paginator.page(page)
+        # Create a page object for the current page.
+    except PageNotAnInteger:
+        # If the query parameter is empty then grab the first page.
+        projects = paginator.page(1)
+        page = 1
+    except EmptyPage:
+        # If the query parameter is greater than num_pages then grab the last page.
+        projects = paginator.page(paginator.num_pages)
+        page = paginator.num_pages
+
+    return render(request, 'project/all_projects.html',
+                  {
+                      'title': _('All Projects'),
+                      'all_projects': 'active',
+                      'all_projects_data': projects,
+                      'page_range': paginator.page_range,
+                      'num_pages': paginator.num_pages,
+                      'current_page': page
+                  }
+                  )
 
 def add_projects(request):
     from project.models import Project

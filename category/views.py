@@ -1,9 +1,11 @@
+from django.db.models import Count
 from rest_framework import viewsets
 
 from Util.permissions import  UnisealPermission
 
 from django.utils.translation import gettext_lazy as _
 from django.shortcuts import render
+from django.core.paginator import Paginator, PageNotAnInteger, EmptyPage
 
 class CategoryViewSet(viewsets.ModelViewSet):
     """API endpoint to add or modify categories' data by admin
@@ -31,14 +33,40 @@ class CategoryViewSet(viewsets.ModelViewSet):
     queryset = Category.objects.all()
 #Views for dashboard
 from category.models import Category
-categories = Category.objects.all()
+categories = Category.objects.annotate(num_products=Count('product')).order_by('-num_products')
+
 def all_categories(request):
-    context = {
-        'title': _('All Categories'),
-        'all_categories': 'active',
-        'all_categories_data': categories,
-    }
-    return render(request, 'category/all_categories.html', context)
+    paginator = Paginator(categories, 5)
+
+    if request.GET.get('page'):
+        # Grab the current page from query parameter
+        page = int(request.GET.get('page'))
+    else:
+        page = None
+
+    try:
+        # Create a page object for the current page.
+        categories_paginator = paginator.page(page)
+    except PageNotAnInteger:
+        # If the query parameter is empty then grab the first page.
+        categories_paginator = paginator.page(1)
+        page = 1
+    except EmptyPage:
+        # If the query parameter is greater than num_pages then grab the last page.
+        categories_paginator = paginator.page(paginator.num_pages)
+        page = paginator.num_pages
+
+    return render(request, 'category/all_categories.html',
+                  {
+                      'title': _('All Categories'),
+                      'all_categories': 'active',
+                      'all_categories_data': categories_paginator,
+                      'page_range': paginator.page_range,
+                      'num_pages': paginator.num_pages,
+                      'current_page': page
+                  }
+                  )
+
 
 def add_categories(request):
 

@@ -3,6 +3,7 @@ from rest_framework import viewsets , mixins , generics
 from django_filters.rest_framework import DjangoFilterBackend
 from Util.permissions import UnisealPermission
 from django.shortcuts import render
+from django.core.paginator import Paginator, PageNotAnInteger, EmptyPage
 
 
 # Create your views here.
@@ -202,12 +203,37 @@ class FetchProductsByCategoryViewSet(generics.ListAPIView):
 
 def all_products(request):
     from product.models import Product
-    all_products = Product.objects.all()
-    context = {
-        'title': _('All Products'),
-        'all_products': 'active',
-        'all_products_data': all_products,
-    }
+    all_products = Product.objects.all().order_by("id")
+    paginator = Paginator( all_products, 5)
+    if request.GET.get('page'):
+        # Grab the current page from query parameter
+        page = int(request.GET.get('page'))
+    else:
+        page = None
+
+    try:
+        products = paginator.page(page)
+        # Create a page object for the current page.
+    except PageNotAnInteger:
+        # If the query parameter is empty then grab the first page.
+        products = paginator.page(1)
+        page = 1
+    except EmptyPage:
+        # If the query parameter is greater than num_pages then grab the last page.
+        products = paginator.page(paginator.num_pages)
+        page = paginator.num_pages
+
+    return render(request, 'product/all_products.html',
+                  {
+                      'title': _('All Products'),
+                      'all_products': 'active',
+                      'all_products_data': products,
+                      'page_range': paginator.page_range,
+                      'num_pages': paginator.num_pages,
+                      'current_page': page
+                  }
+                      )
+
     # if request.method == "GET":
     #     print(len(request.GET))
 
@@ -241,7 +267,7 @@ def all_products(request):
         # for product in result_list:
         #     print(product.image)
 
-    return render(request, 'product/all_products.html', context)
+
 def add_products(request):
     from product.models import Product
     from category.models import Category

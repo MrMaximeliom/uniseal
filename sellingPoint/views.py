@@ -70,14 +70,38 @@ class SellingPointViewSet(viewsets.ModelViewSet):
 
 # Views for dashboard
 from sellingPoint.models import SellingPoint
-sellingPoints = SellingPoint.objects.all()
+sellingPoints = SellingPoint.objects.all().order_by("id")
 def all_selling_points(request):
-    context = {
-        'title': _('All Selling Points'),
-        'all_selling_points': 'active',
-        'all_selling_points_data': sellingPoints,
-    }
-    return render(request, 'sellingPoints/all_selling_points.html', context)
+    from django.core.paginator import Paginator, PageNotAnInteger, EmptyPage
+    paginator = Paginator(sellingPoints, 5)
+    if request.GET.get('page'):
+        # Grab the current page from query parameter
+        page = int(request.GET.get('page'))
+    else:
+        page = None
+
+    try:
+        selling_points = paginator.page(page)
+        # Create a page object for the current page.
+    except PageNotAnInteger:
+        # If the query parameter is empty then grab the first page.
+        selling_points = paginator.page(1)
+        page = 1
+    except EmptyPage:
+        # If the query parameter is greater than num_pages then grab the last page.
+        selling_points = paginator.page(paginator.num_pages)
+        page = paginator.num_pages
+
+    return render(request, 'sellingPoints/all_selling_points.html',
+                  {
+                      'title': _('All Selling Points'),
+                      'all_selling_points': 'active',
+                      'all_selling_points_data': selling_points,
+                      'page_range': paginator.page_range,
+                      'num_pages': paginator.num_pages,
+                      'current_page': page
+                  }
+                  )
 
 def add_selling_points(request):
 

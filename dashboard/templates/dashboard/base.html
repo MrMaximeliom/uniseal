@@ -11,6 +11,8 @@
 
     <link rel="stylesheet" href="{% static 'dashboard/css/index.css' %}">
     <link rel="stylesheet" id="theme" href="{% static 'dashboard/css/dark-theme.css' %}">
+    {% block custom_css %}
+    {% endblock %}
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/5.0.0-alpha1/css/bootstrap.min.css" integrity="sha384-r4NyP46KrjDleawBgD5tp8Y7UzmLA05oM1iAEQ17CSuDqnUK2+k9luXQOfXJCJ4I" crossorigin="anonymous">
 
 </head>

@@ -2,6 +2,7 @@
 {% extends "dashboard/base.html" %}
 {% load static %}
 {% load static i18n %}
+{% load mathfilters %}
 {% block title %}
 {{title}}
 {% endblock title %}
@@ -17,5 +18,59 @@
 {% block content %}
                 <h1 class="h2">All Categories</h1>
                 <p>{% trans 'This is the Categories' %}</p>
+ <div class="row">
+                    <div class="col-12 col-xl-11 mb-4 mb-lg-0">
+                        <div class="card-light card-dark">
+                            <h5 class="card-header-light card-header-dark">{% trans 'Categories' %}</h5>
+                            <div class="card-body-light card-body-dark">
+                                <div class="table-responsive">
+                                    <table class="table">
+                                        <thead>
+                                          <tr>
+                                            <th scope="col">{% trans 'Name' %}</th>
+                                            <th scope="col">{% trans 'Numbers of Products' %}</th>
+                                            <th scope="col"></th>
+                                          </tr>
+                                        </thead>
+                                        <tbody>
+                                        {% for category in all_categories_data %}
+                                          <tr>
+                                            <th scope="row">{{category.name}}</th>
+                                            <td>{{ category.num_products }}</td>
+                                            <td><a href="#" class="btn btn-sm btn-primary">View</a></td>
+                                          </tr>
+                                        {% endfor %}
+
+                                        </tbody>
+                                      </table>
+                                </div>
+                                <a href="#" class="btn btn-block btn-light">More Details</a>
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+ <div class="container mt-3 d-flex justify-content-center">
+        <nav aria-label="Pagination Navigation">
+          <ul class="pagination">
+           <li class="page-item {% if current_page == 1 %} disabled disabled-item {% endif %}">
+            <a class="page-link" href="?page={{ current_page|sub:1 }}" aria-label="Previous">
+             <span aria-hidden="true">«</span>
+             <span class="sr-only">Previous</span>
+            </a>
+           </li>
+           {% for i in page_range %}
+           <li class="page-item {% if i == current_page %} active {% endif %}"><a class="page-link " href="?page={{ i }}">{{ i }}</a></li>
+           {% endfor %}
+
+           <li class="page-item {% if current_page == num_pages %} disabled disabled-item {% endif %}">
+            <a class="page-link" href="?page={{ current_page|add:1 }}" aria-label="Next">
+             <span aria-hidden="true">»</span>
+             <span class="sr-only">Next</span>
+            </a>
+           </li>
+          </ul>
+       </nav>
+  </div>
 
 {% endblock content %}

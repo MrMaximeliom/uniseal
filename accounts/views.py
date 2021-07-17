@@ -1,11 +1,11 @@
 from django.utils.translation import gettext_lazy as _
-from rest_framework import viewsets, status
+from rest_framework import viewsets
 from rest_framework import mixins
-from rest_framework.response import Response
 
 from Util.utils import EnablePartialUpdateMixin
 from Util.permissions import IsSystemBackEndUser, IsAnonymousUser,UnisealPermission
 from rest_framework.permissions import IsAuthenticated
+from django.core.paginator import Paginator, PageNotAnInteger, EmptyPage
 
 # Create your views here.
 from rest_framework.views import APIView
@@ -210,13 +210,37 @@ class  ContactUsViewSet(viewsets.ModelViewSet):
 # Views for dashboard
 def all_users(request):
     from accounts.models import User
-    all_users = User.objects.all()
-    context = {
-        'title': _('All Users'),
-        'all_users': 'active',
-        'all_users_data': all_users,
-    }
-    return render(request, 'accounts/all_users.html', context)
+    all_users = User.objects.all().order_by("id")
+    paginator = Paginator( all_users, 5)
+    if request.GET.get('page'):
+        # Grab the current page from query parameter
+        page = int(request.GET.get('page'))
+    else:
+        page = None
+
+    try:
+        users = paginator.page(page)
+        # Create a page object for the current page.
+    except PageNotAnInteger:
+        # If the query parameter is empty then grab the first page.
+        users = paginator.page(1)
+        page = 1
+    except EmptyPage:
+        # If the query parameter is greater than num_pages then grab the last page.
+        users = paginator.page(paginator.num_pages)
+        page = paginator.num_pages
+
+    return render(request, 'accounts/all_users.html',
+                  {
+                      'title': _('All Users'),
+                      'all_users': 'active',
+                      'all_users_data': users,
+                      'page_range': paginator.page_range,
+                      'num_pages': paginator.num_pages,
+                      'current_page': page
+                  }
+                  )
+
 def add_users(request):
     from accounts.models import User
     from address.models import City

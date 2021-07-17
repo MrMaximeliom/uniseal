@@ -2,6 +2,9 @@
 {% extends "dashboard/base.html" %}
 {% load static %}
 {% load static i18n %}
+  {% block custom_css %}
+    <link rel="stylesheet" href="{% static 'dashboard/css/solution.css' %}">
+    {% endblock %}
 {% block title %}
 {{title}}
 {% endblock title %}
@@ -15,7 +18,9 @@
                 </nav>
                 {% endblock breadcrumb_content %}
 {% block content %}
-                <h1 class="h2">Delete Solutions</h1>
-                <p>{% trans 'Here you can delete solutions' %}</p>
+                           <h1 class="h2">Page Under Construction</h1>
+<div>
+    <img class="page-under-construction" src="{% static 'dashboard/images/page-under-construction.gif' %}">
+</div>
 
 {% endblock content %}

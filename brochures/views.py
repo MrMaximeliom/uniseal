@@ -35,14 +35,40 @@ class  BrochuresViewSet(viewsets.ModelViewSet):
 
 # Dashboard Views
 from .models import Brochures
-brochures = Brochures.objects.all()
+brochures = Brochures.objects.all().order_by("id")
 def all_brochures(request):
-    context = {
-        'title': _('All Brochures'),
-        'all_brochures': 'active',
-        'all_brochures_data': brochures,
-    }
-    return render(request, 'brochures/all_brochures.html', context)
+    from django.core.paginator import Paginator, PageNotAnInteger, EmptyPage
+    paginator = Paginator(brochures, 5)
+    if request.GET.get('page'):
+        # Grab the current page from query parameter
+        page = int(request.GET.get('page'))
+    else:
+        page = None
+
+    try:
+        brochures_data = paginator.page(page)
+        # Create a page object for the current page.
+    except PageNotAnInteger:
+        # If the query parameter is empty then grab the first page.
+        brochures_data = paginator.page(1)
+        page = 1
+    except EmptyPage:
+        # If the query parameter is greater than num_pages then grab the last page.
+        brochures_data = paginator.page(paginator.num_pages)
+        page = paginator.num_pages
+
+    return render(request, 'brochures/all_brochures.html',
+                  {
+                      'title': _('All Brochures'),
+                      'all_brochures': 'active',
+                      'all_brochures_data': brochures_data,
+                      'page_range': paginator.page_range,
+                      'num_pages': paginator.num_pages,
+                      'current_page': page
+                  }
+                  )
+
+
 
 def add_brochures(request):
 

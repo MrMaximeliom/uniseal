@@ -1,10 +1,14 @@
 <!DOCTYPE html>
 {% extends "dashboard/base.html" %}
 {% load static %}
+{% load mathfilters %}
 {% load static i18n %}
 {% block title %}
 {{title}}
 {% endblock title %}
+  {% block custom_css %}
+    <link rel="stylesheet" href="{% static 'dashboard/css/product.css' %}">
+    {% endblock %}
          {% block breadcrumb_content %}
    <nav aria-label="crumb">
                     <ol class="crumb breadcrumb-light breadcrumb-dark">
@@ -17,5 +21,48 @@
 {% block content %}
                 <h1 class="h2">All Products</h1>
                 <p>{% trans 'This is the products of Uniseal Company' %}</p>
+<div class="row card-group">
 
+{% for product in all_products_data %}
+
+ <div class="col-4">
+                <div class="card mb-5 ml-2" >
+  <img class="card-img-top card-image-product" src="{{product.image.url}}" alt="Card image cap">
+  <div class="card-body">
+    <h5 class="card-title">{{product.name}}</h5>
+    <p class="card-text">
+        {% trans 'Category:' %} {{product.category}}
+    </p>
+      <p class="card-text">
+        {% trans 'Supplier:' %} {{product.supplier.name}}
+    </p>
+    <a href="#" class="btn btn-primary">More Details</a>
+  </div>
+</div>
+ </div>
+
+{% endfor %}
+</div>
+ <div class="container mt-3 d-flex justify-content-center">
+        <nav aria-label="Pagination Navigation">
+          <ul class="pagination">
+           <li class="page-item {% if current_page == 1 %} disabled disabled-item {% endif %}">
+            <a class="page-link" href="?page={{ current_page|sub:1 }}" aria-label="Previous">
+             <span aria-hidden="true">«</span>
+             <span class="sr-only">Previous</span>
+            </a>
+           </li>
+           {% for i in page_range %}
+           <li class="page-item {% if i == current_page %} active {% endif %}"><a class="page-link " href="?page={{ i }}">{{ i }}</a></li>
+           {% endfor %}
+
+           <li class="page-item {% if current_page == num_pages %} disabled disabled-item {% endif %}">
+            <a class="page-link" href="?page={{ current_page|add:1 }}" aria-label="Next">
+             <span aria-hidden="true">»</span>
+             <span class="sr-only">Next</span>
+            </a>
+           </li>
+          </ul>
+       </nav>
+  </div>
 {% endblock content %}
