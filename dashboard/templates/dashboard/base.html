@@ -380,18 +380,66 @@
                             <span class="ml-2">{% trans 'Contact Us' %}</span>
                           </a>
                         </li>
-                                 <li class="nav-item">
-                            <a class="nav-link-light nav-link-dark {{notifications}}" href="#">
+                          <li class="nav-item">
+        <a class=" nav-link-light nav-link-dark collapsed dropdown-toggle" data-bs-toggle="collapse" data-bs-target="#dashboard-notifications" aria-expanded="false">
                                 <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-bell"><path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9"></path><path d="M13.73 21a2 2 0 0 1-3.46 0"></path></svg>
-                            <span class="ml-2">{% trans 'Notifications' %}</span>
-                          </a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link-light nav-link-dark {{sms_notifications}}" href="#">
+
+                            <span class="ml-2">{% trans 'Notifications'%}</span>
+        </a>
+        <div class="collapse" id="dashboard-notifications">
+          <ul class="btn-toggle-nav list-unstyled fw-normal pb-1">
+              <li class="nav-item">
+                <a href="{% url 'allBrochures' %}" class="nav-link-light nav-link-dark {{all_notifications}}">
+                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-hash"><line x1="4" y1="9" x2="20" y2="9"></line><line x1="4" y1="15" x2="20" y2="15"></line><line x1="10" y1="3" x2="8" y2="21"></line><line x1="16" y1="3" x2="14" y2="21"></line></svg>
+                 <span class="ml-2">{% trans 'All Notifications' %} </span>
+            </a>
+            </li>
+            <li class="nav-item"><a href="{% url 'addBrochures' %}" class="nav-link-light nav-link-dark {{add_notifications}}">
+            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-plus"><line x1="12" y1="5" x2="12" y2="19"></line><line x1="5" y1="12" x2="19" y2="12"></line></svg>
+            <span class="ml-2">{% trans 'Add Notifications' %}</span>
+            </a>
+            </li>
+            <li class="nav-item"><a href="{% url 'deleteBrochures' %}" class="nav-link-light nav-link-dark {{delete_notifications}}">
+                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-minus"><line x1="5" y1="12" x2="19" y2="12"></line></svg>
+                 <span class="ml-2">{% trans 'Delete Notifications' %}</span>
+            </a>
+            </li>
+            <li class="nav-item" ><a href="{% url 'editBrochures' %}" class="nav-link-light nav-link-dark {{edit_notifications}}">
+            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-edit"><path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"></path><path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"></path></svg>
+                 <span class="ml-2">{% trans 'Edit Notifications' %}</span>
+            </a>
+            </li>
+          </ul>
+        </div>
+      </li>
+                         <li class="nav-item">
+        <a class=" nav-link-light nav-link-dark collapsed dropdown-toggle" data-bs-toggle="collapse" data-bs-target="#dashboard-sms-notifications" aria-expanded="false">
                                 <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-bell"><path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9"></path><path d="M13.73 21a2 2 0 0 1-3.46 0"></path></svg>
-                            <span class="ml-2">{% trans 'SMS Notifications' %}</span>
-                          </a>
-                        </li>
+
+                            <span class="ml-2">{% trans 'SMS Notifications'%}</span>
+        </a>
+        <div class="collapse" id="dashboard-sms-notifications">
+          <ul class="btn-toggle-nav list-unstyled fw-normal pb-1">
+              <li class="nav-item">
+                <a href="{% url 'allSMS' %}" class="nav-link-light nav-link-dark {{all_sms_notifications}}">
+                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-hash"><line x1="4" y1="9" x2="20" y2="9"></line><line x1="4" y1="15" x2="20" y2="15"></line><line x1="10" y1="3" x2="8" y2="21"></line><line x1="16" y1="3" x2="14" y2="21"></line></svg>
+                 <span class="ml-2">{% trans 'All SMS Notifications' %} </span>
+            </a>
+            </li>
+            <li class="nav-item"><a href="{% url 'sendSMS' %}" class="nav-link-light nav-link-dark {{add_sms_notifications}}">
+            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-plus"><line x1="12" y1="5" x2="12" y2="19"></line><line x1="5" y1="12" x2="19" y2="12"></line></svg>
+            <span class="ml-2">{% trans 'Send SMS Notifications' %}</span>
+            </a>
+            </li>
+            <li class="nav-item"><a href="{% url 'deleteSMS' %}" class="nav-link-light nav-link-dark {{delete_sms_notifications}}">
+                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-minus"><line x1="5" y1="12" x2="19" y2="12"></line></svg>
+                 <span class="ml-2">{% trans 'Delete SMS Notifications' %}</span>
+            </a>
+            </li>
+
+          </ul>
+        </div>
+      </li>
 
                           <li class="nav-item">
                             <a class="nav-link-light nav-link-dark {{reports}}" href="#">

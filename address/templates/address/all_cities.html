@@ -30,7 +30,7 @@
                                         <thead>
                                           <tr>
                                             <th scope="col">{% trans 'Name' %}</th>
-                                            <th scope="col">{% trans 'Country' %}</th>
+                                            <th scope="col">{% trans 'State' %}</th>
                                             <th scope="col">{% trans 'Users In City' %}</th>
                                             <th scope="col"></th>
                                           </tr>
@@ -39,7 +39,7 @@
                                         {% for city in all_cities_data %}
                                           <tr>
                                             <th scope="row">{{city.name}}</th>
-                                            <td>{{ city.country }}</td>
+                                            <td>{{ city.state.name }}</td>
                                             <td>{{ city.num_users }}</td>
                                             <td><a href="#" class="btn btn-sm btn-primary">View</a></td>
                                           </tr>

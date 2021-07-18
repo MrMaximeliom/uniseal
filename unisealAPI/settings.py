@@ -50,7 +50,9 @@ INSTALLED_APPS = [
     'dashboard',
     'django_filters',
     'address',
-    'mathfilters'
+    'mathfilters',
+    'notifications',
+    'sms_notifications',
 
 
 ]

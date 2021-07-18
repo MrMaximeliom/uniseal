@@ -1,6 +1,6 @@
 from django.conf.urls.static import static
 from django.contrib import admin
-from django.urls import path, include, re_path
+from django.urls import path, include
 from rest_framework import routers
 from accounts import views as accounts_views
 from supplier import views as supplier_views
@@ -12,9 +12,10 @@ from sellingPoint import views as selling_point_views
 from brochures import views as brochures_views
 from solution import views as solution_views
 from admin_panel import views as admin_views
-from address import views as address_views
 from django.conf import settings
+from address import views as address_views
 from dashboard import views as dashboard_views
+from sms_notifications import views as sms_notifications_views
 from django.views.generic.base import RedirectView
 from django.contrib.staticfiles.storage import staticfiles_storage
 from rest_framework_simplejwt.views import (
@@ -31,7 +32,9 @@ router.register(r'accounts/me', accounts_views.CurrentUserDataViewSet, basename=
 router.register(r'accounts/changePassword', accounts_views.ChangePasswordView, basename='ChangePassword')
 router.register(r'supplier', supplier_views.SupplierViewSet, basename='CreateSupplier')
 router.register(r'address/modifyCountry', address_views.CountryViewSet, basename='CreateCountry')
+router.register(r'address/modifyState', address_views.StateViewSet, basename='CreateState')
 router.register(r'address/modifyCity', address_views.CityViewSet, basename='CreateCity')
+router.register(r'address/modifyArea', address_views.AreaViewSet, basename='CreateArea')
 router.register(r'category', category_views.CategoryViewSet, basename='CreateCategory')
 router.register(r'slider', slider_views.SliderViewSet, basename='CreateSlider')
 router.register(r'product/modifyProduct', product_views.ProductViewSet, basename='CreateProduct')
@@ -100,6 +103,9 @@ urlpatterns = [
     path('dashboard/addBrochures', brochures_views.add_brochures, name='addBrochures'),
     path('dashboard/deleteBrochures', brochures_views.delete_brochures, name='deleteBrochures'),
     path('dashboard/editBrochures', brochures_views.edit_brochures, name='editBrochures'),
+    path('dashboard/allSMS', sms_notifications_views.all_sms, name='allSMS'),
+    path('dashboard/sendSMS', sms_notifications_views.send_sms, name='sendSMS'),
+    path('dashboard/deleteSMS', sms_notifications_views.delete_sms, name='deleteSMS'),
     path('login/', TokenObtainPairView.as_view(), name='token_obtain_pair'),
     path('login/refresh/', TokenRefreshView.as_view(), name='token_refresh'),
     path('api-auth/', include('rest_framework.urls', namespace='rest_framework')),

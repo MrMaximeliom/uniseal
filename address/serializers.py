@@ -12,3 +12,15 @@ class  CountrySerializer(serializers.ModelSerializer):
         from .models import  Country
         model = Country
         fields = "__all__"
+
+class  StateSerializer(serializers.ModelSerializer):
+    class Meta:
+        from .models import  State
+        model = State
+        fields = "__all__"
+
+class  AreaSerializer(serializers.ModelSerializer):
+    class Meta:
+        from .models import  Area
+        model = Area
+        fields = "__all__"

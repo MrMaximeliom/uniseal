@@ -17,10 +17,10 @@ class  CityViewSet(viewsets.ModelViewSet):
        {
         "id": 26,
         "name": "city_name",
-        "country": country_id,
+        "state": state_id,
        }
       Use PUT function by accessing this url:
-      /city/<city's_id>
+      /address/modifyCity/<city's_id>
       Format of data will be as the previous data format for GET function
 
       """
@@ -48,7 +48,7 @@ class  CountryViewSet(viewsets.ModelViewSet):
 
        }
       Use PUT function by accessing this url:
-      /country/<country's_id>
+      /address/modifyCountry/<country's_id>
       Format of data will be as the previous data format for GET function
 
       """
@@ -62,6 +62,63 @@ class  CountryViewSet(viewsets.ModelViewSet):
     serializer_class = CountrySerializer
     permission_classes = [UnisealPermission]
 
+class  StateViewSet(viewsets.ModelViewSet):
+    """
+        API endpoint that allows to add or modify states by
+        the admin
+        this endpoint allows  GET,POST,PUT,PATCH,DELETE function
+        permissions to this view is restricted as the following:
+        - only admin users can access this api
+         Data will be retrieved in the following format using GET function:
+       {
+        "id": 26,
+        "name": "country_name",
+        "country": country_id,
+
+       }
+      Use PUT function by accessing this url:
+      /address/modifyState/<country's_id>
+      Format of data will be as the previous data format for GET function
+
+      """
+    from address.serializers import StateSerializer
+
+    def get_view_name(self):
+        return _("Create/Modify States' Data")
+
+    from address.models import State
+    queryset = State.objects.all()
+    serializer_class = StateSerializer
+    permission_classes = [UnisealPermission]
+
+class  AreaViewSet(viewsets.ModelViewSet):
+    """
+        API endpoint that allows to add or modify areas by
+        the admin
+        this endpoint allows  GET,POST,PUT,PATCH,DELETE function
+        permissions to this view is restricted as the following:
+        - only admin users can access this api
+         Data will be retrieved in the following format using GET function:
+       {
+        "id": 26,
+        "name": "area_name",
+        "city": city_id,
+
+       }
+      Use PUT function by accessing this url:
+      /address/modifyArea/<area's_id>
+      Format of data will be as the previous data format for GET function
+
+      """
+    from address.serializers import AreaSerializer
+
+    def get_view_name(self):
+        return _("Create/Modify Areas' Data")
+
+    from address.models import Area
+    queryset = Area.objects.all()
+    serializer_class = AreaSerializer
+    permission_classes = [UnisealPermission]
 #Views for dashboard - cities views
 from address.models import City
 # cities = City.objects.all()
@@ -127,7 +184,7 @@ def edit_cities(request):
 
 from address.models import Country
 # countries = Country.objects.all()
-countries = Country.objects.annotate(num_users=Count('city')).order_by('-num_users')
+countries = Country.objects.annotate(num_users=Count('state')).order_by('-num_users')
 def all_countries(request):
     paginator = Paginator(countries, 5)
     if request.GET.get('page'):

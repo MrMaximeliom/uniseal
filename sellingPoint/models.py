@@ -21,21 +21,29 @@ class SellingPoint(models.Model):
         max_length=250,
         verbose_name=_('Sale Point Address')
     )
-    city = models.CharField(
-        verbose_name=_('City'),
-        blank=False,
-        null=False,
-        choices=CITIES_CHOICES,
-        max_length=350,
-        default=1
+    country = models.ForeignKey(
+        'address.Country',
+        on_delete=models.CASCADE,
+        blank=True,
+        null=True
     )
-    area = models.CharField(
-        verbose_name=_("Area"),
-        blank=False,
-        null=False,
-        choices=AREA_CHOICES,
-        max_length=300,
-        default=1
+    state = models.ForeignKey(
+        'address.State',
+        on_delete=models.CASCADE,
+        blank=True,
+        null=True
+    )
+    city = models.ForeignKey(
+        'address.City',
+        on_delete=models.CASCADE,
+        blank=True,
+        null=True
+    )
+    area = models.ForeignKey(
+        'address.Area',
+        on_delete=models.CASCADE,
+        blank = True,
+        null = True
     )
     phone_number = models.CharField(
         verbose_name=_('Phone Number'),
@@ -46,7 +54,9 @@ class SellingPoint(models.Model):
     )
     secondary_phone = models.CharField(
         max_length=20,
-        verbose_name=_('Sale Point Secondary Phone')
+        verbose_name=_('Sale Point Secondary Phone'),
+        default=""
+
     )
     email = models.EmailField(
         verbose_name=_('Email Address'),
