@@ -40,6 +40,12 @@ class ProductViewSet(viewsets.ModelViewSet):
     def get_view_name(self):
         return _("Create/Modify Products' Data")
 
+    # def get_queryset(self):
+    #     from .models import Product
+    #     # returning default result if anything goes wrong
+    #     queryset = Product.objects.all().order_by("id")
+    #     return queryset
+
     from .serializers import ProductSerializer
     serializer_class = ProductSerializer
     from .models import Product

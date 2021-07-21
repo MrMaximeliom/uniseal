@@ -1,6 +1,7 @@
 <!DOCTYPE html>
 {% extends "dashboard/base.html" %}
 {% load static %}
+{% load crispy_forms_tags %}
 {% load static i18n %}
 {% block title %}
 {{title}}
@@ -18,5 +19,39 @@
 {% block content %}
                 <h1 class="h2">Add Countries</h1>
                 <p>{% trans 'Here you can add new countries' %}</p>
+<!--<form action="" method="POST" autocomplete="off">-->
+<!--    {% csrf_token %}-->
+
+<!--{{form |crispy}}-->
+<!--</form>-->
+
+<!--<form action="" method="POST" autocomplete="off">-->
+<!--    {% csrf_token %}-->
+
+<!-- <div class="row">-->
+<!--        <div class="col-md-6">-->
+<!--            {{form.name|as_crispy_field}}-->
+<!--        </div>-->
+
+<!-- </div>-->
+<!--     <div class="mt-5">-->
+<!--     <button type="submit" class="btn btn-primary ">{% trans 'Add Country' %}</button>-->
+<!--     </div>-->
+<!--</form>-->
+<div class="card ">
+  <div class="card-body">
+    <h5 class="card-title">Please Add your country details here</h5>
+       <form class="card-form">
+
+    <div class="col-sm-6">
+          {{form.name|as_crispy_field}}
+    </div>
+
+               <div class="col-auto mt-5">
+    <button type="submit" class="btn btn-primary ">{% trans 'Add Country' %}</button>
+  </div>
+       </form>
+  </div>
+</div>
 
 {% endblock content %}

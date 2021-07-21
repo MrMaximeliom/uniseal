@@ -14,6 +14,11 @@
     {% block custom_css %}
     {% endblock %}
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/5.0.0-alpha1/css/bootstrap.min.css" integrity="sha384-r4NyP46KrjDleawBgD5tp8Y7UzmLA05oM1iAEQ17CSuDqnUK2+k9luXQOfXJCJ4I" crossorigin="anonymous">
+        <script src="https://code.jquery.com/jquery-3.6.0.slim.min.js" integrity="sha256-u7e5khyithlIdTpu22PHhENmPcRdFiHRjhAuHcs05RI=" crossorigin="anonymous"></script>
+    <script src="{% static 'dashboard/js/index.js' %}"></script>
+<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.1/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-+0n0xVW2eSR5OomGNYDnhzAbDsOXxcvSN1TPprVMTNDbiYZCxYbOOl7+AMvyTG2x" crossorigin="anonymous">
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.1/dist/js/bootstrap.bundle.min.js" integrity="sha384-gtEjrD/SeCtmISkJkNUaaKMoLD0//ElJ19smozuHV6z3Iehds+3Ulb9Bn9Plx0x4" crossorigin="anonymous"></script>
+
 
 </head>
 <body>
@@ -238,10 +243,22 @@
                  <span class="ml-2">{% trans 'All Countries' %} </span>
             </a>
             </li>
+                     <li class="nav-item">
+                <a href="{% url 'allStates' %}" class="nav-link-light nav-link-dark {{all_states}}">
+                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-hash"><line x1="4" y1="9" x2="20" y2="9"></line><line x1="4" y1="15" x2="20" y2="15"></line><line x1="10" y1="3" x2="8" y2="21"></line><line x1="16" y1="3" x2="14" y2="21"></line></svg>
+                 <span class="ml-2">{% trans 'All States' %} </span>
+            </a>
+            </li>
               <li class="nav-item">
                 <a href="{% url 'allCities' %}" class="nav-link-light nav-link-dark {{all_cities}}">
                 <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-hash"><line x1="4" y1="9" x2="20" y2="9"></line><line x1="4" y1="15" x2="20" y2="15"></line><line x1="10" y1="3" x2="8" y2="21"></line><line x1="16" y1="3" x2="14" y2="21"></line></svg>
                  <span class="ml-2">{% trans 'All Cities' %} </span>
+            </a>
+            </li>
+                     <li class="nav-item">
+                <a href="{% url 'allAreas' %}" class="nav-link-light nav-link-dark {{all_areas}}">
+                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-hash"><line x1="4" y1="9" x2="20" y2="9"></line><line x1="4" y1="15" x2="20" y2="15"></line><line x1="10" y1="3" x2="8" y2="21"></line><line x1="16" y1="3" x2="14" y2="21"></line></svg>
+                 <span class="ml-2">{% trans 'All Areas' %} </span>
             </a>
             </li>
 
@@ -250,9 +267,19 @@
             <span class="ml-2">{% trans 'Add Countries' %}</span>
             </a>
             </li>
+                     <li class="nav-item"><a href="{% url 'addStates' %}" class="nav-link-light nav-link-dark {{add_states}}">
+            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-plus"><line x1="12" y1="5" x2="12" y2="19"></line><line x1="5" y1="12" x2="19" y2="12"></line></svg>
+            <span class="ml-2">{% trans 'Add States' %}</span>
+            </a>
+            </li>
                 <li class="nav-item"><a href="{% url 'addCities' %}" class="nav-link-light nav-link-dark {{add_cities}}">
             <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-plus"><line x1="12" y1="5" x2="12" y2="19"></line><line x1="5" y1="12" x2="19" y2="12"></line></svg>
             <span class="ml-2">{% trans 'Add Cities' %}</span>
+            </a>
+            </li>
+                     <li class="nav-item"><a href="{% url 'addAreas' %}" class="nav-link-light nav-link-dark {{add_areas}}">
+            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-plus"><line x1="12" y1="5" x2="12" y2="19"></line><line x1="5" y1="12" x2="19" y2="12"></line></svg>
+            <span class="ml-2">{% trans 'Add Areas' %}</span>
             </a>
             </li>
             <li class="nav-item"><a href="{% url 'deleteCountries' %}" class="nav-link-light nav-link-dark {{delete_countries}}">
@@ -260,9 +287,19 @@
                  <span class="ml-2">{% trans 'Delete Countries' %}</span>
             </a>
             </li>
+              <li class="nav-item"><a href="{% url 'deleteStates' %}" class="nav-link-light nav-link-dark {{delete_states}}">
+                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-minus"><line x1="5" y1="12" x2="19" y2="12"></line></svg>
+                 <span class="ml-2">{% trans 'Delete States' %}</span>
+            </a>
+            </li>
                 <li class="nav-item"><a href="{% url 'deleteCities' %}" class="nav-link-light nav-link-dark {{delete_cities}}">
                 <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-minus"><line x1="5" y1="12" x2="19" y2="12"></line></svg>
                  <span class="ml-2">{% trans 'Delete Cities' %}</span>
+            </a>
+            </li>
+              <li class="nav-item"><a href="{% url 'deleteAreas' %}" class="nav-link-light nav-link-dark {{delete_areas}}">
+                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-minus"><line x1="5" y1="12" x2="19" y2="12"></line></svg>
+                 <span class="ml-2">{% trans 'Delete Areas' %}</span>
             </a>
             </li>
             <li class="nav-item" ><a href="{% url 'editCountries' %}" class="nav-link-light nav-link-dark {{edit_categories}}">
@@ -270,9 +307,19 @@
                  <span class="ml-2">{% trans 'Edit Countries' %}</span>
             </a>
             </li>
+                  <li class="nav-item" ><a href="{% url 'editStates' %}" class="nav-link-light nav-link-dark {{edit_states}}">
+            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-edit"><path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"></path><path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"></path></svg>
+                 <span class="ml-2">{% trans 'Edit States' %}</span>
+            </a>
+            </li>
                  <li class="nav-item" ><a href="{% url 'editCities' %}" class="nav-link-light nav-link-dark {{edit_cities}}">
             <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-edit"><path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"></path><path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"></path></svg>
                  <span class="ml-2">{% trans 'Edit Cities' %}</span>
+            </a>
+            </li>
+                  <li class="nav-item" ><a href="{% url 'editAreas' %}" class="nav-link-light nav-link-dark {{edit_areas}}">
+            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-edit"><path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"></path><path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"></path></svg>
+                 <span class="ml-2">{% trans 'Edit Areas' %}</span>
             </a>
             </li>
           </ul>
@@ -481,8 +528,6 @@
 
         </div>
     </div>
-    <script src="https://code.jquery.com/jquery-3.6.0.slim.min.js" integrity="sha256-u7e5khyithlIdTpu22PHhENmPcRdFiHRjhAuHcs05RI=" crossorigin="anonymous"></script>
-    <script src="{% static 'dashboard/js/index.js' %}"></script>
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM" crossorigin="anonymous"></script>
+
 </body>
 </html>

@@ -120,6 +120,75 @@ class  AreaViewSet(viewsets.ModelViewSet):
     serializer_class = AreaSerializer
     permission_classes = [UnisealPermission]
 #Views for dashboard - cities views
+from address.models import Country
+# countries = Country.objects.all()
+countries = Country.objects.annotate(num_users=Count('state')).order_by('-num_users')
+def all_countries(request):
+    paginator = Paginator(countries, 5)
+    if request.GET.get('page'):
+        # Grab the current page from query parameter
+        page = int(request.GET.get('page'))
+    else:
+        page = None
+
+    try:
+        # Create a page object for the current page.
+        countries_paginator = paginator.page(page)
+    except PageNotAnInteger:
+        # If the query parameter is empty then grab the first page.
+        countries_paginator = paginator.page(1)
+        page = 1
+    except EmptyPage:
+        # If the query parameter is greater than num_pages then grab the last page.
+        countries_paginator = paginator.page(paginator.num_pages)
+        page = paginator.num_pages
+
+    return render(request, 'address/all_countries.html',
+                  {
+                      'title': _('All Countries'),
+                      'all_countries': 'active',
+                      'all_countries_data': countries_paginator,
+                      'page_range': paginator.page_range,
+                      'num_pages': paginator.num_pages,
+                      'current_page': page
+                  }
+                  )
+
+def add_countries(request):
+    from .forms import CountryForm
+    if request.method == 'POST':
+        form = CountryForm(request.POST)
+        if form.is_valid():
+            form.save()
+    else:
+        form = CountryForm()
+    context = {
+        'title': _('Add Countries'),
+        'add_countries': 'active',
+        'all_countries': countries,
+        'form':form
+    }
+
+    return render(request, 'address/add_countries.html', context)
+
+
+def delete_countries(request):
+
+    context = {
+        'title': _('Delete Countries'),
+        'delete_countries': 'active',
+        'all_countries': countries,
+    }
+    return render(request, 'address/delete_countries.html', context)
+
+def edit_countries(request):
+    context = {
+        'title': _('Edit Countries'),
+        'edit_countries': 'active',
+        'all_countries': countries,
+    }
+    return render(request, 'address/edit_countries.html', context)
+
 from address.models import City
 # cities = City.objects.all()
 cities = City.objects.annotate(num_users=Count('user')).order_by('-num_users')
@@ -156,12 +225,19 @@ def all_cities(request):
                   )
 
 def add_cities(request):
-
+    from .forms import CityForm
+    if request.method == 'POST':
+        form = CityForm(request.POST)
+        if form.is_valid():
+            form.save()
+    else:
+        form = CityForm()
     context = {
         'title': _('Add Cities'),
         'add_cities': 'active',
-        'all_cities': cities,
+        'form': form
     }
+
     return render(request, 'address/add_cities.html', context)
 
 def delete_cities(request):
@@ -180,13 +256,14 @@ def edit_cities(request):
         'all_categories': cities,
     }
     return render(request, 'address/edit_cities.html', context)
+# states goes here
 
+from address.models import State
+# cities = City.objects.all()
+states = State.objects.annotate(num_cities=Count('country')).order_by('-num_cities')
 
-from address.models import Country
-# countries = Country.objects.all()
-countries = Country.objects.annotate(num_users=Count('state')).order_by('-num_users')
-def all_countries(request):
-    paginator = Paginator(countries, 5)
+def all_states(request):
+    paginator = Paginator(states, 5)
     if request.GET.get('page'):
         # Grab the current page from query parameter
         page = int(request.GET.get('page'))
@@ -195,49 +272,125 @@ def all_countries(request):
 
     try:
         # Create a page object for the current page.
-        countries_paginator = paginator.page(page)
+        states_paginator = paginator.page(page)
     except PageNotAnInteger:
         # If the query parameter is empty then grab the first page.
-        countries_paginator = paginator.page(1)
+        states_paginator = paginator.page(1)
         page = 1
     except EmptyPage:
         # If the query parameter is greater than num_pages then grab the last page.
-        countries_paginator = paginator.page(paginator.num_pages)
+        states_paginator = paginator.page(paginator.num_pages)
         page = paginator.num_pages
 
-    return render(request, 'address/all_countries.html',
+    return render(request, 'address/all_states.html',
                   {
-                      'title': _('All Countries'),
-                      'all_countries': 'active',
-                      'all_countries_data': countries_paginator,
+                      'title': _('All States'),
+                      'all_states': 'active',
+                      'all_states_data': states_paginator,
                       'page_range': paginator.page_range,
                       'num_pages': paginator.num_pages,
                       'current_page': page
                   }
                   )
+def add_states(request):
+    from .forms import StateForm
+    if request.method == 'POST':
+        form = StateForm(request.POST)
+        if form.is_valid():
+            form.save()
+    else:
+        form = StateForm()
+    context = {
+        'title': _('Add States'),
+        'add_states': 'active',
+        'form': form
+    }
 
-def add_countries(request):
+    return render(request, 'address/add_states.html', context)
+
+def delete_states(request):
 
     context = {
-        'title': _('Add Countries'),
-        'add_countries': 'active',
-        'all_countries': countries,
+        'title': _('Delete States'),
+        'delete_states': 'active',
+        'all_states': states,
     }
-    return render(request, 'address/add_countries.html', context)
+    return render(request, 'address/delete_states.html', context)
 
-def delete_countries(request):
+def edit_states(request):
+    context = {
+        'title': _('Edit States'),
+        'edit_states': 'active',
+        'all_states': states,
+    }
+    return render(request, 'address/edit_states.html', context)
+
+
+# areas goes here
+
+from address.models import Area
+# cities = City.objects.all()
+areas = Area.objects.annotate(num=Count('city')).order_by('-num')
+
+def all_areas(request):
+    paginator = Paginator(areas, 5)
+    if request.GET.get('page'):
+        # Grab the current page from query parameter
+        page = int(request.GET.get('page'))
+    else:
+        page = None
+
+    try:
+        # Create a page object for the current page.
+        areas_paginator = paginator.page(page)
+    except PageNotAnInteger:
+        # If the query parameter is empty then grab the first page.
+        areas_paginator = paginator.page(1)
+        page = 1
+    except EmptyPage:
+        # If the query parameter is greater than num_pages then grab the last page.
+        areas_paginator = paginator.page(paginator.num_pages)
+        page = paginator.num_pages
+
+    return render(request, 'address/all_areas.html',
+                  {
+                      'title': _('All Areas'),
+                      'all_areas': 'active',
+                      'all_areas_data': areas_paginator,
+                      'page_range': paginator.page_range,
+                      'num_pages': paginator.num_pages,
+                      'current_page': page
+                  }
+                  )
+def add_areas(request):
+    from .forms import AreaForm
+    if request.method == 'POST':
+        form = AreaForm(request.POST)
+        if form.is_valid():
+            form.save()
+    else:
+        form = AreaForm()
+    context = {
+        'title': _('Add Areas'),
+        'add_areas': 'active',
+        'form': form
+    }
+
+    return render(request, 'address/add_areas.html', context)
+
+def delete_areas(request):
 
     context = {
-        'title': _('Delete Countries'),
-        'delete_countries': 'active',
-        'all_countries': countries,
+        'title': _('Delete Areas'),
+        'delete_areas': 'active',
+        'all_areas': areas,
     }
-    return render(request, 'address/delete_countries.html', context)
+    return render(request, 'address/delete_areas.html', context)
 
-def edit_countries(request):
+def edit_areas(request):
     context = {
-        'title': _('Edit Countries'),
-        'edit_countries': 'active',
-        'all_countries': countries,
+        'title': _('Edit Areas'),
+        'edit_areas': 'active',
+        'all_areas': areas,
     }
-    return render(request, 'address/edit_countries.html', context)
+    return render(request, 'address/edit_areas.html', context)

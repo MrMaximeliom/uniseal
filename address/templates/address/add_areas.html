@@ -11,15 +11,14 @@
                     <ol class="crumb breadcrumb-light breadcrumb-dark">
                         <li class="breadcrumb-item"><a href="{% url 'dashboard' %}">{% trans 'Dashboard' %}</a></li>
                         <li class="breadcrumb-item" aria-current="page">{% trans 'Address' %}</li>
-                        <li class="breadcrumb-item" aria-current="page">{% trans 'Cities' %}</li>
-                        <li class="breadcrumb-item" aria-current="page">{% trans 'Add Cities' %}</li>
+                        <li class="breadcrumb-item" aria-current="page">{% trans 'Areas' %}</li>
+                        <li class="breadcrumb-item" aria-current="page">{% trans 'Add Areas' %}</li>
                     </ol>
                 </nav>
                 {% endblock breadcrumb_content %}
 {% block content %}
-                <h1 class="h2">Add Cities</h1>
-                <p>{% trans 'Here you can add new cities' %}</p>
-<div class="card ">
+                <h1 class="h2">{% trans 'Add Areas' %}</h1>
+              <div class="card ">
   <div class="card-body">
 <!--    <h5 class="card-title">Please Add your product details here</h5>-->
         <form class="card-form">
@@ -28,15 +27,14 @@
                   {{form.name|as_crispy_field}}
     </div>
                    <div class="col-sm-6">
-                  {{form.state|as_crispy_field}}
+                  {{form.city|as_crispy_field}}
     </div>
   </div>
           <div class="col-auto">
-    <button type="submit" class="btn btn-primary ">{% trans 'Add City' %}</button>
+    <button type="submit" class="btn btn-primary ">{% trans 'Add Area' %}</button>
   </div>
         </form>
   </div>
 </div>
-
 
 {% endblock content %}

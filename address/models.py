@@ -31,8 +31,6 @@ class City(models.Model):
         max_length=200,
     )
 
-
-
     state = models.ForeignKey(
         State,
         on_delete=models.CASCADE,

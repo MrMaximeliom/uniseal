@@ -53,9 +53,11 @@ INSTALLED_APPS = [
     'mathfilters',
     'notifications',
     'sms_notifications',
+    'crispy_forms',
 
 
 ]
+CRISPY_TEMPLATE_PACK = 'bootstrap4'
 AUTH_USER_MODEL = 'accounts.User'
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
