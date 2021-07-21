@@ -2,6 +2,7 @@
 {% extends "dashboard/base.html" %}
 {% load static %}
 {% load static i18n %}
+{% load crispy_forms_tags %}
 {% block title %}
 {{title}}
 {% endblock title %}
@@ -17,5 +18,30 @@
 {% block content %}
                 <h1 class="h2">Add Brochures</h1>
                 <p>{% trans 'Here you can add new brochures' %}</p>
+<div class="card ">
+  <div class="card-body">
+    <h5 class="card-title">Please Add your project details here</h5>
+  <form class="card-form">
+  <div class="mb-4 row">
+    <div class="col-sm-6">
+             {{form.title|as_crispy_field}}
+    </div>
+  </div>
+        <div class="mb-4 row">
+    <div class="col-sm-6">
+             {{form.attachment|as_crispy_field}}
+    </div>
+  </div>
+      <div class="mb-4 row">
+    <div class="col-sm-6">
+             {{form.image|as_crispy_field}}
+    </div>
+  </div>
 
+       <div class="col-auto">
+    <button type="submit" class="btn btn-primary ">{% trans 'Add Category' %}</button>
+  </div>
+</form>
+  </div>
+</div>
 {% endblock content %}

@@ -2,7 +2,7 @@ from rest_framework import viewsets
 from Util.permissions import UnisealPermission
 from django.shortcuts import render
 from django.utils.translation import gettext_lazy as _
-
+from django.contrib import messages
 
 # Create your views here.
 class  SliderViewSet(viewsets.ModelViewSet):
@@ -45,11 +45,23 @@ def all_sliders(request):
     return render(request, 'slider/all_sliders.html', context)
 
 def add_sliders(request):
+    from .forms import SliderForm
+    if request.method == 'POST':
+        form = SliderForm(request.POST)
+        if form.is_valid():
+            form.save()
+            link = form.cleaned_data.get('link')
+            messages.success(request, f"New User Added: {link}")
+        else:
+            for msg in form.error_messages:
+                messages.error(request, f"{msg}: {form.error_messages[msg]}")
+    else:
+        form = SliderForm()
 
     context = {
         'title': _('Add Sliders'),
         'add_sliders': 'active',
-        'all_sliders': sliders,
+        'form': form,
     }
     return render(request, 'slider/add_sliders.html', context)
 

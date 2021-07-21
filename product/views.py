@@ -1,9 +1,10 @@
 from django.utils.translation import gettext_lazy as _
-from rest_framework import viewsets , mixins , generics
+from rest_framework import viewsets, generics
 from django_filters.rest_framework import DjangoFilterBackend
 from Util.permissions import UnisealPermission
 from django.shortcuts import render
 from django.core.paginator import Paginator, PageNotAnInteger, EmptyPage
+from django.contrib import messages
 
 
 # Create your views here.
@@ -52,7 +53,7 @@ class ProductViewSet(viewsets.ModelViewSet):
     permission_classes = [UnisealPermission]
     queryset = Product.objects.all()
     filter_backends = [DjangoFilterBackend]
-    filterset_fields = ['category','supplier']
+    filterset_fields = ['category', 'supplier']
 
 
 class ProductImagesViewSet(viewsets.ModelViewSet):
@@ -171,6 +172,7 @@ class FetchProductsByCategoryViewSet(generics.ListAPIView):
 
     from .models import Product
     queryset = Product.objects.all()
+
     # original get_queryset
     def get_queryset(self):
         from .models import Product
@@ -205,12 +207,12 @@ class FetchProductsByCategoryViewSet(generics.ListAPIView):
     #     return querysets
 
 
-#Views for product
+# Views for product
 
 def all_products(request):
     from product.models import Product
     all_products = Product.objects.all().order_by("id")
-    paginator = Paginator( all_products, 5)
+    paginator = Paginator(all_products, 5)
     if request.GET.get('page'):
         # Grab the current page from query parameter
         page = int(request.GET.get('page'))
@@ -238,57 +240,70 @@ def all_products(request):
                       'num_pages': paginator.num_pages,
                       'current_page': page
                   }
-                      )
+                  )
 
     # if request.method == "GET":
     #     print(len(request.GET))
 
+    # print("third param")
+    # print(params[2])
+    # for letter in params_string.split(","):
+    #     print(letter)
 
-
-        # print("third param")
-        # print(params[2])
-        # for letter in params_string.split(","):
-        #     print(letter)
-
-        # combine tow query sets
-        # logic of getting more than one result
-        # from itertools import chain
-        # from product.models import Product
-        # params = str(request.GET['a']).split(",")
-        # resulting_list = list()
-        # for param in params:
-        #     listItems = Product.objects.filter(category__id=param)
-        #     resulting_list += listItems
-        # print(resulting_list)
-        # for product in resulting_list:
-        #     print(product.product_file)
-        # list1 = Product.objects.filter(category__id=params[0])
-        # list2 =Product.objects.filter(category__id=params[1])
-        # print("first list")
-        # print(list1)
-        # print("second list")
-        # print(list2)
-        # result_list = list(chain(list1,list2))
-        # print("combined")
-        # for product in result_list:
-        #     print(product.image)
+    # combine tow query sets
+    # logic of getting more than one result
+    # from itertools import chain
+    # from product.models import Product
+    # params = str(request.GET['a']).split(",")
+    # resulting_list = list()
+    # for param in params:
+    #     listItems = Product.objects.filter(category__id=param)
+    #     resulting_list += listItems
+    # print(resulting_list)
+    # for product in resulting_list:
+    #     print(product.product_file)
+    # list1 = Product.objects.filter(category__id=params[0])
+    # list2 =Product.objects.filter(category__id=params[1])
+    # print("first list")
+    # print(list1)
+    # print("second list")
+    # print(list2)
+    # result_list = list(chain(list1,list2))
+    # print("combined")
+    # for product in result_list:
+    #     print(product.image)
 
 
 def add_products(request):
-    from product.models import Product
-    from category.models import Category
-    from supplier.models import Supplier
-    all_categories = Category.objects.all()
-    all_products = Product.objects.all()
-    all_suppliers =Supplier.objects.all()
+    # from product.models import Product
+    # from category.models import Category
+    # from supplier.models import Supplier
+    # all_categories = Category.objects.all()
+    # all_products = Product.objects.all()
+    # all_suppliers = Supplier.objects.all()
+    from .forms import ProductForm
+    if request.method == 'POST':
+        form = ProductForm(request.POST)
+        if form.is_valid():
+            form.save()
+            country_name = form.cleaned_data.get('name')
+            messages.success(request, f"New Product Added: {country_name}")
+        else:
+            for msg in form.error_messages:
+                messages.error(request, f"{msg}: {form.error_messages[msg]}")
+    else:
+        form = ProductForm()
     context = {
         'title': _('Add Products'),
         'add_products': 'active',
         'all_products': all_products,
-        'all_categories':all_categories,
-        'all_suppliers':all_suppliers,
+        'form':form,
+        # 'all_categories': all_categories,
+        # 'all_suppliers': all_suppliers,
     }
     return render(request, 'product/add_products.html', context)
+
+
 def delete_products(request):
     from product.models import Product
     all_products = Product.objects.all()
@@ -298,6 +313,8 @@ def delete_products(request):
         'all_products': all_products,
     }
     return render(request, 'product/delete_products.html', context)
+
+
 def edit_products(request):
     from product.models import Product
     all_products = Product.objects.all()

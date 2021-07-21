@@ -2,6 +2,7 @@ from Util.permissions import UnisealPermission
 from rest_framework import viewsets
 from django.shortcuts import render
 # Create your views here.
+from django.contrib import messages
 from django.utils.translation import gettext_lazy as _
 
 
@@ -79,11 +80,23 @@ def all_selling_points(request):
                   )
 
 def add_selling_points(request):
+    from .forms import SellingPointForm
+    if request.method == 'POST':
+        form = SellingPointForm(request.POST)
+        if form.is_valid():
+            form.save()
+            selling_point_name = form.cleaned_data.get('name')
+            messages.success(request, f"New User Added: {selling_point_name}")
+        else:
+            for msg in form.error_messages:
+                messages.error(request, f"{msg}: {form.error_messages[msg]}")
+    else:
+        form = SellingPointForm()
 
     context = {
         'title': _('Add Selling Points'),
         'add_selling_points': 'active',
-        'all_selling_points': sellingPoints,
+        'form': form,
     }
     return render(request, 'sellingPoints/add_selling_points.html', context)
 

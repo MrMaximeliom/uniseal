@@ -11,6 +11,12 @@
 
     <link rel="stylesheet" href="{% static 'dashboard/css/index.css' %}">
     <link rel="stylesheet" id="theme" href="{% static 'dashboard/css/dark-theme.css' %}">
+<!--    &lt;!&ndash; Compiled and minified CSS &ndash;&gt;-->
+<!--    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/css/materialize.min.css">-->
+
+<!--    &lt;!&ndash; Compiled and minified JavaScript &ndash;&gt;-->
+<!--    <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/js/materialize.min.js"></script>-->
+
     {% block custom_css %}
     {% endblock %}
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/5.0.0-alpha1/css/bootstrap.min.css" integrity="sha384-r4NyP46KrjDleawBgD5tp8Y7UzmLA05oM1iAEQ17CSuDqnUK2+k9luXQOfXJCJ4I" crossorigin="anonymous">
@@ -473,7 +479,17 @@
                  <span class="ml-2">{% trans 'All SMS Notifications' %} </span>
             </a>
             </li>
-            <li class="nav-item"><a href="{% url 'sendSMS' %}" class="nav-link-light nav-link-dark {{add_sms_notifications}}">
+                 <li class="nav-item"><a href="{% url 'addSMSGroup' %}" class="nav-link-light nav-link-dark {{add_sms_group}}">
+            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-plus"><line x1="12" y1="5" x2="12" y2="19"></line><line x1="5" y1="12" x2="19" y2="12"></line></svg>
+            <span class="ml-2">{% trans 'Add SMS Group' %}</span>
+            </a>
+            </li>
+                 <li class="nav-item"><a href="{% url 'addSMSContact' %}" class="nav-link-light nav-link-dark {{add_sms_contact}}">
+            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-plus"><line x1="12" y1="5" x2="12" y2="19"></line><line x1="5" y1="12" x2="19" y2="12"></line></svg>
+            <span class="ml-2">{% trans 'Add SMS Contact' %}</span>
+            </a>
+            </li>
+            <li class="nav-item"><a href="{% url 'sendSMS' %}" class="nav-link-light nav-link-dark {{send_sms}}">
             <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-plus"><line x1="12" y1="5" x2="12" y2="19"></line><line x1="5" y1="12" x2="19" y2="12"></line></svg>
             <span class="ml-2">{% trans 'Send SMS Notifications' %}</span>
             </a>
@@ -501,6 +517,27 @@
             <main class="col-md-9 ml-sm-auto col-lg-10 px-md-4 py-4">
                      {% block breadcrumb_content %}
                 {% endblock breadcrumb_content %}
+                 {% if messages %}
+        {% for message in messages %}
+            {% if message.tags == 'success'%}
+                <div class="alert alert-success" role="alert">
+                    {{message}}
+</div>
+            {% elif message.tags == 'info'%}
+                <div class="alert alert-info" role="alert">
+                    {{message}}
+</div>
+            {% elif message.tags == 'warning'%}
+                <div class="alert alert-warning" role="alert">
+                    {{message}}
+</div>
+            {% elif message.tags == 'error'%}
+                <div class="alert alert-danger" role="alert">
+                    {{message}}
+</div>
+            {% endif %}
+        {% endfor %}
+    {% endif %}
 
                 {% block content %}
                 {% endblock content %}

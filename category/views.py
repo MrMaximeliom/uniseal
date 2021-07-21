@@ -1,5 +1,6 @@
 from django.db.models import Count
 from rest_framework import viewsets
+from django.contrib import messages
 
 from Util.permissions import  UnisealPermission
 
@@ -69,11 +70,23 @@ def all_categories(request):
 
 
 def add_categories(request):
+    from .forms import CategoryForm
+    if request.method == 'POST':
+        form = CategoryForm(request.POST)
+        if form.is_valid():
+            form.save()
+            name = form.cleaned_data.get('name')
+            messages.success(request, f"New Category Added: {name}")
+        else:
+            for msg in form.error_messages:
+                messages.error(request, f"{msg}: {form.error_messages[msg]}")
+    else:
+        form = CategoryForm()
 
     context = {
         'title': _('Add Categories'),
         'add_categories': 'active',
-        'all_categories': categories,
+        'form': form,
     }
     return render(request, 'category/add_categories.html', context)
 

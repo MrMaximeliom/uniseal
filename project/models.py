@@ -28,6 +28,12 @@ class Project(models.Model):
         null=True,
         blank=True
     )
+    beneficiary_description = models.TextField(
+        verbose_name=_('Beneficiary Description'),
+        null=True,
+        blank=True
+    )
+
 
     def __str__(self):
         return self.name

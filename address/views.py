@@ -3,10 +3,11 @@ from django.shortcuts import render
 from rest_framework import viewsets
 from Util.permissions import UnisealPermission
 from django.core.paginator import Paginator, PageNotAnInteger, EmptyPage
-
+from django.contrib import messages
 from django.utils.translation import gettext_lazy as _
 
-class  CityViewSet(viewsets.ModelViewSet):
+
+class CityViewSet(viewsets.ModelViewSet):
     """
         API endpoint that allows to add or modify cities by
         the admin
@@ -34,7 +35,8 @@ class  CityViewSet(viewsets.ModelViewSet):
     serializer_class = CitySerializer
     permission_classes = [UnisealPermission]
 
-class  CountryViewSet(viewsets.ModelViewSet):
+
+class CountryViewSet(viewsets.ModelViewSet):
     """
         API endpoint that allows to add or modify countries by
         the admin
@@ -62,7 +64,8 @@ class  CountryViewSet(viewsets.ModelViewSet):
     serializer_class = CountrySerializer
     permission_classes = [UnisealPermission]
 
-class  StateViewSet(viewsets.ModelViewSet):
+
+class StateViewSet(viewsets.ModelViewSet):
     """
         API endpoint that allows to add or modify states by
         the admin
@@ -91,7 +94,8 @@ class  StateViewSet(viewsets.ModelViewSet):
     serializer_class = StateSerializer
     permission_classes = [UnisealPermission]
 
-class  AreaViewSet(viewsets.ModelViewSet):
+
+class AreaViewSet(viewsets.ModelViewSet):
     """
         API endpoint that allows to add or modify areas by
         the admin
@@ -119,10 +123,15 @@ class  AreaViewSet(viewsets.ModelViewSet):
     queryset = Area.objects.all()
     serializer_class = AreaSerializer
     permission_classes = [UnisealPermission]
-#Views for dashboard - cities views
+
+
+# Views for dashboard - cities views
 from address.models import Country
+
 # countries = Country.objects.all()
 countries = Country.objects.annotate(num_users=Count('state')).order_by('-num_users')
+
+
 def all_countries(request):
     paginator = Paginator(countries, 5)
     if request.GET.get('page'):
@@ -154,32 +163,38 @@ def all_countries(request):
                   }
                   )
 
+
 def add_countries(request):
     from .forms import CountryForm
     if request.method == 'POST':
         form = CountryForm(request.POST)
         if form.is_valid():
             form.save()
+            country_name = form.cleaned_data.get('name')
+            messages.success(request, f"New Country Added: {country_name}")
+        else:
+            for msg in form.error_messages:
+                messages.error(request, f"{msg}: {form.error_messages[msg]}")
     else:
         form = CountryForm()
     context = {
         'title': _('Add Countries'),
         'add_countries': 'active',
         'all_countries': countries,
-        'form':form
+        'form': form
     }
 
     return render(request, 'address/add_countries.html', context)
 
 
 def delete_countries(request):
-
     context = {
         'title': _('Delete Countries'),
         'delete_countries': 'active',
         'all_countries': countries,
     }
     return render(request, 'address/delete_countries.html', context)
+
 
 def edit_countries(request):
     context = {
@@ -189,9 +204,12 @@ def edit_countries(request):
     }
     return render(request, 'address/edit_countries.html', context)
 
+
 from address.models import City
+
 # cities = City.objects.all()
 cities = City.objects.annotate(num_users=Count('user')).order_by('-num_users')
+
 
 def all_cities(request):
     paginator = Paginator(cities, 5)
@@ -224,12 +242,18 @@ def all_cities(request):
                   }
                   )
 
+
 def add_cities(request):
     from .forms import CityForm
     if request.method == 'POST':
         form = CityForm(request.POST)
         if form.is_valid():
             form.save()
+            city = form.cleaned_data.get('name')
+            messages.success(request, f"New City Added: {city}")
+        else:
+            for msg in form.error_messages:
+                messages.error(request, f"{msg}: {form.error_messages[msg]}")
     else:
         form = CityForm()
     context = {
@@ -240,14 +264,15 @@ def add_cities(request):
 
     return render(request, 'address/add_cities.html', context)
 
-def delete_cities(request):
 
+def delete_cities(request):
     context = {
         'title': _('Delete Cities'),
         'delete_cities': 'active',
         'all_categories': cities,
     }
     return render(request, 'address/delete_cities.html', context)
+
 
 def edit_cities(request):
     context = {
@@ -256,11 +281,15 @@ def edit_cities(request):
         'all_categories': cities,
     }
     return render(request, 'address/edit_cities.html', context)
+
+
 # states goes here
 
 from address.models import State
+
 # cities = City.objects.all()
 states = State.objects.annotate(num_cities=Count('country')).order_by('-num_cities')
+
 
 def all_states(request):
     paginator = Paginator(states, 5)
@@ -292,12 +321,19 @@ def all_states(request):
                       'current_page': page
                   }
                   )
+
+
 def add_states(request):
     from .forms import StateForm
     if request.method == 'POST':
         form = StateForm(request.POST)
         if form.is_valid():
             form.save()
+            name = form.cleaned_data.get('name')
+            messages.success(request, f"New State Added: {name}")
+        else:
+            for msg in form.error_messages:
+                messages.error(request, f"{msg}: {form.error_messages[msg]}")
     else:
         form = StateForm()
     context = {
@@ -308,14 +344,15 @@ def add_states(request):
 
     return render(request, 'address/add_states.html', context)
 
-def delete_states(request):
 
+def delete_states(request):
     context = {
         'title': _('Delete States'),
         'delete_states': 'active',
         'all_states': states,
     }
     return render(request, 'address/delete_states.html', context)
+
 
 def edit_states(request):
     context = {
@@ -329,8 +366,10 @@ def edit_states(request):
 # areas goes here
 
 from address.models import Area
+
 # cities = City.objects.all()
 areas = Area.objects.annotate(num=Count('city')).order_by('-num')
+
 
 def all_areas(request):
     paginator = Paginator(areas, 5)
@@ -362,12 +401,19 @@ def all_areas(request):
                       'current_page': page
                   }
                   )
+
+
 def add_areas(request):
     from .forms import AreaForm
     if request.method == 'POST':
         form = AreaForm(request.POST)
         if form.is_valid():
             form.save()
+            name = form.cleaned_data.get('name')
+            messages.success(request, f"New Area Added: {name}")
+        else:
+            for msg in form.error_messages:
+                messages.error(request, f"{msg}: {form.error_messages[msg]}")
     else:
         form = AreaForm()
     context = {
@@ -378,14 +424,15 @@ def add_areas(request):
 
     return render(request, 'address/add_areas.html', context)
 
-def delete_areas(request):
 
+def delete_areas(request):
     context = {
         'title': _('Delete Areas'),
         'delete_areas': 'active',
         'all_areas': areas,
     }
     return render(request, 'address/delete_areas.html', context)
+
 
 def edit_areas(request):
     context = {

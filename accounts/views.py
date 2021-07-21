@@ -6,6 +6,7 @@ from Util.utils import EnablePartialUpdateMixin
 from Util.permissions import IsSystemBackEndUser, IsAnonymousUser,UnisealPermission
 from rest_framework.permissions import IsAuthenticated
 from django.core.paginator import Paginator, PageNotAnInteger, EmptyPage
+from django.contrib import messages
 
 # Create your views here.
 from rest_framework.views import APIView
@@ -242,16 +243,26 @@ def all_users(request):
                   )
 
 def add_users(request):
-    from accounts.models import User
-    from address.models import City
-    all_users = User.objects.all()
-    all_cities = City.objects.all()
+    from .forms import UserForm
+    if request.method == 'POST':
+        form = UserForm(request.POST)
+        if form.is_valid():
+            form.save()
+            username = form.cleaned_data.get('username')
+            messages.success(request, f"New User Added: {username}")
+        else:
+            for msg in form.error_messages:
+                messages.error(request, f"{msg}: {form.error_messages[msg]}")
+    else:
+        form = UserForm()
+
+
 
     context = {
         'title': _('Add Users'),
         'add_users': 'active',
-        'all_users': all_users,
-        'all_cities':all_cities,
+        'form':form,
+
     }
     return render(request, 'accounts/add_users.html', context)
 

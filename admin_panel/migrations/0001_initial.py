@@ -19,52 +19,52 @@ class Migration(migrations.Migration):
     ]
 
     operations = [
-        # migrations.CreateModel(
-        #     name='ManageSolution',
-        #     fields=[
-        #         ('id', models.AutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
-        #         ('solution_views', models.PositiveIntegerField(verbose_name='Solution Views')),
-        #         ('solution', models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, to='solution.solution', verbose_name='Soltion')),
-        #         ('user', models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, to=settings.AUTH_USER_MODEL, verbose_name='User')),
-        #     ],
-        # ),
-        # migrations.CreateModel(
-        #     name='ManageSellingPoints',
-        #     fields=[
-        #         ('id', models.AutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
-        #         ('phone_number_clicks', models.PositiveIntegerField(verbose_name='Phone Number Clicks')),
-        #         ('secondary_phone_number', models.PositiveIntegerField(verbose_name='Secondary Phone Number Clicks')),
-        #         ('selling_point', models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, to='sellingPoint.sellingpoint', verbose_name='Selling Point')),
-        #         ('user', models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, to=settings.AUTH_USER_MODEL, verbose_name='User')),
-        #     ],
-        # ),
-        # migrations.CreateModel(
-        #     name='ManageProjects',
-        #     fields=[
-        #         ('id', models.AutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
-        #         ('project_views', models.PositiveIntegerField(verbose_name='Project Views')),
-        #         ('project', models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, to='project.project', verbose_name='Project')),
-        #         ('user', models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, to=settings.AUTH_USER_MODEL, verbose_name='User')),
-        #     ],
-        # ),
-        # migrations.CreateModel(
-        #     name='ManageProducts',
-        #     fields=[
-        #         ('id', models.AutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
-        #         ('product_views', models.PositiveIntegerField(verbose_name='Product Views')),
-        #         ('product_sheet_downloads', models.PositiveIntegerField(verbose_name='Product Sheet Downloads')),
-        #         ('product', models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, to='product.product', verbose_name='Product')),
-        #         ('user', models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, to=settings.AUTH_USER_MODEL, verbose_name='User')),
-        #     ],
-        # ),
-        # migrations.CreateModel(
-        #     name='ManageBrochures',
-        #     fields=[
-        #         ('id', models.AutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
-        #         ('brochures_views', models.PositiveIntegerField(verbose_name='Brochures_views')),
-        #         ('brochures_sheet_downloads', models.PositiveIntegerField(verbose_name='Brochures Sheet Downloads')),
-        #         ('brochures', models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, to='brochures.brochures', verbose_name='Brochures')),
-        #         ('user', models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, to=settings.AUTH_USER_MODEL, verbose_name='User')),
-        #     ],
-        # ),
+        migrations.CreateModel(
+            name='ManageSolution',
+            fields=[
+                ('id', models.AutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
+                ('solution_views', models.PositiveIntegerField(verbose_name='Solution Views')),
+                ('solution', models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, to='solution.solution', verbose_name='Soltion')),
+                ('user', models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, to=settings.AUTH_USER_MODEL, verbose_name='User')),
+            ],
+        ),
+        migrations.CreateModel(
+            name='ManageSellingPoints',
+            fields=[
+                ('id', models.AutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
+                ('phone_number_clicks', models.PositiveIntegerField(verbose_name='Phone Number Clicks')),
+                ('secondary_phone_number', models.PositiveIntegerField(verbose_name='Secondary Phone Number Clicks')),
+                ('selling_point', models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, to='sellingPoint.sellingpoint', verbose_name='Selling Point')),
+                ('user', models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, to=settings.AUTH_USER_MODEL, verbose_name='User')),
+            ],
+        ),
+        migrations.CreateModel(
+            name='ManageProjects',
+            fields=[
+                ('id', models.AutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
+                ('project_views', models.PositiveIntegerField(verbose_name='Project Views')),
+                ('project', models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, to='project.project', verbose_name='Project')),
+                ('user', models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, to=settings.AUTH_USER_MODEL, verbose_name='User')),
+            ],
+        ),
+        migrations.CreateModel(
+            name='ManageProducts',
+            fields=[
+                ('id', models.AutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
+                ('product_views', models.PositiveIntegerField(verbose_name='Product Views')),
+                ('product_sheet_downloads', models.PositiveIntegerField(verbose_name='Product Sheet Downloads')),
+                ('product', models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, to='product.product', verbose_name='Product')),
+                ('user', models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, to=settings.AUTH_USER_MODEL, verbose_name='User')),
+            ],
+        ),
+        migrations.CreateModel(
+            name='ManageBrochures',
+            fields=[
+                ('id', models.AutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
+                ('brochures_views', models.PositiveIntegerField(verbose_name='Brochures_views')),
+                ('brochures_sheet_downloads', models.PositiveIntegerField(verbose_name='Brochures Sheet Downloads')),
+                ('brochures', models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, to='brochures.brochures', verbose_name='Brochures')),
+                ('user', models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, to=settings.AUTH_USER_MODEL, verbose_name='User')),
+            ],
+        ),
     ]

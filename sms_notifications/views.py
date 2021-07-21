@@ -1,6 +1,7 @@
 from django.shortcuts import render
 from django.core.paginator import Paginator, PageNotAnInteger, EmptyPage
 from django.utils.translation import gettext_lazy as _
+from django.contrib import messages
 
 # Create your views here.
 
@@ -37,20 +38,71 @@ def all_sms(request):
                   }
                   )
 def send_sms(request):
-    from sms_notifications.models import SMSNotification
-    from sms_notifications.models import SMSGroups
-    from sms_notifications.models import SMSContacts
-    all_sms = SMSNotification.objects.all()
-    all_sms_groups = SMSGroups.objects.all()
-    all_sms_contacts =SMSContacts.objects.all()
+    # from sms_notifications.models import SMSNotification
+    # from sms_notifications.models import SMSGroups
+    # from sms_notifications.models import SMSContacts
+    # all_sms = SMSNotification.objects.all()
+    # all_sms_groups = SMSGroups.objects.all()
+    # all_sms_contacts =SMSContacts.objects.all()
+    from .forms import SMSNotificationForm
+    if request.method == 'POST':
+        form = SMSNotificationForm(request.POST)
+        if form.is_valid():
+            form.save()
+            messages.success(request, "Your message has been sent successfully")
+        else:
+            for msg in form.error_messages:
+                messages.error(request, f"{msg}: {form.error_messages[msg]}")
+    else:
+        form = SMSNotificationForm()
     context = {
-        'title': _('Add Products'),
+        'title': _('Send SMS'),
         'send_sms': 'active',
-        'all_sms': all_sms,
-        'all_sms_groups': all_sms_groups,
-        'all_sms_contacts':all_sms_contacts,
+        'form': form,
+
     }
     return render(request, 'sms_notifications/send_sms.html', context)
+def add_sms_group(request):
+    from .forms import SMSGroupsForm
+    if request.method == 'POST':
+        form = SMSGroupsForm(request.POST)
+        if form.is_valid():
+            form.save()
+            name = form.cleaned_data.get('name')
+            messages.success(request, f"New Group Added {name}")
+        else:
+            for msg in form.error_messages:
+                messages.error(request, f"{msg}: {form.error_messages[msg]}")
+    else:
+        form = SMSGroupsForm()
+    context = {
+        'title': _('Add SMS Group'),
+        'add_sms_group': 'active',
+        'form': form,
+
+    }
+    return render(request, 'sms_notifications/add_group.html', context)
+
+def add_sms_contact(request):
+    from .forms import SMSContactsForm
+    if request.method == 'POST':
+        form =  SMSContactsForm(request.POST)
+        if form.is_valid():
+            form.save()
+            number = form.cleaned_data.get('contact_number')
+            messages.success(request, f"New SMS Contact Added {number}")
+        else:
+            for msg in form.error_messages:
+                messages.error(request, f"{msg}: {form.error_messages[msg]}")
+    else:
+        form =  SMSContactsForm()
+    context = {
+        'title': _('Add SMS Contact'),
+        'add_sms_contact': 'active',
+        'form': form,
+
+    }
+    return render(request, 'sms_notifications/add_contact.html', context)
 def delete_sms(request):
     from sms_notifications.models import SMSNotification
     all_sms = SMSNotification.objects.all()

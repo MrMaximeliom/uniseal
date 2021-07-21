@@ -2,6 +2,7 @@
 {% extends "dashboard/base.html" %}
 {% load static %}
 {% load static i18n %}
+{% load crispy_forms_tags %}
 {% block title %}
 {{title}}
 {% endblock title %}
@@ -37,49 +38,49 @@
 <!--    <p class="card-text">Some quick example text to build on the card title and make up the bulk of the card's content.</p>-->
   <form class="card-form">
   <div class="mb-4 row">
-    <label for="productName" class="col-sm-3 col-form-label">Product Name</label>
     <div class="col-sm-6">
-      <input type="text"  class="form-control" id="productName" value="email@example.com">
+                        {{form.name|as_crispy_field}}
+
     </div>
   </div>
   <div class="mb-4 row">
-    <label for="productImage" class="col-sm-3 col-form-label">Product Image</label>
     <div class="col-sm-6">
-      <input type="file" class="form-control" id="productImage" placeholder="Password">
+                          {{form.image|as_crispy_field}}
+
     </div>
   </div>
         <div class="mb-4 row">
-    <label for="productFile" class="col-sm-3 col-form-label">Product File</label>
     <div class="col-sm-6">
-      <input type="file" class="form-control" id="productFile" placeholder="Password">
+                          {{form.category|as_crispy_field}}
+
     </div>
   </div>
       <div class="mb-4 row">
-    <label for="productDescription" class="col-sm-3 col-form-label">Product Description</label>
     <div class="col-sm-6">
-        <textarea rows="3" class="form-control" id="productDescription" placeholder="product description">
+                          {{form.product_file|as_crispy_field}}
 
-        </textarea>
     </div>
   </div>
         <div class="mb-4 row">
-    <label for="productCategory"  class="col-sm-3 col-form-label">Product Category</label>
              <div class="col-sm-6">
-    <select class="form-control" id="productCategory">
-        {% for category in all_categories %}
-      <option>{{category.name}}</option>
-        {% endfor %}
-    </select>
+<!--    <select class="form-control" id="productCategory">-->
+<!--        {% for category in all_categories %}-->
+<!--      <option>{{category.name}}</option>-->
+<!--        {% endfor %}-->
+<!--    </select>-->
+                                   {{form.description|as_crispy_field}}
+
              </div>
   </div>
               <div class="mb-4 row">
-    <label for="supplierName"  class="col-sm-3 col-form-label">Supplier Name</label>
              <div class="col-sm-6">
-    <select class="form-control" id="supplierName">
-     {% for supplier in all_suppliers %}
-      <option>{{supplier.name}}</option>
-        {% endfor %}
-    </select>
+<!--    <select class="form-control" id="supplierName">-->
+<!--     {% for supplier in all_suppliers %}-->
+<!--      <option>{{supplier.name}}</option>-->
+<!--        {% endfor %}-->
+<!--    </select>-->
+                                   {{form.supplier|as_crispy_field}}
+
              </div>
   </div>
        <div class="col-auto">

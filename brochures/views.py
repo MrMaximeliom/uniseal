@@ -2,7 +2,7 @@ from rest_framework import viewsets
 from Util.permissions import UnisealPermission
 from django.shortcuts import render
 from django.utils.translation import gettext_lazy as _
-
+from django.contrib import messages
 
 # Create your views here.
 class  BrochuresViewSet(viewsets.ModelViewSet):
@@ -71,11 +71,24 @@ def all_brochures(request):
 
 
 def add_brochures(request):
+    from .forms import BrochuresForm
+    if request.method == 'POST':
+        form = BrochuresForm(request.POST)
+        if form.is_valid():
+            form.save()
+            title = form.cleaned_data.get('title')
+            messages.success(request, f"New Brochure Added: {title}")
+        else:
+            for msg in form.error_messages:
+                messages.error(request, f"{msg}: {form.error_messages[msg]}")
+    else:
+        form = BrochuresForm()
+
 
     context = {
         'title': _('Add Brochures'),
         'add_brochures': 'active',
-        'all_brochures': brochures,
+        'form': form,
     }
     return render(request, 'brochures/add_brochures.html', context)
 

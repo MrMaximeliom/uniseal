@@ -3,6 +3,7 @@ from django_filters.rest_framework import DjangoFilterBackend
 from rest_framework import viewsets
 from django.utils.translation import gettext_lazy as _
 from django.shortcuts import render
+from  django.contrib import messages
 
 
 class ProjectViewSet(viewsets.ModelViewSet):
@@ -168,12 +169,22 @@ def all_projects(request):
                   )
 
 def add_projects(request):
-    from project.models import Project
-    all_projects = Project.objects.all()
+    from .forms import ProjectForm
+    if request.method == 'POST':
+        form = ProjectForm(request.POST)
+        if form.is_valid():
+            form.save()
+            project_name = form.cleaned_data.get('name')
+            messages.success(request, f"New User Added: {project_name}")
+        else:
+            for msg in form.error_messages:
+                messages.error(request, f"{msg}: {form.error_messages[msg]}")
+    else:
+        form = ProjectForm()
     context = {
         'title': _('Add Projects'),
         'add_projects': 'active',
-        'all_projects': all_projects,
+        'form':form,
     }
     return render(request, 'project/add_projects.html', context)
 
