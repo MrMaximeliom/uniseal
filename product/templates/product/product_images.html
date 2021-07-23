@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+{% extends "dashboard/base.html" %}
+{% load static %}
+
+{% load static i18n %}
+{% block title %}
+{{title}}
+{% endblock title %}
+  {% block custom_css %}
+    <link rel="stylesheet" href="{% static 'dashboard/css/product.css' %}">
+    {% endblock %}
+         {% block breadcrumb_content %}
+   <nav aria-label="crumb">
+                    <ol class="crumb breadcrumb-light breadcrumb-dark">
+                        <li class="breadcrumb-item"><a href="{% url 'dashboard' %}">{% trans 'Dashboard' %}</a></li>
+                        <li class="breadcrumb-item" aria-current="page">{% trans 'Products' %}</li>
+                        <li class="breadcrumb-item" aria-current="page">{% trans 'Product Images' %}</li>
+                    </ol>
+                </nav>
+                {% endblock breadcrumb_content %}
+{% block content %}
+                <h1 class="h2">{% trans 'Product Images' %}</h1>
+
+<div class="row card-group">
+  {% if product_images|length > 1 %}
+
+{% for image in product_images %}
+
+ <div class="col-4">
+                <div class="card mb-5 ml-2" >
+  <img class="card-img-top card-image-product" src="{{image}}" alt="Card image cap">
+  <div class="card-body">
+<!--    <h5 class="card-title">{{product.name}}</h5>-->
+<!--    <p class="card-text">-->
+<!--        {% trans 'Category:' %} {{product.category}}-->
+<!--    </p>-->
+<!--      <p class="card-text">-->
+<!--        {% trans 'Supplier:' %} {{product.supplier.name}}-->
+<!--    </p>-->
+    <button>Make as default</button>
+    <button>Mark as to be deleted</button>
+  </div>
+</div>
+ </div>
+  {% endfor %}
+  {% else %}
+   <div class="col-4">
+                <div class="card mb-5 ml-2" >
+  <img class="card-img-top card-image-product" src="{{product_original_image}}" alt="Card image cap">
+  <div class="card-body">
+    <h5 class="card-title">{{product_data.name}}</h5>
+<!--    <p class="card-text">-->
+<!--        {% trans 'Category:' %} {{product.category}}-->
+<!--    </p>-->
+<!--      <p class="card-text">-->
+<!--        {% trans 'Supplier:' %} {{product.supplier.name}}-->
+<!--    </p>-->
+    <a href="{% url 'editProducts' slug=product_data.slug %} " class="btn btn-primary mr-3">Make Default</a>
+       <a href="{% url 'productDetails' slug=product_data.slug %} " class="btn btn-primary">Mark to be deleted</a>
+  </div>
+</div>
+ </div>
+  {% endif %}
+
+
+
+</div>
+{% endblock %}

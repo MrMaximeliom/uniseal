@@ -68,6 +68,7 @@ urlpatterns = [
     path('dashboard/deleteProducts', product_views.delete_products,name='deleteProducts'),
     path('dashboard/editProducts/<str:slug>', product_views.edit_products,name='editProducts'),
     path('dashboard/productDetails/<str:slug>', product_views.product_details,name='productDetails'),
+    path('dashboard/productImages/<str:slug>', product_views.product_images,name='productImages'),
     path('dashboard/allProjects', project_views.all_projects, name='allProjects'),
     path('dashboard/addProjects', project_views.add_projects, name='addProjects'),
     path('dashboard/deleteProjects', project_views.delete_projects, name='deleteProjects'),

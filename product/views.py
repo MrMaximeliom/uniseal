@@ -377,3 +377,39 @@ def product_details(request,slug):
                   }
                   )
 
+def product_images(request,slug):
+    from product.models import Product,ProductImages
+    # from .forms import ProductForm
+    # all_products = Product.objects.all().order_by("id")
+    # paginator = Paginator(all_products, 5)
+    # fetch the object related to passed id
+    product = get_object_or_404(Product, slug=slug)
+    productImages = ProductImages.objects.filter(product__slug=slug)
+    pureImages = list()
+    if productImages :
+        pureImages.append(product.image.url)
+        for image in productImages:
+            pureImages.append(image.image.url)
+
+
+
+    if request.method == "GET":
+        if productImages :
+            print("its noot empty yo!")
+            print(product.image.url)
+        else:
+            print("its emmpty yoooo!")
+
+
+
+    return render(request, 'product/product_images.html',
+                  {
+                      'title': _('Product Images'),
+                      'all_products': 'active',
+                      'product_data': product,
+                      'product_images':pureImages,
+                      'product_original_image':product.image.url
+
+
+                  }
+                  )
