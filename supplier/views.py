@@ -28,10 +28,14 @@ class SupplierViewSet(viewsets.ModelViewSet):
     def get_view_name(self):
         return _("Create/Modify Suppliers' Data")
 
+
     from .serializers import SupplierSerializer
     serializer_class = SupplierSerializer
-    from .models import Supplier
+
+    def get_queryset(self):
+        from .models import Supplier
+        queryset = Supplier.objects.all().order_by("id")
+        return queryset
     permission_classes = [IsAdminOrReadOnly]
-    queryset = Supplier.objects.all()
     filter_backends = [DjangoFilterBackend]
     filterset_fields = ['name']

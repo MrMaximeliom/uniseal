@@ -2,7 +2,7 @@ from django.utils.translation import gettext_lazy as _
 from rest_framework import viewsets, generics
 from django_filters.rest_framework import DjangoFilterBackend
 from Util.permissions import UnisealPermission
-from django.shortcuts import render
+from django.shortcuts import render, get_object_or_404
 from django.core.paginator import Paginator, PageNotAnInteger, EmptyPage
 from django.contrib import messages
 
@@ -275,12 +275,6 @@ def all_products(request):
 
 
 def add_products(request):
-    # from product.models import Product
-    # from category.models import Category
-    # from supplier.models import Supplier
-    # all_categories = Category.objects.all()
-    # all_products = Product.objects.all()
-    # all_suppliers = Supplier.objects.all()
     from .forms import ProductForm
     if request.method == 'POST':
         form = ProductForm(request.POST)
@@ -315,12 +309,71 @@ def delete_products(request):
     return render(request, 'product/delete_products.html', context)
 
 
-def edit_products(request):
+def edit_products(request,slug):
     from product.models import Product
+    from .forms import ProductForm,ProductImagesForm
     all_products = Product.objects.all()
+    # fetch the object related to passed id
+    obj = get_object_or_404(Product, slug=slug)
+
+    # pass the object as instance in form
+    product_form = ProductForm(request.POST or None, instance=obj)
+    product_image_form = ProductImagesForm(request.POST or None, instance=obj)
+
+    # save the data from the form and
+    # redirect to detail_view
+    if product_form.is_valid()  :
+        product_form.save()
+        product_image_form.save()
+        # return HttpResponseRedirect("/" + id)
+
+    # add form dictionary to context
+    # context["form"] = form
+
+    # return render(request, "update_view.html", context)
     context = {
         'title': _('Edit Products'),
         'edit_products': 'active',
         'all_products': all_products,
+        'product_form':product_form,
+        'product_image_form':product_image_form
     }
     return render(request, 'product/edit_products.html', context)
+
+def product_details(request,slug):
+    from product.models import Product,ProductImages
+    # from .forms import ProductForm
+    # all_products = Product.objects.all().order_by("id")
+    # paginator = Paginator(all_products, 5)
+    # fetch the object related to passed id
+    product = get_object_or_404(Product, slug=slug)
+    productImages = ProductImages.objects.filter(product__slug=slug)
+    pureImages = list()
+    if productImages :
+        pureImages.append(product.image.url)
+        for image in productImages:
+            pureImages.append(image.image.url)
+
+
+
+    if request.method == "GET":
+        if productImages :
+            print("its noot empty yo!")
+            print(product.image.url)
+        else:
+            print("its emmpty yoooo!")
+
+
+
+    return render(request, 'product/product_detail.html',
+                  {
+                      'title': _('Product Details'),
+                      'all_products': 'active',
+                      'product_data': product,
+                      'product_images':pureImages,
+                      'product_original_image':product.image.url
+
+
+                  }
+                  )
+

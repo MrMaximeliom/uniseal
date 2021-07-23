@@ -62,8 +62,7 @@ class SellingPoint(models.Model):
         verbose_name=_('Email Address'),
         max_length=255,
         unique=True,
-        blank = True,
-        null = True
+
     )
 
     def __str__(self):

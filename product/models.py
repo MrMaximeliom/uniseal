@@ -1,9 +1,12 @@
 from django.db import models
 from django.utils.translation import gettext_lazy as _
-from django.utils import timezone
+from django.template.defaultfilters import slugify # new
 import string
 import random
 
+
+def rand_slug():
+    return ''.join(random.choice(string.ascii_letters + string.digits) for _ in range(6))
 class Product(models.Model):
     name = models.CharField(
         max_length=100, verbose_name=_('Product Name'))
@@ -33,13 +36,18 @@ class Product(models.Model):
     added_date = models.DateField(
        auto_now= True,
         verbose_name=_('Added Date'))
+    slug = models.SlugField(default=slugify(rand_slug()))
+
 
     def __str__(self):
         return self.name
 
+    def save(self, *args, **kwargs): # new+
+        if not self.slug:
+            self.slug = slugify(rand_slug()+ "-" +self.name)
+        return super().save(*args, **kwargs)
 
-def rand_slug():
-    return ''.join(random.choice(string.ascii_letters + string.digits) for _ in range(6))
+
 
 
 class ProductImages(models.Model):

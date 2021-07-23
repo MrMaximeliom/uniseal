@@ -2,6 +2,7 @@
 {% extends "dashboard/base.html" %}
 {% load static %}
 {% load static i18n %}
+{% load crispy_forms_tags %}
 {% block title %}
 {{title}}
 {% endblock title %}
@@ -17,5 +18,60 @@
 {% block content %}
                 <h1 class="h2">Edit Products</h1>
                 <p>{% trans 'This is the products of Uniseal Company' %}</p>
+<div class="card ">
+  <div class="card-body">
+<!--    <p class="card-text">Some quick example text to build on the card title and make up the bulk of the card's content.</p>-->
+  <form class="card-form">
+  <div class="mb-3 row">
+    <div class="col-sm-6">
+                        {{product_form.name|as_crispy_field}}
 
+    </div>
+  </div>
+  <div class="mb-3 row">
+    <div class="col-sm-6">
+                          {{product_form.image|as_crispy_field}}
+
+    </div>
+  </div>
+        <div class="mb-3 row">
+    <div class="col-sm-6">
+                          {{product_form.category|as_crispy_field}}
+
+    </div>
+  </div>
+      <div class="mb-3 row">
+    <div class="col-sm-6">
+                          {{product_form.product_file|as_crispy_field}}
+
+    </div>
+  </div>
+        <div class="mb-3 row">
+             <div class="col-sm-6">
+<!--    <select class="form-control" id="productCategory">-->
+<!--        {% for category in all_categories %}-->
+<!--      <option>{{category.name}}</option>-->
+<!--        {% endfor %}-->
+<!--    </select>-->
+                                   {{product_form.description|as_crispy_field}}
+
+             </div>
+  </div>
+              <div class="mb-3 row">
+             <div class="col-sm-6">
+<!--    <select class="form-control" id="supplierName">-->
+<!--     {% for supplier in all_suppliers %}-->
+<!--      <option>{{supplier.name}}</option>-->
+<!--        {% endfor %}-->
+<!--    </select>-->
+                                   {{product_form.supplier|as_crispy_field}}
+
+             </div>
+  </div>
+       <div class="col-auto">
+    <button type="submit" class="btn btn-primary ">{% trans 'Update Product' %}</button>
+  </div>
+</form>
+  </div>
+</div>
 {% endblock content %}
