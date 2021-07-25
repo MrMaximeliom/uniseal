@@ -182,3 +182,5 @@ SIMPLE_JWT = {
     'ROTATE_REFRESH_TOKENS': True,
 }
 STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
+LOGIN_REDIRECT_URL = 'dashboard'
+LOGOUT_REDIRECT_URL = 'login'

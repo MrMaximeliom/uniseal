@@ -209,6 +209,8 @@ class FetchProductsByCategoryViewSet(generics.ListAPIView):
 
 # Views for product
 
+from django.contrib.auth.decorators import login_required
+@login_required(login_url='login')
 def all_products(request):
     from product.models import Product
     all_products = Product.objects.all().order_by("id")
@@ -273,7 +275,7 @@ def all_products(request):
     # for product in result_list:
     #     print(product.image)
 
-
+@login_required(login_url='login')
 def add_products(request):
     from .forms import ProductForm
     if request.method == 'POST':
@@ -297,7 +299,7 @@ def add_products(request):
     }
     return render(request, 'product/add_products.html', context)
 
-
+@login_required(login_url='login')
 def delete_products(request):
     from product.models import Product
     all_products = Product.objects.all()
@@ -308,7 +310,7 @@ def delete_products(request):
     }
     return render(request, 'product/delete_products.html', context)
 
-
+@login_required(login_url='login')
 def edit_products(request,slug):
     from product.models import Product
     from .forms import ProductForm,ProductImagesForm
@@ -339,7 +341,7 @@ def edit_products(request,slug):
         'product_image_form':product_image_form
     }
     return render(request, 'product/edit_products.html', context)
-
+@login_required(login_url='login')
 def product_details(request,slug):
     from product.models import Product,ProductImages
     # from .forms import ProductForm
@@ -376,10 +378,10 @@ def product_details(request,slug):
 
                   }
                   )
-
+@login_required(login_url='login')
 def product_images(request,slug):
     from product.models import Product,ProductImages
-    # from .forms import ProductForm
+    from .forms import ProductImagesForm
     # all_products = Product.objects.all().order_by("id")
     # paginator = Paginator(all_products, 5)
     # fetch the object related to passed id
@@ -391,14 +393,17 @@ def product_images(request,slug):
         for image in productImages:
             pureImages.append(image.image.url)
 
-
-
-    if request.method == "GET":
-        if productImages :
-            print("its noot empty yo!")
-            print(product.image.url)
+    if request.method == 'POST':
+        form = ProductImagesForm(request.POST)
+        if form.is_valid():
+            form.save()
+            # country_name = form.cleaned_data.get('name')
+            # messages.success(request, f"New Product Image Added: {country_name}")
         else:
-            print("its emmpty yoooo!")
+            for msg in form.error_messages:
+                messages.error(request, f"{msg}: {form.error_messages[msg]}")
+    else:
+        form = ProductImagesForm()
 
 
 
@@ -408,7 +413,9 @@ def product_images(request,slug):
                       'all_products': 'active',
                       'product_data': product,
                       'product_images':pureImages,
-                      'product_original_image':product.image.url
+                      'product_original_image':product.image.url,
+                      'form':form
+
 
 
                   }

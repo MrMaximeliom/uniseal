@@ -1,13 +1,17 @@
 <!DOCTYPE html>
 {% extends "dashboard/base.html" %}
 {% load static %}
-
+{% load crispy_forms_tags %}
 {% load static i18n %}
 {% block title %}
 {{title}}
 {% endblock title %}
-  {% block custom_css %}
-    <link rel="stylesheet" href="{% static 'dashboard/css/product.css' %}">
+ {% block custom_css %}
+    <link rel="stylesheet"  href="{% static 'product/css/product_images.css' %}">
+    <link rel="stylesheet" href="{% static 'product/css/product.css' %}">
+    {% endblock %}
+  {% block custom_js %}
+ <script src="{% static 'product/js/product_images.js' %}" defer ></script>
     {% endblock %}
          {% block breadcrumb_content %}
    <nav aria-label="crumb">
@@ -19,9 +23,10 @@
                 </nav>
                 {% endblock breadcrumb_content %}
 {% block content %}
-                <h1 class="h2">{% trans 'Product Images' %}</h1>
+
 <div class="row card-group">
   {% if product_images|length > 1 %}
+   <h1 class="h2">{% trans 'Images for ' %}{{product_data.name}}</h1>
 
 {% for image in product_images %}
 
@@ -29,37 +34,98 @@
                 <div class="card mb-5 ml-2" >
   <img class="card-img-top card-image-product" src="{{image}}" alt="Card image cap">
   <div class="card-body">
-<!--    <h5 class="card-title">{{product.name}}</h5>-->
-<!--    <p class="card-text">-->
-<!--        {% trans 'Category:' %} {{product.category}}-->
-<!--    </p>-->
-<!--      <p class="card-text">-->
-<!--        {% trans 'Supplier:' %} {{product.supplier.name}}-->
-<!--    </p>-->
-    <button>Make as default</button>
-    <button>Mark as to be deleted</button>
+<div class="form-check form-check-inline">
+  <input class="form-check-input input-default-js" type="checkbox" id="inlineCheckbox2" value="option1">
+  <label class="form-check-label" for="inlineCheckbox2">Set As Default Image?</label>
+</div>
+<div class="form-check form-check-inline">
+  <input class="form-check-input input-delete-js" type="checkbox" id="inlineCheckbox" value="option1">
+  <label class="form-check-label delete-product-img" for="inlineCheckbox">Delete Image?</label>
+</div>
+
   </div>
 </div>
  </div>
   {% endfor %}
+
   {% else %}
+    <h1 class="h2">{% trans 'Image for ' %}{{product_data.name}}</h1>
+
    <div class="col-4">
                 <div class="card mb-5 ml-2" >
   <img class="card-img-top card-image-product" src="{{product_original_image}}" alt="Card image cap">
   <div class="card-body">
-    <h5 class="card-title">{{product_data.name}}</h5>
-<!--    <p class="card-text">-->
-<!--        {% trans 'Category:' %} {{product.category}}-->
-<!--    </p>-->
-<!--      <p class="card-text">-->
-<!--        {% trans 'Supplier:' %} {{product.supplier.name}}-->
-<!--    </p>-->
-    <a href="{% url 'editProducts' slug=product_data.slug %} " class="btn btn-primary mr-3">Make Default</a>
-       <a href="{% url 'productDetails' slug=product_data.slug %} " class="btn btn-primary">Mark to be deleted</a>
+
+<div class="form-check form-check-inline">
+  <input class="form-check-input input-default-js" type="checkbox" id="inlineCheckbox3" value="option1">
+  <label class="form-check-label " for="inlineCheckbox3">Set As Default Image?</label>
+</div>
+<div class="form-check form-check-inline">
+  <input class="form-check-input input-delete-js" type="checkbox"  id="inlineCheckbox1" value="option1">
+  <label class="form-check-label delete-product-img" for="inlineCheckbox1">Delete Image?</label>
+</div>
+
   </div>
 </div>
  </div>
   {% endif %}
+ <div class="col-4">
+
+
+<!--<figure class="snip1572">-->
+<!--  <img src="https://s3-us-west-2.amazonaws.com/s.cdpn.io/331810/sample102.jpg" alt="sample102" />-->
+<!--  <figcaption>-->
+<!--    <h3>{% trans 'Add Image' %}</h3>-->
+<!--  </figcaption>-->
+<!--  <a href="#"></a>-->
+<!--</figure>-->
+                     <div class="card mb-5 ml-2" >
+                         <figure class="snip1572">
+  <img src="https://s3-us-west-2.amazonaws.com/s.cdpn.io/331810/sample102.jpg" class="card-img-top" alt="sample102" />
+  <figcaption>
+    <h3>{% trans 'Add Image' %}</h3>
+  </figcaption>
+  <a href="#" data-bs-toggle="modal" data-bs-target="#exampleModal"></a>
+</figure>
+
+
+</div>
+ </div>
+    <!-- Button trigger modal -->
+<!--<button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#exampleModal">-->
+<!--  Launch demo modal-->
+<!--</button>-->
+
+<!-- Modal -->
+<div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="exampleModalLabel">{% trans 'Add New Product Image' %}</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body">
+          <h3>{% trans 'You can add multiple images' %}</h3>
+         <form class="card-form" enctype="multipart/form-data">
+  <div class="mb-4 row">
+    <div class="col-sm-6">
+                     <div class="mb-3">
+  <label for="exampleFormControlInput1" class="form-label">Product Image</label>
+  <input type="file" class="form-control" id="exampleFormControlInput1" multiple="multiple">
+</div>
+0912577333
+        1423
+    </div>
+  </div>
+         </form>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+        <button type="button" class="btn btn-primary">Save changes</button>
+      </div>
+    </div>
+  </div>
+</div>
 
 
 

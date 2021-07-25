@@ -2,9 +2,10 @@ from django.shortcuts import render
 from django.core.paginator import Paginator, PageNotAnInteger, EmptyPage
 from django.utils.translation import gettext_lazy as _
 from django.contrib import messages
+from django.contrib.auth.decorators import login_required
 
 # Create your views here.
-
+@login_required(login_url='login')
 def all_sms(request):
     from sms_notifications.models import SMSNotification
     all_sms = SMSNotification.objects.all().order_by("id")
@@ -37,6 +38,7 @@ def all_sms(request):
                       'current_page': page
                   }
                   )
+@login_required(login_url='login')
 def send_sms(request):
     # from sms_notifications.models import SMSNotification
     # from sms_notifications.models import SMSGroups
@@ -62,6 +64,7 @@ def send_sms(request):
 
     }
     return render(request, 'sms_notifications/send_sms.html', context)
+@login_required(login_url='login')
 def add_sms_group(request):
     from .forms import SMSGroupsForm
     if request.method == 'POST':
@@ -82,7 +85,7 @@ def add_sms_group(request):
 
     }
     return render(request, 'sms_notifications/add_group.html', context)
-
+@login_required(login_url='login')
 def add_sms_contact(request):
     from .forms import SMSContactsForm
     if request.method == 'POST':
@@ -103,6 +106,7 @@ def add_sms_contact(request):
 
     }
     return render(request, 'sms_notifications/add_contact.html', context)
+@login_required(login_url='login')
 def delete_sms(request):
     from sms_notifications.models import SMSNotification
     all_sms = SMSNotification.objects.all()

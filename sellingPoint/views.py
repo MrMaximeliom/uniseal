@@ -4,7 +4,7 @@ from django.shortcuts import render
 # Create your views here.
 from django.contrib import messages
 from django.utils.translation import gettext_lazy as _
-
+from django.contrib.auth.decorators import login_required
 
 class SellingPointViewSet(viewsets.ModelViewSet):
     """API endpoint to add or modify selling points' data by admin
@@ -32,12 +32,16 @@ class SellingPointViewSet(viewsets.ModelViewSet):
 
     def get_view_name(self):
         return _("Create/Modify Selling Points")
+    def get_queryset(self):
+        from .models import SellingPoint
+        queryset = SellingPoint.objects.all().order_by('id')
+        return queryset
+
 
     from .serializers import SellingPointSerializer
     serializer_class = SellingPointSerializer
-    from .models import SellingPoint
+
     permission_classes = [UnisealPermission]
-    queryset = SellingPoint.objects.all()
 
 
 
@@ -47,6 +51,7 @@ class SellingPointViewSet(viewsets.ModelViewSet):
 # Views for dashboard
 from sellingPoint.models import SellingPoint
 sellingPoints = SellingPoint.objects.all().order_by("id")
+@login_required(login_url='login')
 def all_selling_points(request):
     from django.core.paginator import Paginator, PageNotAnInteger, EmptyPage
     paginator = Paginator(sellingPoints, 5)
@@ -78,7 +83,7 @@ def all_selling_points(request):
                       'current_page': page
                   }
                   )
-
+@login_required(login_url='login')
 def add_selling_points(request):
     from .forms import SellingPointForm
     if request.method == 'POST':
@@ -99,7 +104,7 @@ def add_selling_points(request):
         'form': form,
     }
     return render(request, 'sellingPoints/add_selling_points.html', context)
-
+@login_required(login_url='login')
 def delete_selling_points(request):
 
     context = {
@@ -108,7 +113,7 @@ def delete_selling_points(request):
         'all_selling_points': sellingPoints,
     }
     return render(request, 'sellingPoints/delete_selling_points.html', context)
-
+@login_required(login_url='login')
 def edit_selling_points(request):
     context = {
         'title': _('Edit Selling Points'),

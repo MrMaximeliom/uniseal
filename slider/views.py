@@ -3,6 +3,7 @@ from Util.permissions import UnisealPermission
 from django.shortcuts import render
 from django.utils.translation import gettext_lazy as _
 from django.contrib import messages
+from django.contrib.auth.decorators import login_required
 
 # Create your views here.
 class  SliderViewSet(viewsets.ModelViewSet):
@@ -36,6 +37,7 @@ class  SliderViewSet(viewsets.ModelViewSet):
 #Views for dashboard
 from slider.models import Slider
 sliders = Slider.objects.all()
+@login_required(login_url='login')
 def all_sliders(request):
     context = {
         'title': _('All Sliders'),
@@ -43,7 +45,7 @@ def all_sliders(request):
         'all_sliders_data': sliders,
     }
     return render(request, 'slider/all_sliders.html', context)
-
+@login_required(login_url='login')
 def add_sliders(request):
     from .forms import SliderForm
     if request.method == 'POST':
@@ -64,7 +66,7 @@ def add_sliders(request):
         'form': form,
     }
     return render(request, 'slider/add_sliders.html', context)
-
+@login_required(login_url='login')
 def delete_sliders(request):
 
     context = {
@@ -73,7 +75,7 @@ def delete_sliders(request):
         'all_sliders': sliders,
     }
     return render(request, 'slider/delete_sliders.html', context)
-
+@login_required(login_url='login')
 def edit_sliders(request):
     context = {
         'title': _('Edit Slider'),

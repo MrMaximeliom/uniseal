@@ -35,7 +35,9 @@ class  BrochuresViewSet(viewsets.ModelViewSet):
 
 # Dashboard Views
 from .models import Brochures
+from django.contrib.auth.decorators import login_required
 brochures = Brochures.objects.all().order_by("id")
+@login_required(login_url='login')
 def all_brochures(request):
     from django.core.paginator import Paginator, PageNotAnInteger, EmptyPage
     paginator = Paginator(brochures, 5)
@@ -69,7 +71,7 @@ def all_brochures(request):
                   )
 
 
-
+@login_required(login_url='login')
 def add_brochures(request):
     from .forms import BrochuresForm
     if request.method == 'POST':
@@ -91,7 +93,7 @@ def add_brochures(request):
         'form': form,
     }
     return render(request, 'brochures/add_brochures.html', context)
-
+@login_required(login_url='login')
 def delete_brochures(request):
 
     context = {
@@ -100,7 +102,7 @@ def delete_brochures(request):
         'all_brochures': brochures,
     }
     return render(request, 'brochures/delete_brochures.html', context)
-
+@login_required(login_url='login')
 def edit_brochures(request):
     context = {
         'title': _('Edit Brochures'),

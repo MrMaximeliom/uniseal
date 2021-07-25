@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+{% extends "dashboard/base.html" %}
+{% load static %}
+{% load static i18n %}
+{% load crispy_forms_tags %}
+{% block title %}
+{{title}}
+{% endblock title %}
+{% block content %}
+   <h1 class="h2">Login</h1>
+  <form class="card-form" method="post">
+	  	{% csrf_token %}
+  <div class="mb-4 row">
+    <div class="col-sm-6">
+                          {{form.username|as_crispy_field}}
+
+    </div>
+  </div>
+	    <div class="mb-4 row">
+    <div class="col-sm-6">
+                          {{form.password|as_crispy_field}}
+
+    </div>
+  </div>
+	     <div class="col-auto">
+			 <p>Don't have an accoount? Create one <a href="#">here</a></p>
+    <button type="submit" class="btn btn-primary ">{% trans 'Login' %}</button>
+  </div>
+  </form>
+<!--     <form method="post" class="from-group">-->
+<!--	{% csrf_token %}-->
+<!--	{{form|crispy}}-->
+<!--	<p>Don't have an accoount? Create one <a href="#">here</a></p>-->
+<!--	<button type="submit" class="btn btn-success">Login</button>-->
+<!--    </form>-->
+{% endblock content %}

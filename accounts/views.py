@@ -209,6 +209,8 @@ class  ContactUsViewSet(viewsets.ModelViewSet):
     permission_classes = [UnisealPermission]
 
 # Views for dashboard
+from django.contrib.auth.decorators import login_required
+@login_required(login_url='login')
 def all_users(request):
     from accounts.models import User
     all_users = User.objects.all().order_by("id")
@@ -241,7 +243,7 @@ def all_users(request):
                       'current_page': page
                   }
                   )
-
+@login_required(login_url='login')
 def add_users(request):
     from .forms import UserForm
     if request.method == 'POST':
@@ -265,7 +267,7 @@ def add_users(request):
 
     }
     return render(request, 'accounts/add_users.html', context)
-
+@login_required(login_url='login')
 def edit_users(request):
     from accounts.models import User
     all_users = User.objects.all()
@@ -275,7 +277,7 @@ def edit_users(request):
         'all_users': all_users,
     }
     return render(request, 'accounts/edit_users.html', context)
-
+@login_required(login_url='login')
 def delete_users(request):
     from accounts.models import User
     all_users = User.objects.all()

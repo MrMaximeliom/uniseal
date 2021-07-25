@@ -3,7 +3,7 @@ from django.utils.translation import gettext_lazy as _
 from Util.permissions import UnisealPermission
 from django_filters.rest_framework import DjangoFilterBackend
 from django.shortcuts import render
-
+from django.contrib.auth.decorators import login_required
 # Create your views here.
 
 class SolutionViewSet(viewsets.ModelViewSet):
@@ -91,6 +91,7 @@ class SolutionVideosViewSet(viewsets.ModelViewSet):
 #Views for dashboard
 from solution.models import Solution
 solutions = Solution.objects.all()
+@login_required(login_url='login')
 def all_solutions(request):
     # from solution.models import Solution
     # all_solutions = Solution.objects.all()
@@ -100,7 +101,7 @@ def all_solutions(request):
         'all_solutions_data': solutions,
     }
     return render(request, 'solution/all_solutions.html', context)
-
+@login_required(login_url='login')
 def add_solutions(request):
 
     context = {
@@ -109,7 +110,7 @@ def add_solutions(request):
         'all_solutions': solutions,
     }
     return render(request, 'solution/add_solutions.html', context)
-
+@login_required(login_url='login')
 def delete_solutions(request):
 
     context = {
@@ -118,7 +119,7 @@ def delete_solutions(request):
         'all_solutions': solutions,
     }
     return render(request, 'solution/delete_solutions.html', context)
-
+@login_required(login_url='login')
 def edit_solutions(request):
     context = {
         'title': _('Edit Solutions'),

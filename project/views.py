@@ -4,7 +4,7 @@ from rest_framework import viewsets
 from django.utils.translation import gettext_lazy as _
 from django.shortcuts import render
 from  django.contrib import messages
-
+from django.contrib.auth.decorators import login_required
 
 class ProjectViewSet(viewsets.ModelViewSet):
     """API endpoint to allow the admin to add or modify projects' data
@@ -133,6 +133,8 @@ class ProjectSolutionViewSet(viewsets.ModelViewSet):
 
 #Views for dashboard
 
+
+@login_required(login_url='login')
 def all_projects(request):
     from project.models import Project
     from django.core.paginator import Paginator, PageNotAnInteger, EmptyPage
@@ -167,7 +169,7 @@ def all_projects(request):
                       'current_page': page
                   }
                   )
-
+@login_required(login_url='login')
 def add_projects(request):
     from .forms import ProjectForm
     if request.method == 'POST':
@@ -187,7 +189,7 @@ def add_projects(request):
         'form':form,
     }
     return render(request, 'project/add_projects.html', context)
-
+@login_required(login_url='login')
 def delete_projects(request):
     from project.models import Project
     all_projects = Project.objects.all()
@@ -197,7 +199,7 @@ def delete_projects(request):
         'all_projects': all_projects,
     }
     return render(request, 'project/delete_projects.html', context)
-
+@login_required(login_url='login')
 def edit_projects(request):
     from project.models import Project
     all_projects = Project.objects.all()

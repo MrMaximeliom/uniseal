@@ -127,11 +127,12 @@ class AreaViewSet(viewsets.ModelViewSet):
 
 # Views for dashboard - cities views
 from address.models import Country
+from django.contrib.auth.decorators import login_required
 
 # countries = Country.objects.all()
 countries = Country.objects.annotate(num_users=Count('state')).order_by('-num_users')
 
-
+@login_required(login_url='login')
 def all_countries(request):
     paginator = Paginator(countries, 5)
     if request.GET.get('page'):
@@ -163,7 +164,7 @@ def all_countries(request):
                   }
                   )
 
-
+@login_required(login_url='login')
 def add_countries(request):
     from .forms import CountryForm
     if request.method == 'POST':
@@ -186,7 +187,7 @@ def add_countries(request):
 
     return render(request, 'address/add_countries.html', context)
 
-
+@login_required(login_url='login')
 def delete_countries(request):
     context = {
         'title': _('Delete Countries'),
@@ -195,7 +196,7 @@ def delete_countries(request):
     }
     return render(request, 'address/delete_countries.html', context)
 
-
+@login_required(login_url='login')
 def edit_countries(request):
     context = {
         'title': _('Edit Countries'),
@@ -210,7 +211,7 @@ from address.models import City
 # cities = City.objects.all()
 cities = City.objects.annotate(num_users=Count('user')).order_by('-num_users')
 
-
+@login_required(login_url='login')
 def all_cities(request):
     paginator = Paginator(cities, 5)
     if request.GET.get('page'):
@@ -242,7 +243,7 @@ def all_cities(request):
                   }
                   )
 
-
+@login_required(login_url='login')
 def add_cities(request):
     from .forms import CityForm
     if request.method == 'POST':
@@ -264,7 +265,7 @@ def add_cities(request):
 
     return render(request, 'address/add_cities.html', context)
 
-
+@login_required(login_url='login')
 def delete_cities(request):
     context = {
         'title': _('Delete Cities'),
@@ -273,7 +274,7 @@ def delete_cities(request):
     }
     return render(request, 'address/delete_cities.html', context)
 
-
+@login_required(login_url='login')
 def edit_cities(request):
     context = {
         'title': _('Edit Cities'),
@@ -290,7 +291,7 @@ from address.models import State
 # cities = City.objects.all()
 states = State.objects.annotate(num_cities=Count('country')).order_by('-num_cities')
 
-
+@login_required(login_url='login')
 def all_states(request):
     paginator = Paginator(states, 5)
     if request.GET.get('page'):
@@ -322,7 +323,7 @@ def all_states(request):
                   }
                   )
 
-
+@login_required(login_url='login')
 def add_states(request):
     from .forms import StateForm
     if request.method == 'POST':
@@ -344,7 +345,7 @@ def add_states(request):
 
     return render(request, 'address/add_states.html', context)
 
-
+@login_required(login_url='login')
 def delete_states(request):
     context = {
         'title': _('Delete States'),
@@ -353,7 +354,7 @@ def delete_states(request):
     }
     return render(request, 'address/delete_states.html', context)
 
-
+@login_required(login_url='login')
 def edit_states(request):
     context = {
         'title': _('Edit States'),
@@ -370,7 +371,7 @@ from address.models import Area
 # cities = City.objects.all()
 areas = Area.objects.annotate(num=Count('city')).order_by('-num')
 
-
+@login_required(login_url='login')
 def all_areas(request):
     paginator = Paginator(areas, 5)
     if request.GET.get('page'):
@@ -402,7 +403,7 @@ def all_areas(request):
                   }
                   )
 
-
+@login_required(login_url='login')
 def add_areas(request):
     from .forms import AreaForm
     if request.method == 'POST':
@@ -424,7 +425,7 @@ def add_areas(request):
 
     return render(request, 'address/add_areas.html', context)
 
-
+@login_required(login_url='login')
 def delete_areas(request):
     context = {
         'title': _('Delete Areas'),
@@ -433,7 +434,7 @@ def delete_areas(request):
     }
     return render(request, 'address/delete_areas.html', context)
 
-
+@login_required(login_url='login')
 def edit_areas(request):
     context = {
         'title': _('Edit Areas'),

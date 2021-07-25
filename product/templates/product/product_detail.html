@@ -7,7 +7,7 @@
 {{title}}
 {% endblock title %}
  {% block custom_css %}
-    <link rel="stylesheet"  href="{% static 'dashboard/css/product.css' %}">
+    <link rel="stylesheet"  href="{% static 'product/css/product.css' %}">
     {% endblock %}
          {% block breadcrumb_content %}
    <nav aria-label="crumb">
@@ -54,13 +54,13 @@
 </div>
 {% else %}
 <h4>{% trans 'Product Image' %}</h4>
-<div class="product-carousel">
+<div class="product-carousel mb-4">
     <img src="{{product_original_image}}" class="d-block w-100" alt="...">
 </div>
 {% endif %}
-        <div class="row">
+        <div class="row mt-5">
            <div class="col-sm-6">
-                            <a href="{% url 'productImages' slug=product_data.slug  %} " class="btn btn-primary mr-3">Update Product Images</a>
+               <a href="{% url 'productImages' slug=product_data.slug  %} " class="btn btn-primary mr-3">Update Product Images</a>
 
     </div>
 
