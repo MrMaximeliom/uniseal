@@ -18,6 +18,9 @@ def dashboard(request):
     projects_count = all_projects.count()
     short_list_of_projects = all_projects[:5]
     brochures_count = Brochures.objects.all().count()
+
+    all_fields =User._meta.fields
+    print(all_fields)
     print(request.user)
     context = {
         'title': _('Uniseal API Admin Dashboard'),

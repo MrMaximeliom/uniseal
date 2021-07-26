@@ -47,7 +47,7 @@ class Migration(migrations.Migration):
                 ('admin', models.BooleanField(default=False)),
                 ('last_login', models.DateTimeField(auto_now=True, null=True)),
                 ('registration_datetime', models.DateTimeField(auto_now_add=True, null=True)),
-                ('city_f', models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, to='address.city', verbose_name='City')),
+                # ('city_f', models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, to='address.city', verbose_name='City')),
             ],
             options={
                 'abstract': False,

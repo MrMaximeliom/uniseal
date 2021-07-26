@@ -101,11 +101,11 @@ class User(AbstractBaseUser):
     )
     # to be added later on
 
+
     city = models.ForeignKey(
         "address.City",
         on_delete=models.CASCADE,
         verbose_name=_('City'),
-
     )
     email = models.EmailField(
         verbose_name=_('Email Address'),

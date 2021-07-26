@@ -208,8 +208,8 @@ def edit_countries(request):
 
 from address.models import City
 
-# cities = City.objects.all()
-cities = City.objects.annotate(num_users=Count('user')).order_by('-num_users')
+cities = City.objects.all()
+# cities = City.objects.annotate(num_users=Count('user')).order_by('-num_users')
 
 @login_required(login_url='login')
 def all_cities(request):

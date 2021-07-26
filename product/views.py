@@ -1,3 +1,4 @@
+from django.http import HttpResponseRedirect
 from django.utils.translation import gettext_lazy as _
 from rest_framework import viewsets, generics
 from django_filters.rest_framework import DjangoFilterBackend
@@ -244,36 +245,6 @@ def all_products(request):
                   }
                   )
 
-    # if request.method == "GET":
-    #     print(len(request.GET))
-
-    # print("third param")
-    # print(params[2])
-    # for letter in params_string.split(","):
-    #     print(letter)
-
-    # combine tow query sets
-    # logic of getting more than one result
-    # from itertools import chain
-    # from product.models import Product
-    # params = str(request.GET['a']).split(",")
-    # resulting_list = list()
-    # for param in params:
-    #     listItems = Product.objects.filter(category__id=param)
-    #     resulting_list += listItems
-    # print(resulting_list)
-    # for product in resulting_list:
-    #     print(product.product_file)
-    # list1 = Product.objects.filter(category__id=params[0])
-    # list2 =Product.objects.filter(category__id=params[1])
-    # print("first list")
-    # print(list1)
-    # print("second list")
-    # print(list2)
-    # result_list = list(chain(list1,list2))
-    # print("combined")
-    # for product in result_list:
-    #     print(product.image)
 
 @login_required(login_url='login')
 def add_products(request):
@@ -303,10 +274,32 @@ def add_products(request):
 def delete_products(request):
     from product.models import Product
     all_products = Product.objects.all()
+    paginator = Paginator(all_products, 5)
+    if request.GET.get('page'):
+        # Grab the current page from query parameter
+        page = int(request.GET.get('page'))
+    else:
+        page = None
+
+    try:
+        products = paginator.page(page)
+        # Create a page object for the current page.
+    except PageNotAnInteger:
+        # If the query parameter is empty then grab the first page.
+        products = paginator.page(1)
+        page = 1
+    except EmptyPage:
+        # If the query parameter is greater than num_pages then grab the last page.
+        products = paginator.page(paginator.num_pages)
+        page = paginator.num_pages
     context = {
         'title': _('Delete Products'),
         'delete_products': 'active',
         'all_products': all_products,
+        'all_products_data': products,
+        'page_range': paginator.page_range,
+        'num_pages': paginator.num_pages,
+        'current_page': page
     }
     return render(request, 'product/delete_products.html', context)
 
@@ -420,3 +413,18 @@ def product_images(request,slug):
 
                   }
                   )
+def confirm_delete(request,id):
+    from product.models import Product
+    obj = get_object_or_404(Product, id=id)
+    context = {
+        'product':obj
+    }
+
+    if request.method == "POST":
+        # delete object
+        obj.delete()
+        # after deleting redirect to
+        # home page
+        return HttpResponseRedirect("/")
+
+    return render(request, "product/confirm_product_delete.html", context)
