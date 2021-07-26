@@ -20,7 +20,7 @@ class UserSerializer(serializers.ModelSerializer):
         model = User
         fields = (
             'id', 'username', 'full_name','organization',
-            'email', 'gender', 'phone_number', 'password','city_idS','working_field')
+            'email', 'gender', 'phone_number', 'password','city_id','working_field')
 
     #
     # def validate(self, attrs):

@@ -9,6 +9,12 @@
 {% block content %}
 
    <h1 class="h2">Login</h1>
+{% if form.errors %}
+<div class="alert alert-danger">
+       username or password not correct
+
+</div>
+{% endif %}
   <form class="card-form" method="post">
 	  	{% csrf_token %}
   <div class="mb-4 row">

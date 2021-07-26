@@ -22,7 +22,8 @@
   <div class="card-body">
     <h5 class="card-title">Please Add your product details here</h5>
 <!--    <p class="card-text">Some quick example text to build on the card title and make up the bulk of the card's content.</p>-->
-  <form class="card-form">
+  <form class="card-form" action="" method="post">
+      {% csrf_token %}
   <div class="mb-4 row">
     <div class="col-sm-6">
                           {{form.username|as_crispy_field}}
@@ -52,29 +53,39 @@
   </div>
               <div class="mb-4 row">
              <div class="col-sm-6">
-<!--    <select class="form-control" id="gender">-->
-
-<!--      <option>Male</option>-->
-<!--      <option>Female</option>-->
-
-<!--    </select>-->
         {{form.organization|as_crispy_field}}
              </div>
 
   </div>
                     <div class="mb-4 row">
              <div class="col-sm-6">
-<!--    <select class="form-control" id="city" >-->
-<!--{% for city in all_cities %}-->
-<!--      <option>{{city.name}}</option>-->
 
-<!--{% endfor %}-->
-<!--    </select>-->
-<!--{{form.gender|as_crispy_field}}-->
           {{form.working_field|as_crispy_field}}
 
              </div>
   </div>
+                        <div class="mb-4 row">
+             <div class="col-sm-6">
+
+          {{form.password|as_crispy_field}}
+
+             </div>
+  </div>
+                        <div class="mb-4 row">
+             <div class="col-sm-6">
+
+          {{form.city|as_crispy_field}}
+
+             </div>
+  </div>
+                         <div class="mb-4 row">
+             <div class="col-sm-6">
+
+          {{form.admin|as_crispy_field}}
+
+             </div>
+  </div>
+
 
        <div class="col-auto">
     <button type="submit" class="btn btn-primary ">{% trans 'Register User' %}</button>

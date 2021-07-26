@@ -6,7 +6,7 @@ from Util.permissions import UnisealPermission
 from django.shortcuts import render, get_object_or_404
 from django.core.paginator import Paginator, PageNotAnInteger, EmptyPage
 from django.contrib import messages
-
+from django.shortcuts import redirect
 
 # Create your views here.
 
@@ -234,6 +234,8 @@ def all_products(request):
         products = paginator.page(paginator.num_pages)
         page = paginator.num_pages
 
+
+
     return render(request, 'product/all_products.html',
                   {
                       'title': _('All Products'),
@@ -250,14 +252,18 @@ def all_products(request):
 def add_products(request):
     from .forms import ProductForm
     if request.method == 'POST':
-        form = ProductForm(request.POST)
+        form = ProductForm(request.POST,request.FILES)
         if form.is_valid():
             form.save()
-            country_name = form.cleaned_data.get('name')
-            messages.success(request, f"New Product Added: {country_name}")
+            product_name = form.cleaned_data.get('name')
+            messages.success(request, f"New Product Added: {product_name}")
         else:
-            for msg in form.error_messages:
-                messages.error(request, f"{msg}: {form.error_messages[msg]}")
+            print('there was an error dude!')
+            for field, items in form.errors.items():
+                for item in items:
+                    messages.error(request, '{}: {}'.format(field, item))
+            # for msg in form.error_messages:
+            #     messages.error(request, f"{msg}: {form.error_messages[msg]}")
     else:
         form = ProductForm()
     context = {
@@ -273,7 +279,7 @@ def add_products(request):
 @login_required(login_url='login')
 def delete_products(request):
     from product.models import Product
-    all_products = Product.objects.all()
+    all_products = Product.objects.all().order_by('id')
     paginator = Paginator(all_products, 5)
     if request.GET.get('page'):
         # Grab the current page from query parameter
@@ -292,6 +298,10 @@ def delete_products(request):
         # If the query parameter is greater than num_pages then grab the last page.
         products = paginator.page(paginator.num_pages)
         page = paginator.num_pages
+
+
+
+
     context = {
         'title': _('Delete Products'),
         'delete_products': 'active',
@@ -416,15 +426,11 @@ def product_images(request,slug):
 def confirm_delete(request,id):
     from product.models import Product
     obj = get_object_or_404(Product, id=id)
-    context = {
-        'product':obj
-    }
-
-    if request.method == "POST":
-        # delete object
+    try:
         obj.delete()
-        # after deleting redirect to
-        # home page
-        return HttpResponseRedirect("/")
+        messages.success(request, f"Product {obj.name} deleted successfully")
+    except:
+        messages.error(request, f"Product {obj.name} was not deleted , please try again!")
 
-    return render(request, "product/confirm_product_delete.html", context)
+
+    return redirect('deleteProducts')

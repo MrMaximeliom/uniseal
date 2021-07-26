@@ -22,7 +22,8 @@
   <div class="card-body">
     <h5 class="card-title">Please Add your product details here</h5>
 <!--    <p class="card-text">Some quick example text to build on the card title and make up the bulk of the card's content.</p>-->
-  <form class="card-form">
+  <form class="card-form" method="post" action="" enctype="multipart/form-data">
+      {% csrf_token %}
   <div class="mb-4 row">
     <div class="col-sm-6">
                         {{form.name|as_crispy_field}}
@@ -66,6 +67,11 @@
 <!--        {% endfor %}-->
 <!--    </select>-->
                                    {{form.supplier|as_crispy_field}}
+
+             </div>
+                               <div class="col-sm-6">
+
+                                   {{form.slug|as_crispy_field}}
 
              </div>
   </div>

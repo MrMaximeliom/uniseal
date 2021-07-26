@@ -249,12 +249,16 @@ def add_users(request):
     if request.method == 'POST':
         form = UserForm(request.POST)
         if form.is_valid():
-            form.save()
+            password = form.cleaned_data.get('password')
+            user = form.save()
+            user.set_password(user.password)
+            user.save()
             username = form.cleaned_data.get('username')
             messages.success(request, f"New User Added: {username}")
         else:
-            for msg in form.error_messages:
-                messages.error(request, f"{msg}: {form.error_messages[msg]}")
+            for field, items in form.errors.items():
+                for item in items:
+                    messages.error(request, '{}: {}'.format(field, item))
     else:
         form = UserForm()
 
