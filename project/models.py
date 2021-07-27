@@ -7,6 +7,7 @@ class Project(models.Model):
         max_length=100,
         verbose_name=_('Project Name')
     )
+
     title = models.CharField(
         max_length=120,
         verbose_name=_('Project Title')
