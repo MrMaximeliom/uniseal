@@ -8,7 +8,7 @@ class UserForm(forms.ModelForm):
         # fields='__all__'
         fields=[
             'id', 'username', 'full_name','organization', 'password', 'email', 'gender',
-            'phone_number','city','working_field','admin']
+            'phone_number','city','working_field','admin','slug']
     def create(self, validated_data):
         from accounts.models import User
         user = User.objects.create(

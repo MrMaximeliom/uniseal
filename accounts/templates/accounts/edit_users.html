@@ -2,6 +2,7 @@
 {% extends "dashboard/base.html" %}
 {% load static %}
 {% load static i18n %}
+{% load mathfilters %}
 {% block title %}
 {{title}}
 {% endblock title %}
@@ -16,6 +17,67 @@
                 {% endblock breadcrumb_content %}
 {% block content %}
                 <h1 class="h2">Edit Users</h1>
-                <p>{% trans 'You can edit users here' %}</p>
+                <p>{% trans 'This is the users of Uniseal Company' %}</p>
+  <div class="row">
+                    <div class="col-12 col-xl-11 mb-4 mb-lg-0">
+                        <div class="card-light card-dark">
+                            <h5 class="card-header-light card-header-dark">{% trans 'Users' %}</h5>
+                            <div class="card-body-light card-body-dark">
+                                <div class="table-responsive">
+                                    <table class="table">
+                                        <thead>
+                                          <tr>
+                                            <th scope="col">{% trans 'Full Name' %}</th>
+                                            <th scope="col">{% trans 'Username' %}</th>
+                                            <th scope="col">{% trans 'Organization' %}</th>
+                                            <th scope="col">{% trans 'Working Field' %}</th>
+                                            <th scope="col">{% trans 'Phone Number' %}</th>
+                                            <th scope="col">{% trans 'Last Login' %}</th>
+                                            <th scope="col"></th>
 
+                                          </tr>
+                                        </thead>
+                                        <tbody>
+                                        {% for user in all_users_data %}
+                                          <tr>
+                                            <th scope="row">{{user.full_name}}</th>
+                                            <td>{{user.username}}</td>
+                                            <td>{{user.organization}}</td>
+                                            <td>{{user.working_field}}</td>
+                                            <td>0{{user.phone_number}}</td>
+                                            <td>{{user.last_login}}</td>
+                                            <td><a href="{% url 'editUser' slug=user.slug %}" class="btn btn-sm btn-primary">Update</a></td>
+                                          </tr>
+                                        {% endfor %}
+
+                                        </tbody>
+                                      </table>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+ <div class="container mt-3 d-flex justify-content-center">
+        <nav aria-label="Pagination Navigation">
+          <ul class="pagination">
+           <li class="page-item {% if current_page == 1 %} disabled disabled-item {% endif %}">
+            <a class="page-link" href="?page={{ current_page|sub:1 }}" aria-label="Previous">
+             <span aria-hidden="true">«</span>
+             <span class="sr-only">Previous</span>
+            </a>
+           </li>
+           {% for i in page_range %}
+           <li class="page-item {% if i == current_page %} active {% endif %}"><a class="page-link " href="?page={{ i }}">{{ i }}</a></li>
+           {% endfor %}
+
+           <li class="page-item {% if current_page == num_pages %} disabled disabled-item {% endif %}">
+            <a class="page-link" href="?page={{ current_page|add:1 }}" aria-label="Next">
+             <span aria-hidden="true">»</span>
+             <span class="sr-only">Next</span>
+            </a>
+           </li>
+          </ul>
+       </nav>
+  </div>
 {% endblock content %}

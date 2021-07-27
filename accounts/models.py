@@ -1,6 +1,12 @@
 from django.db import models
 from django.utils.translation import gettext_lazy as _
+from django.template.defaultfilters import slugify # new
+import string
+import random
 
+
+def rand_slug():
+    return ''.join(random.choice(string.ascii_letters + string.digits) for _ in range(6))
 # Create your models here.
 from django.contrib.auth.models import (
     BaseUserManager, AbstractBaseUser
@@ -53,7 +59,7 @@ class UserAccountManager(BaseUserManager):
 
 
 class User(AbstractBaseUser):
-    from Util.ListsOfData import CITIES_CHOICES, WORKING_FILED
+    from Util.ListsOfData import  WORKING_FILED
     from Util.ListsOfData import GENDER_CHOICES
     from django.core.validators import RegexValidator
     phone_regex = RegexValidator(regex=r'^9\d{8}$|^1\d{8}$',
@@ -113,13 +119,20 @@ class User(AbstractBaseUser):
         unique=True,
     )
     is_active = models.BooleanField(default=True)
-    staff = models.BooleanField(default=False)  # a admin user; non super-user
-    admin = models.BooleanField(default=False)  # a superuser
+    staff = models.BooleanField(default=False)
+    admin = models.BooleanField(default=False)
     last_login = models.DateTimeField(auto_now=True, blank=True, null=True)
-    registration_datetime = models.DateTimeField(auto_now_add=True, null=True, blank=True)
-    # role = models.PositiveIntegerField(verbose_name=_('User Role'),default=1)
+    slug = models.SlugField(
+        default=slugify(rand_slug()),
+        verbose_name=_('User Slug')
 
-    # notice the absence of a "Password field", that is built in.
+    )
+    registration_datetime = models.DateTimeField(auto_now_add=True, null=True, blank=True)
+
+    def save(self, *args, **kwargs):
+        if not self.slug:
+            self.slug = slugify(rand_slug() + "-" + self.name)
+        return super().save(*args, **kwargs)
 
     USERNAME_FIELD = 'email'
     REQUIRED_FIELDS = ['password', 'full_name', 'gender',

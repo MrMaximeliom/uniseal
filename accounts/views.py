@@ -3,15 +3,14 @@ from rest_framework import viewsets
 from rest_framework import mixins
 
 from Util.utils import EnablePartialUpdateMixin
-from Util.permissions import IsSystemBackEndUser, IsAnonymousUser,UnisealPermission
+from Util.permissions import IsSystemBackEndUser, IsAnonymousUser, UnisealPermission
 from rest_framework.permissions import IsAuthenticated
 from django.core.paginator import Paginator, PageNotAnInteger, EmptyPage
 from django.contrib import messages
 
 # Create your views here.
 from rest_framework.views import APIView
-from django.shortcuts import render
-
+from django.shortcuts import render, get_object_or_404, redirect
 
 
 class Logout(APIView):
@@ -26,7 +25,6 @@ class Logout(APIView):
             return Response(status=status.HTTP_205_RESET_CONTENT)
         except Exception as e:
             return Response(status=status.HTTP_400_BAD_REQUEST)
-
 
 
 class ModifyUserDataViewSet(viewsets.GenericViewSet, mixins.ListModelMixin,
@@ -97,22 +95,22 @@ class RegisterUserViewSet(viewsets.GenericViewSet, mixins.CreateModelMixin):
     serializer_class = RegisterSerializer
     permission_classes = [IsAnonymousUser]
 
-class ChangePasswordView(viewsets.GenericViewSet,mixins.UpdateModelMixin):
-        """
+
+class ChangePasswordView(viewsets.GenericViewSet, mixins.UpdateModelMixin):
+    """
         An endpoint for changing password.
         """
-        from accounts.serializers import ChangePasswordSerializer
+    from accounts.serializers import ChangePasswordSerializer
+
+    serializer_class = ChangePasswordSerializer
+    permission_classes = [IsAuthenticated]
+
+    def get_queryset(self):
+        from .models import User
+        return User.objects.filter(id=self.request.user.id)
 
 
-        serializer_class = ChangePasswordSerializer
-        permission_classes = [IsAuthenticated]
-
-        def get_queryset(self):
-            from .models import User
-            return User.objects.filter(id=self.request.user.id)
-
-
-class CurrentUserDataViewSet(EnablePartialUpdateMixin,viewsets.ModelViewSet
+class CurrentUserDataViewSet(EnablePartialUpdateMixin, viewsets.ModelViewSet
                              ):
     """
       API endpoint that allows to view current user data
@@ -166,13 +164,11 @@ class CurrentUserDataViewSet(EnablePartialUpdateMixin,viewsets.ModelViewSet
     #         serializer.save()
     #         return JsonResponse(code=201, data=serializer.data)
 
-
     def get_view_name(self):
         return _("Current User's Data")
 
 
-
-class  ContactUsViewSet(viewsets.ModelViewSet):
+class ContactUsViewSet(viewsets.ModelViewSet):
     """
         API endpoint that allows to add or modify messages by
         registered users
@@ -208,13 +204,16 @@ class  ContactUsViewSet(viewsets.ModelViewSet):
     serializer_class = ContactUsSerializer
     permission_classes = [UnisealPermission]
 
+
 # Views for dashboard
 from django.contrib.auth.decorators import login_required
+
+
 @login_required(login_url='login')
 def all_users(request):
     from accounts.models import User
     all_users = User.objects.all().order_by("id")
-    paginator = Paginator( all_users, 5)
+    paginator = Paginator(all_users, 5)
     if request.GET.get('page'):
         # Grab the current page from query parameter
         page = int(request.GET.get('page'))
@@ -243,13 +242,14 @@ def all_users(request):
                       'current_page': page
                   }
                   )
+
+
 @login_required(login_url='login')
 def add_users(request):
     from .forms import UserForm
     if request.method == 'POST':
         form = UserForm(request.POST)
         if form.is_valid():
-            password = form.cleaned_data.get('password')
             user = form.save()
             user.set_password(user.password)
             user.save()
@@ -262,32 +262,119 @@ def add_users(request):
     else:
         form = UserForm()
 
-
-
     context = {
         'title': _('Add Users'),
         'add_users': 'active',
-        'form':form,
+        'form': form,
 
     }
     return render(request, 'accounts/add_users.html', context)
+
+
+@login_required(login_url='login')
+def edit_user(request,slug):
+    from accounts.models import User
+    from .forms import UserForm
+    obj = get_object_or_404(User, slug=slug)
+    user_form = UserForm(request.POST or None, instance=obj)
+    if user_form.is_valid():
+        user = user_form.save()
+        user.set_password(user.password)
+        user.save()
+        username = user_form.cleaned_data.get('username')
+        messages.success(request, f"Successfully Updated : {username} Data")
+    else:
+        for field, items in user_form.errors.items():
+            for item in items:
+                messages.error(request, '{}: {}'.format(field, item))
+
+    context = {
+        'title': _('Edit User'),
+        'edit_user': 'active',
+        'all_users': all_users,
+        'user':obj,
+        'form':user_form
+    }
+    return render(request, 'accounts/edit_user.html', context)
+
 @login_required(login_url='login')
 def edit_users(request):
     from accounts.models import User
-    all_users = User.objects.all()
-    context = {
-        'title': _('Edit Users'),
-        'edit_users': 'active',
-        'all_users': all_users,
-    }
-    return render(request, 'accounts/edit_users.html', context)
+    all_users = User.objects.all().order_by("id")
+    paginator = Paginator(all_users, 5)
+    if request.GET.get('page'):
+        # Grab the current page from query parameter
+        page = int(request.GET.get('page'))
+    else:
+        page = None
+
+    try:
+        users = paginator.page(page)
+        # Create a page object for the current page.
+    except PageNotAnInteger:
+        # If the query parameter is empty then grab the first page.
+        users = paginator.page(1)
+        page = 1
+    except EmptyPage:
+        # If the query parameter is greater than num_pages then grab the last page.
+        users = paginator.page(paginator.num_pages)
+        page = paginator.num_pages
+
+    return render(request, 'accounts/edit_users.html',
+                  {
+                      'title': _('Edit Users'),
+                      'edit_users': 'active',
+                      'all_users_data': users,
+                      'page_range': paginator.page_range,
+                      'num_pages': paginator.num_pages,
+                      'current_page': page
+                  }
+                  )
+
 @login_required(login_url='login')
 def delete_users(request):
     from accounts.models import User
-    all_users = User.objects.all()
-    context = {
-        'title': _('Delete Users'),
-        'delete_users': 'active',
-        'all_users': all_users,
-    }
-    return render(request, 'accounts/delete_users.html', context)
+    all_users = User.objects.all().order_by("id")
+    paginator = Paginator(all_users, 5)
+    if request.GET.get('page'):
+        # Grab the current page from query parameter
+        page = int(request.GET.get('page'))
+    else:
+        page = None
+
+    try:
+        users = paginator.page(page)
+        # Create a page object for the current page.
+    except PageNotAnInteger:
+        # If the query parameter is empty then grab the first page.
+        users = paginator.page(1)
+        page = 1
+    except EmptyPage:
+        # If the query parameter is greater than num_pages then grab the last page.
+        users = paginator.page(paginator.num_pages)
+        page = paginator.num_pages
+
+    return render(request, 'accounts/delete_users.html',
+                  {
+                      'title': _('Delete Users'),
+                      'delete_users': 'active',
+                      'all_users':all_users,
+                      'all_users_data': users,
+                      'page_range': paginator.page_range,
+                      'num_pages': paginator.num_pages,
+                      'current_page': page,
+                      'current_user':request.user.username
+                  }
+                  )
+
+def confirm_delete(request,id):
+    from accounts.models import User
+    obj = get_object_or_404(User, id=id)
+    try:
+        obj.delete()
+        messages.success(request, f"User {obj.username} deleted successfully")
+    except:
+        messages.error(request, f"User {obj.username} was not deleted , please try again!")
+
+
+    return redirect('deleteUsers')

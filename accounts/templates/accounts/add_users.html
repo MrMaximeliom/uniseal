@@ -16,17 +16,22 @@
                 </nav>
                 {% endblock breadcrumb_content %}
 {% block content %}
-                <h1 class="h2">All Users</h1>
+                <h1 class="h2">Add New User</h1>
                 <p>{% trans 'Here you can add users to the system' %}</p>
 <div class="card ">
   <div class="card-body">
     <h5 class="card-title">Please Add your product details here</h5>
-<!--    <p class="card-text">Some quick example text to build on the card title and make up the bulk of the card's content.</p>-->
   <form class="card-form" action="" method="post">
       {% csrf_token %}
   <div class="mb-4 row">
     <div class="col-sm-6">
                           {{form.username|as_crispy_field}}
+
+    </div>
+  </div>
+        <div class="mb-4 row">
+    <div class="col-sm-6">
+                          {{form.slug|as_crispy_field}}
 
     </div>
   </div>

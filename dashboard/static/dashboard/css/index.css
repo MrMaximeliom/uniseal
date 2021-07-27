@@ -52,3 +52,6 @@ display:none;
 .current-page{
 background-color:skyblue;
 }
+th{
+white-space:nowrap;
+}

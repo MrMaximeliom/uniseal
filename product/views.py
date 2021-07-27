@@ -314,7 +314,7 @@ def delete_products(request):
     return render(request, 'product/delete_products.html', context)
 
 @login_required(login_url='login')
-def edit_products(request,slug):
+def edit_product(request,slug):
     from product.models import Product
     from .forms import ProductForm,ProductImagesForm
     all_products = Product.objects.all()
@@ -330,20 +330,50 @@ def edit_products(request,slug):
     if product_form.is_valid()  :
         product_form.save()
         product_image_form.save()
-        # return HttpResponseRedirect("/" + id)
-
-    # add form dictionary to context
-    # context["form"] = form
-
-    # return render(request, "update_view.html", context)
     context = {
         'title': _('Edit Products'),
         'edit_products': 'active',
         'all_products': all_products,
         'product_form':product_form,
+        'product' : obj,
         'product_image_form':product_image_form
     }
-    return render(request, 'product/edit_products.html', context)
+    return render(request, 'product/edit_product.html', context)
+
+@login_required(login_url='login')
+def edit_products(request):
+    from product.models import Product
+    all_products = Product.objects.all().order_by("id")
+    paginator = Paginator(all_products, 5)
+    if request.GET.get('page'):
+        # Grab the current page from query parameter
+        page = int(request.GET.get('page'))
+    else:
+        page = None
+
+    try:
+        products = paginator.page(page)
+        # Create a page object for the current page.
+    except PageNotAnInteger:
+        # If the query parameter is empty then grab the first page.
+        products = paginator.page(1)
+        page = 1
+    except EmptyPage:
+        # If the query parameter is greater than num_pages then grab the last page.
+        products = paginator.page(paginator.num_pages)
+        page = paginator.num_pages
+
+    return render(request, 'product/edit_products.html',
+                  {
+                      'title': _('Edit Products'),
+                      'edit_products': 'active',
+                      'all_products_data': products,
+                      'page_range': paginator.page_range,
+                      'num_pages': paginator.num_pages,
+                      'current_page': page
+                  }
+                  )
+
 @login_required(login_url='login')
 def product_details(request,slug):
     from product.models import Product,ProductImages
