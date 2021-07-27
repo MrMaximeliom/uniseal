@@ -173,8 +173,15 @@ def edit_supplier(request,slug):
     from supplier.models import Supplier
     from .forms import SupplierForm
     obj = get_object_or_404(Supplier, slug=slug)
-    supplier_form = SupplierForm(request.POST,request.FILES, instance=obj)
+    print(obj.name)
+    # if request.FILES['image']:
+
+    supplier_form = SupplierForm(request.POST or None, instance=obj)
     if supplier_form.is_valid():
+        if request.FILES:
+            supplier = supplier_form.save()
+            supplier.image = request.FILES['image']
+            supplier.save()
         supplier_form.save()
         name = supplier_form.cleaned_data.get('name')
         messages.success(request, f"Successfully Updated : {name} Data")

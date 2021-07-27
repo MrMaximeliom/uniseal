@@ -2,7 +2,7 @@ from Util.permissions import UnisealPermission
 from django_filters.rest_framework import DjangoFilterBackend
 from rest_framework import viewsets
 from django.utils.translation import gettext_lazy as _
-from django.shortcuts import render
+from django.shortcuts import render, get_object_or_404, redirect
 from  django.contrib import messages
 from django.contrib.auth.decorators import login_required
 
@@ -173,14 +173,15 @@ def all_projects(request):
 def add_projects(request):
     from .forms import ProjectForm
     if request.method == 'POST':
-        form = ProjectForm(request.POST)
+        form = ProjectForm(request.POST,request.FILES)
         if form.is_valid():
             form.save()
             project_name = form.cleaned_data.get('name')
             messages.success(request, f"New User Added: {project_name}")
         else:
-            for msg in form.error_messages:
-                messages.error(request, f"{msg}: {form.error_messages[msg]}")
+            for field, items in form.errors.items():
+                for item in items:
+                    messages.error(request, '{}: {}'.format(field, item))
     else:
         form = ProjectForm()
     context = {
@@ -192,13 +193,38 @@ def add_projects(request):
 @login_required(login_url='login')
 def delete_projects(request):
     from project.models import Project
-    all_projects = Project.objects.all()
-    context = {
-        'title': _('Delete Projects'),
-        'delete_projects': 'active',
-        'all_projects': all_projects,
-    }
-    return render(request, 'project/delete_projects.html', context)
+    from django.core.paginator import Paginator, PageNotAnInteger, EmptyPage
+    all_projects = Project.objects.all().order_by("id")
+    paginator = Paginator(all_projects, 5)
+
+    if request.GET.get('page'):
+        # Grab the current page from query parameter
+        page = int(request.GET.get('page'))
+    else:
+        page = None
+
+    try:
+        projects = paginator.page(page)
+        # Create a page object for the current page.
+    except PageNotAnInteger:
+        # If the query parameter is empty then grab the first page.
+        projects = paginator.page(1)
+        page = 1
+    except EmptyPage:
+        # If the query parameter is greater than num_pages then grab the last page.
+        projects = paginator.page(paginator.num_pages)
+        page = paginator.num_pages
+
+    return render(request, 'project/delete_projects.html',
+                  {
+                      'title': _('Delete Projects'),
+                      'delete_projects': 'active',
+                      'all_projects_data': projects,
+                      'page_range': paginator.page_range,
+                      'num_pages': paginator.num_pages,
+                      'current_page': page
+                  }
+                  )
 @login_required(login_url='login')
 def edit_projects(request):
     from project.models import Project
@@ -209,3 +235,14 @@ def edit_projects(request):
         'all_projects': all_projects,
     }
     return render(request, 'project/edit_projects.html', context)
+def confirm_delete(request,id):
+    from project.models import Project
+    obj = get_object_or_404(Project, id=id)
+    try:
+        obj.delete()
+        messages.success(request, f"Project {obj.name} deleted successfully")
+    except:
+        messages.error(request, f"Project {obj.name} was not deleted , please try again!")
+
+
+    return redirect('deleteProjects')

@@ -76,6 +76,7 @@ urlpatterns = [
     path('dashboard/allProjects', project_views.all_projects, name='allProjects'),
     path('dashboard/addProjects', project_views.add_projects, name='addProjects'),
     path('dashboard/deleteProjects', project_views.delete_projects, name='deleteProjects'),
+    path('dashboard/deleteProject/<int:id>', project_views.confirm_delete, name='deleteProject'),
     path('dashboard/editProjects', project_views.edit_projects, name='editProjects'),
     path('dashboard/allSolutions', solution_views.all_solutions, name='allSolutions'),
     path('dashboard/addSolutions', solution_views.add_solutions, name='addSolutions'),
