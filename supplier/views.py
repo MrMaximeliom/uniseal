@@ -173,7 +173,7 @@ def edit_supplier(request,slug):
     from supplier.models import Supplier
     from .forms import SupplierForm
     obj = get_object_or_404(Supplier, slug=slug)
-    supplier_form = SupplierForm(request.POST or None, instance=obj)
+    supplier_form = SupplierForm(request.POST,request.FILES, instance=obj)
     if supplier_form.is_valid():
         supplier_form.save()
         name = supplier_form.cleaned_data.get('name')
