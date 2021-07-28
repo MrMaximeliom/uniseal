@@ -1,7 +1,20 @@
 from django.db import models
 from django.utils.translation import gettext_lazy as _
+from django.template.defaultfilters import slugify # new
+import string
+import random
 
+
+def rand_slug():
+    return ''.join(random.choice(string.ascii_letters + string.digits) for _ in range(6))
 # Create your models here.
+class Application(models.Model):
+    name = models.CharField(
+        verbose_name=_('Project Application'),
+        max_length=300
+    )
+    def __str__(self):
+        return self.name
 class Project(models.Model):
     name = models.CharField(
         max_length=100,
@@ -34,6 +47,25 @@ class Project(models.Model):
         null=True,
         blank=True
     )
+    slug = models.SlugField(
+        default=slugify(rand_slug()),
+        verbose_name=_('Project Slug')
+
+    )
+    execution_date = models.DateField(
+        verbose_name=_('Project Execution Date'),
+    )
+    application = models.ForeignKey(
+        Application,
+        verbose_name=_('Application'),
+        on_delete=models.CASCADE
+    )
+
+
+    def save(self, *args, **kwargs):
+        if not self.slug:
+            self.slug = slugify(rand_slug() + "-" + str(self.title))
+        return super().save(*args, **kwargs)
 
 
     def __str__(self):
@@ -72,3 +104,4 @@ class ProjectSolutions(models.Model):
         verbose_name=_('Project Solution'),
         on_delete=models.CASCADE,
     )
+

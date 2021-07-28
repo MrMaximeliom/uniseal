@@ -9,7 +9,7 @@ def rand_slug():
 class Supplier(models.Model):
     slug = models.SlugField(
         default=slugify(rand_slug()),
-        verbose_name=_('User Slug')
+        verbose_name=_('Supplier Slug')
 
     )
     name = models.CharField(

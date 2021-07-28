@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+{% extends "dashboard/base.html" %}
+{% load static %}
+{% load static i18n %}
+{% load crispy_forms_tags %}
+{% block title %}
+{{title}}
+{% endblock title %}
+ {% block custom_css %}
+    <link rel="stylesheet"  href="{% static 'project/css/project.css' %}">
+    {% endblock %}
+         {% block breadcrumb_content %}
+   <nav aria-label="crumb">
+                    <ol class="crumb breadcrumb-light breadcrumb-dark">
+                        <li class="breadcrumb-item"><a href="{% url 'dashboard' %}">{% trans 'Dashboard' %}</a></li>
+                        <li class="breadcrumb-item" aria-current="page">{% trans 'Projects' %}</li>
+                        <li class="breadcrumb-item" aria-current="page">{% trans 'Project Details' %}</li>
+                    </ol>
+                </nav>
+                {% endblock breadcrumb_content %}
+{% block content %}
+<div>
+    <h1 class="h2 mb-3">{% trans 'Project Details' %}</h1>
+
+<!--Images of product-->
+<div class="mb-5">
+
+    <h4>{{project_data.name}} / {{project_data.title}} </h4>
+    <h5>{% trans 'For' %} {{project_data.beneficiary}}</h5>
+
+</div>
+{% if project_images|length > 1 %}
+<h4>{% trans 'Project Images' %}</h4>
+
+
+<div id="carouselExampleControls" class="carousel slide project-carousel mb-5" data-bs-ride="carousel">
+  <div class="carousel-inner">
+
+      {% for image in project_images %}
+    <div class="carousel-item {% if forloop.counter0 == 0 %}active{% endif %}">
+      <img src="{{image}}" class="d-block project-img-carousel" alt="...">
+    </div>
+   {% endfor %}
+
+  </div>
+  <button class="carousel-control-prev" type="button" data-bs-target="#carouselExampleControls" data-bs-slide="prev">
+    <span class="carousel-control-prev-icon project-arrows" aria-hidden="true"></span>
+    <span class="visually-hidden">Previous</span>
+  </button>
+  <button class="carousel-control-next" type="button" data-bs-target="#carouselExampleControls" data-bs-slide="next">
+    <span class="carousel-control-next-icon project-arrows" aria-hidden="true"></span>
+    <span class="visually-hidden">Next</span>
+  </button>
+</div>
+{% else %}
+<h4>{% trans 'Project Image' %}</h4>
+<div class="project-carousel mb-4">
+    <img src="{{project_original_image}}" class="d-block w-100" alt="...">
+</div>
+{% endif %}
+        <div class="row mt-5">
+           <div class="col-sm-6">
+               <a href="{% url 'projectImages' slug=project_data.slug %}" class="btn btn-primary mr-3">Update Project Images</a>
+
+    </div>
+
+    </div>
+<div class="mb-3 mt-5 project-description">
+    <h4>{% trans 'Project Description' %}</h4>
+    <p class="description-paragraph">{{project_data.description}}</p>
+</div>
+<div class="mb-3 mt-5 project-description">
+    <h4>{% trans 'Beneficiary Description' %}</h4>
+    <p class="description-paragraph">{{project_data.beneficiary_description}}</p>
+</div>
+    <div class="row">
+           <div class="col-sm-6">
+                            <a href="{% url 'allProjects'  %} " class="btn btn-primary mr-3">Back</a>
+
+
+
+                        <a href="{% url 'editProject' slug=project_data.slug %} " class="btn btn-primary mr-3">Update</a>
+
+    </div>
+
+    </div>
+    </div>
+
+
+{% endblock content %}

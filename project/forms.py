@@ -1,8 +1,32 @@
 from django import forms
-from .models import Project
+from .models import Project,ProjectImages,ProjectVideos
+from django.utils.translation import gettext_lazy as _
+
+# class ProjectForm(forms.ModelForm):
+#     class Meta:
+#         model = Project
+#         execution_date = forms.DateField(input_formats='YYYY-MM-DD',widget=forms.SelectDateWidget)
+#         fields = ('name','title','category','beneficiary',
+#                   'image','description','beneficiary_description','slug','execution_date')
+
+class ProjectForm(forms.Form):
+    name = forms.CharField(max_length=100,label=_('Project Name'),required=True)
+    title = forms.CharField(max_length=120,label=_('Project Title'),required=True)
+    category = forms.CharField(max_length=100,label=_('Project Category'),required=True)
+    beneficiary = forms.CharField(max_length=100,label=_('Project Beneficiary'),required=True)
+    image = forms.ImageField(required=True,label=_('Project Image'))
+    description = forms.CharField(widget=forms.Textarea,required=False,label=_('Project Description'))
+    beneficiary_description = forms.CharField(widget=forms.Textarea,required=False,label=_('Beneficiary Description'))
+    slug = forms.CharField(max_length=120,required=False,label=_('Project Slug'))
+    execution_date = forms.DateField(input_formats='YYYY-MM-DD', widget=forms.SelectDateWidget,label=_('Project Execution Date'),required=True)
 
 
-class ProjectForm(forms.ModelForm):
+class ProjectImagesForm(forms.ModelForm):
     class Meta:
-        model = Project
+        model = ProjectImages
+        fields = '__all__'
+
+class ProjectVideosForm(forms.ModelForm):
+    class Meta:
+        model = ProjectVideos
         fields = '__all__'

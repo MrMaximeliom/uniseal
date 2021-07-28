@@ -197,7 +197,7 @@ def edit_supplier(request,slug):
         'supplier':obj
     }
     return render(request, 'supplier/edit_supplier.html', context)
-
+@login_required(login_url='login')
 def confirm_delete(request,id):
     from supplier.models import Supplier
     obj = get_object_or_404(Supplier, id=id)

@@ -131,7 +131,7 @@ class User(AbstractBaseUser):
 
     def save(self, *args, **kwargs):
         if not self.slug:
-            self.slug = slugify(rand_slug() + "-" + self.name)
+            self.slug = slugify(rand_slug() + "-" + str(self.username))
         return super().save(*args, **kwargs)
 
     USERNAME_FIELD = 'email'

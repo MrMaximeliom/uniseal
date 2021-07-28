@@ -1,0 +1,19 @@
+.card-image-product{
+  height: 300px;
+}
+/* styling product details page */
+.product-carousel{
+width:40vw;
+}
+.product-img-carousel{
+width:60%;
+}
+.product-description{
+width:60%;
+}
+.description-paragraph{
+word-spacing:4px;
+}
+.product-arrows{
+background-color: skyblue;
+}
