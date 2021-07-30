@@ -7,3 +7,12 @@ class EnablePartialUpdateMixin:
     def update(self, request, *args, **kwargs):
         kwargs['partial'] = True
         return super().update(request, *args, **kwargs)
+import datetime
+from django.core.validators import MaxValueValidator, MinValueValidator
+
+def current_year():
+    return datetime.date.today().year
+
+
+def max_value_current_year(value):
+    return MaxValueValidator(current_year())(value)
