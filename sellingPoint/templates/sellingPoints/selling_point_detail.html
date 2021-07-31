@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+{% extends "dashboard/base.html" %}
+{% load static %}
+{% load static i18n %}
+{% load crispy_forms_tags %}
+{% block title %}
+{{title}}
+{% endblock title %}
+ {% block custom_css %}
+    <link rel="stylesheet"  href="{% static 'product/css/product.css' %}">
+    {% endblock %}
+         {% block breadcrumb_content %}
+   <nav aria-label="crumb">
+                    <ol class="crumb breadcrumb-light breadcrumb-dark">
+                        <li class="breadcrumb-item"><a href="{% url 'dashboard' %}">{% trans 'Dashboard' %}</a></li>
+                        <li class="breadcrumb-item" aria-current="page">{% trans 'Selling Point' %}</li>
+                        <li class="breadcrumb-item" aria-current="page">{% trans 'Selling Point Details' %}</li>
+                    </ol>
+                </nav>
+                {% endblock breadcrumb_content %}
+{% block content %}
+<div>
+    <h1 class="h2 mb-3">{% trans 'Selling Point Details' %}</h1>
+
+<!--Images of product-->
+<div class="mb-5">
+
+    <h4>{{point_data.name}}</h4>
+
+</div>
+<h4>{% trans 'Selling Point Image' %}</h4>
+<div class="product-carousel mb-4">
+    <img src="{{point_data.image.url}}" class="d-block w-100" alt="...">
+</div>
+<div class="mb-3">
+    <h4>{% trans 'Selling Point Details' %}</h4>
+    <p>{% trans 'Country: ' %}{{point_data.country.name}}</p>
+    <p>{% trans 'State: ' %}{{point_data.state.name}}</p>
+    <p>{% trans 'City: ' %}{{point_data.city.name}}</p>
+    <p>{% trans 'Area: ' %}{{point_data.area.name}}</p>
+    <p>{% trans 'Address: ' %}{{point_data.address}}</p>
+    <p>{% trans 'Phone Number: ' %}{{point_data.phone_number}}</p>
+    <p>{% trans 'Second Number: ' %}{{point_data.secondary_phone}}</p>
+    <p>{% trans 'Email: ' %}{{point_data.email}}</p>
+ <a href="#" class="btn btn-primary mr-3 mb-5">{% trans 'Visit Location' %}</a>
+
+</div>
+    <div class="row">
+           <div class="col-sm-6">
+                            <a href="{% url 'allSellingPoints'  %} " class="btn btn-primary mr-3">{% trans 'Back' %}</a>
+
+
+
+                        <a href="{% url 'editSellingPoint' slug=point_data.slug%}" class="btn btn-primary mr-3">{% trans 'Update' %}</a>
+
+    </div>
+
+    </div>
+    </div>
+
+
+{% endblock content %}

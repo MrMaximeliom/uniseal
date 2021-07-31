@@ -30,6 +30,7 @@ class ProjectForm(forms.ModelForm):
     class Meta:
         model = Project
         fields = '__all__'
+        exclude = ('slug',)
 class ProjectImagesForm(forms.ModelForm):
     class Meta:
         model = ProjectImages

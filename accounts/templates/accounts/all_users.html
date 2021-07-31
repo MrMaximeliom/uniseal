@@ -18,6 +18,7 @@
 {% block content %}
                 <h1 class="h2">All Users</h1>
                 <p>{% trans 'This is the users of Uniseal Company' %}</p>
+{% if all_users_data|length > 0 %}
   <div class="row">
                     <div class="col-12 col-xl-11 mb-4 mb-lg-0">
                         <div class="card-light card-dark">
@@ -82,4 +83,8 @@
           </ul>
        </nav>
   </div>
+{% else %}
+<h3>{% trans 'There is no users yet .. you can add new ones from ' %} <a href="{% url 'addUsers' %}">{% trans 'Here' %}</a></h3>
+
+{% endif %}
 {% endblock content %}

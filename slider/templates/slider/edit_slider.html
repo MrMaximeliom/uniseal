@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+{% extends "dashboard/base.html" %}
+{% load static %}
+{% load static i18n %}
+{% load crispy_forms_tags %}
+{% block title %}
+{{title}}
+{% endblock title %}
+         {% block breadcrumb_content %}
+   <nav aria-label="crumb">
+                    <ol class="crumb breadcrumb-light breadcrumb-dark">
+                        <li class="breadcrumb-item"><a href="{% url 'dashboard' %}">{% trans 'Dashboard' %}</a></li>
+                        <li class="breadcrumb-item" aria-current="page">{% trans 'Sliders' %}</li>
+                        <li class="breadcrumb-item" aria-current="page">{% trans 'Edit Slider' %}</li>
+                    </ol>
+                </nav>
+                {% endblock breadcrumb_content %}
+{% block content %}
+                <h1 class="h2">{% trans 'Edit Slider' %}</h1>
+                <p>{% trans 'Here you can add new sliders' %}</p>
+<div class="card ">
+  <div class="card-body">
+    <h5 class="card-title">Please Add your project details here</h5>
+  <form class="card-form" action="" method="post" enctype="multipart/form-data">
+      {% csrf_token %}
+  <div class="mb-4 row">
+    <div class="col-sm-6">
+             {{slider_form.image|as_crispy_field}}
+    </div>
+  </div>
+        <div class="mb-4 row">
+    <div class="col-sm-6">
+             {{slider_form.link|as_crispy_field}}
+    </div>
+  </div>
+
+       <div class="col-auto">
+    <button type="submit" class="btn btn-primary ">{% trans 'Edit Slider' %}</button>
+  </div>
+</form>
+  </div>
+</div>
+{% endblock content %}

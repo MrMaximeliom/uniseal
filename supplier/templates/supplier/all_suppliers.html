@@ -18,6 +18,7 @@
 {% block content %}
                 <h1 class="h2">All Suppliers</h1>
                 <p>{% trans 'This is the Suppliers' %}</p>
+{% if all_suppliers_data|length > 0 %}
 <div class="row card-group">
 
 {% for supplier in all_suppliers_data %}
@@ -57,5 +58,9 @@
           </ul>
        </nav>
   </div>
+{% else %}
+<h3>{% trans 'There is no suppliers yet .. you can add new ones from ' %} <a href="{% url 'addSuppliers' %}">{% trans 'Here' %}</a></h3>
+
+{% endif %}
 
 {% endblock content %}

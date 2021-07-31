@@ -21,6 +21,7 @@
 {% block content %}
                 <h1 class="h2">All Products</h1>
                 <p>{% trans 'This is the products of Uniseal Company' %}</p>
+{% if all_products_data|length %}
 <div class="row card-group">
 
 {% for product in all_products_data %}
@@ -66,4 +67,7 @@
           </ul>
        </nav>
   </div>
+{% else %}
+<h3>{% trans 'There is no products yet .. you can add new ones from ' %} <a href="{% url 'addProducts' %}">{% trans 'Here' %}</a></h3>
+{% endif %}
 {% endblock content %}

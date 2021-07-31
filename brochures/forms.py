@@ -5,3 +5,4 @@ class BrochuresForm(forms.ModelForm):
     class Meta:
         model = Brochures
         fields = '__all__'
+        exclude = ('slug',)

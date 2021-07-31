@@ -1,12 +1,10 @@
 from django.db import models
 from django.utils.translation import gettext_lazy as _
 from django.template.defaultfilters import slugify # new
-import string
-import random
+from Util.utils import rand_slug
 
 
-def rand_slug():
-    return ''.join(random.choice(string.ascii_letters + string.digits) for _ in range(6))
+
 class Product(models.Model):
     name = models.CharField(
         max_length=100, verbose_name=_('Product Name'))
@@ -36,7 +34,11 @@ class Product(models.Model):
     added_date = models.DateField(
        auto_now= True,
         verbose_name=_('Added Date'))
-    slug = models.SlugField(default=slugify(rand_slug()))
+    slug = models.SlugField(
+        default=slugify(rand_slug()),
+        verbose_name=_('Product Slug')
+
+    )
 
 
     def __str__(self):

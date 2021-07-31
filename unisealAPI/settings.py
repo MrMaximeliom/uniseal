@@ -54,6 +54,7 @@ INSTALLED_APPS = [
     'notifications',
     'sms_notifications',
     'crispy_forms',
+    'company_info'
 
 
 ]

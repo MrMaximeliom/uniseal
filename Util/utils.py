@@ -8,11 +8,15 @@ class EnablePartialUpdateMixin:
         kwargs['partial'] = True
         return super().update(request, *args, **kwargs)
 import datetime
-from django.core.validators import MaxValueValidator, MinValueValidator
-
+from django.core.validators import MaxValueValidator
+import string
+import random
 def current_year():
     return datetime.date.today().year
 
 
 def max_value_current_year(value):
     return MaxValueValidator(current_year())(value)
+
+def rand_slug():
+    return ''.join(random.choice(string.ascii_letters + string.digits) for _ in range(20))

@@ -1,4 +1,18 @@
 from django.conf.urls.static import static
+from product.urls import urlpatterns as product_urls
+from project.urls import urlpatterns as project_urls
+from solution.urls import urlpatterns as solution_urls
+from accounts.urls import urlpatterns as account_urls
+from category.urls import urlpatterns as category_urls
+from supplier.urls import urlpatterns as supplier_urls
+from address.urls import countries_urlpatterns as country_urls
+from address.urls import states_urlpatterns as state_urls
+from address.urls import cities_urlpatterns as city_urls
+from address.urls import areas_urlpatterns as area_urls
+from slider.urls import urlpatterns as slider_urls
+from brochures.urls import urlpatterns as brochure_urls
+from sellingPoint.urls import urlpatterns as selling_urls
+from sms_notifications.urls import urlpatterns as sms_urls
 from django.contrib import admin
 from django.urls import path, include
 from rest_framework import routers
@@ -8,6 +22,7 @@ from slider import views as slider_views
 from category import views as category_views
 from product import views as product_views
 from project import views as project_views
+from company_info import views as company_views
 from sellingPoint import views as selling_point_views
 from brochures import views as brochures_views
 from solution import views as solution_views
@@ -47,11 +62,15 @@ router.register(r'project/projectVideo', project_views.ProjectVideoViewSet, base
 router.register(r'project/projectSolution', project_views.ProjectSolutionViewSet, basename='CreateProjectSolution')
 router.register(r'sellingPoint/createSellingPoint', selling_point_views.SellingPointViewSet,
                 basename='CreateSellingPoint')
+router.register(r'companyInfo/modifyCompanyInfo', company_views.CompanyInfoViewSet, basename='ModifyCompanyInfo')
 router.register(r'brochures', brochures_views.BrochuresViewSet, basename='CreateBrochures')
 router.register(r'contactUs', accounts_views.ContactUsViewSet, basename='CreateContactUsMessage')
 router.register(r'solution/createSolution', solution_views.SolutionViewSet, basename='CreateSolution')
 router.register(r'solution/solutionImages', solution_views.SolutionImagesViewSet, basename='CreateSolutionImages')
 router.register(r'solution/solutionVideos', solution_views.SolutionVideosViewSet, basename='CreateSolutionVideo')
+router.register(r'SMS/modifySMSGroups', sms_notifications_views.SMSGroupsViewSet, basename='CreateSMSGroup')
+router.register(r'SMS/modifySMSNotifications', sms_notifications_views.SMSNotificationViewSet, basename='CreateSMSNotification')
+router.register(r'SMS/modifySMSContacts', sms_notifications_views.SMSContactsViewSet, basename='CreateSMSContact')
 admin_router.register(r'manageProducts', admin_views.ManageProductsViewSet, basename='ManageProducts')
 admin_router.register(r'manageProjects', admin_views.ManageProjectsViewSet, basename='ManageProjects')
 admin_router.register(r'manageSolution', admin_views.ManageSolutionViewSet, basename='ManageSolution')
@@ -65,75 +84,20 @@ urlpatterns = [
     path('dashboard/', dashboard_views.dashboard, name='dashboard'),
     path('dashboard/login', dashboard_views.LoginView.as_view(), name='login'),
     path('dashboard/logout', dashboard_views.logout_view, name='logout_user'),
-    path('dashboard/allProducts', product_views.all_products, name='allProducts'),
-    path('dashboard/addProducts', product_views.add_products, name='addProducts'),
-    path('dashboard/deleteProducts', product_views.delete_products, name='deleteProducts'),
-    path('dashboard/editProduct/<str:slug>', product_views.edit_product, name='editProduct'),
-    path('dashboard/editProducts', product_views.edit_products, name='editProducts'),
-    path('dashboard/productDetails/<str:slug>', product_views.product_details, name='productDetails'),
-    path('dashboard/productImages/<str:slug>', product_views.product_images, name='productImages'),
-    path('dashboard/confirmDelete/<int:id>', product_views.confirm_delete, name='productDelete'),
-    path('dashboard/allProjects', project_views.all_projects, name='allProjects'),
-    path('dashboard/addProjects', project_views.add_projects, name='addProjects'),
-    path('dashboard/deleteProjects', project_views.delete_projects, name='deleteProjects'),
-    path('dashboard/deleteProject/<int:id>', project_views.confirm_delete, name='deleteProject'),
-    path('dashboard/editProjects', project_views.edit_projects, name='editProjects'),
-    path('dashboard/editProject/<str:slug>', project_views.edit_project, name='editProject'),
-    path('dashboard/projectDetails/<str:slug>', project_views.project_details, name='projectDetails'),
-    path('dashboard/projectImages/<str:slug>', project_views.project_images, name='projectImages'),
-    path('dashboard/allSolutions', solution_views.all_solutions, name='allSolutions'),
-    path('dashboard/addSolutions', solution_views.add_solutions, name='addSolutions'),
-    path('dashboard/deleteSolutions', solution_views.delete_solutions, name='deleteSolutions'),
-    path('dashboard/editSolutions', solution_views.edit_solutions, name='editSolutions'),
-    path('dashboard/allCategories', category_views.all_categories, name='allCategories'),
-    path('dashboard/addCategories', category_views.add_categories, name='addCategories'),
-    path('dashboard/deleteCategories', category_views.delete_categories, name='deleteCategories'),
-    path('dashboard/editCategories', category_views.edit_categories, name='editCategories'),
-    path('dashboard/allUsers', accounts_views.all_users, name='allUsers'),
-    path('dashboard/addUsers', accounts_views.add_users, name='addUsers'),
-    path('dashboard/deleteUsers', accounts_views.delete_users, name='deleteUsers'),
-    path('dashboard/deleteUser/<int:id>', accounts_views.confirm_delete, name='deleteUser'),
-    path('dashboard/editUser/<str:slug>', accounts_views.edit_user, name='editUser'),
-    path('dashboard/editUsers', accounts_views.edit_users, name='editUsers'),
-    path('dashboard/allSuppliers', supplier_views.all_suppliers, name='allSuppliers'),
-    path('dashboard/addSuppliers', supplier_views.add_suppliers, name='addSuppliers'),
-    path('dashboard/deleteSuppliers', supplier_views.delete_suppliers, name='deleteSuppliers'),
-    path('dashboard/deleteSupplier/<int:id>', supplier_views.confirm_delete, name='deleteSupplier'),
-    path('dashboard/editSuppliers', supplier_views.edit_suppliers, name='editSuppliers'),
-    path('dashboard/editSupplier/<str:slug>', supplier_views.edit_supplier, name='editSupplier'),
-    path('dashboard/allCountries', address_views.all_countries, name='allCountries'),
-    path('dashboard/addCountries', address_views.add_countries, name='addCountries'),
-    path('dashboard/deleteCountries', address_views.delete_countries, name='deleteCountries'),
-    path('dashboard/editCountries', address_views.edit_countries, name='editCountries'),
-    path('dashboard/allStates', address_views.all_states, name='allStates'),
-    path('dashboard/addStates', address_views.add_states, name='addStates'),
-    path('dashboard/deleteStates', address_views.delete_states, name='deleteStates'),
-    path('dashboard/editStates', address_views.edit_states, name='editStates'),
-    path('dashboard/allAreas', address_views.all_areas, name='allAreas'),
-    path('dashboard/addAreas', address_views.add_areas, name='addAreas'),
-    path('dashboard/deleteAreas', address_views.delete_areas, name='deleteAreas'),
-    path('dashboard/editAreas', address_views.edit_areas, name='editAreas'),
-    path('dashboard/allCities', address_views.all_cities, name='allCities'),
-    path('dashboard/addCities', address_views.add_cities, name='addCities'),
-    path('dashboard/deleteCities', address_views.delete_cities, name='deleteCities'),
-    path('dashboard/editCities', address_views.edit_cities, name='editCities'),
-    path('dashboard/allSliders', slider_views.all_sliders, name='allSliders'),
-    path('dashboard/addSliders', slider_views.add_sliders, name='addSliders'),
-    path('dashboard/deleteSliders', slider_views.delete_sliders, name='deleteSliders'),
-    path('dashboard/editSliders', slider_views.edit_sliders, name='editSliders'),
-    path('dashboard/allSellingPoints', selling_point_views.all_selling_points, name='allSellingPoints'),
-    path('dashboard/addSellingPoints', selling_point_views.add_selling_points, name='addSellingPoints'),
-    path('dashboard/deleteSellingPoints', selling_point_views.delete_selling_points, name='deleteSellingPoints'),
-    path('dashboard/editSellingPoints', selling_point_views.edit_selling_points, name='editSellingPoints'),
-    path('dashboard/allBrochures', brochures_views.all_brochures, name='allBrochures'),
-    path('dashboard/addBrochures', brochures_views.add_brochures, name='addBrochures'),
-    path('dashboard/deleteBrochures', brochures_views.delete_brochures, name='deleteBrochures'),
-    path('dashboard/editBrochures', brochures_views.edit_brochures, name='editBrochures'),
-    path('dashboard/allSMS', sms_notifications_views.all_sms, name='allSMS'),
-    path('dashboard/sendSMS', sms_notifications_views.send_sms, name='sendSMS'),
-    path('dashboard/addSMSGroup', sms_notifications_views.add_sms_group, name='addSMSGroup'),
-    path('dashboard/addSMSContact', sms_notifications_views.add_sms_contact, name='addSMSContact'),
-    path('dashboard/deleteSMS', sms_notifications_views.delete_sms, name='deleteSMS'),
+    path('dashboard/products/', include(product_urls)),
+    path('dashboard/projects/', include(project_urls)),
+    path('dashboard/solutions/', include(solution_urls)),
+    path('dashboard/categories/', include(category_urls)),
+    path('dashboard/users/', include(account_urls)),
+    path('dashboard/suppliers/', include(supplier_urls)),
+    path('dashboard/countries/', include(country_urls)),
+    path('dashboard/states/', include(state_urls)),
+    path('dashboard/areas/', include(area_urls)),
+    path('dashboard/cities/', include(city_urls)),
+    path('dashboard/sliders/', include(slider_urls)),
+    path('dashboard/sellingPoints/', include(selling_urls)),
+    path('dashboard/brochures/', include(brochure_urls)),
+    path('dashboard/SMSs/', include(sms_urls)),
     path('login/', TokenObtainPairView.as_view(), name='token_obtain_pair'),
     path('login/refresh/', TokenRefreshView.as_view(), name='token_refresh'),
     path('api-auth/', include('rest_framework.urls', namespace='rest_framework')),

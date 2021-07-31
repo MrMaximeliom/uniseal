@@ -1,4 +1,5 @@
 from django.http import HttpResponseRedirect
+from django.template.defaultfilters import slugify
 from django.utils.translation import gettext_lazy as _
 from rest_framework import viewsets, generics
 from django_filters.rest_framework import DjangoFilterBackend
@@ -9,6 +10,8 @@ from django.contrib import messages
 from django.shortcuts import redirect
 
 # Create your views here.
+from Util.utils import rand_slug
+
 
 class ProductViewSet(viewsets.ModelViewSet):
     """API endpoint to add or modify products' data by admin
@@ -254,9 +257,11 @@ def add_products(request):
     if request.method == 'POST':
         form = ProductForm(request.POST,request.FILES)
         if form.is_valid():
-            form.save()
+            product = form.save()
+            product.slug = slugify(rand_slug())
+            product.save()
             product_name = form.cleaned_data.get('name')
-            messages.success(request, f"New Product Added: {product_name}")
+
         else:
             print('there was an error dude!')
             for field, items in form.errors.items():
@@ -433,8 +438,9 @@ def product_images(request,slug):
             # country_name = form.cleaned_data.get('name')
             # messages.success(request, f"New Product Image Added: {country_name}")
         else:
-            for msg in form.error_messages:
-                messages.error(request, f"{msg}: {form.error_messages[msg]}")
+            for field, items in form.errors.items():
+                for item in items:
+                    messages.error(request, '{}: {}'.format(field, item))
     else:
         form = ProductImagesForm()
 

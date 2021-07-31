@@ -1,13 +1,7 @@
 from django.db import models
 from django.utils.translation import gettext_lazy as _
 from django.template.defaultfilters import slugify # new
-import string
-import random
-
-
-def rand_slug():
-    return ''.join(random.choice(string.ascii_letters + string.digits) for _ in range(6))
-# Create your models here.
+from Util.utils import rand_slug
 from django.contrib.auth.models import (
     BaseUserManager, AbstractBaseUser
 )
@@ -61,9 +55,9 @@ class UserAccountManager(BaseUserManager):
 class User(AbstractBaseUser):
     from Util.ListsOfData import  WORKING_FILED
     from Util.ListsOfData import GENDER_CHOICES
-    from django.core.validators import RegexValidator
-    phone_regex = RegexValidator(regex=r'^9\d{8}$|^1\d{8}$',
-                                 message=_("Phone number must start with 9 or 1 (no zeros) and includes 9 numbers."))
+    # from django.core.validators import RegexValidator
+    # phone_regex = RegexValidator(regex=r'^9\d{8}$|^1\d{8}$',
+    #                              message=_("Phone number must start with 9 or 1 (no zeros) and includes 9 numbers."))
     username = models.CharField(
         verbose_name=_('User Name'),
         blank=False,
@@ -176,7 +170,6 @@ class User(AbstractBaseUser):
 
 
 class ContactUs(models.Model):
-    from Util.ListsOfData import CITIES_CHOICES, AREA_CHOICES
     from django.core.validators import RegexValidator
     phone_regex = RegexValidator(regex=r'^9\d{8}$|^1\d{8}$',
                                  message=_("Phone number must start with 9 or 1 (no zeros) and includes 9 numbers."))

@@ -1,11 +1,17 @@
 from django.db import models
+from django.template.defaultfilters import slugify
 from django.utils.translation import gettext_lazy as _
-
+from Util.utils import rand_slug
 # Create your models here.
 class Country(models.Model):
     name = models.CharField(
         verbose_name=_('Country Name'),
         max_length=200,
+    )
+    slug = models.SlugField(
+        default=slugify(rand_slug()),
+        verbose_name=_('Country Slug')
+
     )
 
     def __str__(self):
@@ -21,6 +27,11 @@ class State(models.Model):
         Country,
         on_delete=models.CASCADE,
         verbose_name=_('Country')
+    )
+    slug = models.SlugField(
+        default=slugify(rand_slug()),
+        verbose_name=_('State Slug')
+
     )
     def __str__(self):
         return self.name
@@ -38,6 +49,11 @@ class City(models.Model):
         blank=True,
         null=True
     )
+    slug = models.SlugField(
+        default=slugify(rand_slug()),
+        verbose_name=_('City Slug')
+
+    )
     def __str__(self):
         return self.name
 class Area(models.Model):
@@ -49,6 +65,11 @@ class Area(models.Model):
         City,
         on_delete=models.CASCADE,
         verbose_name=_('City')
+    )
+    slug = models.SlugField(
+        default=slugify(rand_slug()),
+        verbose_name=_('Area Slug')
+
     )
 
     def __str__(self):

@@ -1,3 +1,5 @@
+from django.template.defaultfilters import slugify
+
 from Util.permissions import UnisealPermission
 from django_filters.rest_framework import DjangoFilterBackend
 from rest_framework import viewsets
@@ -5,6 +7,9 @@ from django.utils.translation import gettext_lazy as _
 from django.shortcuts import render, get_object_or_404, redirect
 from  django.contrib import messages
 from django.contrib.auth.decorators import login_required
+
+from Util.utils import rand_slug
+
 
 class ProjectViewSet(viewsets.ModelViewSet):
     """API endpoint to allow the admin to add or modify projects' data
@@ -175,6 +180,8 @@ def add_projects(request):
     if request.method == 'POST':
         form = ProjectForm(request.POST,request.FILES)
         if form.is_valid():
+            form = form.save()
+            form.slug = slugify(rand_slug())
             form.save()
             project_name = form.cleaned_data.get('name')
             messages.success(request, f"New User Added: {project_name}")

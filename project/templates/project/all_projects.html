@@ -21,6 +21,7 @@
 {% block content %}
                 <h1 class="h2">All Projects</h1>
                 <p>{% trans 'This is the projects of Uniseal Company' %}</p>
+{% if all_projects_data|length %}
 <div class="row card-group">
 
 {% for project in all_projects_data %}
@@ -37,7 +38,7 @@
         {% trans 'Beneficiary:' %} {{project.beneficiary}}
     </p>
         <p class="card-text">
-   <span class="ml-2">  {% trans 'Execution Date:' %} </span>
+   <span>  {% trans 'Execution Date:' %} </span>
 <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-clock"><circle cx="12" cy="12" r="10"></circle><polyline points="12 6 12 12 16 14"></polyline></svg>
 
             {{project.execution_year}}
@@ -71,4 +72,9 @@
           </ul>
        </nav>
   </div>
+{% else %}
+<h3>{% trans 'There is no projects yet .. you can add new ones from ' %} <a href="{% url 'addProjects' %}">{% trans 'Here' %}</a></h3>
+
+{% endif %}
+
 {% endblock content %}

@@ -1,8 +1,9 @@
+from django.template.defaultfilters import slugify
 from django.utils.translation import gettext_lazy as _
 from rest_framework import viewsets
 from rest_framework import mixins
 
-from Util.utils import EnablePartialUpdateMixin
+from Util.utils import EnablePartialUpdateMixin, rand_slug
 from Util.permissions import IsSystemBackEndUser, IsAnonymousUser, UnisealPermission
 from rest_framework.permissions import IsAuthenticated
 from django.core.paginator import Paginator, PageNotAnInteger, EmptyPage
@@ -252,6 +253,7 @@ def add_users(request):
         if form.is_valid():
             user = form.save()
             user.set_password(user.password)
+            user.slug = slugify(rand_slug())
             user.save()
             username = form.cleaned_data.get('username')
             messages.success(request, f"New User Added: {username}")

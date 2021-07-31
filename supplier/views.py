@@ -1,3 +1,4 @@
+from django.template.defaultfilters import slugify
 from rest_framework import viewsets
 from Util.permissions import IsAdminOrReadOnly
 from django_filters.rest_framework import DjangoFilterBackend
@@ -45,7 +46,8 @@ class SupplierViewSet(viewsets.ModelViewSet):
 
 # Dashboard Views
 from django.contrib.auth.decorators import login_required
-from .models import Supplier
+from .models import Supplier, rand_slug
+
 suppliers = Supplier.objects.all().order_by("id")
 @login_required(login_url='login')
 def all_suppliers(request):
@@ -118,6 +120,8 @@ def add_suppliers(request):
     if request.method == 'POST':
         form = SupplierForm(request.POST, request.FILES)
         if form.is_valid():
+            form = form.save()
+            form.slug = slugify(rand_slug())
             form.save()
             supplier_name = form.cleaned_data.get('name')
             messages.success(request, f"New Supplier Added: {supplier_name}")

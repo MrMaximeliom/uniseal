@@ -19,6 +19,7 @@
                 <h1 class="h2">All Brochures</h1>
                 <p>{% trans 'This is the Brochures' %}</p>
 <div class="row card-group">
+    {% if all_brochures_data|length %}
 
 {% for brochures in all_brochures_data %}
 
@@ -57,5 +58,7 @@
           </ul>
        </nav>
   </div>
-
+{% else %}
+<h3>{% trans 'There is no brochures yet .. you can add new ones from ' %} <a href="{% url 'addBrochures' %}">{% trans 'Here' %}</a></h3>
+{% endif %}
 {% endblock content %}

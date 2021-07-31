@@ -1,7 +1,10 @@
 from django.db import models
+from django.template.defaultfilters import slugify
 from django.utils.translation import gettext_lazy as _
 
 # Create your models here.
+from Util.utils import rand_slug
+
 
 class SellingPoint(models.Model):
     from Util.ListsOfData import CITIES_CHOICES, AREA_CHOICES
@@ -64,23 +67,12 @@ class SellingPoint(models.Model):
         unique=True,
 
     )
+    slug = models.SlugField(
+        default=slugify(rand_slug()),
+        verbose_name=_('Selling Point Slug')
+
+    )
 
     def __str__(self):
         return self.name
 
-
-# class SellingPointsContactInfo(models.Model):
-#     selling_point = models.ForeignKey(
-#        SellingPoint,
-#        on_delete=models.CASCADE,
-#        verbose_name=_('Selling Point')
-#    )
-#
-#     primary_phone = models.CharField(
-#         max_length=20,
-#         verbose_name=_('Sale Point Primary Phone')
-#     )
-#     secondary_phone = models.CharField(
-#         max_length=20,
-#         verbose_name=_('Sale Point Secondary Phone')
-#     )

@@ -6,3 +6,4 @@ class SliderForm(forms.ModelForm):
     class Meta:
         model = Slider
         fields = '__all__'
+        exclude = ('slug',)

@@ -20,6 +20,7 @@
 {% block content %}
                 <h1 class="h2">All Cities</h1>
                 <p>{% trans 'This is the Cities' %}</p>
+{% if all_cities_data|length %}
  <div class="row">
                     <div class="col-12 col-xl-11 mb-4 mb-lg-0">
                         <div class="card-light card-dark">
@@ -76,5 +77,8 @@
           </ul>
        </nav>
   </div>
+{% else %}
+<h3>{% trans 'There is no cities yet .. you can add new ones from ' %} <a href="{% url 'addCities' %}">{% trans 'Here' %}</a></h3>
 
+{% endif %}
 {% endblock content %}

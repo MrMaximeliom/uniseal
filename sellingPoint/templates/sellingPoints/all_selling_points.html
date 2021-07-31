@@ -1,11 +1,14 @@
 <!DOCTYPE html>
 {% extends "dashboard/base.html" %}
 {% load static %}
-{% load static i18n %}
 {% load mathfilters %}
+{% load static i18n %}
 {% block title %}
 {{title}}
 {% endblock title %}
+  {% block custom_css %}
+    <link rel="stylesheet" href="{% static 'product/css/product.css' %}">
+    {% endblock %}
          {% block breadcrumb_content %}
    <nav aria-label="crumb">
                     <ol class="crumb breadcrumb-light breadcrumb-dark">
@@ -16,44 +19,39 @@
                 </nav>
                 {% endblock breadcrumb_content %}
 {% block content %}
-                <h1 class="h2">All Selling Points</h1>
-                <p>{% trans 'This is the all selling points' %}</p>
- <div class="row">
-                    <div class="col-12 col-xl-11 mb-4 mb-lg-0">
-                        <div class="card-light card-dark">
-                            <h5 class="card-header-light card-header-dark">{% trans 'Selling Points' %}</h5>
-                            <div class="card-body-light card-body-dark">
-                                <div class="table-responsive">
-                                    <table class="table">
-                                        <thead>
-                                          <tr>
-                                            <th scope="col">{% trans 'Name' %}</th>
-                                            <th scope="col">{% trans 'City' %}</th>
-                                            <th scope="col">{% trans 'Address' %}</th>
-                                            <th scope="col">{% trans 'Phone Number' %}</th>
-                                            <th scope="col"></th>
-                                          </tr>
-                                        </thead>
-                                        <tbody>
-                                        {% for selling_point in all_selling_points_data %}
-                                          <tr>
-                                            <th scope="row">{{selling_point.name}}</th>
-                                            <td>{{ selling_point.city }}</td>
-                                            <td>{{ selling_point.address }}</td>
-                                            <td>{{ selling_point.phone_number }}</td>
-                                            <td><a href="#" class="btn btn-sm btn-primary">View</a></td>
-                                          </tr>
-                                        {% endfor %}
+                <h1 class="h2">{% trans 'All Selling Points' %}</h1>
+                <p>{% trans 'This is the products of Uniseal Company' %}</p>
+{% if all_selling_points_data|length %}
+<div class="row card-group">
 
-                                        </tbody>
-                                      </table>
-                                </div>
-                                <a href="#" class="btn btn-block btn-light">More Details</a>
-                            </div>
-                        </div>
-                    </div>
+{% for point in all_selling_points_data %}
 
-                </div>
+ <div class="col-4">
+                <div class="card mb-5 ml-2" >
+  <img class="card-img-top card-image-product" src="{{point.image.url}}" alt="Card image cap">
+  <div class="card-body">
+    <h5 class="card-title">{{point.name}}</h5>
+    <p class="card-text">
+        {% trans 'Country:' %} {{point.country.name}}
+    </p>
+      <p class="card-text">
+        {% trans 'City:' %} {{point.city.name}}
+    </p>
+        <p class="card-text">
+        {% trans 'Area:' %} {{point.area.name}}
+    </p>
+       <p class="card-text">
+              <a href="{% url 'sellingPointDetails' slug=point.slug %}" class="btn btn-primary mr-2">More Details</a>
+
+     <a href="#" class="btn btn-primary mr-3">{% trans 'Visit Location' %}</a>
+
+    </p>
+  </div>
+</div>
+ </div>
+
+{% endfor %}
+</div>
  <div class="container mt-3 d-flex justify-content-center">
         <nav aria-label="Pagination Navigation">
           <ul class="pagination">
@@ -76,5 +74,7 @@
           </ul>
        </nav>
   </div>
-
+{% else %}
+<h3>{% trans 'There is no selling points yet .. you can add new ones from ' %} <a href="{% url 'addSellingPoints' %}">{% trans 'Here' %}</a></h3>
+{% endif %}
 {% endblock content %}
