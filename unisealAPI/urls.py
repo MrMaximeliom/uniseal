@@ -14,6 +14,7 @@ from slider.urls import urlpatterns as slider_urls
 from brochures.urls import urlpatterns as brochure_urls
 from sellingPoint.urls import urlpatterns as selling_urls
 from sms_notifications.urls import urlpatterns as sms_urls
+from project_application.urls import urlpatterns as application_urls
 from django.contrib import admin
 from django.urls import path, include
 from rest_framework import routers
@@ -23,6 +24,7 @@ from slider import views as slider_views
 from category import views as category_views
 from product import views as product_views
 from project import views as project_views
+from project_application import views as application_views
 from company_info import views as company_views
 from sellingPoint import views as selling_point_views
 from brochures import views as brochures_views
@@ -61,6 +63,7 @@ router.register(r'project/createProject', project_views.ProjectViewSet, basename
 router.register(r'project/projectImage', project_views.ProjectImagesViewSet, basename='CreateProjectImages')
 router.register(r'project/projectVideo', project_views.ProjectVideoViewSet, basename='CreateProjectVideo')
 router.register(r'project/projectSolution', project_views.ProjectSolutionViewSet, basename='CreateProjectSolution')
+router.register(r'projectApplication/modifyApplications', application_views.ProjectApplicationViewSet, basename='CreateProjectApplication')
 router.register(r'sellingPoint/createSellingPoint', selling_point_views.SellingPointViewSet,
                 basename='CreateSellingPoint')
 router.register(r'companyInfo/modifyCompanyInfo', company_views.CompanyInfoViewSet, basename='ModifyCompanyInfo')
@@ -100,6 +103,7 @@ urlpatterns = [
     path('dashboard/brochures/', include(brochure_urls)),
     path('dashboard/SMSs/', include(sms_urls)),
     path('dashboard/CompanyInfo/', include(company_urls)),
+    path('dashboard/ProjectApplications/', include(application_urls)),
     path('login/', TokenObtainPairView.as_view(), name='token_obtain_pair'),
     path('login/refresh/', TokenRefreshView.as_view(), name='token_refresh'),
     path('api-auth/', include('rest_framework.urls', namespace='rest_framework')),

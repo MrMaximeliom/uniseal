@@ -14,7 +14,13 @@ def rand_slug():
 
 def year_choices():
     return [(r, r) for r in range(2000, datetime.date.today().year + 1)]
-
+class Application(models.Model):
+    name = models.CharField(
+        verbose_name=_('Project Application'),
+        max_length=300
+    )
+    def __str__(self):
+        return self.name
 class Project(models.Model):
     name = models.CharField(
         max_length=100,
@@ -57,7 +63,7 @@ class Project(models.Model):
     #
     # )
     application = models.ForeignKey(
-        "project_application.Application",
+       Application,
         verbose_name=_('Application'),
         on_delete=models.CASCADE
     )

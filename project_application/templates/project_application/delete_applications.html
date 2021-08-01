@@ -1,45 +1,44 @@
 <!DOCTYPE html>
 {% extends "dashboard/base.html" %}
 {% load static %}
-{% load mathfilters %}
 {% load static i18n %}
+{% load mathfilters %}
 {% block title %}
 {{title}}
 {% endblock title %}
          {% block breadcrumb_content %}
-   <nav aria-label="crumb">
+<nav aria-label="crumb">
                     <ol class="crumb breadcrumb-light breadcrumb-dark">
                         <li class="breadcrumb-item"><a href="{% url 'dashboard' %}">{% trans 'Dashboard' %}</a></li>
-                        <li class="breadcrumb-item" aria-current="page">{% trans 'Categories' %}</li>
-                        <li class="breadcrumb-item" aria-current="page">{% trans 'Delete Categories' %}</li>
+                        <li class="breadcrumb-item" aria-current="page">{% trans 'Project Applications' %}</li>
+                        <li class="breadcrumb-item" aria-current="page">{% trans 'Delete Project Applications' %}</li>
                     </ol>
                 </nav>
                 {% endblock breadcrumb_content %}
 {% block content %}
-                <h1 class="h2">Delete Categories</h1>
-                <p>{% trans 'Here you can delete categories' %}</p>
- <div class="row">
+                <h1 class="h2">{% trans 'Delete Project Applications' %}</h1>
+      <div class="row">
                     <div class="col-12 col-xl-11 mb-4 mb-lg-0">
                         <div class="card-light card-dark">
-                            <h5 class="card-header-light card-header-dark">{% trans 'Categories' %}</h5>
+                            <h5 class="card-header-light card-header-dark">{% trans 'Project Applications' %}</h5>
                             <div class="card-body-light card-body-dark">
                                 <div class="table-responsive">
                                     <table class="table">
                                         <thead>
                                           <tr>
-                                            <th scope="col">{% trans 'Name' %}</th>
-                                            <th scope="col">{% trans 'Numbers of Products' %}</th>
+                                            <th scope="col">{% trans 'Application Name' %}</th>
+                                            <th scope="col">{% trans 'Number of Projects in this Application' %}</th>
                                             <th scope="col"></th>
                                           </tr>
                                         </thead>
                                         <tbody>
-                                        {% for category in all_categories_data %}
+                                        {% for application in all_applications_data %}
                                           <tr>
-                                            <th scope="row">{{category.name}}</th>
-                                            <td>{{ category.num_products }}</td>
-                                            <td><a href="#" class="btn btn-sm btn-danger"  data-bs-toggle="modal" data-bs-target="#exampleModal{{category.id}}">{% trans 'Delete' %}</a></td>
+                                            <th scope="row">{{application.name}}</th>
+                                            <td>{{ application.num_projects }}</td>
+                                            <td><a href="#" class="btn btn-sm btn-danger" data-bs-toggle="modal" data-bs-target="#exampleModal{{application.id}}">{% trans 'delete' %}</a></td>
                                           </tr>
-                                            <div class="modal fade" id="exampleModal{{category.id}}" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                                            <div class="modal fade" id="exampleModal{{application.id}}" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
   <div class="modal-dialog">
     <div class="modal-content">
       <div class="modal-header">
@@ -50,14 +49,14 @@
             {% csrf_token %}
       <div class="modal-body">
 
-          <h3>{% trans 'Are you sure you want to delete this category?' %}</h3>
-<h4 style="color:red;">{{category.name}}</h4>
+          <h3>{% trans 'Are you sure you want to delete this project application?' %}</h3>
 
+          <h4 style="color:red;">{{application.name}}</h4>
 <!--           <input type="number" value="{{product.id}}" hidden name="product_id">-->
       </div>
       <div class="modal-footer">
         <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-        <a type="submit" class="btn btn-danger" href="{% url 'deleteCategory' id=category.id %}">Delete</a>
+        <a type="submit" class="btn btn-danger" href="{% url 'deleteApplication' id=application.id %}">Delete</a>
 
       </div>
               </form>
@@ -97,5 +96,6 @@
           </ul>
        </nav>
   </div>
+
 
 {% endblock content %}
