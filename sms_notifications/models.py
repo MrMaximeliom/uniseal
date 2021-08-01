@@ -40,9 +40,6 @@ class SMSNotification(models.Model):
 
     )
 
-
-
-
 class SMSContacts(models.Model):
     contact_number = models.CharField(
         max_length=18,

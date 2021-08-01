@@ -5,3 +5,4 @@ class CompanyInfoForm(forms.ModelForm):
     class Meta:
         model = CompanyInfo
         fields = '__all__'
+        exclude = ('slug',)

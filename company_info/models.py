@@ -1,6 +1,10 @@
 from django.db import models
+from django.template.defaultfilters import slugify
 from django.utils.translation import gettext_lazy as _
 # Create your models here.
+from Util.utils import rand_slug
+
+
 class CompanyInfo(models.Model):
     from django.core.validators import RegexValidator
     phone_regex = RegexValidator(regex=r'^9\d{8}$|^1\d{8}$',
@@ -80,6 +84,16 @@ class CompanyInfo(models.Model):
         blank=True,
         null=True
     )
+    slug = models.SlugField(
+        default=slugify(rand_slug()),
+        verbose_name=_('Company Slug')
+
+    )
 
     def __str__(self):
         return self.company_name
+
+    def save(self, *args, **kwargs):
+        if not self.slug:
+            self.slug = slugify(rand_slug() + "-" + str(self.company_name))
+        return super().save(*args, **kwargs)

@@ -23,45 +23,58 @@
         <form class="card-form" method="post" action="">
               {% csrf_token %}
              <div class="mb-4 row">
+
     <div class="col-sm-6">
                   {{form.company_name|as_crispy_field}}
     </div>
                    <div class="col-sm-6">
                   {{form.phone_number|as_crispy_field}}
+
     </div>
+             </div>
+                     <div class="mb-4 row">
                             <div class="col-sm-6">
                   {{form.email|as_crispy_field}}
     </div>
                             <div class="col-sm-6">
                   {{form.main_address|as_crispy_field}}
     </div>
-                            <div class="col-sm-6">
+                     </div>
+            <div class="mb-4 row">
+                            <div class="col-sm-4">
                   {{form.country|as_crispy_field}}
     </div>
-                            <div class="col-sm-6">
+                            <div class="col-sm-4">
                   {{form.state|as_crispy_field}}
     </div>
-                            <div class="col-sm-6">
+                <div class="col-sm-4">
                   {{form.city|as_crispy_field}}
-    </div>           <div class="col-sm-6">
+    </div>
+            </div>
+            <div class="mb-4 row">
+                                    <div class="col-sm-6">
                   {{form.website|as_crispy_field}}
     </div>           <div class="col-sm-6">
                   {{form.facebook|as_crispy_field}}
     </div>
+            </div>
+              <div class="mb-4 row">
                    <div class="col-sm-6">
                   {{form.twitter|as_crispy_field}}
     </div>
                    <div class="col-sm-6">
                   {{form.linkedin|as_crispy_field}}
     </div>
-                  <div class="col-sm-6">
+                  <div class="col-sm-6 mt-3">
                   {{form.instagram|as_crispy_field}}
     </div>
 
 
   </div>
           <div class="col-auto">
-    <button type="submit" class="btn btn-primary ">{% trans 'Edit Area' %}</button>
+                  <a href="{% url 'CompanyDetails' %}" class="btn btn-primary mr-3 ">{% trans 'Back' %}</a>
+
+    <button type="submit" class="btn btn-primary ">{% trans 'Update' %}</button>
   </div>
         </form>
   </div>

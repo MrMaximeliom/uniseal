@@ -13,74 +13,53 @@
    <nav aria-label="crumb">
                     <ol class="crumb breadcrumb-light breadcrumb-dark">
                         <li class="breadcrumb-item"><a href="{% url 'dashboard' %}">{% trans 'Dashboard' %}</a></li>
-                        <li class="breadcrumb-item" aria-current="page">{% trans 'Products' %}</li>
-                        <li class="breadcrumb-item" aria-current="page">{% trans 'Product Details' %}</li>
+                        <li class="breadcrumb-item" aria-current="page">{% trans 'Company Info' %}</li>
+                        <li class="breadcrumb-item" aria-current="page">{% trans 'Company Main Information' %}</li>
                     </ol>
                 </nav>
                 {% endblock breadcrumb_content %}
 {% block content %}
 <div>
-    <h1 class="h2 mb-3">{% trans 'Product Details' %}</h1>
+    <h1 class="h2 mb-3">{% trans 'Company Details' %}</h1>
 
 <!--Images of product-->
 <div class="mb-5">
 
-    <h4>{{product_data.name}} / {{product_data.category.name}} </h4>
-    <h5>{% trans 'from' %} {{product_data.supplier.name}}</h5>
+    <h2>{{company_data.company_name}}</h2>
+    <h5>{% trans 'Located at: ' %} {{company_data.main_address}}</h5>
 
 </div>
-{% if product_images|length > 1 %}
-<h4>{% trans 'Product Images' %}</h4>
 
-
-<div id="carouselExampleControls" class="carousel slide product-carousel mb-5" data-bs-ride="carousel">
-  <div class="carousel-inner">
-
-      {% for image in product_images %}
-    <div class="carousel-item {% if forloop.counter0 == 0 %}active{% endif %}">
-      <img src="{{image}}" class="d-block product-img-carousel" alt="...">
-    </div>
-   {% endfor %}
-
-  </div>
-  <button class="carousel-control-prev" type="button" data-bs-target="#carouselExampleControls" data-bs-slide="prev">
-    <span class="carousel-control-prev-icon product-arrows" aria-hidden="true"></span>
-    <span class="visually-hidden">Previous</span>
-  </button>
-  <button class="carousel-control-next" type="button" data-bs-target="#carouselExampleControls" data-bs-slide="next">
-    <span class="carousel-control-next-icon product-arrows" aria-hidden="true"></span>
-    <span class="visually-hidden">Next</span>
-  </button>
+<div class="mb-3">
+    <h4>{% trans 'Company Email' %}</h4>
+    <p>{{company_data.email}}</p>
 </div>
-{% else %}
-<h4>{% trans 'Product Image' %}</h4>
-<div class="product-carousel mb-4">
-    <img src="{{product_original_image}}" class="d-block w-100" alt="...">
+    <div class="mb-3">
+    <h4>{% trans 'Company Phone Number' %}</h4>
+    <p>{{company_data.phone_number}}</p>
 </div>
-{% endif %}
-        <div class="row mt-5">
-           <div class="col-sm-6">
-               <a href="{% url 'productImages' slug=product_data.slug  %} " class="btn btn-primary mr-3">Update Product Images</a>
+    <div class="mb-3">
+    <h4>{% trans 'Company Location' %}</h4>
+    <p>{{company_data.country}},&nbsp;{{company_data.state}},&nbsp;{{company_data.city}}</p>
+</div>
+     <div class="mb-3">
+    <h4>{% trans 'Company Website' %}</h4>
+         <p>{{company_data.website}}</p>
+</div>
+      <div class="mb-3">
+    <h4>{% trans 'Company Social Networks' %}</h4>
+         <span>{% trans 'Website:' %}</span><p>{{company_data.website}}</p>
+         <span>{% trans 'Facebook:' %}</span><p>{{company_data.facebook}}</p>
+         <span>{% trans 'Twitter:' %}</span><p>{{company_data.twitter}}</p>
+         <span>{% trans 'Linked In:' %}</span><p>{{company_data.linkedin}}</p>
+         <span>{% trans 'Instagram:' %}</span><p>{{company_data.instagram}}</p>
 
-    </div>
 
-    </div>
-<div class="mb-3 mt-5 product-description">
-    <h4>{% trans 'Product Description' %}</h4>
-    <p class="description-paragraph">{{product_data.description}}</p>
 </div>
     <div class="row">
            <div class="col-sm-6">
-                            <a href="{% url 'allProducts'  %} " class="btn btn-primary mr-3">Back</a>
-
-
-
-                        <a href="{% url 'editProduct' slug=product_data.slug %} " class="btn btn-primary mr-3">Update</a>
-
-    </div>
-
-    </div>
-    </div>
-
-
+           <a href="{% url 'EditCompanyDetails' %}" class="btn btn-primary mr-3">Update</a>
+</div>
+</div>
+</div>
 {% endblock content %}

@@ -1,10 +1,12 @@
-from django.shortcuts import render
-from rest_framework import viewsets
+from django.shortcuts import render, get_object_or_404
+from rest_framework import viewsets,mixins
 from django.utils.translation import gettext_lazy as _
 from Util.permissions import UnisealPermission
-
+from Util.utils import EnablePartialUpdateMixin
 # Create your views here.
-class  CompanyInfoViewSet(viewsets.ModelViewSet):
+class  CompanyInfoViewSet(EnablePartialUpdateMixin, viewsets.GenericViewSet,
+                          mixins.UpdateModelMixin,mixins.ListModelMixin,
+                          mixins.RetrieveModelMixin):
     """
           API endpoint that allows to add or modify company info by
           the admin
@@ -42,3 +44,32 @@ class  CompanyInfoViewSet(viewsets.ModelViewSet):
     queryset = CompanyInfo.objects.all()
     serializer_class = CompanyInfoSerializer
     permission_classes = [UnisealPermission]
+
+from django.contrib.auth.decorators import login_required
+@login_required(login_url='login')
+def edit_info(request):
+    from .models import CompanyInfo
+    from .forms import CompanyInfoForm
+    # fetch the object related to passed id
+    obj = get_object_or_404(CompanyInfo, id=1)
+    # pass the object as instance in form
+    company_form = CompanyInfoForm(request.POST or None, instance=obj)
+    if company_form.is_valid():
+        company_form.save()
+    context = {
+        'title': _('Edit Company Info'),
+        'company_info': 'active',
+        'form': company_form,
+        'company': obj,
+    }
+    return render(request, 'company_info/edit_info.html', context)
+
+@login_required(login_url='login')
+def company_details(request):
+    from company_info.models import CompanyInfo
+    company = get_object_or_404(CompanyInfo, id=1)
+    return render(request, 'company_info/info_detail.html',
+                  {
+                      'title': _('Company Details'),
+                      'company_info': 'active',
+                      'company_data': company,})

@@ -141,8 +141,6 @@ class CurrentUserDataViewSet(EnablePartialUpdateMixin, viewsets.ModelViewSet
 
     permission_classes = [IsAuthenticated]
 
-    # http_method_names = ['get']
-
     def get_queryset(self):
         from .models import User
         return User.objects.filter(id=self.request.user.id)

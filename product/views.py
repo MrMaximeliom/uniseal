@@ -1,4 +1,3 @@
-from django.http import HttpResponseRedirect
 from django.template.defaultfilters import slugify
 from django.utils.translation import gettext_lazy as _
 from rest_framework import viewsets, generics
@@ -214,6 +213,8 @@ class FetchProductsByCategoryViewSet(generics.ListAPIView):
 # Views for product
 
 from django.contrib.auth.decorators import login_required
+
+
 @login_required(login_url='login')
 def all_products(request):
     from product.models import Product
@@ -237,8 +238,6 @@ def all_products(request):
         products = paginator.page(paginator.num_pages)
         page = paginator.num_pages
 
-
-
     return render(request, 'product/all_products.html',
                   {
                       'title': _('All Products'),
@@ -255,7 +254,7 @@ def all_products(request):
 def add_products(request):
     from .forms import ProductForm
     if request.method == 'POST':
-        form = ProductForm(request.POST,request.FILES)
+        form = ProductForm(request.POST, request.FILES)
         if form.is_valid():
             product = form.save()
             product.slug = slugify(rand_slug())
@@ -275,11 +274,12 @@ def add_products(request):
         'title': _('Add Products'),
         'add_products': 'active',
         'all_products': all_products,
-        'form':form,
+        'form': form,
         # 'all_categories': all_categories,
         # 'all_suppliers': all_suppliers,
     }
     return render(request, 'product/add_products.html', context)
+
 
 @login_required(login_url='login')
 def delete_products(request):
@@ -304,9 +304,6 @@ def delete_products(request):
         products = paginator.page(paginator.num_pages)
         page = paginator.num_pages
 
-
-
-
     context = {
         'title': _('Delete Products'),
         'delete_products': 'active',
@@ -318,10 +315,11 @@ def delete_products(request):
     }
     return render(request, 'product/delete_products.html', context)
 
+
 @login_required(login_url='login')
-def edit_product(request,slug):
+def edit_product(request, slug):
     from product.models import Product
-    from .forms import ProductForm,ProductImagesForm
+    from .forms import ProductForm, ProductImagesForm
     all_products = Product.objects.all()
     # fetch the object related to passed id
     obj = get_object_or_404(Product, slug=slug)
@@ -332,18 +330,19 @@ def edit_product(request,slug):
 
     # save the data from the form and
     # redirect to detail_view
-    if product_form.is_valid()  :
+    if product_form.is_valid():
         product_form.save()
         product_image_form.save()
     context = {
         'title': _('Edit Products'),
         'edit_products': 'active',
         'all_products': all_products,
-        'product_form':product_form,
-        'product' : obj,
-        'product_image_form':product_image_form
+        'product_form': product_form,
+        'product': obj,
+        'product_image_form': product_image_form
     }
     return render(request, 'product/edit_product.html', context)
+
 
 @login_required(login_url='login')
 def edit_products(request):
@@ -379,9 +378,10 @@ def edit_products(request):
                   }
                   )
 
+
 @login_required(login_url='login')
-def product_details(request,slug):
-    from product.models import Product,ProductImages
+def product_details(request, slug):
+    from product.models import Product, ProductImages
     # from .forms import ProductForm
     # all_products = Product.objects.all().order_by("id")
     # paginator = Paginator(all_products, 5)
@@ -389,36 +389,33 @@ def product_details(request,slug):
     product = get_object_or_404(Product, slug=slug)
     productImages = ProductImages.objects.filter(product__slug=slug)
     pureImages = list()
-    if productImages :
+    if productImages:
         pureImages.append(product.image.url)
         for image in productImages:
             pureImages.append(image.image.url)
 
-
-
     if request.method == "GET":
-        if productImages :
+        if productImages:
             print("its noot empty yo!")
             print(product.image.url)
         else:
             print("its emmpty yoooo!")
-
-
 
     return render(request, 'product/product_detail.html',
                   {
                       'title': _('Product Details'),
                       'all_products': 'active',
                       'product_data': product,
-                      'product_images':pureImages,
-                      'product_original_image':product.image.url
-
+                      'product_images': pureImages,
+                      'product_original_image': product.image.url
 
                   }
                   )
+
+
 @login_required(login_url='login')
-def product_images(request,slug):
-    from product.models import Product,ProductImages
+def product_images(request, slug):
+    from product.models import Product, ProductImages
     from .forms import ProductImagesForm
     # all_products = Product.objects.all().order_by("id")
     # paginator = Paginator(all_products, 5)
@@ -426,7 +423,7 @@ def product_images(request,slug):
     product = get_object_or_404(Product, slug=slug)
     productImages = ProductImages.objects.filter(product__slug=slug)
     pureImages = list()
-    if productImages :
+    if productImages:
         pureImages.append(product.image.url)
         for image in productImages:
             pureImages.append(image.image.url)
@@ -444,22 +441,20 @@ def product_images(request,slug):
     else:
         form = ProductImagesForm()
 
-
-
     return render(request, 'product/product_images.html',
                   {
                       'title': _('Product Images'),
                       'all_products': 'active',
                       'product_data': product,
-                      'product_images':pureImages,
-                      'product_original_image':product.image.url,
-                      'form':form
-
-
+                      'product_images': pureImages,
+                      'product_original_image': product.image.url,
+                      'form': form
 
                   }
                   )
-def confirm_delete(request,id):
+
+
+def confirm_delete(request, id):
     from product.models import Product
     obj = get_object_or_404(Product, id=id)
     try:
@@ -467,6 +462,5 @@ def confirm_delete(request,id):
         messages.success(request, f"Product {obj.name} deleted successfully")
     except:
         messages.error(request, f"Product {obj.name} was not deleted , please try again!")
-
 
     return redirect('deleteProducts')
