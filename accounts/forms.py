@@ -1,6 +1,7 @@
 from accounts.models import User
 from django import forms
-
+from django.contrib.auth.password_validation import validate_password
+from django.utils.translation import gettext_lazy as _
 
 class UserForm(forms.ModelForm):
     class Meta:
@@ -46,3 +47,4 @@ class UserLoginForm(forms.ModelForm):
     class Meta:
         model=User
         fields=['email' , 'password']
+

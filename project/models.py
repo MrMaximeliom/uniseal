@@ -68,7 +68,7 @@ class Project(models.Model):
         on_delete=models.SET_NULL,
         null=True
     )
-    execution_year = models.IntegerField(
+    execution_date = models.IntegerField(
         _('Execution Year'),
         validators=[MinValueValidator(2000), max_value_current_year],
         default=2020,

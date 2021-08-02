@@ -2,7 +2,8 @@ from django.template.defaultfilters import slugify
 from django.utils.translation import gettext_lazy as _
 from rest_framework import viewsets
 from rest_framework import mixins
-
+from django.contrib.auth import update_session_auth_hash
+from django.contrib.auth.forms import PasswordChangeForm
 from Util.utils import EnablePartialUpdateMixin, rand_slug
 from Util.permissions import IsSystemBackEndUser, IsAnonymousUser, UnisealPermission
 from rest_framework.permissions import IsAuthenticated
@@ -378,3 +379,19 @@ def confirm_delete(request,id):
 
 
     return redirect('deleteUsers')
+@login_required(login_url='login')
+def change_password(request):
+    if request.method == 'POST':
+        form = PasswordChangeForm(request.user, request.POST)
+        if form.is_valid():
+            user = form.save()
+            update_session_auth_hash(request, user)  # Important!
+            messages.success(request, 'Your password was successfully updated!')
+            return redirect('changePassword')
+        else:
+            messages.error(request, 'Please correct the error below.')
+    else:
+        form = PasswordChangeForm(request.user)
+    return render(request, 'accounts/change_password.html', {
+        'form': form
+    })

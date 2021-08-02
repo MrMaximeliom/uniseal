@@ -7,5 +7,6 @@ urlpatterns = [
     path('deleteUser/<int:id>', accounts_views.confirm_delete, name='deleteUser'),
     path('editUser/<str:slug>', accounts_views.edit_user, name='editUser'),
     path('editUsers', accounts_views.edit_users, name='editUsers'),
+    path('changePassword', accounts_views.change_password, name='changePassword'),
 
     ]
