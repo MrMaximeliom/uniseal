@@ -41,6 +41,7 @@
                                         </thead>
                                         <tbody>
                                         {% for user in all_users_data %}
+
                                           <tr>
                                             <th scope="row">{{user.full_name}}</th>
                                             <td>{{user.username}}</td>
@@ -48,9 +49,38 @@
                                             <td>{{user.working_field}}</td>
                                             <td>0{{user.phone_number}}</td>
                                             <td>{{user.last_login}}</td>
-                                            <td><a href="#" class="btn btn-sm btn-primary">Update</a></td>
-                                            <td><a href="#" class="btn btn-sm btn-danger">Delete</a></td>
+                                            <td><a href="{% url 'editUser' slug=user.slug %}" class="btn btn-sm btn-primary">Update</a></td>
+                                              {% if user != request.user %}
+                                            <td><a href="#" class="btn btn-sm btn-danger" data-bs-toggle="modal" data-bs-target="#exampleModal{{user.id}}">Delete</a></td>
+<div class="modal fade" id="exampleModal{{user.id}}" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="exampleModalLabel">{% trans 'Delete Conformation' %}</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+        <form action="" method="post">
+            {% csrf_token %}
+      <div class="modal-body">
+
+          <h3>{% trans 'Are you sure you want to delete this user?' %}</h3>
+<h4 style="color:red;">{{user.username}}</h4>
+
+<!--           <input type="number" value="{{product.id}}" hidden name="product_id">-->
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+        <a type="submit" class="btn btn-danger" href="{% url 'deleteUser' id=user.id %}">Delete</a>
+
+      </div>
+              </form>
+    </div>
+  </div>
+</div>
+                                              {% endif %}
+
                                           </tr>
+
                                         {% endfor %}
 
                                         </tbody>

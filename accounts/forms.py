@@ -7,8 +7,8 @@ class UserForm(forms.ModelForm):
         model=User
         # fields='__all__'
         fields=[
-            'id', 'username', 'full_name','organization', 'password', 'email', 'gender',
-            'phone_number','city','working_field','admin']
+            'id', 'username', 'full_name','organization', 'email', 'gender',
+            'phone_number','city','working_field','admin','working']
         exclude = ('slug',)
     def create(self, validated_data):
         from accounts.models import User
@@ -24,7 +24,7 @@ class UserForm(forms.ModelForm):
 
             )
 
-        user.set_password(validated_data['password'])
+        # user.set_password(validated_data['password'])
         user.save()
         return user
 
@@ -34,7 +34,7 @@ class UserForm(forms.ModelForm):
         instance.full_name = validated_data['full_name']
         instance.email = validated_data['email']
         instance.username = validated_data['username']
-        instance.set_password(validated_data['password'])
+        # instance.set_password(validated_data['password'])
         instance.organization = validated_data['organization']
         instance.working_field = validated_data['working_field']
         instance.city = validated_data['city']

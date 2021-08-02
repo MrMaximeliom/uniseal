@@ -14,3 +14,5 @@ class WorkingField(models.Model):
         verbose_name=_('Working Field Slug')
 
     )
+    def __str__(self):
+        return self.field_name
