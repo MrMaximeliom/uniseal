@@ -1,10 +1,7 @@
 from django.db import models
 from django.utils.translation import gettext_lazy as _
 from django.template.defaultfilters import slugify # new
-import string
-import random
-def rand_slug():
-    return ''.join(random.choice(string.ascii_letters + string.digits) for _ in range(6))
+from Util.utils import rand_slug
 
 class Supplier(models.Model):
     slug = models.SlugField(

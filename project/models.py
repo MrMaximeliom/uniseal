@@ -65,7 +65,8 @@ class Project(models.Model):
     application = models.ForeignKey(
        Application,
         verbose_name=_('Application'),
-        on_delete=models.CASCADE
+        on_delete=models.SET_NULL,
+        null=True
     )
     execution_year = models.IntegerField(
         _('Execution Year'),
@@ -85,7 +86,7 @@ class Project(models.Model):
 
 
     def __str__(self):
-        return self.name
+        return self.name + str(self.category)
 
 class ProjectImages(models.Model):
     image = models.ImageField(

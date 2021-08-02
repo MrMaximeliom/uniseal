@@ -85,6 +85,12 @@ class User(AbstractBaseUser):
         null=True,
         choices=WORKING_FILED
     )
+    working = models.ForeignKey(
+        "working_field.WorkingField",
+        on_delete=models.SET_NULL,
+        null=True,
+        verbose_name=_('Working'),
+    )
     phone_number = models.CharField(
         verbose_name=_('Phone Number'),
         blank=False,
@@ -104,7 +110,8 @@ class User(AbstractBaseUser):
 
     city = models.ForeignKey(
         "address.City",
-        on_delete=models.CASCADE,
+        on_delete=models.SET_NULL,
+        null=True,
         verbose_name=_('City'),
     )
     email = models.EmailField(

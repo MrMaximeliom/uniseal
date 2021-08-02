@@ -26,7 +26,8 @@ class SolutionImages(models.Model):
     )
     solution = models.ForeignKey(
         Solution,
-        on_delete=models.CASCADE,
+        on_delete=models.SET_NULL,
+        null=True,
         verbose_name=_('Solution')
     )
 
@@ -37,7 +38,8 @@ class SolutionVideos(models.Model):
     )
     solution = models.ForeignKey(
         Solution,
-        on_delete=models.CASCADE,
+        on_delete=models.SET_NULL,
+        null=True,
         verbose_name=_('Solution')
     )
 

@@ -17,40 +17,30 @@
                 {% endblock breadcrumb_content %}
 {% block content %}
                 <h1 class="h2">{% trans 'Working Fields' %}</h1>
-                <p>{% trans 'This is the Categories' %}</p>
  <div class="row">
                     <div class="col-12 col-xl-11 mb-4 mb-lg-0">
                         <div class="card-light card-dark">
-                            <h5 class="card-header-light card-header-dark">{% trans 'SMS' %}</h5>
+                            <h5 class="card-header-light card-header-dark">{% trans 'Working Fields' %}</h5>
                             <div class="card-body-light card-body-dark">
                                 <div class="table-responsive">
                                     <table class="table">
                                         <thead>
                                           <tr>
-                                            <th scope="col">{% trans 'Sender' %}</th>
-                                            <th scope="col">{% trans 'Message' %}</th>
-                                            <th scope="col">{% trans 'Group' %}</th>
-                                            <th scope="col">{% trans 'Mobile Number (Single SMS)' %}</th>
-                                            <th scope="col">{% trans 'Multiple SMS?' %}</th>
-                                            <th scope="col"></th>
+                                            <th scope="col">{% trans 'Field Name' %}</th>
+                                            <th scope="col">{% trans 'Update' %}</th>
                                           </tr>
                                         </thead>
                                         <tbody>
-                                        {% for sms in all_sms_data %}
+                                        {% for field in all_fields_data %}
                                           <tr>
-                                            <th scope="row">{{sms.sender}}</th>
-                                            <td>{{ sms.message }}</td>
-                                            <td>{{ sms.group }}</td>
-                                            <td>{{ sms.single_mobile_number }}</td>
-                                            <td>{{ sms.is_multiple }}</td>
-                                            <td><a href="#" class="btn btn-sm btn-primary">View</a></td>
+                                            <th scope="row">{{field.field_name}}</th>
+                                            <td><a href="{% url 'editField' slug=field.slug %}" class="btn btn-sm btn-primary">{% trans 'Update' %}</a></td>
                                           </tr>
                                         {% endfor %}
 
                                         </tbody>
                                       </table>
                                 </div>
-                                <a href="#" class="btn btn-block btn-light">More Details</a>
                             </div>
                         </div>
                     </div>

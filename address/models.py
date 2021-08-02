@@ -25,8 +25,9 @@ class State(models.Model):
     )
     country = models.ForeignKey(
         Country,
-        on_delete=models.CASCADE,
-        verbose_name=_('Country')
+        on_delete=models.SET_NULL,
+        null=True,
+        verbose_name=_('Country'),
     )
     slug = models.SlugField(
         default=slugify(rand_slug()),
@@ -44,10 +45,11 @@ class City(models.Model):
 
     state = models.ForeignKey(
         State,
-        on_delete=models.CASCADE,
+        on_delete=models.SET_NULL,
+        null=True,
         verbose_name=_('State'),
         blank=True,
-        null=True
+
     )
     slug = models.SlugField(
         default=slugify(rand_slug()),
@@ -63,7 +65,8 @@ class Area(models.Model):
     )
     city = models.ForeignKey(
         City,
-        on_delete=models.CASCADE,
+        on_delete=models.SET_NULL,
+        null=True,
         verbose_name=_('City')
     )
     slug = models.SlugField(

@@ -6,6 +6,7 @@ from accounts.urls import urlpatterns as account_urls
 from category.urls import urlpatterns as category_urls
 from supplier.urls import urlpatterns as supplier_urls
 from company_info.urls import urlpatterns as company_urls
+from working_field.urls import urlpatterns as working_urls
 from address.urls import countries_urlpatterns as country_urls
 from address.urls import states_urlpatterns as state_urls
 from address.urls import cities_urlpatterns as city_urls
@@ -104,6 +105,7 @@ urlpatterns = [
     path('dashboard/SMSs/', include(sms_urls)),
     path('dashboard/CompanyInfo/', include(company_urls)),
     path('dashboard/ProjectApplications/', include(application_urls)),
+    path('dashboard/workingField/', include(working_urls)),
     path('login/', TokenObtainPairView.as_view(), name='token_obtain_pair'),
     path('login/refresh/', TokenRefreshView.as_view(), name='token_refresh'),
     path('api-auth/', include('rest_framework.urls', namespace='rest_framework')),

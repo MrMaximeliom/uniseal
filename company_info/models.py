@@ -41,21 +41,21 @@ class CompanyInfo(models.Model):
     country = models.ForeignKey(
         "address.Country",
         verbose_name=_('Country'),
-        on_delete=models.CASCADE,
+        on_delete=models.SET_NULL,
         blank=True,
         null=True
     )
     state= models.ForeignKey(
         "address.State",
         verbose_name=_('State'),
-        on_delete=models.CASCADE,
+        on_delete=models.SET_NULL,
         blank=True,
         null=True
     )
     city = models.ForeignKey(
         "address.City",
         verbose_name=_('City'),
-        on_delete=models.CASCADE,
+        on_delete=models.SET_NULL,
         blank=True,
         null=True
     )

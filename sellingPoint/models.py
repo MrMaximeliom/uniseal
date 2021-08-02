@@ -26,27 +26,31 @@ class SellingPoint(models.Model):
     )
     country = models.ForeignKey(
         'address.Country',
-        on_delete=models.CASCADE,
+        on_delete=models.SET_NULL,
+
         blank=True,
         null=True
     )
     state = models.ForeignKey(
         'address.State',
-        on_delete=models.CASCADE,
+        on_delete=models.SET_NULL,
+        null=True,
         blank=True,
-        null=True
+
     )
     city = models.ForeignKey(
         'address.City',
-        on_delete=models.CASCADE,
+        on_delete=models.SET_NULL,
+        null=True,
         blank=True,
-        null=True
+
     )
     area = models.ForeignKey(
         'address.Area',
-        on_delete=models.CASCADE,
+        on_delete=models.SET_NULL,
+        null=True,
         blank = True,
-        null = True
+
     )
     phone_number = models.CharField(
         verbose_name=_('Phone Number'),

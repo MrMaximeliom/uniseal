@@ -24,7 +24,7 @@ class SMSNotification(models.Model):
     )
     group = models.ForeignKey(
         'SMSGroups',
-        on_delete=models.CASCADE,
+        on_delete=models.SET_NULL,
         verbose_name=_('SMS Group'),
         blank=True,
         null=True
@@ -47,7 +47,8 @@ class SMSContacts(models.Model):
     )
     group = models.ForeignKey(
         'SMSGroups',
-        on_delete=models.CASCADE,
+        on_delete=models.SET_NULL,
+        null=True,
         verbose_name=_('SMS Group')
     )
 

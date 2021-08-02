@@ -13,7 +13,8 @@ class Product(models.Model):
         verbose_name=_('Product Image'))
     category = models.ForeignKey(
     "category.Category",
-        on_delete=models.CASCADE,
+        on_delete=models.SET_NULL,
+        null=True,
         verbose_name=_('Product Category')
     )
     product_file = models.FileField(
@@ -28,7 +29,8 @@ class Product(models.Model):
     )
     supplier = models.ForeignKey(
         "supplier.Supplier",
-        on_delete=models.CASCADE,
+        on_delete=models.SET_NULL,
+        null=True,
         verbose_name=_('Supplier Name')
     )
     added_date = models.DateField(
@@ -59,7 +61,8 @@ class ProductImages(models.Model):
     )
     product = models.ForeignKey(
         Product,
-        on_delete=models.CASCADE,
+        on_delete=models.SET_NULL,
+        null=True,
         verbose_name=_('Product')
     )
 
@@ -70,7 +73,8 @@ class ProductVideos(models.Model):
     )
     product = models.ForeignKey(
         Product,
-        on_delete=models.CASCADE,
+        on_delete=models.SET_NULL,
+        null=True,
         verbose_name=_('Product')
     )
 
@@ -78,12 +82,14 @@ class ProductVideos(models.Model):
 class SimilarProduct(models.Model):
     original_product = models.ForeignKey(
         Product,
-        on_delete=models.CASCADE,
+        on_delete=models.SET_NULL,
+        null=True,
         verbose_name=_('Original Product')
     )
     similar_product = models.ForeignKey(
         Product,
-        on_delete=models.CASCADE,
+        on_delete=models.SET_NULL,
+        null=True,
         verbose_name=_('Similar Product'),
         related_name="similar_product"
     )

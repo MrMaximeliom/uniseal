@@ -180,9 +180,9 @@ def add_projects(request):
     if request.method == 'POST':
         form = ProjectForm(request.POST,request.FILES)
         if form.is_valid():
-            form = form.save()
-            form.slug = slugify(rand_slug())
-            form.save()
+            project = form.save()
+            project.slug = slugify(rand_slug())
+            project.save()
             project_name = form.cleaned_data.get('name')
             messages.success(request, f"New User Added: {project_name}")
         else:

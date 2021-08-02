@@ -1,6 +1,8 @@
 from django.shortcuts import render
 from rest_framework import viewsets
-from Util.permissions import UnisealPermission
+# from Util.permissions import UnisealPermission
+from rest_framework.permissions import IsAdminUser
+
 from django.core.paginator import Paginator, PageNotAnInteger, EmptyPage
 from django.utils.translation import gettext_lazy as _
 from django.contrib import messages
@@ -35,7 +37,7 @@ class  SMSGroupsViewSet(viewsets.ModelViewSet):
     from .models import SMSGroups
     queryset = SMSGroups.objects.all()
     serializer_class = SMSGroupsSerializer
-    permission_classes = [UnisealPermission]
+    permission_classes = [IsAdminUser]
 
 class  SMSNotificationViewSet(viewsets.ModelViewSet):
     """
@@ -66,7 +68,7 @@ class  SMSNotificationViewSet(viewsets.ModelViewSet):
     from .models import SMSNotification
     queryset = SMSNotification.objects.all()
     serializer_class = SMSNotificationSerializer
-    permission_classes = [UnisealPermission]
+    permission_classes = [IsAdminUser]
 
 class  SMSContactsViewSet(viewsets.ModelViewSet):
     """
@@ -94,7 +96,7 @@ class  SMSContactsViewSet(viewsets.ModelViewSet):
     from .models import SMSContacts
     queryset = SMSContacts.objects.all()
     serializer_class = SMSContactsSerializer
-    permission_classes = [UnisealPermission]
+    permission_classes = [IsAdminUser]
 
 
 # dashboard views goes here
