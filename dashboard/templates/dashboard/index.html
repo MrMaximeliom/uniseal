@@ -76,7 +76,7 @@
                                             <td>{{project.category}}</td>
                                             <td>{{project.beneficiary}}</td>
                                             <td>{{project.description}}</td>
-                                            <td><a href="#" class="btn btn-sm btn-primary">View</a></td>
+                                            <td><a href="{% url 'projectDetails' slug=project.slug%}" class="btn btn-sm btn-primary">View</a></td>
                                           </tr>
                                         {% endfor %}
 

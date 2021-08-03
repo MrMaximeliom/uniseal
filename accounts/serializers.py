@@ -95,7 +95,7 @@ class ChangePasswordSerializer(serializers.ModelSerializer):
 class RegisterSerializer(serializers.ModelSerializer):
     from rest_framework.validators import UniqueValidator
     from django.core.validators import RegexValidator
-    from Util.ListsOfData import GENDER_CHOICES, USERS_ROLES
+    from Util.ListsOfData import GENDER_CHOICES
     from accounts.models import User
     email = serializers.EmailField(
         required=True,
