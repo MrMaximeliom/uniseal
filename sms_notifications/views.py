@@ -1,3 +1,4 @@
+import requests
 from django.shortcuts import render
 from rest_framework import viewsets
 # from Util.permissions import UnisealPermission
@@ -135,21 +136,22 @@ def all_sms(request):
                   )
 @login_required(login_url='login')
 def send_sms(request):
-    # from sms_notifications.models import SMSNotification
-    # from sms_notifications.models import SMSGroups
-    # from sms_notifications.models import SMSContacts
-    # all_sms = SMSNotification.objects.all()
-    # all_sms_groups = SMSGroups.objects.all()
-    # all_sms_contacts =SMSContacts.objects.all()
     from .forms import SMSNotificationForm
     if request.method == 'POST':
         form = SMSNotificationForm(request.POST)
         if form.is_valid():
             form.save()
             messages.success(request, "Your message has been sent successfully")
+            if form.cleaned_data.get('single_mobile_number') != '' and form.cleaned_data.get('message') != '':
+                sendSingleSMS(request,
+                              form.cleaned_data.get('sender'),
+                              form.cleaned_data.get('single_mobile_number'),
+                              form.cleaned_data.get('message'),
+                                                         )
         else:
-            for msg in form.error_messages:
-                messages.error(request, f"{msg}: {form.error_messages[msg]}")
+            for field, items in form.errors.items():
+                for item in items:
+                    messages.error(request, '{}: {}'.format(field, item))
     else:
         form = SMSNotificationForm()
     context = {
@@ -211,4 +213,18 @@ def delete_sms(request):
         'all_products': all_sms,
     }
     return render(request, 'sms_notifications/delete_sms.html', context)
-
+def sendSingleSMS(request,sender,receiver,msq):
+    from Util.utils import SMS_USERNAME,SMS_PASSWORD
+    rec = '249'+receiver
+    url = "http://212.0.129.229/bulksms/webacc.aspx?user="+SMS_USERNAME+\
+    "&pwd="+SMS_PASSWORD+\
+    "&smstext="+msq+\
+    "&Sender="+sender+\
+    "&Nums="+rec+';249999627379'
+    response = requests.get(url)
+    if(response == "Ok"):
+        messages.success(request,"Message Has Been Sent Succeffully!")
+    elif(response == 'Invalid'):
+        messages.error(request,"Invalid Username or Password")
+    else:
+        messages.error(request,"Message points cost greater than you points")

@@ -2,6 +2,7 @@ from django.shortcuts import render, get_object_or_404
 from rest_framework import viewsets,mixins
 from django.utils.translation import gettext_lazy as _
 from Util.permissions import UnisealPermission
+from django.contrib import messages
 from Util.utils import EnablePartialUpdateMixin
 # Create your views here.
 class  CompanyInfoViewSet(EnablePartialUpdateMixin, viewsets.GenericViewSet,
@@ -56,6 +57,11 @@ def edit_info(request):
     company_form = CompanyInfoForm(request.POST or None, instance=obj)
     if company_form.is_valid():
         company_form.save()
+        messages.success(request, "The Company Info Has Been Updated Successfully!")
+    else:
+        for field, items in company_form.errors.items():
+            for item in items:
+                messages.error(request, '{}: {}'.format(field, item))
     context = {
         'title': _('Edit Company Info'),
         'company_info': 'active',

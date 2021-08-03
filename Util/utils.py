@@ -20,3 +20,5 @@ def max_value_current_year(value):
 
 def rand_slug():
     return ''.join(random.choice(string.ascii_letters + string.digits) for _ in range(20))
+SMS_USERNAME = 'uniseal'
+SMS_PASSWORD = '823178'

@@ -11,7 +11,7 @@ class SMSNotificationForm(forms.ModelForm):
         phone_regex = RegexValidator(regex=r'^9\d{8}$|^1\d{8}$',
                                      message=_("Phone number must start with 9 or 1 and includes 9 numbers."))
         single_mobile_number = forms.CharField(
-            verbose_name=_('Single Mobile Number'),
+            label=_('Single Mobile Number'),
             max_length=20,
             required=False,
             validators=[phone_regex]
