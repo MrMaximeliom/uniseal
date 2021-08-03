@@ -40,6 +40,8 @@ class LoginView(auth_views.LoginView):
     }
 
 
+def testing_view(request):
+    return render(request,'dashboard/testing.html')
 
 
 

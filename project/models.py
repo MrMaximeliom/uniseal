@@ -68,11 +68,17 @@ class Project(models.Model):
         on_delete=models.SET_NULL,
         null=True
     )
-    execution_date = models.IntegerField(
+    # execution_date = models.IntegerField(
+    #     _('Execution Year'),
+    #     validators=[MinValueValidator(2000), max_value_current_year],
+    #     default=2020,
+    #
+    #
+    #
+    # )
+    execution_date = models.DateField(
         _('Execution Year'),
-        validators=[MinValueValidator(2000), max_value_current_year],
-        default=2020,
-
+max_length=200,
 
 
     )
@@ -86,7 +92,7 @@ class Project(models.Model):
 
 
     def __str__(self):
-        return self.name + str(self.category)
+        return self.name
 
 class ProjectImages(models.Model):
     image = models.ImageField(

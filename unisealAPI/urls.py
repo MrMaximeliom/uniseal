@@ -1,4 +1,6 @@
 from django.conf.urls.static import static
+
+import dashboard.views
 from product.urls import urlpatterns as product_urls
 from project.urls import urlpatterns as project_urls
 from solution.urls import urlpatterns as solution_urls
@@ -106,6 +108,7 @@ urlpatterns = [
     path('dashboard/CompanyInfo/', include(company_urls)),
     path('dashboard/ProjectApplications/', include(application_urls)),
     path('dashboard/workingField/', include(working_urls)),
+    path('dashboard/testing/', dashboard.views.testing_view,name='testingPage'),
     path('login/', TokenObtainPairView.as_view(), name='token_obtain_pair'),
     path('login/refresh/', TokenRefreshView.as_view(), name='token_refresh'),
     path('api-auth/', include('rest_framework.urls', namespace='rest_framework')),
