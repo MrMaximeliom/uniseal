@@ -3,7 +3,7 @@ from .models import SMSNotification
 from .models import SMSGroups
 from .models import SMSContacts
 from django.utils.translation import gettext_lazy as _
-from django.core.validators import RegexValidator
+
 
 
 class SMSNotificationForm(forms.ModelForm):
@@ -18,13 +18,16 @@ class SMSNotificationForm(forms.ModelForm):
         )
         model = SMSNotification
         fields = '__all__'
+        exclude = ('slug',)
 
 class SMSGroupsForm(forms.ModelForm):
     class Meta:
         model = SMSGroups
         fields = '__all__'
+        exclude = ('slug',)
 
 class SMSContactsForm(forms.ModelForm):
     class Meta:
         model = SMSContacts
         fields = '__all__'
+        exclude = ('slug',)

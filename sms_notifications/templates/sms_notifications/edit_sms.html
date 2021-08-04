@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+{% extends "dashboard/base.html" %}
+{% load static %}
+{% load static i18n %}
+{% load crispy_forms_tags %}
+{% block title %}
+{{title}}
+{% endblock title %}
+         {% block breadcrumb_content %}
+   <nav aria-label="crumb">
+                    <ol class="crumb breadcrumb-light breadcrumb-dark">
+                        <li class="breadcrumb-item"><a href="{% url 'dashboard' %}">{% trans 'Dashboard' %}</a></li>
+                        <li class="breadcrumb-item" aria-current="page">{% trans 'SMS Notifications' %}</li>
+                        <li class="breadcrumb-item" aria-current="page">{% trans 'Edit SMS Notification' %}</li>
+                    </ol>
+                </nav>
+                {% endblock breadcrumb_content %}
+{% block content %}
+                <h1 class="h2">{% trans 'Edit SMS Notification' %}</h1>
+<div class="card ">
+  <div class="card-body">
+    <h5 class="card-title">Please Add your SMS details here</h5>
+  <form class="card-form" method="post" action="">
+      {% csrf_token %}
+  <div class="mb-4 row">
+    <div class="col-sm-6">
+             {{form.sender|as_crispy_field}}
+    </div>
+  </div>
+        <div class="mb-4 row">
+    <div class="col-sm-6">
+             {{form.message|as_crispy_field}}
+    </div>
+  </div>
+      <div class="mb-4 row">
+    <div class="col-sm-6">
+             {{form.single_mobile_number|as_crispy_field}}
+    </div>
+  </div>
+         <div class="mb-4 row">
+    <div class="col-sm-6">
+             {{form.group|as_crispy_field}}
+    </div>
+  </div>
+           <div class="mb-4 row">
+    <div class="col-sm-6">
+             {{form.is_multiple|as_crispy_field}}
+    </div>
+  </div>
+
+       <div class="col-auto">
+    <button type="submit" class="btn btn-primary ">{% trans 'Update' %}</button>
+  </div>
+</form>
+  </div>
+</div>
+
+{% endblock content %}

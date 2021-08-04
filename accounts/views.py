@@ -246,9 +246,9 @@ def all_users(request):
 
 @login_required(login_url='login')
 def add_users(request):
-    from .forms import UserForm
+    from .forms import UserRegistrationForm
     if request.method == 'POST':
-        form = UserForm(request.POST)
+        form = UserRegistrationForm(request.POST)
         if form.is_valid():
             user = form.save()
             user.set_password(user.password)
@@ -261,7 +261,7 @@ def add_users(request):
                 for item in items:
                     messages.error(request, '{}: {}'.format(field, item))
     else:
-        form = UserForm()
+        form = UserRegistrationForm()
 
     context = {
         'title': _('Add Users'),
@@ -279,9 +279,7 @@ def edit_user(request,slug):
     obj = get_object_or_404(User, slug=slug)
     user_form = UserForm(request.POST or None, instance=obj)
     if user_form.is_valid():
-        user = user_form.save()
-        user.set_password(user.password)
-        user.save()
+        user_form.save()
         username = user_form.cleaned_data.get('username')
         messages.success(request, f"Successfully Updated : {username} Data")
     else:

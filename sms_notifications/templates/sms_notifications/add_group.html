@@ -10,14 +10,13 @@
    <nav aria-label="crumb">
                     <ol class="crumb breadcrumb-light breadcrumb-dark">
                         <li class="breadcrumb-item"><a href="{% url 'dashboard' %}">{% trans 'Dashboard' %}</a></li>
-                        <li class="breadcrumb-item" aria-current="page">{% trans 'SMS Notifications' %}</li>
+                        <li class="breadcrumb-item" aria-current="page">{% trans 'SMS Groups' %}</li>
                         <li class="breadcrumb-item" aria-current="page">{% trans 'Add SMS Group' %}</li>
                     </ol>
                 </nav>
                 {% endblock breadcrumb_content %}
 {% block content %}
-                <h1 class="h2">Add SMS Group</h1>
-                <p>{% trans 'Here you can add SMS group' %}</p>
+                <h1 class="h2">{% trans 'Add SMS Group' %}</h1>
 <div class="card ">
   <div class="card-body">
     <h5 class="card-title">Please Add your sms group details here</h5>
