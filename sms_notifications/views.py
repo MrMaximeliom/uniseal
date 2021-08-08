@@ -1,3 +1,5 @@
+import urllib.parse
+
 import requests
 from django.shortcuts import render, get_object_or_404, redirect
 from rest_framework import viewsets
@@ -107,15 +109,44 @@ def all_sms(request):
     all_sms = SMSNotification.objects.all().order_by("id")
     paginator = Paginator(all_sms, 5)
     search = False
+    search_result = ''
     if request.method == "GET":
         search = False
 
     if request.method == "POST":
         search = True
-        search_phrase = request.POST.get('search_phrase')
-        if validate_search_phrase(search_phrase):
+        search_group = request.POST.get('search_phrase')
+        if validate_search_phrase(search_group):
             print('ok search')
-            print(request.POST.get('search_options'))
+            if request.POST.get('search_options') == 'message':
+                search_message = request.POST.get('search_phrase')
+                search_result = SMSNotification.objects.filter(message=search_message)
+                print('hhhhheeehhee')
+                print('hhhhheeehhee')
+                print(search_result)
+                if search_result.count() > 0:
+                    paginator = Paginator(search_result,5)
+            elif request.POST.get('search_options') == 'sender':
+                search_phrase = request.POST.get('search_phrase')
+                search_result = SMSNotification.objects.filter(sender=search_phrase)
+                if search_result.count() > 0:
+                    paginator = Paginator(search_result, 5)
+                print('search sender is')
+                print(search_group)
+                print('search is')
+                print(search_result)
+                print('search results count')
+                print(search_result.count())
+            elif request.POST.get('search_options') == 'group':
+                search_group = request.POST.get('search_phrase')
+                search_result = SMSNotification.objects.filter(group__name=search_group)
+            elif request.POST.get('search_options') == 'mobile':
+                search_phrase = request.POST.get('search_phrase')
+                search_result = SMSNotification.objects.filter(single_mobile_number=search_result)
+            else:
+                messages.error(request,
+                               "Please choose an item from list , then write search phrase to search by it!")
+
         else:
             messages.error(request,"Please enter a valid search phrase consisting of letters, numbers, underscores or hyphens.")
             print('not ok do not search')
@@ -148,7 +179,8 @@ def all_sms(request):
                       'page_range': paginator.page_range,
                       'num_pages': paginator.num_pages,
                       'current_page': page,
-                      'search':search
+                      'search':search,
+                      'search_result':search_result,
                   }
                   )
 @login_required(login_url='login')
@@ -387,19 +419,38 @@ def all_sms_contacts(request):
 
 def sendSingleSMS(request,sender,receiver,msq):
     from Util.utils import SMS_USERNAME,SMS_PASSWORD
+    from urllib.parse import urljoin
     rec = '249'+receiver
-    url = "http://212.0.129.229/bulksms/webacc.aspx?user="+SMS_USERNAME+\
-    "&pwd="+SMS_PASSWORD+\
-    "&smstext="+msq+\
-    "&Sender="+sender+\
-    "&Nums="+rec
-    response = requests.get(url)
+    # base = 'http://212.0.129.229/bulksms/webacc.aspx'
+    args = { 'user' : SMS_USERNAME,
+             'pwd' : SMS_PASSWORD,
+             'smstext':msq,
+             'Sender':sender,
+             'Nums':rec
+
+
+             }
+    # er = urllib.parse.urlencode(args)
+    # print(base)
+    # complete_url = urljoin(base,er)
+    # print(complete_url)
+    from requests.models import PreparedRequest
+    req = PreparedRequest()
+    url = "http://212.0.129.229/bulksms/webacc.aspx"
+    req.prepare_url(url, args)
+    print(req.url)
+
+    # url = f"http://212.0.129.229/bulksms/webacc.aspx?user={SMS_USERNAME}&pwd={SMS_PASSWORD}&smstext={msq}&Sender={sender}&Nums={rec};24921045058"
+    # print(url)
+    response = requests.post(req.url)
     if(response == "OK"):
         messages.success(request,"Message Has Been Sent Successfully!")
     elif(response == 'Invalid'):
         messages.error(request,"Invalid Username or Password")
     else:
-        messages.error(request,"Message points cost greater than you points")
+        print(response.content)
+        # messages.error(request,"Message points cost greater than you points")
+
 
 def confirm_delete_sms_notification(request,id):
     from sms_notifications.models import SMSNotification , SMSContacts , SMSGroups

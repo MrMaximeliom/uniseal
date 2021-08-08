@@ -65,7 +65,8 @@
                                         <tbody>
                                         {% for sms in all_sms_data %}
                                           <tr>
-                                            <th scope="row">{{sms.sender}}</th>
+                                           <th scope="row">{% trans 'Uniseal'%}</th>
+
                                             <td>{{ sms.message }}</td>
                                             <td>{{ sms.group }}</td>
                                               {% if sms.single_mobile_number%}
@@ -162,6 +163,81 @@
   </div>
 {% else %}
 <h1>Search results</h1>
+{% endif %}
+
+{% if search_result.count > 0 %}
+ <div class="row">
+                    <div class="col-12 col-xl-11 mb-4 mb-lg-0">
+                        <div class="card-light card-dark">
+                            <h5 class="card-header-light card-header-dark">{% trans 'SMS' %}</h5>
+                            <div class="card-body-light card-body-dark">
+                                <div class="table-responsive">
+                                    <table class="table">
+                                        <thead>
+                                          <tr>
+                                            <th scope="col">{% trans 'Sender' %}</th>
+                                            <th scope="col">{% trans 'Message' %}</th>
+                                            <th scope="col">{% trans 'Group' %}</th>
+                                            <th scope="col">{% trans 'Mobile Number (Single SMS)' %}</th>
+                                            <th scope="col">{% trans 'Multiple SMS?' %}</th>
+                                            <th scope="col">{% trans 'Update' %}</th>
+                                            <th scope="col">{% trans 'Delete' %}</th>
+                                          </tr>
+                                        </thead>
+                                        <tbody>
+                                        {% for sms in search_result %}
+                                          <tr>
+                                            <th scope="row">{% trans 'Uniseal'%}</th>
+                                            <td>{{ sms.message }}</td>
+                                            <td>{{ sms.group }}</td>
+                                              {% if sms.single_mobile_number%}
+                                            <td>0{{ sms.single_mobile_number }}</td>
+                                              {% else %}
+                                               <td>{{ sms.single_mobile_number }}</td>
+                                              {% endif %}
+                                            <td>{{ sms.is_multiple }}</td>
+                                            <td><a href="{% url 'editSMS' slug=sms.slug%}" class="btn btn-sm btn-primary">{% trans 'Update' %}</a></td>
+                                            <td><a href="#" class="btn btn-sm btn-danger" data-bs-toggle="modal" data-bs-target="#exampleModalS{{sms.id}}">{% trans 'Delete'%}</a></td>
+                                          </tr>
+                                          <div class="modal fade" id="exampleModalS{{sms.id}}" tabindex="-1" aria-labelledby="exampleModalLabelS" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="exampleModalLabelS">{% trans 'Delete Conformation' %}</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+        <form action="" method="post">
+            {% csrf_token %}
+      <div class="modal-body">
+
+          <h3>{% trans 'Are you sure you want to delete this sms notification?' %}</h3>
+<h4 style="color:red;">{{sms.message}}</h4>
+
+<!--           <input type="number" value="{{product.id}}" hidden name="product_id">-->
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+        <a type="submit" class="btn btn-danger" href="{% url 'deleteSMSNotification' id=sms.id %}">Delete</a>
+
+      </div>
+              </form>
+    </div>
+  </div>
+</div>
+                                        {% endfor %}
+
+                                        </tbody>
+                                      </table>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+{% endif%}
+{% if search and search_result.count == 0 %}
+<h3 style="color:red;">{% trans 'Sorry No Messages found that matches your search!' %}</h3>
+
 {% endif %}
 
 {% endblock content %}

@@ -23,11 +23,6 @@
     <h5 class="card-title">Please Add your SMS details here</h5>
   <form class="card-form" method="post" action="">
       {% csrf_token %}
-  <div class="mb-4 row">
-    <div class="col-sm-6">
-             {{form.sender|as_crispy_field}}
-    </div>
-  </div>
         <div class="mb-4 row">
     <div class="col-sm-6">
              {{form.message|as_crispy_field}}

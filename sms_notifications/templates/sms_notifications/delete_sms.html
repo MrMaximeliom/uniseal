@@ -37,7 +37,7 @@
                                         <tbody>
                                         {% for sms in all_sms_data %}
                                           <tr>
-                                            <th scope="row">{{sms.sender}}</th>
+                                          <th scope="row">{% trans 'Uniseal'%}</th>
                                             <td>{{ sms.message }}</td>
                                             <td>{{ sms.group }}</td>
                                               {% if sms.single_mobile_number%}

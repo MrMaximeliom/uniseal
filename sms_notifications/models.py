@@ -21,10 +21,10 @@ class SMSGroups(models.Model):
         return self.name
 
 class SMSNotification(models.Model):
-    sender = models.CharField(
-        max_length=11,
-        verbose_name=_('SMS Sender')
-    )
+    # sender = models.CharField(
+    #     max_length=11,
+    #     verbose_name=_('SMS Sender')
+    # )
     message = models.TextField(
         verbose_name=_('SMS Message'),
 
