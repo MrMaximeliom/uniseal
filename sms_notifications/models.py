@@ -53,7 +53,7 @@ class SMSNotification(models.Model):
     )
 
     def __str__(self):
-        return self.sender
+        return self.message
 
 class SMSContacts(models.Model):
     contact_number = models.CharField(
