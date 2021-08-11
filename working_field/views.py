@@ -35,7 +35,8 @@ class  WorkinFieldViewSet(viewsets.ModelViewSet):
 # Dashboard Views
 from .models import WorkingField
 from django.contrib.auth.decorators import login_required
-fields = WorkingField.objects.annotate(num_users=Count('user')).order_by('-num_users')
+fields = WorkingField.objects.all()
+# fields = WorkingField.objects.annotate(num_users=Count('user')).order_by('-num_users')
 @login_required(login_url='login')
 def all_fields(request):
     from django.core.paginator import Paginator, PageNotAnInteger, EmptyPage

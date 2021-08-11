@@ -27,7 +27,6 @@
                                         <thead>
                                           <tr>
                                             <th scope="col">{% trans 'Field Name' %}</th>
-                                            <th scope="col">{% trans 'Users in This Field' %}</th>
                                             <th scope="col"></th>
                                           </tr>
                                         </thead>
@@ -35,7 +34,6 @@
                                         {% for field in all_fields_data %}
                                           <tr>
                                             <th scope="row">{{field.field_name}}</th>
-                                            <td>{{ field.num_users }}</td>
                                             <td><a href="#" class="btn btn-sm btn-danger" data-bs-toggle="modal" data-bs-target="#exampleModal{{field.id}}">{% trans 'Delete' %}</a></td>
                                           </tr>
                                               <div class="modal fade" id="exampleModal{{field.id}}" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">

@@ -30,7 +30,6 @@
                                             <th scope="col">{% trans 'Full Name' %}</th>
                                             <th scope="col">{% trans 'Username' %}</th>
                                             <th scope="col">{% trans 'Organization' %}</th>
-                                            <th scope="col">{% trans 'Working Field' %}</th>
                                             <th scope="col">{% trans 'Phone Number' %}</th>
                                             <th scope="col">{% trans 'Last Login' %}</th>
                                             <th scope="col"></th>
@@ -43,7 +42,6 @@
                                             <th scope="row">{{user.full_name}}</th>
                                             <td>{{user.username}}</td>
                                             <td>{{user.organization}}</td>
-                                            <td>{{user.working_field}}</td>
                                             <td>0{{user.phone_number}}</td>
                                             <td>{{user.last_login}}</td>
                                             <td><a href="{% url 'editUser' slug=user.slug %}" class="btn btn-sm btn-primary">Update</a></td>
