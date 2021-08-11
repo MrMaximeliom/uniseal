@@ -39,7 +39,7 @@ class ProjectViewSet(viewsets.ModelViewSet):
     serializer_class = ProjectSerializer
     from .models import Project
     permission_classes = [UnisealPermission]
-    queryset = Project.objects.all()
+    queryset = Project.objects.all().order_by('id')
 
 
 class ProjectImagesViewSet(viewsets.ModelViewSet):

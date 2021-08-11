@@ -48,6 +48,7 @@
  </div>
   {% endfor %}
 
+
   {% else %}
     <h1 class="h2">{% trans 'Image for ' %}{{product_data.name}}</h1>
 
@@ -108,10 +109,13 @@
           <h3>{% trans 'You can add multiple images' %}</h3>
          <form class="card-form" enctype="multipart/form-data">
   <div class="mb-4 row">
-    <div class="col-sm-6">
+    <div class="col-md-6">
                      <div class="mb-3">
   <label for="exampleFormControlInput1" class="form-label">Product Image</label>
-  <input type="file" class="form-control" id="exampleFormControlInput1" multiple="multiple">
+  <input type="file"  id="exampleFormControlInput1" multiple="multiple">
+  <div id="new-images-js">
+
+  </div>
 </div>
     </div>
   </div>
