@@ -326,20 +326,26 @@ def edit_product(request, slug):
 
     # pass the object as instance in form
     product_form = ProductForm(request.POST or None, instance=obj)
-    product_image_form = ProductImagesForm(request.POST or None, instance=obj)
+    # product_image_form = ProductImagesForm(request.POST or None, instance=obj)
 
     # save the data from the form and
     # redirect to detail_view
     if product_form.is_valid():
         product_form.save()
-        product_image_form.save()
+        product_name = product_form.cleaned_data.get('name')
+        messages.success(request, f"Successfully Updated : {product_name} Data")
+    else:
+        for field, items in product_form.errors.items():
+            for item in items:
+                messages.error(request, '{}: {}'.format(field, item))
+        # product_image_form.save()
     context = {
         'title': _('Edit Products'),
         'edit_products': 'active',
         'all_products': all_products,
         'product_form': product_form,
         'product': obj,
-        'product_image_form': product_image_form
+        # 'product_image_form': product_image_form
     }
     return render(request, 'product/edit_product.html', context)
 
