@@ -206,7 +206,7 @@ def send_sms(request):
             messages.success(request, "Your message has been sent successfully")
             if form.cleaned_data.get('single_mobile_number') != '' and form.cleaned_data.get('message') != '':
                 sendSingleSMS(request,
-                              form.cleaned_data.get('sender'),
+                              'Uniseal',
                               form.cleaned_data.get('single_mobile_number'),
                               form.cleaned_data.get('message'),
                                                          )
@@ -456,13 +456,11 @@ def sendSingleSMS(request,sender,receiver,msq):
     # url = f"http://212.0.129.229/bulksms/webacc.aspx?user={SMS_USERNAME}&pwd={SMS_PASSWORD}&smstext={msq}&Sender={sender}&Nums={rec};24921045058"
     # print(url)
     response = requests.post(req.url)
-    if(response == "OK"):
+    if(response.status_code == "OK"):
         messages.success(request,"Message Has Been Sent Successfully!")
-    elif(response == 'Invalid'):
-        messages.error(request,"Invalid Username or Password")
     else:
-        print(response.content)
-        # messages.error(request,"Message points cost greater than you points")
+        messages.error(request,"Something Wrong Happend Please Try Again Later!")
+
 
 
 def confirm_delete_sms_notification(request,id):
