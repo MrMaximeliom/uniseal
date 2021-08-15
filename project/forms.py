@@ -16,17 +16,17 @@ def year_choices():
 
 
 class ProjectForm(forms.ModelForm):
-    name = forms.CharField(max_length=100,label=_('Project Name'),required=True)
-    title = forms.CharField(max_length=120,label=_('Project Title'),required=True)
-    category = forms.CharField(max_length=100,label=_('Project Category'),required=True)
-    beneficiary = forms.CharField(max_length=100,label=_('Project Beneficiary'),required=True)
-    image = forms.ImageField(required=True,label=_('Project Image'))
-    description = forms.CharField(widget=forms.Textarea,required=False,label=_('Project Description'))
-    beneficiary_description = forms.CharField(widget=forms.Textarea,required=False,label=_('Beneficiary Description'))
-    slug = forms.CharField(max_length=120,required=False,label=_('Project Slug'))
-    # execution_date = forms.DateField(input_formats='YYYY', widget=forms.SelectDateWidget,label=_('Project Execution Date'),required=True)
-    application = forms.ModelChoiceField(queryset=Application.objects.all())
-    execution_year = forms.TypedChoiceField(coerce=int, choices=year_choices, initial=current_year)
+    # name = forms.CharField(max_length=100,label=_('Project Name'),required=True)
+    # title = forms.CharField(max_length=120,label=_('Project Title'),required=True)
+    # category = forms.CharField(max_length=100,label=_('Project Category'),required=True)
+    # beneficiary = forms.CharField(max_length=100,label=_('Project Beneficiary'),required=True)
+    # image = forms.ImageField(required=True,label=_('Project Image'))
+    # description = forms.CharField(widget=forms.Textarea,required=False,label=_('Project Description'))
+    # beneficiary_description = forms.CharField(widget=forms.Textarea,required=False,label=_('Beneficiary Description'))
+    # slug = forms.CharField(max_length=120,required=False,label=_('Project Slug'))
+    # # execution_date = forms.DateField(input_formats='YYYY', widget=forms.SelectDateWidget,label=_('Project Execution Date'),required=True)
+    # application = forms.ModelChoiceField(queryset=Application.objects.all())
+    # execution_date = forms.DateField(input_formats='dd-mm-yyyy', widget=forms.SelectDateWidget,label=_('Project Execution Date'),required=True)
     class Meta:
         model = Project
         fields = '__all__'

@@ -4,6 +4,7 @@ class ProjectApplicationForm(forms.ModelForm):
         from project.models import Application
         model = Application
         fields = '__all__'
+        exclude = ('slug',)
 
 
 

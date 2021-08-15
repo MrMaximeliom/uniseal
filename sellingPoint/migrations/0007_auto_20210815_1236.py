@@ -10,48 +10,48 @@ class Migration(migrations.Migration):
     ]
 
     operations = [
-        migrations.RemoveField(
-            model_name='productimages',
-            name='product',
-        ),
-        migrations.RemoveField(
-            model_name='productvideos',
-            name='product',
-        ),
-        migrations.RemoveField(
-            model_name='similarproduct',
-            name='original_product',
-        ),
-        migrations.RemoveField(
-            model_name='similarproduct',
-            name='similar_product',
-        ),
-        migrations.AlterField(
-            model_name='sellingpoint',
-            name='email',
-            field=models.EmailField(default='', max_length=255, unique=True, verbose_name='Email Address'),
-            preserve_default=False,
-        ),
-        migrations.AlterField(
-            model_name='sellingpoint',
-            name='id',
-            field=models.BigAutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID'),
-        ),
-        migrations.AlterField(
-            model_name='sellingpoint',
-            name='slug',
-            field=models.SlugField(default='rpvskq5prvarmnmoex1v', verbose_name='Selling Point Slug'),
-        ),
-        migrations.DeleteModel(
-            name='Product',
-        ),
-        migrations.DeleteModel(
-            name='ProductImages',
-        ),
-        migrations.DeleteModel(
-            name='ProductVideos',
-        ),
-        migrations.DeleteModel(
-            name='SimilarProduct',
-        ),
+        # migrations.RemoveField(
+        #     model_name='productimages',
+        #     name='product',
+        # ),
+        # migrations.RemoveField(
+        #     model_name='productvideos',
+        #     name='product',
+        # ),
+        # migrations.RemoveField(
+        #     model_name='similarproduct',
+        #     name='original_product',
+        # ),
+        # migrations.RemoveField(
+        #     model_name='similarproduct',
+        #     name='similar_product',
+        # ),
+        # migrations.AlterField(
+        #     model_name='sellingpoint',
+        #     name='email',
+        #     field=models.EmailField(default='', max_length=255, unique=True, verbose_name='Email Address'),
+        #     preserve_default=False,
+        # ),
+        # migrations.AlterField(
+        #     model_name='sellingpoint',
+        #     name='id',
+        #     field=models.BigAutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID'),
+        # ),
+        # migrations.AlterField(
+        #     model_name='sellingpoint',
+        #     name='slug',
+        #     field=models.SlugField(default='rpvskq5prvarmnmoex1v', verbose_name='Selling Point Slug'),
+        # ),
+        # migrations.DeleteModel(
+        #     name='Product',
+        # ),
+        # migrations.DeleteModel(
+        #     name='ProductImages',
+        # ),
+        # migrations.DeleteModel(
+        #     name='ProductVideos',
+        # ),
+        # migrations.DeleteModel(
+        #     name='SimilarProduct',
+        # ),
     ]

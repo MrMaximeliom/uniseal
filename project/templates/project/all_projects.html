@@ -32,7 +32,10 @@
   <div class="card-body">
     <h5 class="card-title">{{project.name}}</h5>
     <p class="card-text">
-        {% trans 'Category:' %} {{project.category}}
+        {% trans 'Project Type:' %} {{project.project_type}}
+    </p>
+       <p class="card-text">
+        {% trans 'Main Material Used:' %} {{project.main_material}}
     </p>
       <p class="card-text">
         {% trans 'Beneficiary:' %} {{project.beneficiary}}

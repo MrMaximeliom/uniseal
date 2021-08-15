@@ -192,7 +192,7 @@ def edit_application(request,slug):
         'title': _('Edit Project Applications'),
         'edit_applications': 'active',
         'all_applications': all_applications,
-        'application_form': application_form,
+        'form': application_form,
         'application': obj,
     }
     return render(request, 'project_application/edit_application.html', context)

@@ -118,6 +118,8 @@ class User(AbstractBaseUser):
         verbose_name=_('Email Address'),
         max_length=255,
         unique=True,
+        blank=True,
+        null=True
     )
     is_active = models.BooleanField(default=True)
     staff = models.BooleanField(default=False)
@@ -136,7 +138,7 @@ class User(AbstractBaseUser):
         return super().save(*args, **kwargs)
 
     USERNAME_FIELD = 'email'
-    REQUIRED_FIELDS = ['password', 'full_name', 'gender',
+    REQUIRED_FIELDS = ['password', 'full_name',
                        'username','phone_number']  # Email & Password are required by default.
     objects = UserAccountManager()
 
@@ -183,6 +185,13 @@ class ContactUs(models.Model):
 
     phone_number = models.CharField(
         verbose_name=_('Phone Number'),
+        blank=False,
+        null=False,
+        max_length=100,
+        unique=True
+    )
+    marketing_executive_phone_number = models.CharField(
+        verbose_name=_('Marketing Executive Phone Number'),
         blank=False,
         null=False,
         max_length=100,

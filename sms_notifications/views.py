@@ -201,15 +201,23 @@ def send_sms(request):
     from .forms import SMSNotificationForm
     if request.method == 'POST':
         form = SMSNotificationForm(request.POST)
+        # print(form.cleaned_data.get('message'))
+        # if form.cleaned_data.get('submit') == 'save':
+        #     print("saving data ..")
+        # else:
+        #     print("sending and saving data")
         if form.is_valid():
-            form.save()
-            messages.success(request, "Your message has been sent successfully")
-            if form.cleaned_data.get('single_mobile_number') != '' and form.cleaned_data.get('message') != '':
-                sendSingleSMS(request,
+               if form.cleaned_data.get('single_mobile_number') != '' and form.cleaned_data.get('message') != '':
+                  status = sendSingleSMS(request,
                               'Uniseal',
                               form.cleaned_data.get('single_mobile_number'),
                               form.cleaned_data.get('message'),
                                                          )
+                  instance = form.save(commit=False)
+                  instance.status =  status
+                  instance.save()
+                  messages.success(request, "Your message has been saved successfully")
+
         else:
             for field, items in form.errors.items():
                 for item in items:
@@ -433,6 +441,7 @@ def all_sms_contacts(request):
 def sendSingleSMS(request,sender,receiver,msq):
     from Util.utils import SMS_USERNAME,SMS_PASSWORD
     from urllib.parse import urljoin
+    sms_status = ''
     rec = '249'+receiver
     # base = 'http://212.0.129.229/bulksms/webacc.aspx'
     args = { 'user' : SMS_USERNAME,
@@ -456,10 +465,13 @@ def sendSingleSMS(request,sender,receiver,msq):
     # url = f"http://212.0.129.229/bulksms/webacc.aspx?user={SMS_USERNAME}&pwd={SMS_PASSWORD}&smstext={msq}&Sender={sender}&Nums={rec};24921045058"
     # print(url)
     response = requests.post(req.url)
-    if(response.status_code == "OK"):
+    if(response.status_code == 200):
         messages.success(request,"Message Has Been Sent Successfully!")
+        sms_status = "sent"
     else:
         messages.error(request,"Something Wrong Happend Please Try Again Later!")
+        sms_status = "not sent"
+    return sms_status
 
 
 

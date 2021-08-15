@@ -6,6 +6,9 @@
 {% block title %}
 {{title}}
 {% endblock title %}
+    {% block custom_js %}
+<script src="{% static 'dashboard/js/general.js' %}" defer></script>
+    {% endblock %}
          {% block breadcrumb_content %}
    <nav aria-label="crumb">
                     <ol class="crumb breadcrumb-light breadcrumb-dark">
@@ -72,7 +75,9 @@
 
   </div>
        <div class="col-auto">
-    <button type="submit" class="btn btn-primary ">Add Product</button>
+    <button type="submit" class="btn btn-primary mr-3 ">Add Product</button>
+    <button type="button" class="btn btn-danger" id="clear">{% trans 'Clear' %}</button>
+
   </div>
 </form>
   </div>

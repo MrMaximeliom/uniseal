@@ -17,6 +17,13 @@ class CompanyInfo(models.Model):
         max_length=100,
         unique=True
     )
+    marketing_executive_phone_number = models.CharField(
+        verbose_name=_('Marketing Executive Phone Number'),
+        blank=False,
+        null=False,
+        max_length=100,
+        unique=True
+    )
 
     email = models.EmailField(
         verbose_name=_('Company Email Address'),

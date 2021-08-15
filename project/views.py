@@ -180,7 +180,9 @@ def add_projects(request):
     if request.method == 'POST':
         form = ProjectForm(request.POST,request.FILES)
         if form.is_valid():
-            project = form.save()
+            project = form.save(commit=False)
+            project.execution_date = request.POST['execution_date']
+            project.save()
             project.slug = slugify(rand_slug())
             project.save()
             project_name = form.cleaned_data.get('name')

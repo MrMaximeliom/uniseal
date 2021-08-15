@@ -3,6 +3,9 @@
 {% load static %}
 {% load static i18n %}
 {% load crispy_forms_tags %}
+    {% block custom_js %}
+<script src="{% static 'dashboard/js/general.js' %}" defer></script>
+    {% endblock %}
 {% block title %}
 {{title}}
 {% endblock title %}
@@ -43,9 +46,16 @@
              {{form.is_multiple|as_crispy_field}}
     </div>
   </div>
+        <div class="mb-4 row" style="display:none;">
+    <div class="col-sm-6">
+             {{form.status|as_crispy_field}}
+    </div>
+  </div>
 
        <div class="col-auto">
-    <button type="submit" class="btn btn-primary ">{% trans 'Send SMS' %}</button>
+    <button type="submit" class="btn btn-primary mr-3" name="submit" value="send">{% trans 'Save & Send SMS' %}</button>
+    <button type="submit" class="btn btn-primary mr-3 " name="submit" value="save">{% trans 'Save Only' %}</button>
+    <button type="button" class="btn btn-danger" id="clear">{% trans 'Clear' %}</button>
   </div>
 </form>
   </div>

@@ -11,10 +11,7 @@ class Migration(migrations.Migration):
     ]
 
     operations = [
-        migrations.RemoveField(
-            model_name='project',
-            name='application',
-        ),
+
         migrations.RemoveField(
             model_name='project',
             name='category',
@@ -22,11 +19,6 @@ class Migration(migrations.Migration):
         migrations.RemoveField(
             model_name='project',
             name='title',
-        ),
-        migrations.AddField(
-            model_name='project',
-            name='project_type',
-            field=models.ForeignKey(null=True, on_delete=django.db.models.deletion.SET_NULL, to='project.application', verbose_name='Project Type'),
         ),
         migrations.AlterField(
             model_name='application',

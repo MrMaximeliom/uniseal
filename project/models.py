@@ -19,6 +19,11 @@ class Application(models.Model):
         verbose_name=_('Project Application'),
         max_length=300
     )
+    slug = models.SlugField(
+        default=slugify(rand_slug()),
+        verbose_name=_('Project Application Slug')
+
+    )
     def __str__(self):
         return self.name
 class Project(models.Model):
@@ -27,17 +32,11 @@ class Project(models.Model):
         verbose_name=_('Project Name')
     )
 
-    title = models.CharField(
-        max_length=120,
-        verbose_name=_('Project Title')
-    )
-    category = models.CharField(
-        max_length=100,
-        verbose_name=_('Project Category')
-    )
     beneficiary = models.CharField(
         max_length=100,
-        verbose_name=_('Project Beneficiary')
+        verbose_name=_('Project Beneficiary'),
+        null=True,
+        blank=True
     )
     image = models.ImageField(
         upload_to='project_images',
@@ -58,24 +57,21 @@ class Project(models.Model):
         verbose_name=_('Project Slug')
 
     )
-    # execution_date = models.DateField(
-    #     verbose_name=_('Project Execution Date'),
-    #
-    # )
-    application = models.ForeignKey(
+    main_material = models.CharField(
+        verbose_name=_('Main Material Used'),
+        # will remove later to make it required field as it supposed to be
+        null=True,
+        blank=True,
+        max_length=350
+
+    )
+    project_type = models.ForeignKey(
        Application,
-        verbose_name=_('Application'),
+        verbose_name=_('Project Type'),
         on_delete=models.SET_NULL,
         null=True
     )
-    # execution_date = models.IntegerField(
-    #     _('Execution Year'),
-    #     validators=[MinValueValidator(2000), max_value_current_year],
-    #     default=2020,
-    #
-    #
-    #
-    # )
+
     execution_date = models.DateField(
         _('Execution Year'),
 max_length=200,

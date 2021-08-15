@@ -10,11 +10,11 @@ class Migration(migrations.Migration):
     ]
 
     operations = [
-        migrations.AddField(
-            model_name='smsnotification',
-            name='status',
-            field=models.CharField(blank=True, max_length=11, null=True, verbose_name='SMS Status'),
-        ),
+        # migrations.AddField(
+        #     model_name='smsnotification',
+        #     name='status',
+        #     field=models.CharField(blank=True, max_length=11, null=True, verbose_name='SMS Status'),
+        # ),
         migrations.AlterField(
             model_name='smscontacts',
             name='slug',

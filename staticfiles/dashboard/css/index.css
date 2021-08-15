@@ -55,3 +55,13 @@ background-color:skyblue;
 th{
 white-space:nowrap;
 }
+.advanced-search{
+display:flex;
+}
+.advanced-search-btn{
+margin-left:2rem;
+margin-bottom:2rem;
+}
+.search-select{
+width:13rem !important;
+}

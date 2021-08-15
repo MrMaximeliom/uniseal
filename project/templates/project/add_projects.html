@@ -6,6 +6,10 @@
 {% block title %}
 {{title}}
 {% endblock title %}
+    {% block custom_js %}
+<script src="{% static 'dashboard/js/general.js' %}" defer></script>
+    {% endblock %}
+
          {% block breadcrumb_content %}
    <nav aria-label="crumb">
                     <ol class="crumb breadcrumb-light breadcrumb-dark">
@@ -28,24 +32,25 @@
              {{form.name|as_crispy_field}}
     </div>
   </div>
-       <div class="mb-4 row">
-    <div class="col-sm-6">
-             {{form.title|as_crispy_field}}
-    </div>
-  </div>
            <div class="mb-4 row">
     <div class="col-sm-6">
-             {{form.execution_year|as_crispy_field}}
-    </div>
-  </div>
-  <div class="mb-4 row">
-    <div class="col-sm-6">
-             {{form.category|as_crispy_field}}
+<!--             {{form.execution_date|as_crispy_field}}-->
+        <label class="requiredField" for="execution_date">
+            {% trans 'Execution Date' %}
+            <span class="asteriskField">*</span>
+        </label>
+            <input type="date" name="execution_date" id="execution_date" class="form-control">
     </div>
   </div>
         <div class="mb-4 row">
     <div class="col-sm-6">
-             {{form.application|as_crispy_field}}
+             {{form.project_type|as_crispy_field}}
+    </div>
+  </div>
+
+        <div class="mb-4 row">
+    <div class="col-sm-6">
+             {{form.main_material|as_crispy_field}}
     </div>
   </div>
         <div class="mb-4 row">
@@ -72,7 +77,9 @@
   </div>
 
        <div class="col-auto">
-    <button type="submit" class="btn btn-primary ">{% trans 'Add Project' %}</button>
+    <button type="submit" class="btn btn-primary mr-3 ">{% trans 'Add Project' %}</button>
+     <button type="button" class="btn btn-danger" id="clear">{% trans 'Clear' %}</button>
+
   </div>
 </form>
   </div>
