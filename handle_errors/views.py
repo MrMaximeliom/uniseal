@@ -13,4 +13,5 @@ def error_500(request, *args, **argv):
     context = {
         'title':_('Internal Error 500')
     }
+
     return render(request, 'handle_errors/500.html',context,status=500)
