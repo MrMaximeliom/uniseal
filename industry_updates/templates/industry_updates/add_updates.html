@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+{% extends "dashboard/base.html" %}
+{% load static %}
+{% load static i18n %}
+{% load crispy_forms_tags %}
+{% block title %}
+{{title}}
+{% endblock title %}
+    {% block custom_js %}
+<script src="{% static 'dashboard/js/general.js' %}" defer></script>
+    {% endblock %}
+         {% block breadcrumb_content %}
+   <nav aria-label="crumb">
+                    <ol class="crumb breadcrumb-light breadcrumb-dark">
+                        <li class="breadcrumb-item"><a href="{% url 'dashboard' %}">{% trans 'Dashboard' %}</a></li>
+                        <li class="breadcrumb-item" aria-current="page">{% trans 'Industry Updates' %}</li>
+                        <li class="breadcrumb-item" aria-current="page">{% trans 'Add Industry Updates' %}</li>
+                    </ol>
+                </nav>
+                {% endblock breadcrumb_content %}
+{% block content %}
+                <h1 class="h2">{% trans 'Add Industry Updates' %}</h1>
+                <p>{% trans 'Here you can add new industry updates' %}</p>
+<div class="card ">
+  <div class="card-body">
+    <h5 class="card-title">Please Add your project details here</h5>
+  <form class="card-form" action="" method="post">
+      {% csrf_token %}
+  <div class="mb-4 row">
+    <div class="col-sm-6">
+             {{form.headline|as_crispy_field}}
+    </div>
+  </div>
+        <div class="mb-4 row">
+    <div class="col-sm-6">
+             {{form.link|as_crispy_field}}
+    </div>
+  </div>
+       <div class="col-auto">
+    <button type="submit" class="btn btn-primary mr-3 ">{% trans 'Add Industry Update' %}</button>
+    <button type="button" class="btn btn-danger" id="clear">{% trans 'Clear' %}</button>
+
+  </div>
+</form>
+  </div>
+</div>
+{% endblock content %}

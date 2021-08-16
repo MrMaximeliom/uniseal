@@ -247,8 +247,6 @@ def send_sms_to_group(request):
     from .forms import SMSGroupMessagesForm
     if request.method == 'POST':
         form = SMSGroupMessagesForm(request.POST)
-
-
         if form.is_valid():
             group = form.cleaned_data.get('group')
             print("receivers are:\n")

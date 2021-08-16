@@ -10,62 +10,36 @@
    <nav aria-label="crumb">
                     <ol class="crumb breadcrumb-light breadcrumb-dark">
                         <li class="breadcrumb-item"><a href="{% url 'dashboard' %}">{% trans 'Dashboard' %}</a></li>
-                        <li class="breadcrumb-item" aria-current="page">{% trans 'SMS Contacts' %}</li>
-                        <li class="breadcrumb-item" aria-current="page">{% trans 'All SMS Contacts' %}</li>
+                        <li class="breadcrumb-item" aria-current="page">{% trans 'Industry Updates' %}</li>
+                        <li class="breadcrumb-item" aria-current="page">{% trans 'All Industry Updates' %}</li>
                     </ol>
                 </nav>
                 {% endblock breadcrumb_content %}
 {% block content %}
-                <h1 class="h2">{% trans 'All SMS Contacts' %}</h1>
+                <h1 class="h2">{% trans 'All Industry Updates' %}</h1>
+                <p>{% trans 'This is the Industry Updates' %}</p>
+{% if all_updates_data|length %}
  <div class="row">
                     <div class="col-12 col-xl-11 mb-4 mb-lg-0">
                         <div class="card-light card-dark">
-                            <h5 class="card-header-light card-header-dark">{% trans 'SMS Contacts' %}</h5>
+                            <h5 class="card-header-light card-header-dark">{% trans 'Industry Updates' %}</h5>
                             <div class="card-body-light card-body-dark">
                                 <div class="table-responsive">
                                     <table class="table">
                                         <thead>
                                           <tr>
-                                            <th scope="col">{% trans 'Contact Number' %}</th>
-                                            <th scope="col">{% trans 'Group' %}</th>
-                                            <th scope="col">{% trans 'Update' %}</th>
-                                            <th scope="col">{% trans 'Delete' %}</th>
+                                            <th scope="col">{% trans 'Headline' %}</th>
+                                            <th scope="col">{% trans 'Link' %}</th>
+                                            <th scope="col"></th>
                                           </tr>
                                         </thead>
                                         <tbody>
-                                        {% for contact in all_contacts_data %}
+                                        {% for update in all_updates_data %}
                                           <tr>
-                                            <th scope="row">{{contact.contact_number}}</th>
-                                            <td>{{ contact.group.name }}</td>
-                                            <td><a href="{% url 'editSMSContact' slug=contact.slug%}" class="btn btn-sm btn-primary">{% trans 'Update' %}</a></td>
-                                           <td><a href="#" class="btn btn-sm btn-danger" data-bs-toggle="modal" data-bs-target="#exampleModal{{contact.id}}">{% trans 'Delete' %}</a></td>
-
+                                            <th scope="row">{{update.headline}}</th>
+                                            <td>{{ update.link }}</td>
+                                            <td><a href="#" class="btn btn-sm btn-primary">View</a></td>
                                           </tr>
-                                                                                                                            <div class="modal fade" id="exampleModal{{contact.id}}" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
-  <div class="modal-dialog">
-    <div class="modal-content">
-      <div class="modal-header">
-        <h5 class="modal-title" id="exampleModalLabel">{% trans 'Delete Conformation' %}</h5>
-        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-      </div>
-        <form action="" method="post">
-            {% csrf_token %}
-      <div class="modal-body">
-
-          <h3>{% trans 'Are you sure you want to delete this sms contact?' %}</h3>
-<h4 style="color:red;">{{contact.contact_number}}</h4>
-
-<!--           <input type="number" value="{{product.id}}" hidden name="product_id">-->
-      </div>
-      <div class="modal-footer">
-        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-        <a type="submit" class="btn btn-danger" href="{% url 'deleteSMSContact' id=contact.id %}">Delete</a>
-
-      </div>
-              </form>
-    </div>
-  </div>
-</div>
                                         {% endfor %}
 
                                         </tbody>
@@ -98,5 +72,9 @@
           </ul>
        </nav>
   </div>
+{% else %}
+<h3>{% trans 'There is no industry updates yet .. you can add new ones from ' %} <a href="{% url 'addUpdates' %}">{% trans 'Here' %}</a></h3>
+
+{% endif %}
 
 {% endblock content %}

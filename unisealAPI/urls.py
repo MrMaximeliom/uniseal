@@ -18,6 +18,7 @@ from brochures.urls import urlpatterns as brochure_urls
 from sellingPoint.urls import urlpatterns as selling_urls
 from sms_notifications.urls import urlpatterns as sms_urls
 from project_application.urls import urlpatterns as application_urls
+from industry_updates.urls import urlpatterns as uppdate_urls
 from django.contrib import admin
 from django.urls import path, include
 from rest_framework import routers
@@ -36,9 +37,11 @@ from admin_panel import views as admin_views
 from django.conf import settings
 from address import views as address_views
 from dashboard import views as dashboard_views
+from industry_updates import views as industry_views
 from sms_notifications import views as sms_notifications_views
 from django.views.generic.base import RedirectView
 from django.contrib.staticfiles.storage import staticfiles_storage
+from django.conf.urls import handler404, handler500
 from rest_framework_simplejwt.views import (
     TokenObtainPairView,
     TokenRefreshView,
@@ -57,6 +60,7 @@ router.register(r'address/modifyState', address_views.StateViewSet, basename='Cr
 router.register(r'address/modifyCity', address_views.CityViewSet, basename='CreateCity')
 router.register(r'address/modifyArea', address_views.AreaViewSet, basename='CreateArea')
 router.register(r'category', category_views.CategoryViewSet, basename='CreateCategory')
+router.register(r'industryUpdates', industry_views.IndustryUpdateViewSet, basename='CreateIndustry')
 router.register(r'slider', slider_views.SliderViewSet, basename='CreateSlider')
 router.register(r'product/modifyProduct', product_views.ProductViewSet, basename='CreateProduct')
 router.register(r'product/productImage', product_views.ProductImagesViewSet, basename='CreateProductImage')
@@ -107,17 +111,17 @@ urlpatterns = [
     path('dashboard/SMSs/', include(sms_urls)),
     path('dashboard/CompanyInfo/', include(company_urls)),
     path('dashboard/ProjectApplications/', include(application_urls)),
-    # path('dashboard/workingField/', include(working_urls)),
+    path('dashboard/IndustryUpdates/', include(uppdate_urls)),
     path('dashboard/testing/', dashboard.views.testing_view,name='testingPage'),
     path('login/', TokenObtainPairView.as_view(), name='token_obtain_pair'),
     path('login/refresh/', TokenRefreshView.as_view(), name='token_refresh'),
     path('api-auth/', include('rest_framework.urls', namespace='rest_framework')),
     path('logout/', accounts_views.Logout.as_view(), name='logout'),
-    # re_path('^product/(?P<category_id>.+)/$',product_views.FetchProductsByCategoryViewSet,name='FetchProduct'),
-    # re_path('product/(?P[0-9][,].+)/$',product_views.FetchProductsByCategoryViewSet.as_view(),name='FetchProducts'),
     path('favicon.ico', RedirectView.as_view(url=staticfiles_storage.url('dashboard/images/favicon.ico'))),
 
 ]
+handler404 = 'handle_errors.views.error_404'
+handler500 = 'handle_errors.views.error_500'
 
 if settings.DEBUG:
     urlpatterns += static(settings.MEDIA_URL,

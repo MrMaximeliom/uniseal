@@ -1,0 +1,13 @@
+<!DOCTYPE html>
+{% extends "dashboard/base.html" %}
+{% load static %}
+{% load static i18n %}
+{% load mathfilters %}
+{% block title %}
+{{title}}
+{% endblock title %}
+       
+{% block content %}
+        <img src="{% static 'dashboard/images/404.png' %}">
+<h3>OOPS ERROR Man</h3>
+{% endblock content %}
