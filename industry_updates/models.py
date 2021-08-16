@@ -4,6 +4,7 @@ from Util.utils import rand_slug
 from django.template.defaultfilters import slugify
 
 
+
 # Create your models here.
 class IndustryUpdates(models.Model):
     headline = models.CharField(
