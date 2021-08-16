@@ -31,22 +31,11 @@ class SMSNotification(models.Model):
         verbose_name=_('SMS Message'),
 
     )
-    group = models.ForeignKey(
-        'SMSGroups',
-        on_delete=models.SET_NULL,
-        verbose_name=_('SMS Group'),
-        blank=True,
-        null=True
-    )
     single_mobile_number = models.CharField(
         verbose_name=_('Single Mobile Number'),
         max_length=20,
         blank=True,
         null=True
-    )
-    is_multiple = models.BooleanField(
-        verbose_name=('Is Message Sent To Many Users?')
-
     )
     slug = models.SlugField(
         default=slugify(rand_slug()),
@@ -76,5 +65,33 @@ class SMSContacts(models.Model):
 
     def __str__(self):
         return self.contact_number
+
+class SMSGroupMessages(models.Model):
+    message = models.TextField(
+        verbose_name=_('SMS Message'),
+
+    )
+
+    group = models.ForeignKey(
+        'SMSGroups',
+        on_delete=models.SET_NULL,
+        null=True,
+        verbose_name=_('SMS Group')
+    )
+    slug = models.SlugField(
+        default=slugify(rand_slug()),
+        verbose_name=_('SMS Group Message Slug')
+
+    )
+    status = models.CharField(
+        max_length=11,
+        verbose_name=_('SMS Status'),
+        blank=True,
+        null=True
+    )
+
+    def __str__(self):
+        return self.message
+
 
 

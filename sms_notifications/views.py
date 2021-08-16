@@ -208,11 +208,12 @@ def send_sms(request):
         #     print("sending and saving data")
         if form.is_valid():
                if form.cleaned_data.get('single_mobile_number') != '' and form.cleaned_data.get('message') != '':
-                  status = sendSingleSMS(request,
+                  status = sendSMS(request,
                               'Uniseal',
-                              form.cleaned_data.get('single_mobile_number'),
-                              form.cleaned_data.get('message'),
-                                                         )
+                                   form.cleaned_data.get('single_mobile_number'),
+                                   form.cleaned_data.get('message'),
+
+                                   )
                   instance = form.save(commit=False)
                   instance.status =  status
                   instance.save()
@@ -231,6 +232,54 @@ def send_sms(request):
 
     }
     return render(request, 'sms_notifications/send_sms.html', context)
+
+def prepare_group_contacts(group):
+    from .models import SMSContacts
+    receivers = SMSContacts.objects.filter(group=group)
+    receivers_list = ''.join('249'+rec.contact_number+';' for rec in receivers)
+    # removing last ;
+    return receivers_list[:-1]
+
+
+
+@login_required(login_url='login')
+def send_sms_to_group(request):
+    from .forms import SMSGroupMessagesForm
+    if request.method == 'POST':
+        form = SMSGroupMessagesForm(request.POST)
+
+
+        if form.is_valid():
+            group = form.cleaned_data.get('group')
+            print("receivers are:\n")
+            receivers = prepare_group_contacts(group)
+            print(receivers)
+
+            if form.cleaned_data.get('message') != '':
+                  status = sendSMS(request,
+                              'Uniseal',
+                              receivers,
+                              form.cleaned_data.get('message'),
+                                         False
+                                            )
+                  instance = form.save(commit=False)
+                  instance.status =  status
+                  instance.save()
+                  messages.success(request, "Your message has been saved successfully")
+
+        else:
+            for field, items in form.errors.items():
+                for item in items:
+                    messages.error(request, '{}: {}'.format(field, item))
+    else:
+        form = SMSGroupMessagesForm()
+    context = {
+        'title': _('Send SMS To SMS Group'),
+        'send_sms_group': 'active',
+        'form': form,
+
+    }
+    return render(request, 'sms_notifications/send_group_sms.html', context)
 @login_required(login_url='login')
 def add_sms_group(request):
     from .forms import SMSGroupsForm
@@ -438,38 +487,37 @@ def all_sms_contacts(request):
                   }
                   )
 
-def sendSingleSMS(request,sender,receiver,msq):
+def sendSMS(request, sender, receiver, msq, single=True):
     from Util.utils import SMS_USERNAME,SMS_PASSWORD
-    from urllib.parse import urljoin
-    sms_status = ''
-    rec = '249'+receiver
-    # base = 'http://212.0.129.229/bulksms/webacc.aspx'
+    if single:
+        rec = '249' + receiver
+    else:
+        rec = receiver
+    print('receivers are:')
+    print(receiver)
     args = { 'user' : SMS_USERNAME,
              'pwd' : SMS_PASSWORD,
              'smstext':msq,
              'Sender':sender,
              'Nums':rec
-
-
              }
-    # er = urllib.parse.urlencode(args)
-    # print(base)
-    # complete_url = urljoin(base,er)
-    # print(complete_url)
     from requests.models import PreparedRequest
     req = PreparedRequest()
     url = "http://212.0.129.229/bulksms/webacc.aspx"
     req.prepare_url(url, args)
     print(req.url)
-
-    # url = f"http://212.0.129.229/bulksms/webacc.aspx?user={SMS_USERNAME}&pwd={SMS_PASSWORD}&smstext={msq}&Sender={sender}&Nums={rec};24921045058"
-    # print(url)
     response = requests.post(req.url)
     if(response.status_code == 200):
-        messages.success(request,"Message Has Been Sent Successfully!")
         sms_status = "sent"
+        if single:
+            messages.success(request, "Message Has Been Sent Successfully To Contact Number!")
+        else:
+            messages.success(request, "Message Has Been Sent Successfully To SMS Group!")
+
+
+
     else:
-        messages.error(request,"Something Wrong Happend Please Try Again Later!")
+        messages.error(request,"Something Wrong Happened Please Try Again Later!")
         sms_status = "not sent"
     return sms_status
 

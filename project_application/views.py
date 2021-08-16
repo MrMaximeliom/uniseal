@@ -32,12 +32,13 @@ class  ProjectApplicationViewSet(viewsets.ModelViewSet):
         return _("Create/Modify Project Application Data")
 
     from project.models import Application
-    queryset = Application.objects.all()
+    queryset = Application.objects.all().order_by('id')
     serializer_class = ProjectApplicationSerializer
     permission_classes = [UnisealPermission]
 
 from project.models import Application
 applications = Application.objects.all()
+
 @login_required(login_url='login')
 def all_applications(request):
     from project.models import Application

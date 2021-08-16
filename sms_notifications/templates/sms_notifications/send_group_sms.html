@@ -14,13 +14,13 @@
                     <ol class="crumb breadcrumb-light breadcrumb-dark">
                         <li class="breadcrumb-item"><a href="{% url 'dashboard' %}">{% trans 'Dashboard' %}</a></li>
                         <li class="breadcrumb-item" aria-current="page">{% trans 'SMS Notifications' %}</li>
-                        <li class="breadcrumb-item" aria-current="page">{% trans 'Send SMS' %}</li>
+                        <li class="breadcrumb-item" aria-current="page">{% trans 'Send SMS To SMS Group' %}</li>
                     </ol>
                 </nav>
                 {% endblock breadcrumb_content %}
 {% block content %}
-                <h1 class="h2">Send SMS</h1>
-                <p>{% trans 'Here you can send SMS Messages' %}</p>
+                <h1 class="h2">Send SMS To SMS Group</h1>
+                <p>{% trans 'Here you can send SMS Messages To SMS Groups' %}</p>
 <div class="card ">
   <div class="card-body">
     <h5 class="card-title">Please Add your SMS details here</h5>
@@ -33,7 +33,7 @@
   </div>
       <div class="mb-4 row">
     <div class="col-sm-6">
-             {{form.single_mobile_number|as_crispy_field}}
+             {{form.group|as_crispy_field}}
     </div>
   </div>
 
