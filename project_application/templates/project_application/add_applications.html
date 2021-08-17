@@ -13,17 +13,17 @@
    <nav aria-label="crumb">
                     <ol class="crumb breadcrumb-light breadcrumb-dark">
                         <li class="breadcrumb-item"><a href="{% url 'dashboard' %}">{% trans 'Dashboard' %}</a></li>
-                        <li class="breadcrumb-item" aria-current="page">{% trans 'Applications' %}</li>
-                        <li class="breadcrumb-item" aria-current="page">{% trans 'Add Applications' %}</li>
+                        <li class="breadcrumb-item" aria-current="page">{% trans 'Project Types' %}</li>
+                        <li class="breadcrumb-item" aria-current="page">{% trans 'Add Project Types' %}</li>
                     </ol>
                 </nav>
                 {% endblock breadcrumb_content %}
 {% block content %}
-                <h1 class="h2">Add Applications</h1>
-                <p>{% trans 'Here you can add new Applications' %}</p>
+                <h1 class="h2">{% trans 'Project Types' %}</h1>
+                <p>{% trans 'Here you can add new project types' %}</p>
 <div class="card ">
   <div class="card-body">
-    <h5 class="card-title">Please Add your project details here</h5>
+    <h5 class="card-title">Please Add your project types details here</h5>
   <form class="card-form" action="" method="post">
       {% csrf_token %}
   <div class="mb-4 row">
@@ -32,7 +32,7 @@
     </div>
   </div>
        <div class="col-auto">
-    <button type="submit" class="btn btn-primary mr-3 ">{% trans 'Add Application' %}</button>
+    <button type="submit" class="btn btn-primary mr-3 ">{% trans 'Add Type' %}</button>
     <button type="button" class="btn btn-danger" id="clear">{% trans 'Clear' %}</button>
 
   </div>

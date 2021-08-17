@@ -16,12 +16,12 @@ def year_choices():
     return [(r, r) for r in range(2000, datetime.date.today().year + 1)]
 class Application(models.Model):
     name = models.CharField(
-        verbose_name=_('Project Application'),
+        verbose_name=_('Project Type'),
         max_length=300
     )
     slug = models.SlugField(
         default=slugify(rand_slug()),
-        verbose_name=_('Project Application Slug')
+        verbose_name=_('Project Type Slug')
 
     )
     def __str__(self):
@@ -88,7 +88,7 @@ max_length=200,
 
 
     def __str__(self):
-        return self.name
+        return str(self.name) + "-" + str(self.main_material)
 
 class ProjectImages(models.Model):
     image = models.ImageField(

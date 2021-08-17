@@ -353,8 +353,8 @@ def edit_project(request,slug):
             project.image = request.FILES['image']
             project.save()
         project_form.save()
-        project_title = project_form.cleaned_data.get('title')
-        messages.success(request, f"Successfully Updated : {project_title} Data")
+        project_name = project_form.cleaned_data.get('name')
+        messages.success(request, f"Successfully Updated : {project_name} Data")
     else:
         for field, items in project_form.errors.items():
             for item in items:

@@ -66,7 +66,7 @@ def all_applications(request):
 
     return render(request, 'project_application/all_applications.html',
                   {
-                      'title': _('All Project Applications'),
+                      'title': _('All Project Types'),
                       'all_applications': 'active',
                       'all_applications_data': application,
                       'page_range': paginator.page_range,
@@ -91,7 +91,7 @@ def add_applications(request):
         form = ProjectApplicationForm()
 
     context = {
-        'title': _('Add Project Applications'),
+        'title': _('Add Project Types'),
         'add_applications': 'active',
         'form': form,
     }
@@ -123,7 +123,7 @@ def delete_applications(request):
 
     return render(request, 'project_application/delete_applications.html',
                   {
-                      'title': _('Delete Project Applications'),
+                      'title': _('Delete Project Types'),
                       'delete_applications': 'active',
                       'all_applications_data': applications,
                       'page_range': paginator.page_range,
@@ -158,7 +158,7 @@ def edit_applications(request):
 
     return render(request, 'project_application/edit_applications.html',
                   {
-                      'title': _('Edit Project Applications'),
+                      'title': _('Edit Project Types'),
                       'edit_applications': 'active',
                       'all_applications_data': applications,
                       'page_range': paginator.page_range,
@@ -190,7 +190,7 @@ def edit_application(request,slug):
                 messages.error(request, '{}: {}'.format(field, item))
 
     context = {
-        'title': _('Edit Project Applications'),
+        'title': _('Edit Project Types'),
         'edit_applications': 'active',
         'all_applications': all_applications,
         'form': application_form,

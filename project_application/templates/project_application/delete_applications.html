@@ -10,24 +10,24 @@
 <nav aria-label="crumb">
                     <ol class="crumb breadcrumb-light breadcrumb-dark">
                         <li class="breadcrumb-item"><a href="{% url 'dashboard' %}">{% trans 'Dashboard' %}</a></li>
-                        <li class="breadcrumb-item" aria-current="page">{% trans 'Project Applications' %}</li>
-                        <li class="breadcrumb-item" aria-current="page">{% trans 'Delete Project Applications' %}</li>
+                        <li class="breadcrumb-item" aria-current="page">{% trans 'Project Types' %}</li>
+                        <li class="breadcrumb-item" aria-current="page">{% trans 'Delete Project Types' %}</li>
                     </ol>
                 </nav>
                 {% endblock breadcrumb_content %}
 {% block content %}
-                <h1 class="h2">{% trans 'Delete Project Applications' %}</h1>
+                <h1 class="h2">{% trans 'Delete Project Types' %}</h1>
       <div class="row">
                     <div class="col-12 col-xl-11 mb-4 mb-lg-0">
                         <div class="card-light card-dark">
-                            <h5 class="card-header-light card-header-dark">{% trans 'Project Applications' %}</h5>
+                            <h5 class="card-header-light card-header-dark">{% trans 'Project Types' %}</h5>
                             <div class="card-body-light card-body-dark">
                                 <div class="table-responsive">
                                     <table class="table">
                                         <thead>
                                           <tr>
-                                            <th scope="col">{% trans 'Application Name' %}</th>
-                                            <th scope="col">{% trans 'Number of Projects in this Application' %}</th>
+                                            <th scope="col">{% trans 'Project Type' %}</th>
+                                            <th scope="col">{% trans 'Number of Projects in this Type' %}</th>
                                             <th scope="col"></th>
                                           </tr>
                                         </thead>
@@ -49,7 +49,7 @@
             {% csrf_token %}
       <div class="modal-body">
 
-          <h3>{% trans 'Are you sure you want to delete this project application?' %}</h3>
+          <h3>{% trans 'Are you sure you want to delete this project type?' %}</h3>
 
           <h4 style="color:red;">{{application.name}}</h4>
 <!--           <input type="number" value="{{product.id}}" hidden name="product_id">-->

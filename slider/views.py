@@ -88,7 +88,11 @@ def add_sliders(request):
             slider.slug = slugify(rand_slug())
             slider.save()
             link = form.cleaned_data.get('link')
-            messages.success(request, f"New Slider Added: {link}")
+            if link != "":
+                messages.success(request, f"New Slider Added: {link}")
+            else:
+                messages.success(request, f"New Slider Added")
+
         else:
             for field, items in form.errors.items():
                 for item in items:
