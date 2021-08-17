@@ -339,6 +339,7 @@ def project_images(request,slug):
                       'project_original_image':project.image.url,
                       'form':form
                   })
+
 @login_required(login_url='login')
 def edit_project(request,slug):
     from project.models import Project
