@@ -175,7 +175,7 @@ def edit_brochure(request,slug):
     if brochure_form.is_valid():
         if request.FILES:
             Brochures = brochure_form.save()
-            Brochures.image = request.FILES['image']
+            # Brochures.image = request.FILES['image']
             Brochures.save()
         brochure_form.save()
         point_name = brochure_form.cleaned_data.get('title')
