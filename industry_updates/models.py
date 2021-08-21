@@ -17,6 +17,14 @@ class IndustryUpdates(models.Model):
         verbose_name=_('Link'),
 
     )
+    image = models.ImageField(
+        verbose_name=_('Image'),
+        upload_to="industry_updates_images"
+    )
+    details = models.TextField(
+        verbose_name=_('Details')
+    )
+
     slug = models.SlugField(
         default=slugify(rand_slug()),
         verbose_name=_('Industry Slug')

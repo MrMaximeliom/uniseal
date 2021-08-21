@@ -4,11 +4,13 @@ from rest_framework import viewsets
 from rest_framework import mixins
 from django.contrib.auth import update_session_auth_hash
 from django.contrib.auth.forms import PasswordChangeForm
-from Util.utils import EnablePartialUpdateMixin, rand_slug
+from Util.utils import EnablePartialUpdateMixin, rand_slug , SearchMan
 from Util.permissions import IsSystemBackEndUser, IsAnonymousUser, UnisealPermission
 from rest_framework.permissions import IsAuthenticated
 from django.core.paginator import Paginator, PageNotAnInteger, EmptyPage
 from django.contrib import messages
+import xlsxwriter
+
 
 # Create your views here.
 from rest_framework.views import APIView
@@ -208,12 +210,63 @@ class ContactUsViewSet(viewsets.ModelViewSet):
 # Views for dashboard
 from django.contrib.auth.decorators import login_required
 
-
+searchManObj = SearchMan("User")
 @login_required(login_url='login')
 def all_users(request):
     from accounts.models import User
     all_users = User.objects.all().order_by("id")
     paginator = Paginator(all_users, 5)
+    search_result = ''
+    if request.method == "POST" and 'clear' not in request.POST and 'createExcel' not in request.POST :
+        searchManObj.setSearch(True)
+        if request.POST.get('search_options') == 'full_name':
+            print('here now')
+            search_message = request.POST.get('search_phrase')
+            search_result = User.objects.filter(full_name=search_message).order_by("id")
+            searchManObj.setPaginator(search_result)
+            searchManObj.setSearchPhrase(search_message)
+            searchManObj.setSearchOption('Full Name')
+            searchManObj.setSearchError(False)
+        elif request.POST.get('search_options') == 'username':
+            search_phrase = request.POST.get('search_phrase')
+            search_result = User.objects.filter(username=search_phrase).order_by("id")
+            searchManObj.setPaginator(search_result)
+            searchManObj.setSearchPhrase(search_phrase)
+            searchManObj.setSearchOption('Username')
+            searchManObj.setSearchError(False)
+        elif request.POST.get('search_options') == 'organization':
+            search_phrase = request.POST.get('search_phrase')
+            search_result = User.objects.filter(organization=search_phrase).order_by("id")
+            searchManObj.setPaginator(search_result)
+            searchManObj.setSearchPhrase(search_phrase)
+            searchManObj.setSearchOption('Organization')
+            searchManObj.setSearchError(False)
+        elif request.POST.get('search_options') == 'phone_number':
+            search_phrase = request.POST.get('search_phrase')
+            search_result = User.objects.filter(phone_number=search_phrase).order_by("id")
+            searchManObj.setPaginator(search_result)
+            searchManObj.setSearchPhrase(search_phrase)
+            searchManObj.setSearchOption('Phone Number')
+            searchManObj.setSearchError(False)
+
+        else:
+            messages.error(request,
+                           "Please choose an item from list , then write search phrase to search by it!")
+            searchManObj.setSearchError(True)
+    if request.method == "GET" and 'page' not in request.GET:
+        all_users = User.objects.all().order_by("id")
+        searchManObj.setPaginator(all_users)
+        searchManObj.setSearch(False)
+    if request.method == "POST" and request.POST.get('clear') == 'clear':
+        all_users = User.objects.all().order_by("id")
+        searchManObj.setPaginator(all_users)
+        searchManObj.setSearch(False)
+    if request.method == "POST" and request.POST.get('createExcel') == 'done':
+        all_pages = request.POST.get('allData')
+        print("all",all_pages,"\n")
+        sub_pages = request.POST.get('search_pages')
+        print("sub",sub_pages)
+
     if request.GET.get('page'):
         # Grab the current page from query parameter
         page = int(request.GET.get('page'))
@@ -221,6 +274,7 @@ def all_users(request):
         page = None
 
     try:
+        paginator = searchManObj.getPaginator()
         users = paginator.page(page)
         # Create a page object for the current page.
     except PageNotAnInteger:
@@ -239,7 +293,12 @@ def all_users(request):
                       'all_users_data': users,
                       'page_range': paginator.page_range,
                       'num_pages': paginator.num_pages,
-                      'current_page': page
+                      'current_page': page,
+                      'search': searchManObj.getSearch(),
+                      'search_result': search_result,
+                      'search_phrase': searchManObj.getSearchPhrase(),
+                      'search_option': searchManObj.getSearchOption(),
+                      'search_error':searchManObj.getSearchError()
                   }
                   )
 

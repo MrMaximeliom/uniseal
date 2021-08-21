@@ -1,11 +1,7 @@
-import urllib.parse
-
 import requests
 from django.shortcuts import render, get_object_or_404, redirect
 from rest_framework import viewsets
-# from Util.permissions import UnisealPermission
 from rest_framework.permissions import IsAdminUser
-
 from django.core.paginator import Paginator, PageNotAnInteger, EmptyPage
 from django.utils.translation import gettext_lazy as _
 from django.contrib import messages
@@ -111,54 +107,63 @@ class SearchMan:
         self.paginator = Paginator(query, 5)
     def getPaginator(self):
         return self.paginator
+    search = False
+    search_phrase = ''
+    search_option = ''
+    def setSearch(self,bool):
+        self.search = bool
+    def getSearch(self):
+        return self.search
+    def setSearchPhrase(self,phrase):
+        self.search_phrase = phrase
+    def getSearchPhrase(self):
+        return  self.search_phrase
+    def setSearchOption(self, option):
+        self.search_option = option
 
+    def getSearchOption(self):
+        return self.search_option
 
+searchManObj = SearchMan()
 @login_required(login_url='login')
 def all_sms(request):
     from sms_notifications.models import SMSNotification
     all_sms = SMSNotification.objects.all().order_by("id")
     paginator = Paginator(all_sms, 5)
-    searchManObj = SearchMan()
-    search = False
     search_result = ''
-
-
     if request.method == "POST":
-            search = True
+            searchManObj.setSearch(True)
             if request.POST.get('search_options') == 'message':
                 print('here now')
-            search_message = request.POST.get('search_phrase')
-            search_result = SMSNotification.objects.filter(message=search_message)
-            # paginator = Paginator(search_result,5)
-            searchManObj.setPaginator(search_result)
-            # request.session['paginator'] = search_result
-            if request.POST.get('search_options') == 'group':
-                search_group = request.POST.get('search_phrase')
-                search_result = SMSNotification.objects.filter(group__name=search_group)
-                paginator = Paginator(search_result, 5)
-                # request.session['paginator'] = search_result
+                search_message = request.POST.get('search_phrase')
+                search_result = SMSNotification.objects.filter(message=search_message).order_by("id")
                 searchManObj.setPaginator(search_result)
+                searchManObj.setSearchPhrase(search_message)
+                searchManObj.setSearchOption('Message')
+
             elif request.POST.get('search_options') == 'mobile':
                 search_phrase = request.POST.get('search_phrase')
-                search_result = SMSNotification.objects.filter(single_mobile_number=search_phrase)
-                paginator = Paginator(search_result, 5)
+                search_result = SMSNotification.objects.filter(single_mobile_number=search_phrase).order_by("id")
+                # paginator = Paginator(search_result, 5)
                 # request.session['paginator'] = search_result
                 searchManObj.setPaginator(search_result)
+                searchManObj.setSearchPhrase(search_phrase)
+                searchManObj.setSearchOption('Mobile')
+
             else:
                 messages.error(request,
                                "Please choose an item from list , then write search phrase to search by it!")
 
-        # else:
-        #     messages.error(request,"Please enter a valid search phrase consisting of letters, numbers, underscores or hyphens.")
-        #     print('not ok do not search')
+
+    if request.method == "GET" and 'page' not in request.GET:
+        from sms_notifications.models import SMSNotification
+        all_sms = SMSNotification.objects.all().order_by("id")
+        searchManObj.setPaginator(all_sms)
+        searchManObj.setSearch(False)
     if request.GET.get('clear'):
         from sms_notifications.models import SMSNotification
         all_sms = SMSNotification.objects.all().order_by("id")
-        # paginator = Paginator(all_sms, 5)
         searchManObj.setPaginator(all_sms)
-
-
-
 
 
     if request.GET.get('page'):
@@ -173,7 +178,9 @@ def all_sms(request):
 
     try:
         paginator = searchManObj.getPaginator()
+        print("page nums: ",paginator.num_pages)
         sms = paginator.page(page)
+        print("sms: ", sms)
         # Create a page object for the current page.
     except PageNotAnInteger:
         # If the query parameter is empty then grab the first page.
@@ -192,8 +199,10 @@ def all_sms(request):
                       'page_range': paginator.page_range,
                       'num_pages': paginator.num_pages,
                       'current_page': page,
-                      'search':search,
+                      'search':searchManObj.getSearch(),
                       'search_result':search_result,
+                      'search_phrase':searchManObj.getSearchPhrase(),
+                      'search_option':searchManObj.getSearchOption(),
                   }
                   )
 @login_required(login_url='login')
@@ -239,6 +248,7 @@ def prepare_group_contacts(group):
     receivers_list = ''.join('249'+rec.contact_number+';' for rec in receivers)
     # removing last ;
     return receivers_list[:-1]
+
 
 
 

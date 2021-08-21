@@ -1,0 +1,2 @@
+# added in 21 aug in local - home
+pip install XlsxWriter
