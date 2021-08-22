@@ -108,20 +108,5 @@ $("#btn-mode").html('<svg xmlns="http://www.w3.org/2000/svg" width="24" height="
 });
 });
 
-// if user chooses to select all pages , then select all pages also in export data functionality
-$('#allData-report').on("click",function(){
-// check if it's checked or not
-if($(this).is(':checked')){
-// make all input fields for pages checked also
-$('.page-js').each(function(){
-  $(this).prop("checked",true);
-})
-}
-else{
-// else make them unchecked
-$('.page-js').each(function(){
-  $(this).prop("checked",false);
-})
-}
-});
+
 

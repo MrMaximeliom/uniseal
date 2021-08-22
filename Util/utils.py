@@ -63,7 +63,7 @@ class SearchMan:
 def createExelFile(headers,**kwargs):
     import xlsxwriter
     from string import ascii_uppercase
-    workBok = xlsxwriter.Workbook("test.xlsx")
+    workBok = xlsxwriter.Workbook("test1.xlsx",options={'remove_timezone': True})
     sheet = workBok.add_worksheet()
     AlphabetLetters = ''.join(c for c in ascii_uppercase)
     # create the headers first
@@ -83,6 +83,7 @@ def createExelFile(headers,**kwargs):
         x_position = x_position+1
         for item in range(len(value)):
             sheet.write(item + 1,  x_position, value[item])
+    workBok.close()
 
 
 

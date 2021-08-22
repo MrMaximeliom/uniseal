@@ -210,19 +210,12 @@ def send_sms(request):
     from .forms import SMSNotificationForm
     if request.method == 'POST':
         form = SMSNotificationForm(request.POST)
-        # print(form.cleaned_data.get('message'))
-        # if form.cleaned_data.get('submit') == 'save':
-        #     print("saving data ..")
-        # else:
-        #     print("sending and saving data")
         if form.is_valid():
                if form.cleaned_data.get('single_mobile_number') != '' and form.cleaned_data.get('message') != '':
                   status = sendSMS(request,
                               'Uniseal',
                                    form.cleaned_data.get('single_mobile_number'),
-                                   form.cleaned_data.get('message'),
-
-                                   )
+                                   form.cleaned_data.get('message'))
                   instance = form.save(commit=False)
                   instance.status =  status
                   instance.save()
@@ -532,7 +525,7 @@ def sendSMS(request, sender, receiver, msq, single=True):
 
 
 def confirm_delete_sms_notification(request,id):
-    from sms_notifications.models import SMSNotification , SMSContacts , SMSGroups
+    from sms_notifications.models import SMSNotification
     obj = get_object_or_404(SMSNotification, id=id)
     try:
         obj.delete()

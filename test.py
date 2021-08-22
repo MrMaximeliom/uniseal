@@ -34,4 +34,9 @@ if __name__ == "__main__":
     # for c in range(len(namesAndCols)):
     #     print(f"{AlphabetLetters[c]}1",namesAndCols[c])
 
-    testFun("s",data=names,money=money)
+    # testFun("s",data=names,money=money)
+    # headers = []
+    # headers.append("df")
+    # print(headers[0])
+    for page in range(1,1):
+        print(page)

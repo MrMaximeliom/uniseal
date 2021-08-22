@@ -4,12 +4,12 @@ from rest_framework import viewsets
 from rest_framework import mixins
 from django.contrib.auth import update_session_auth_hash
 from django.contrib.auth.forms import PasswordChangeForm
-from Util.utils import EnablePartialUpdateMixin, rand_slug , SearchMan
+from Util.utils import EnablePartialUpdateMixin, rand_slug , SearchMan,createExelFile
 from Util.permissions import IsSystemBackEndUser, IsAnonymousUser, UnisealPermission
 from rest_framework.permissions import IsAuthenticated
 from django.core.paginator import Paginator, PageNotAnInteger, EmptyPage
 from django.contrib import messages
-import xlsxwriter
+
 
 
 # Create your views here.
@@ -209,6 +209,96 @@ class ContactUsViewSet(viewsets.ModelViewSet):
 
 # Views for dashboard
 from django.contrib.auth.decorators import login_required
+# the following function prepares the data to be used in the process of creating excel file
+def prepare_selected_query(selected_pages,paginator_obj,headers=None):
+    full_name = []
+    username = []
+    organization = []
+    phone_number = []
+    last_login = []
+    if headers is not None:
+        headers_here = headers
+        for header in headers_here:
+            if header == "Full Name":
+                for page in selected_pages:
+                    for user in paginator_obj.page(page):
+                        full_name.append(user.full_name)
+            elif header == "Username":
+                for page in selected_pages:
+                    for user in paginator_obj.page(page):
+                        username.append(user.username)
+            elif header == "Organization":
+                for page in selected_pages:
+                    for user in paginator_obj.page(page):
+                        organization.append(user.organization)
+            elif header == "Phone Number":
+                for page in selected_pages:
+                    for user in paginator_obj.page(page):
+                        phone_number.append(user.phone_number)
+            elif header == "Last Login":
+                for page in selected_pages:
+                    for user in paginator_obj.page(page):
+                        last_login.append(user.last_login.strftime('%d-%m-%y %a %H:%M %p'))
+    else:
+        headers_here = ["Full Name", "Username", "Organization", "Phone Number", "Last Login"]
+        for page in range(1, paginator_obj.num_pages):
+            for user in paginator_obj.page(page):
+                full_name.append(user.full_name)
+                username.append(user.username)
+                organization.append(user.organization)
+                phone_number.append("0" + user.phone_number)
+                last_login.append(user.last_login.strftime('%d-%m-%y %a %H:%M %p'))
+    return headers_here, full_name, username, organization, phone_number, last_login
+
+
+
+
+
+
+def prepare_query(paginator_obj,headers=None):
+    full_name = []
+    username = []
+    organization = []
+    phone_number = []
+    last_login = []
+    if headers is not None:
+        headers_here = headers
+        for header in headers_here:
+            if header == "Full Name":
+                for page in range(1, paginator_obj.num_pages):
+                    for user in paginator_obj.page(page):
+                        full_name.append(user.full_name)
+            elif header == "Username":
+                for page in range(1, paginator_obj.num_pages):
+                    for user in paginator_obj.page(page):
+                        username.append(user.username)
+            elif header == "Organization":
+                for page in range(1, paginator_obj.num_pages):
+                    for user in paginator_obj.page(page):
+                        organization.append(user.organization)
+            elif header == "Phone Number":
+                for page in range(1, paginator_obj.num_pages):
+                    for user in paginator_obj.page(page):
+                        phone_number.append("0"+user.phone_number)
+            elif header == "Last Login":
+                for page in range(1, paginator_obj.num_pages):
+                    for user in paginator_obj.page(page):
+                        last_login.append(user.last_login.strftime('%d-%m-%y %a %H:%M %p'))
+    else:
+        headers_here = ["Full Name","Username","Organization","Phone Number","Last Login"]
+        for page in range(1, paginator_obj.num_pages):
+            for user in paginator_obj.page(page):
+                full_name.append(user.full_name)
+                username.append(user.username)
+                organization.append(user.organization)
+                phone_number.append("0"+user.phone_number)
+                last_login.append(user.last_login.strftime('%d-%m-%y %a %H:%M %p'))
+
+    # later for extracting actual data
+
+
+    return headers_here,full_name,username,organization,phone_number,last_login
+
 
 searchManObj = SearchMan("User")
 @login_required(login_url='login')
@@ -216,6 +306,7 @@ def all_users(request):
     from accounts.models import User
     all_users = User.objects.all().order_by("id")
     paginator = Paginator(all_users, 5)
+
     search_result = ''
     if request.method == "POST" and 'clear' not in request.POST and 'createExcel' not in request.POST :
         searchManObj.setSearch(True)
@@ -262,10 +353,60 @@ def all_users(request):
         searchManObj.setPaginator(all_users)
         searchManObj.setSearch(False)
     if request.method == "POST" and request.POST.get('createExcel') == 'done':
-        all_pages = request.POST.get('allData')
-        print("all",all_pages,"\n")
-        sub_pages = request.POST.get('search_pages')
-        print("sub",sub_pages)
+        headers = []
+        headers.append("Full Name") if request.POST.get('full_name_header') is not None else ''
+        headers.append("Username") if request.POST.get('username_header') is not None else ''
+        headers.append("Organization") if request.POST.get('organization_header') is not None else ''
+        headers.append("Phone Number") if request.POST.get('phone_number_header') is not None else ''
+        headers.append("Last Login") if request.POST.get('last_login_header') is not None else ''
+        if request.POST.get('allData') == 'allData':
+            # get the original query of page and then structure the data
+            query = searchManObj.getPaginator()
+            if len(headers) > 0 :
+                constructor = {}
+                headers, full_name, username, organization, phone_number, last_login = prepare_query(query,headers=headers)
+                if len(full_name) > 0 :
+                    constructor.update({"full_name": full_name})
+                if len(username) > 0:
+                    constructor.update({"username": username})
+                if len(organization) > 0:
+                    constructor.update({"organization": organization})
+                if len(phone_number) > 0:
+                    constructor.update({"phone_number": phone_number})
+                if len(last_login) > 0:
+                    constructor.update({"last_login": last_login})
+                createExelFile(headers, **constructor)
+            else:
+                headers, full_name, username, organization, phone_number, last_login = prepare_query(query)
+                createExelFile(headers, full_name=full_name, username=username,
+                               organization=organization, phone_number=phone_number, last_login=last_login)
+        elif request.POST.get('pages_collector') != 'none':
+            # get requested pages from the paginator of original page
+            selected_pages = []
+            query = searchManObj.getPaginator()
+            print("original values: ",request.POST.get('pages_collector'))
+            for item in request.POST.get('pages_collector'):
+                if item != ",":
+                    selected_pages.append(item)
+            if len(headers) > 0:
+                constructor = {}
+                headers, full_name, username, organization, phone_number, last_login = prepare_selected_query(selected_pages=selected_pages,paginator_obj=query,
+                                                                                                     headers=headers)
+                if len(full_name) > 0:
+                    constructor.update({"full_name": full_name})
+                if len(username) > 0:
+                    constructor.update({"username": username})
+                if len(organization) > 0:
+                    constructor.update({"organization": organization})
+                if len(phone_number) > 0:
+                    constructor.update({"phone_number": phone_number})
+                if len(last_login) > 0:
+                    constructor.update({"last_login": last_login})
+                createExelFile(headers, **constructor)
+            else:
+                headers, full_name, username, organization, phone_number, last_login = prepare_selected_query(selected_pages,query,headers)
+                createExelFile(headers, full_name=full_name, username=username,
+                               organization=organization, phone_number=phone_number, last_login=last_login)
 
     if request.GET.get('page'):
         # Grab the current page from query parameter

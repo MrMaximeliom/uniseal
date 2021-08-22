@@ -6,6 +6,12 @@
 {% block title %}
 {{title}}
 {% endblock title %}
+{% block custom_css %}
+<link rel="stylesheet" href="{% static 'dashboard/css/search.css' %}">
+{% endblock %}
+   {% block custom_js %}
+<script src="{% static 'dashboard/js/search.js' %}" defer></script>
+    {% endblock %}
          {% block breadcrumb_content %}
    <nav aria-label="crumb">
                     <ol class="crumb breadcrumb-light breadcrumb-dark">
@@ -54,27 +60,61 @@
       <div class="modal-body">
 
           <h3 class="mb-3">{% trans 'Please Select The Data Structure of Excel File' %}</h3>
+          <div>
+    <h5 class="mt-4">{% trans 'Choose Columns' %}</h5>
+    <i>{% trans '(By default all columns are selected)' %}</i>
+    <div class="pages-range mt-2">
+        <div class="form-check">
+          <label for="full_name_header" >Full Name</label>
+           <input id="full_name_header" class="form-check-input" type="checkbox" value="full_name" name="full_name_header">
+        </div>
+           <div class="form-check">
+          <label for="username_header" >Username</label>
+           <input id="username_header" class="form-check-input" type="checkbox" value="username" name="username_header">
+        </div>
+          <div class="form-check">
+          <label for="organization_header" >Organization</label>
+           <input id="organization_header" class="form-check-input" type="checkbox" value="organization" name="organization_header">
+        </div>
+           <div class="form-check">
+          <label for="phone_number_header" >Phone Number</label>
+           <input id="phone_number_header" class="form-check-input" type="checkbox" value="phone_number" name="phone_number_header">
+        </div>
+          <div class="form-check">
+          <label for="last_login_header" >Last Login</label>
+           <input id="last_login_header" class="form-check-input" type="checkbox" value="last_login" name="last_login_header">
+        </div>
+
+
+    </div>
+</div>
              <h5 class="mt-3"> {% trans 'Export All Pages' %}</h5>
           <div class="form-check">
           <label for="allData-report" >{%  trans 'All Pages' %}</label>
           <input id="allData-report" class="form-check-input" type="checkbox" value="allData" name="allData">
           </div>
 
+
 <div>
     <h5 class="mt-4">{% trans 'Export Selected Pages Only' %}</h5>
 
-
+<div class="pages-range">
                  {% for i in page_range %}
 
               <div class="form-check">
           <label for="select{{i}}" >page{{i}}</label>
           <input id="select{{i}}" class="form-check-input page-js" type="checkbox" value="{{i}}" name="subData">
+
           </div>
 
                  {% endfor %}
+    </div>
+      <input hidden type="text" name="pages_collector" id="pages_collector" value="none">
 
 
     </div>
+
+
 
 
 
