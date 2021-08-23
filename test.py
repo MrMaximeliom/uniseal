@@ -16,21 +16,36 @@ if __name__ == "__main__":
     # dir = os.path.abspath('.').split(os.path.sep)[0]+os.path.sep
     # print(dir)
     # print(os.path.expanduser("~/Desktop"))
-    desktop_dir = os.path.expanduser("~/Desktop")
-    # creating Reports directory
-    reports_dir = "Reports"
-    # create reports directory in desktop directory
-    path = os.path.join(desktop_dir, reports_dir)
-    from datetime import date
+    # desktop_dir = os.path.expanduser("~/Desktop")
+    # # creating Reports directory
+    # reports_dir = "Reports"
+    # # create reports directory in desktop directory
+    # path = os.path.join(desktop_dir, reports_dir)
+    # from datetime import date
+    #
+    # today = date.today()
+    # print("Today's date:", today)
+    # from datetime import datetime
+    #
+    # now = datetime.now()
+    #
+    # current_time = now.strftime("%H:%M:%S")
+    # print("Current Time =", current_time)
+    # print(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
+    import tempfile
+    import shutil
 
-    today = date.today()
-    print("Today's date:", today)
-    from datetime import datetime
+    # tempfile.TemporaryDirectory(dir=os.getcwd())
 
-    now = datetime.now()
-
-    current_time = now.strftime("%H:%M:%S")
-    print("Current Time =", current_time)
+    op = tempfile.TemporaryDirectory(dir=os.getcwd())
+    dd = "lolp"
+    path = os.path.join(op.name, dd)
+    os.mkdir(path)
+    tempDir = tempfile.mkdtemp()
+    print(tempDir," --- ---- -- ")
+    # remove temprorary directory
+    # shutil.rmtree(tempDir)
+    print()
 
 
 

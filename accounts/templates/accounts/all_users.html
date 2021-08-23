@@ -191,7 +191,7 @@
       </div>
       <div class="modal-footer">
         <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-        <a type="submit" class="btn btn-danger" href="{% url 'deleteUser' id=user.id %}">Delete</a>
+        <a type="submit" class="btn btn-danger" href="{% url 'deleteUser' id=user.id url='allUsers' %}">Delete</a>
 
       </div>
               </form>

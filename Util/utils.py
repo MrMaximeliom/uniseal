@@ -1,3 +1,6 @@
+from django.http import HttpResponse
+
+
 class EnablePartialUpdateMixin:
     """Enable partial updates
 
@@ -77,11 +80,23 @@ def createExelFile(report_name,headers,**kwargs):
     # creating Reports directory
     reports_dir = "Reports"
     # create reports directory in desktop directory
-    path = os.path.join( desktop_dir, reports_dir)
+    # path = os.path.join( desktop_dir, reports_dir)
     # check if it's not created , create it now otherwise ignore
-    if os.path.isfile(path):
-        os.mkdir(path)
-    complete_file_name = os.path.abspath(path)+"/"+report_name+'_'+str(today)+str(current_time)+".xlsx"
+    # if os.path.isfile(path):
+    #     os.mkdir(path)
+    # complete_file_name = os.path.abspath(path)+"/"+
+    # create temp directory and add excel file in it
+    import tempfile , shutil
+    # create temp directory
+    tempDir = tempfile.mkdtemp()
+    path = os.path.join(tempDir, reports_dir)
+    os.mkdir(path)
+    file_name = report_name+'_'+str(today)+str(current_time)+".xlsx"
+    complete_file_name = os.path.abspath(path)+"/"+file_name
+    print("file name is ",file_name)
+    print("complete file name is: ",complete_file_name)
+    # os.path.join(op.name, dd)
+
     workBok = xlsxwriter.Workbook(complete_file_name,options={'remove_timezone': True})
     sheet = workBok.add_worksheet()
     AlphabetLetters = ''.join(c for c in ascii_uppercase)
@@ -102,10 +117,20 @@ def createExelFile(report_name,headers,**kwargs):
         x_position = x_position+1
         for item in range(len(value)):
             sheet.write(item + 1,  x_position, value[item])
-    file_creation_status = True
+    # file_creation_status = True
     try:
         workBok.close()
         file_creation_status = True
+        import mimetypes
+        path = open(complete_file_name, 'rb')
+        # Set the mime type
+        mime_type, _ = mimetypes.guess_type(complete_file_name)
+        # Set the return value of the HttpResponse
+        response = HttpResponse(path, content_type=mime_type)
+        # Set the HTTP header for sending to browser
+        response['Content-Disposition'] = "attachment; filename=%s" % complete_file_name
+        # Return the response value
+        return response,file_creation_status
     except:
         file_creation_status = False
     return file_creation_status , complete_file_name
@@ -114,5 +139,22 @@ def createExelFile(report_name,headers,**kwargs):
     # return workBok
 
 
-
+# def download_file(request):
+#     import os,mimetypes
+#     # Define Django project base directory
+#     BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
+#     # Define text file name
+#     filename = 'test.xlsx'
+#     # Define the full file path
+#     filepath = BASE_DIR  + "/"+filename
+#     # Open the file for reading content
+#     path = open(filepath, 'rb')
+#     # Set the mime type
+#     mime_type, _ = mimetypes.guess_type(filepath)
+#     # Set the return value of the HttpResponse
+#     response = HttpResponse(path, content_type=mime_type)
+#     # Set the HTTP header for sending to browser
+#     response['Content-Disposition'] = "attachment; filename=%s" % filename
+#     # Return the response value
+#     return response
 

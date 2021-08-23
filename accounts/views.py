@@ -300,7 +300,24 @@ def prepare_query(paginator_obj,headers=None):
 
     return headers_here,full_name,username,organization,phone_number,last_login
 
-
+def download_file(request):
+    import os,mimetypes
+    # Define Django project base directory
+    BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
+    # Define text file name
+    filename = 'test.xlsx'
+    # Define the full file path
+    filepath = BASE_DIR  + "/"+filename
+    # Open the file for reading content
+    path = open(filepath, 'rb')
+    # Set the mime type
+    mime_type, _ = mimetypes.guess_type(filepath)
+    # Set the return value of the HttpResponse
+    response = HttpResponse(path, content_type=mime_type)
+    # Set the HTTP header for sending to browser
+    response['Content-Disposition'] = "attachment; filename=%s" % filename
+    # Return the response value
+    return response
 searchManObj = SearchMan("User")
 @login_required(login_url='login')
 def all_users(request):
@@ -377,24 +394,20 @@ def all_users(request):
                     constructor.update({"phone_number": phone_number})
                 if len(last_login) > 0:
                     constructor.update({"last_login": last_login})
-                status,path = createExelFile('Report For Users ',headers, **constructor)
-                if status:
-                    messages.success(request,f"Report Successfully Created at:{path}")
-                else:
-                    messages.error(request, "Sorry Report Failed To Create , Please Try Again!")
-
-
-
-
+                createExelFile('Report_For_Users',headers, **constructor)
+                # if status:
+                #     messages.success(request,f"Report Successfully Created ")
+                # else:
+                #     messages.error(request, "Sorry Report Failed To Create , Please Try Again!")
 
             else:
                 headers, full_name, username, organization, phone_number, last_login = prepare_query(query)
-                status,path=createExelFile('Report For Users ',headers, full_name=full_name, username=username,
+                createExelFile('Report_For_Users',headers, full_name=full_name, username=username,
                                organization=organization, phone_number=phone_number, last_login=last_login)
-                if status:
-                    messages.success(request,f"Report Successfully Created at:{path}")
-                else:
-                    messages.error(request, "Sorry Report Failed To Create , Please Try Again!")
+                # if status:
+                #     messages.success(request,f"Report Successfully Created")
+                # else:
+                #     messages.error(request, "Sorry Report Failed To Create , Please Try Again!")
 
 
         elif request.POST.get('pages_collector') != 'none':
@@ -419,21 +432,21 @@ def all_users(request):
                     constructor.update({"phone_number": phone_number})
                 if len(last_login) > 0:
                     constructor.update({"last_login": last_login})
-                status,path=createExelFile('Report For Users ',headers, **constructor)
-                if status:
-                    messages.success(request,f"Report Successfully Created at:{path}")
-                else:
-                    messages.error(request, "Sorry Report Failed To Create , Please Try Again!")
+                createExelFile('Report_For_Users',headers, **constructor)
+                # if status:
+                #     messages.success(request,f"Report Successfully Created ")
+                # else:
+                #     messages.error(request, "Sorry Report Failed To Create , Please Try Again!")
 
 
             else:
                 headers, full_name, username, organization, phone_number, last_login = prepare_selected_query(selected_pages,query,headers)
-                status,path=createExelFile('Report For Users ',headers, full_name=full_name, username=username,
+                createExelFile('Report_For_Users',headers, full_name=full_name, username=username,
                                organization=organization, phone_number=phone_number, last_login=last_login)
-                if status:
-                    messages.success(request,f"Report Successfully Created at:{path}")
-                else:
-                    messages.error(request, "Sorry Report Failed To Create , Please Try Again!")
+                # if status:
+                #     messages.success(request,f"Report Successfully Created ")
+                # else:
+                #     messages.error(request, "Sorry Report Failed To Create , Please Try Again!")
 
 
 
@@ -595,7 +608,7 @@ def delete_users(request):
                   }
                   )
 
-def confirm_delete(request,id):
+def confirm_delete(request,id,url):
     from accounts.models import User
     obj = get_object_or_404(User, id=id)
     try:
@@ -604,8 +617,7 @@ def confirm_delete(request,id):
     except:
         messages.error(request, f"User {obj.username} was not deleted , please try again!")
 
-
-    return redirect('deleteUsers')
+    return redirect(url)
 @login_required(login_url='login')
 def change_password(request):
     if request.method == 'POST':
