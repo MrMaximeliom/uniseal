@@ -206,19 +206,7 @@ class ContactUsViewSet(viewsets.ModelViewSet):
     serializer_class = ContactUsSerializer
     permission_classes = [UnisealPermission]
 
-def download_file(request,workbookFile):
-    import os ,mimetypes
-    # fill these variables with real values
-    BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
-    fl_path = BASE_DIR
-    filename = workbookFile.filename
 
-    fl = open(fl_path, 'r')
-    mime_type, _ = mimetypes.guess_type(fl_path)
-    response = HttpResponse(fl, content_type=mime_type)
-    response['Content-Disposition'] = "attachment; filename=%s" % filename
-    workbookFile.close()
-    return response
 
 # Views for dashboard
 from django.contrib.auth.decorators import login_required
@@ -375,6 +363,7 @@ def all_users(request):
         if request.POST.get('allData') == 'allData':
             # get the original query of page and then structure the data
             query = searchManObj.getPaginator()
+
             if len(headers) > 0 :
                 constructor = {}
                 headers, full_name, username, organization, phone_number, last_login = prepare_query(query,headers=headers)
@@ -388,13 +377,26 @@ def all_users(request):
                     constructor.update({"phone_number": phone_number})
                 if len(last_login) > 0:
                     constructor.update({"last_login": last_login})
-                workBook = createExelFile(headers, **constructor)
-                workBook.close()
+                status,path = createExelFile('Report For Users ',headers, **constructor)
+                if status:
+                    messages.success(request,f"Report Successfully Created at:{path}")
+                else:
+                    messages.error(request, "Sorry Report Failed To Create , Please Try Again!")
+
+
+
+
+
             else:
                 headers, full_name, username, organization, phone_number, last_login = prepare_query(query)
-                workBook = createExelFile(headers, full_name=full_name, username=username,
+                status,path=createExelFile('Report For Users ',headers, full_name=full_name, username=username,
                                organization=organization, phone_number=phone_number, last_login=last_login)
-                workBook.close()
+                if status:
+                    messages.success(request,f"Report Successfully Created at:{path}")
+                else:
+                    messages.error(request, "Sorry Report Failed To Create , Please Try Again!")
+
+
         elif request.POST.get('pages_collector') != 'none':
             # get requested pages from the paginator of original page
             selected_pages = []
@@ -417,13 +419,23 @@ def all_users(request):
                     constructor.update({"phone_number": phone_number})
                 if len(last_login) > 0:
                     constructor.update({"last_login": last_login})
-                workBook = createExelFile(headers, **constructor)
-                workBook.close()
+                status,path=createExelFile('Report For Users ',headers, **constructor)
+                if status:
+                    messages.success(request,f"Report Successfully Created at:{path}")
+                else:
+                    messages.error(request, "Sorry Report Failed To Create , Please Try Again!")
+
+
             else:
                 headers, full_name, username, organization, phone_number, last_login = prepare_selected_query(selected_pages,query,headers)
-                workBook= createExelFile(headers, full_name=full_name, username=username,
+                status,path=createExelFile('Report For Users ',headers, full_name=full_name, username=username,
                                organization=organization, phone_number=phone_number, last_login=last_login)
-                workBook.close()
+                if status:
+                    messages.success(request,f"Report Successfully Created at:{path}")
+                else:
+                    messages.error(request, "Sorry Report Failed To Create , Please Try Again!")
+
+
 
     if request.GET.get('page'):
         # Grab the current page from query parameter

@@ -60,10 +60,29 @@ class SearchMan:
     def getSearchError(self):
         return self.search_error
 
-def createExelFile(headers,**kwargs):
-    import xlsxwriter
+def createExelFile(report_name,headers,**kwargs):
+    import xlsxwriter , os
     from string import ascii_uppercase
-    workBok = xlsxwriter.Workbook("test1.xlsx",options={'remove_timezone': True})
+    from datetime import date
+    from datetime import datetime
+    # get current day to link it to excel file name
+    today = date.today()
+    # get current time to link it to excel file name
+    now = datetime.now()
+    current_time = now.strftime("%H:%M:%S")
+    # getting root file system directory
+    rootDir = os.path.abspath('.').split(os.path.sep)[0] + os.path.sep
+    # getting desktop directory
+    desktop_dir = os.path.expanduser("~/Desktop")
+    # creating Reports directory
+    reports_dir = "Reports"
+    # create reports directory in desktop directory
+    path = os.path.join( desktop_dir, reports_dir)
+    # check if it's not created , create it now otherwise ignore
+    if os.path.isfile(path):
+        os.mkdir(path)
+    complete_file_name = os.path.abspath(path)+"/"+report_name+'_'+str(today)+str(current_time)+".xlsx"
+    workBok = xlsxwriter.Workbook(complete_file_name,options={'remove_timezone': True})
     sheet = workBok.add_worksheet()
     AlphabetLetters = ''.join(c for c in ascii_uppercase)
     # create the headers first
@@ -83,8 +102,16 @@ def createExelFile(headers,**kwargs):
         x_position = x_position+1
         for item in range(len(value)):
             sheet.write(item + 1,  x_position, value[item])
-    # workBok.close()
-    return workBok
+    file_creation_status = True
+    try:
+        workBok.close()
+        file_creation_status = True
+    except:
+        file_creation_status = False
+    return file_creation_status , complete_file_name
+
+
+    # return workBok
 
 
 
