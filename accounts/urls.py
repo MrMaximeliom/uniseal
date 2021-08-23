@@ -8,5 +8,6 @@ urlpatterns = [
     path('editUser/<str:slug>', accounts_views.edit_user, name='editUser'),
     path('editUsers', accounts_views.edit_users, name='editUsers'),
     path('changePassword', accounts_views.change_password, name='changePassword'),
+    path('downloadReport', accounts_views.download_file,name='downloadReport'),
 
     ]

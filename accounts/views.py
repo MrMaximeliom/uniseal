@@ -1,3 +1,4 @@
+from django.http import HttpResponse
 from django.template.defaultfilters import slugify
 from django.utils.translation import gettext_lazy as _
 from rest_framework import viewsets
@@ -9,7 +10,6 @@ from Util.permissions import IsSystemBackEndUser, IsAnonymousUser, UnisealPermis
 from rest_framework.permissions import IsAuthenticated
 from django.core.paginator import Paginator, PageNotAnInteger, EmptyPage
 from django.contrib import messages
-
 
 
 # Create your views here.
@@ -206,6 +206,19 @@ class ContactUsViewSet(viewsets.ModelViewSet):
     serializer_class = ContactUsSerializer
     permission_classes = [UnisealPermission]
 
+def download_file(request,workbookFile):
+    import os ,mimetypes
+    # fill these variables with real values
+    BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
+    fl_path = BASE_DIR
+    filename = workbookFile.filename
+
+    fl = open(fl_path, 'r')
+    mime_type, _ = mimetypes.guess_type(fl_path)
+    response = HttpResponse(fl, content_type=mime_type)
+    response['Content-Disposition'] = "attachment; filename=%s" % filename
+    workbookFile.close()
+    return response
 
 # Views for dashboard
 from django.contrib.auth.decorators import login_required
@@ -375,11 +388,13 @@ def all_users(request):
                     constructor.update({"phone_number": phone_number})
                 if len(last_login) > 0:
                     constructor.update({"last_login": last_login})
-                createExelFile(headers, **constructor)
+                workBook = createExelFile(headers, **constructor)
+                workBook.close()
             else:
                 headers, full_name, username, organization, phone_number, last_login = prepare_query(query)
-                createExelFile(headers, full_name=full_name, username=username,
+                workBook = createExelFile(headers, full_name=full_name, username=username,
                                organization=organization, phone_number=phone_number, last_login=last_login)
+                workBook.close()
         elif request.POST.get('pages_collector') != 'none':
             # get requested pages from the paginator of original page
             selected_pages = []
@@ -402,11 +417,13 @@ def all_users(request):
                     constructor.update({"phone_number": phone_number})
                 if len(last_login) > 0:
                     constructor.update({"last_login": last_login})
-                createExelFile(headers, **constructor)
+                workBook = createExelFile(headers, **constructor)
+                workBook.close()
             else:
                 headers, full_name, username, organization, phone_number, last_login = prepare_selected_query(selected_pages,query,headers)
-                createExelFile(headers, full_name=full_name, username=username,
+                workBook= createExelFile(headers, full_name=full_name, username=username,
                                organization=organization, phone_number=phone_number, last_login=last_login)
+                workBook.close()
 
     if request.GET.get('page'):
         # Grab the current page from query parameter

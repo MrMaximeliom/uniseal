@@ -68,13 +68,11 @@ class ProductImages(models.Model):
 
 
 class ProductVideos(models.Model):
-    video = models.URLField(
-        verbose_name=_('Product Video Url')
-    )
-    application_video = models.FileField(
+    video = models.FileField(
         verbose_name=_("Application Video"),
         upload_to="product_videos"
     )
+
 
     product = models.ForeignKey(
         Product,
