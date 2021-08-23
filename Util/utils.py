@@ -1,5 +1,5 @@
 from django.http import HttpResponse
-
+from django.shortcuts import  redirect
 
 class EnablePartialUpdateMixin:
     """Enable partial updates
@@ -89,6 +89,7 @@ def createExelFile(report_name,headers,**kwargs):
     import tempfile , shutil
     # create temp directory
     tempDir = tempfile.mkdtemp()
+    # shutil.rmtree(tempDir)
     path = os.path.join(tempDir, reports_dir)
     os.mkdir(path)
     file_name = report_name+'_'+str(today)+str(current_time)+".xlsx"
@@ -121,40 +122,44 @@ def createExelFile(report_name,headers,**kwargs):
     try:
         workBok.close()
         file_creation_status = True
-        import mimetypes
-        path = open(complete_file_name, 'rb')
-        # Set the mime type
-        mime_type, _ = mimetypes.guess_type(complete_file_name)
-        # Set the return value of the HttpResponse
-        response = HttpResponse(path, content_type=mime_type)
-        # Set the HTTP header for sending to browser
-        response['Content-Disposition'] = "attachment; filename=%s" % complete_file_name
-        # Return the response value
-        return response,file_creation_status
+
+        # import mimetypes
+        # path = open( complete_file_name, 'rb')
+        # # Set the mime type
+        # mime_type, _ = mimetypes.guess_type( complete_file_name)
+        # # Set the return value of the HttpResponse
+        # response = HttpResponse(path, content_type=mime_type)
+        # # Set the HTTP header for sending to browser
+        # response['Content-Disposition'] = "attachment; filename=%s" % file_name
+        # # Return the response value
+        # return response
+        print("created")
+        return file_creation_status,complete_file_name,file_name
+
     except:
         file_creation_status = False
-    return file_creation_status , complete_file_name
+    return file_creation_status,complete_file_name,file_name
 
 
     # return workBok
 
 
-# def download_file(request):
-#     import os,mimetypes
+def download_file(request,filepath,filename):
+    import os,mimetypes
 #     # Define Django project base directory
 #     BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 #     # Define text file name
 #     filename = 'test.xlsx'
 #     # Define the full file path
 #     filepath = BASE_DIR  + "/"+filename
-#     # Open the file for reading content
-#     path = open(filepath, 'rb')
-#     # Set the mime type
-#     mime_type, _ = mimetypes.guess_type(filepath)
-#     # Set the return value of the HttpResponse
-#     response = HttpResponse(path, content_type=mime_type)
-#     # Set the HTTP header for sending to browser
-#     response['Content-Disposition'] = "attachment; filename=%s" % filename
-#     # Return the response value
-#     return response
+    # Open the file for reading content
+    path = open(filepath, 'rb')
+    # # Set the mime type
+    mime_type, _ = mimetypes.guess_type(filepath)
+    # # Set the return value of the HttpResponse
+    response = HttpResponse(path, content_type=mime_type)
+    # # Set the HTTP header for sending to browser
+    response['Content-Disposition'] = "attachment; filename=%s" % filename
+    # # Return the response value
+    return response
 
