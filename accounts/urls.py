@@ -1,5 +1,6 @@
 from django.urls import path
 from accounts import views as accounts_views
+from Util.utils import download_file
 urlpatterns = [
     path('allUsers', accounts_views.all_users, name='allUsers'),
     path('addUsers', accounts_views.add_users, name='addUsers'),
@@ -8,5 +9,5 @@ urlpatterns = [
     path('editUser/<str:slug>', accounts_views.edit_user, name='editUser'),
     path('editUsers', accounts_views.edit_users, name='editUsers'),
     path('changePassword', accounts_views.change_password, name='changePassword'),
-    path('downloadReport', accounts_views.download_file,name='downloadReport'),
+    path('downloadReport/<path:file_path>/<str:file_name>', download_file,name='downloadReport'),
 ]

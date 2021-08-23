@@ -5,28 +5,29 @@ from rest_framework import viewsets
 from rest_framework import mixins
 from django.contrib.auth import update_session_auth_hash
 from django.contrib.auth.forms import PasswordChangeForm
-from Util.utils import EnablePartialUpdateMixin, rand_slug , SearchMan,createExelFile
+from Util.utils import EnablePartialUpdateMixin, rand_slug , SearchMan,createExelFile,ReportMan
 from Util.permissions import IsSystemBackEndUser, IsAnonymousUser, UnisealPermission
 from rest_framework.permissions import IsAuthenticated
 from django.core.paginator import Paginator, PageNotAnInteger, EmptyPage
 from django.contrib import messages
+import shutil
 
 
 
 # Create your views here.
 from rest_framework.views import APIView
 from django.shortcuts import render, get_object_or_404, redirect
-class ReportMan:
-    filePath = ''
-    fileName = ''
-    def setFilePath(self,file_path):
-        self.filePath = file_path
-    def setFileName(self,file_name):
-        self.fileName = file_name
-    def getFilePath(self):
-        return self.filePath
-    def getFileName(self):
-        return self.fileName
+# class ReportMan:
+#     filePath = ''
+#     fileName = ''
+#     def setFilePath(self,file_path):
+#         self.filePath = file_path
+#     def setFileName(self,file_name):
+#         self.fileName = file_name
+#     def getFilePath(self):
+#         return self.filePath
+#     def getFileName(self):
+#         return self.fileName
 class Logout(APIView):
     def post(self, request):
         from rest_framework_simplejwt.tokens import RefreshToken
@@ -76,20 +77,20 @@ class ModifyUserDataViewSet(viewsets.GenericViewSet, mixins.ListModelMixin,
     def get_view_name(self):
         return _("Modify Users' Data")
 
-def download_file(request):
-    import os,mimetypes
-    print("hi there")
-    filepath = report_man.filePath
-    filename = report_man.fileName
-    path = open(filepath, 'rb')
-    # # Set the mime type
-    mime_type, _ = mimetypes.guess_type(filepath)
-    # # Set the return value of the HttpResponse
-    response = HttpResponse(path, content_type=mime_type)
-    # # Set the HTTP header for sending to browser
-    response['Content-Disposition'] = "attachment; filename=%s" % filename
-    # # Return the response value
-    return response
+# def download_file(request,file_path,file_name):
+#     import os,mimetypes
+#     print("hi there")
+#     # filepath = report_man.filePath
+#     # filename = report_man.fileName
+#     path = open(file_path, 'rb')
+#     # # Set the mime type
+#     mime_type, _ = mimetypes.guess_type(file_path)
+#     # # Set the return value of the HttpResponse
+#     response = HttpResponse(path, content_type=mime_type)
+#     # # Set the HTTP header for sending to browser
+#     response['Content-Disposition'] = "attachment; filename=%s" % file_name
+#     # # Return the response value
+#     return response
 
 
 class RegisterUserViewSet(viewsets.GenericViewSet, mixins.CreateModelMixin):
@@ -415,22 +416,25 @@ def all_users(request):
                     constructor.update({"phone_number": phone_number})
                 if len(last_login) > 0:
                     constructor.update({"last_login": last_login})
-                status,report_man.filePath,report_man.fileName = createExelFile('Report_For_Users',headers, **constructor)
+                status,report_man.filePath,report_man.fileName = createExelFile(report_man,'Report_For_Users',headers, **constructor)
                 if status:
                     messages.success(request,f"Report Successfully Created ")
                     # return redirect('download_file',filepath=filepath,filename=filename)
-                    return redirect('downloadReport',report_man)
+
+                    return redirect('downloadReport',str(report_man.filePath),str(report_man.fileName))
                 else:
                     messages.error(request, "Sorry Report Failed To Create , Please Try Again!")
 
             else:
                 headers, full_name, username, organization, phone_number, last_login = prepare_query(query)
-                status,report_man.filePath,report_man.fileName = createExelFile('Report_For_Users',headers, full_name=full_name, username=username,
+                status,report_man.filePath,report_man.fileName = createExelFile(report_man,'Report_For_Users',headers, full_name=full_name, username=username,
                                organization=organization, phone_number=phone_number, last_login=last_login)
                 if status:
                     messages.success(request,f"Report Successfully Created")
                     # return redirect('download_file',filepath=filepath,filename=filename)
-                    return redirect('downloadReport',report_man)
+
+                    return redirect('downloadReport',str(report_man.filePath),str(report_man.fileName))
+
 
                 else:
                     messages.error(request, "Sorry Report Failed To Create , Please Try Again!")
@@ -458,11 +462,12 @@ def all_users(request):
                     constructor.update({"phone_number": phone_number})
                 if len(last_login) > 0:
                     constructor.update({"last_login": last_login})
-                status,report_man.filePath,report_man.fileName = createExelFile('Report_For_Users',headers, **constructor)
+                status,report_man.filePath,report_man.fileName = createExelFile(report_man,'Report_For_Users',headers, **constructor)
                 if status:
                     messages.success(request,f"Report Successfully Created ")
                     # return redirect('download_file',filepath=filepath,filename=filename)
-                    return redirect('downloadReport',report_man)
+
+                    return redirect('downloadReport',str(report_man.filePath),str(report_man.fileName))
 
                 else:
                     messages.error(request, "Sorry Report Failed To Create , Please Try Again!")
@@ -470,12 +475,13 @@ def all_users(request):
 
             else:
                 headers, full_name, username, organization, phone_number, last_login = prepare_selected_query(selected_pages,query,headers)
-                status,report_man.filePath,report_man.fileName = createExelFile('Report_For_Users',headers, full_name=full_name, username=username,
+                status,report_man.filePath,report_man.fileName = createExelFile(report_man,'Report_For_Users',headers, full_name=full_name, username=username,
                                organization=organization, phone_number=phone_number, last_login=last_login)
                 if status:
                     messages.success(request,f"Report Successfully Created ")
                     # return redirect('download_file',filepath=filepath,filename=filename)
-                    return redirect('downloadReport',report_man)
+
+                    return redirect('downloadReport',str(report_man.filePath),str(report_man.fileName))
 
                 else:
                     messages.error(request, "Sorry Report Failed To Create , Please Try Again!")

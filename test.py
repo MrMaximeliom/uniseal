@@ -41,7 +41,7 @@ if __name__ == "__main__":
     dd = "lolp"
     path = os.path.join(op.name, dd)
     os.mkdir(path)
-    tempDir = tempfile.mkdtemp()
+    tempDir = tempfile.mkdtemp('tmplnqjxx1q2sss')
     print(tempDir," --- ---- -- ")
     # remove temprorary directory
     # shutil.rmtree(tempDir)

@@ -28,6 +28,19 @@ SMS_PASSWORD = '823178'
 # TODO add logic to this function to use it later in the search functionality
 def check_phone_number(phone):
     pass
+class ReportMan:
+    import tempfile,os
+    filePath = ''
+    fileName = ''
+    tempDir = tempfile.mkdtemp()
+    def setFilePath(self,file_path):
+        self.filePath = file_path
+    def setFileName(self,file_name):
+        self.fileName = file_name
+    def getFilePath(self):
+        return self.filePath
+    def getFileName(self):
+        return self.fileName
 class SearchMan:
     search_error = False
 
@@ -63,7 +76,7 @@ class SearchMan:
     def getSearchError(self):
         return self.search_error
 
-def createExelFile(report_name,headers,**kwargs):
+def createExelFile(report_man,report_name,headers,**kwargs):
     import xlsxwriter , os
     from string import ascii_uppercase
     from datetime import date
@@ -88,10 +101,14 @@ def createExelFile(report_name,headers,**kwargs):
     # create temp directory and add excel file in it
     import tempfile , shutil
     # create temp directory
-    tempDir = tempfile.mkdtemp()
+    tempDir = report_man.tempDir
     # shutil.rmtree(tempDir)
-    path = os.path.join(tempDir, reports_dir)
-    os.mkdir(path)
+    # path = os.path.join(tempDir, reports_dir)
+    path = tempDir
+    # if os.path.isfile(path):
+    #     os.mkdir(path)
+    # else:
+    #     os.mkdir(path)
     file_name = report_name+'_'+str(today)+str(current_time)+".xlsx"
     complete_file_name = os.path.abspath(path)+"/"+file_name
     print("file name is ",file_name)
@@ -144,7 +161,7 @@ def createExelFile(report_name,headers,**kwargs):
     # return workBok
 
 
-def download_file(request,filepath,filename):
+def download_file(request,file_path,file_name):
     import os,mimetypes
 #     # Define Django project base directory
 #     BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
@@ -153,13 +170,13 @@ def download_file(request,filepath,filename):
 #     # Define the full file path
 #     filepath = BASE_DIR  + "/"+filename
     # Open the file for reading content
-    path = open(filepath, 'rb')
+    path = open(file_path, 'rb')
     # # Set the mime type
-    mime_type, _ = mimetypes.guess_type(filepath)
+    mime_type, _ = mimetypes.guess_type(file_path)
     # # Set the return value of the HttpResponse
     response = HttpResponse(path, content_type=mime_type)
     # # Set the HTTP header for sending to browser
-    response['Content-Disposition'] = "attachment; filename=%s" % filename
+    response['Content-Disposition'] = "attachment; filename=%s" % file_name
     # # Return the response value
     return response
 
