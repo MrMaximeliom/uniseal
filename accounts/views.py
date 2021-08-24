@@ -1,3 +1,5 @@
+import tempfile
+
 from django.http import HttpResponse
 from django.template.defaultfilters import slugify
 from django.utils.translation import gettext_lazy as _
@@ -5,7 +7,7 @@ from rest_framework import viewsets
 from rest_framework import mixins
 from django.contrib.auth import update_session_auth_hash
 from django.contrib.auth.forms import PasswordChangeForm
-from Util.utils import EnablePartialUpdateMixin, rand_slug , SearchMan,createExelFile,ReportMan
+from Util.utils import EnablePartialUpdateMixin, rand_slug , SearchMan,createExelFile,ReportMan,delete_temp_folder
 from Util.permissions import IsSystemBackEndUser, IsAnonymousUser, UnisealPermission
 from rest_framework.permissions import IsAuthenticated
 from django.core.paginator import Paginator, PageNotAnInteger, EmptyPage
@@ -140,8 +142,7 @@ class ChangePasswordView(viewsets.GenericViewSet, mixins.UpdateModelMixin):
         return User.objects.filter(id=self.request.user.id)
 
 
-class CurrentUserDataViewSet(EnablePartialUpdateMixin, viewsets.ModelViewSet
-                             ):
+class CurrentUserDataViewSet(EnablePartialUpdateMixin, viewsets.ModelViewSet):
     """
       API endpoint that allows to view current user data
       this endpoint allows GET,PUT,PATCH functions
@@ -321,26 +322,10 @@ def prepare_query(paginator_obj,headers=None):
 
     return headers_here,full_name,username,organization,phone_number,last_login
 
-# def download_file(request):
-#     import os,mimetypes
-#     # Define Django project base directory
-#     BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
-#     # Define text file name
-#     filename = 'test.xlsx'
-#     # Define the full file path
-#     filepath = BASE_DIR  + "/"+filename
-#     # Open the file for reading content
-#     path = open(filepath, 'rb')
-#     # Set the mime type
-#     mime_type, _ = mimetypes.guess_type(filepath)
-#     # Set the return value of the HttpResponse
-#     response = HttpResponse(path, content_type=mime_type)
-#     # Set the HTTP header for sending to browser
-#     response['Content-Disposition'] = "attachment; filename=%s" % filename
-#     # Return the response value
-#     return response
+
 searchManObj = SearchMan("User")
 report_man = ReportMan()
+report_man.setTempDir(tempfile.mkdtemp())
 @login_required(login_url='login')
 def all_users(request):
     from accounts.models import User
@@ -348,6 +333,11 @@ def all_users(request):
     paginator = Paginator(all_users, 5)
 
     search_result = ''
+    if 'temp_dir' in request.session and request.method == "GET":
+        # deleting temp dir in GET requests
+        if request.session['temp_dir'] != '':
+            delete_temp_folder(request.session['temp_dir'])
+    # create search functionality
     if request.method == "POST" and 'clear' not in request.POST and 'createExcel' not in request.POST :
         searchManObj.setSearch(True)
         if request.POST.get('search_options') == 'full_name':
@@ -392,6 +382,7 @@ def all_users(request):
         all_users = User.objects.all().order_by("id")
         searchManObj.setPaginator(all_users)
         searchManObj.setSearch(False)
+    # create report functionality
     if request.method == "POST" and request.POST.get('createExcel') == 'done':
         headers = []
         headers.append("Full Name") if request.POST.get('full_name_header') is not None else ''
@@ -418,6 +409,7 @@ def all_users(request):
                     constructor.update({"last_login": last_login})
                 status,report_man.filePath,report_man.fileName = createExelFile(report_man,'Report_For_Users',headers, **constructor)
                 if status:
+                    request.session['temp_dir'] =  report_man.tempDir
                     messages.success(request,f"Report Successfully Created ")
                     # return redirect('download_file',filepath=filepath,filename=filename)
 
@@ -465,8 +457,6 @@ def all_users(request):
                 status,report_man.filePath,report_man.fileName = createExelFile(report_man,'Report_For_Users',headers, **constructor)
                 if status:
                     messages.success(request,f"Report Successfully Created ")
-                    # return redirect('download_file',filepath=filepath,filename=filename)
-
                     return redirect('downloadReport',str(report_man.filePath),str(report_man.fileName))
 
                 else:

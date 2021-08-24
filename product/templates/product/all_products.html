@@ -8,6 +8,10 @@
 {% endblock title %}
   {% block custom_css %}
     <link rel="stylesheet" href="{% static 'product/css/product.css' %}">
+<link rel="stylesheet" href="{% static 'dashboard/css/search.css' %}">
+    {% endblock %}
+   {% block custom_js %}
+<script src="{% static 'dashboard/js/search.js' %}" defer></script>
     {% endblock %}
          {% block breadcrumb_content %}
    <nav aria-label="crumb">
@@ -19,8 +23,117 @@
                 </nav>
                 {% endblock breadcrumb_content %}
 {% block content %}
-                <h1 class="h2">All Products</h1>
-                <p>{% trans 'This is the products of Uniseal Company' %}</p>
+                <h1 class="h2">{% trans 'All Products' %}</h1>
+<div class="col-auto">
+<form class="row g-2 mb-3" action="" method="post">
+    {% csrf_token %}
+  <div class="col-auto">
+    <label for="searchPhrase" class="visually-hidden">{% trans 'Search Phrase' %}</label>
+    <input type="text" class="form-control" name="search_phrase" id="searchPhrase" placeholder="Search ..">
+  </div>
+
+    <div class="col-auto">
+    <select class="form-select search-select" id="searchBy" name="search_options" aria-label="Default select example">
+  <option selected value="none">{% trans 'Search By' %}</option>
+  <option value="product">{% trans 'Product Name' %}</option>
+  <option value="category">{% trans 'Category Name' %}</option>
+  <option value="supplier">{% trans 'Supplier Name' %}</option>
+</select>
+    </div>
+  <div class="col-auto">
+    <button type="submit" class="btn btn-primary mb-3">{% trans 'Search' %}</button>
+    <button type="submit" name="clear" value="clear" class="btn btn-danger mb-3">{% trans 'Clear Search' %}</button>
+   <button type="button" class="btn btn-success mb-3" data-bs-toggle="modal" data-bs-target="#exportData">{% trans 'Export Execl' %}</button>
+
+  </div>
+</form>
+    <div>
+        <div class="modal fade" id="exportData" tabindex="-1" aria-labelledby="exampleModalData" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="exampleModalData">{% trans 'Export To Excel File' %}</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+        <form action="" method="post">
+            {% csrf_token %}
+      <div class="modal-body">
+
+          <h3 class="mb-3">{% trans 'Please Select The Data Structure of Excel File' %}</h3>
+          <div>
+    <h5 class="mt-4">{% trans 'Choose Columns' %}</h5>
+    <i>{% trans '(By default all columns are selected)' %}</i>
+    <div class="pages-range mt-2">
+        <div class="form-check">
+          <label for="product_header" >{% trans 'Product' %}</label>
+           <input id="product_header" class="form-check-input" type="checkbox" value="product" name="product_header">
+        </div>
+           <div class="form-check">
+          <label for="category_header" >{% trans 'Category' %}</label>
+           <input id="category_header" class="form-check-input" type="checkbox" value="category" name="category_header">
+        </div>
+          <div class="form-check">
+          <label for="supplier_header" >{% trans 'Supplier' %}</label>
+           <input id="supplier_header" class="form-check-input" type="checkbox" value="supplier" name="supplier_header">
+        </div>
+          <div class="form-check">
+          <label for="description_header" >{% trans 'Description' %}</label>
+           <input id="description_header" class="form-check-input" type="checkbox" value="description" name="description_header">
+        </div>
+          <div class="form-check">
+          <label for="added_date_header" >{% trans 'Added Date' %}</label>
+           <input id="added_date_header" class="form-check-input" type="checkbox" value="added_date" name="added_date_header">
+        </div>
+
+
+
+    </div>
+</div>
+             <h5 class="mt-3"> {% trans 'Export All Pages' %}</h5>
+          <div class="form-check">
+          <label for="allData-report" >{%  trans 'All Pages' %}</label>
+          <input id="allData-report" class="form-check-input" type="checkbox" value="allData" name="allData">
+          </div>
+
+
+<div>
+    <h5 class="mt-4">{% trans 'Export Selected Pages Only' %}</h5>
+
+<div class="pages-range">
+                 {% for i in page_range %}
+
+              <div class="form-check">
+          <label for="select{{i}}" >page{{i}}</label>
+          <input id="select{{i}}" class="form-check-input page-js" type="checkbox" value="{{i}}" name="subData">
+
+          </div>
+
+                 {% endfor %}
+    </div>
+      <input hidden type="text" name="pages_collector" id="pages_collector" value="none">
+
+
+    </div>
+
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+        <button type="submit" class="btn btn-success" name="createExcel" value="done">Save</button>
+
+      </div>
+              </form>
+    </div>
+  </div>
+</div>
+
+    </div>
+
+
+    </div>
+  {% if  search and not search_error %}
+<h2>{% trans 'Showing Search Results For ' %}</h2>
+<h3>{{search_option}}="{{search_phrase}}"</h3>
+{% endif %}
 {% if all_products_data|length %}
 <div class="row card-group">
 
@@ -67,7 +180,11 @@
           </ul>
        </nav>
   </div>
-{% else %}
+{% endif %}
+{% if all_products_data|length == 0 and not search %}
 <h3>{% trans 'There is no products yet .. you can add new ones from ' %} <a href="{% url 'addProducts' %}">{% trans 'Here' %}</a></h3>
+{% endif %}
+{% if search and search_result.count == 0 %}
+<h3 style="color:red;">{% trans 'Sorry No Users found that matches your search!' %}</h3>
 {% endif %}
 {% endblock content %}

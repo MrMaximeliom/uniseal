@@ -1,5 +1,4 @@
 from django.http import HttpResponse
-from django.shortcuts import  redirect
 
 class EnablePartialUpdateMixin:
     """Enable partial updates
@@ -29,10 +28,11 @@ SMS_PASSWORD = '823178'
 def check_phone_number(phone):
     pass
 class ReportMan:
-    import tempfile,os
+    import tempfile
     filePath = ''
     fileName = ''
-    tempDir = tempfile.mkdtemp()
+    tempDir = ''
+    print('hi man how are you')
     def setFilePath(self,file_path):
         self.filePath = file_path
     def setFileName(self,file_name):
@@ -41,6 +41,10 @@ class ReportMan:
         return self.filePath
     def getFileName(self):
         return self.fileName
+    def setTempDir(self,dir_name):
+        self.tempDir = dir_name
+    def getTempDir(self):
+        return self.tempDir
 class SearchMan:
     search_error = False
 
@@ -50,6 +54,11 @@ class SearchMan:
             from accounts.models import User
             users = User.objects.all().order_by("id")
             self.paginator = Paginator(users, 5)
+        if model == "Product":
+            from product.models import Product
+            products = Product.objects.all().order_by("id")
+            self.paginator = Paginator(products, 5)
+
 
     def setPaginator(self,query):
         from django.core.paginator import Paginator
@@ -101,19 +110,23 @@ def createExelFile(report_man,report_name,headers,**kwargs):
     # create temp directory and add excel file in it
     import tempfile , shutil
     # create temp directory
+    import os
+    if not os.path.exists(report_man.getTempDir()):
+        report_man.setTempDir(tempfile.mkdtemp())
     tempDir = report_man.tempDir
     # shutil.rmtree(tempDir)
     # path = os.path.join(tempDir, reports_dir)
     path = tempDir
     # if os.path.isfile(path):
-    #     os.mkdir(path)
+    #     os.mkdir(path) print("here in supplier")
     # else:
     #     os.mkdir(path)
-    file_name = report_name+'_'+str(today)+str(current_time)+".xlsx"
+    file_name = report_name+'_'+str(today)+'_'+str(current_time)+".xlsx"
     complete_file_name = os.path.abspath(path)+"/"+file_name
     print("file name is ",file_name)
     print("complete file name is: ",complete_file_name)
     # os.path.join(op.name, dd)
+
 
     workBok = xlsxwriter.Workbook(complete_file_name,options={'remove_timezone': True})
     sheet = workBok.add_worksheet()
@@ -139,17 +152,6 @@ def createExelFile(report_man,report_name,headers,**kwargs):
     try:
         workBok.close()
         file_creation_status = True
-
-        # import mimetypes
-        # path = open( complete_file_name, 'rb')
-        # # Set the mime type
-        # mime_type, _ = mimetypes.guess_type( complete_file_name)
-        # # Set the return value of the HttpResponse
-        # response = HttpResponse(path, content_type=mime_type)
-        # # Set the HTTP header for sending to browser
-        # response['Content-Disposition'] = "attachment; filename=%s" % file_name
-        # # Return the response value
-        # return response
         print("created")
         return file_creation_status,complete_file_name,file_name
 
@@ -163,13 +165,6 @@ def createExelFile(report_man,report_name,headers,**kwargs):
 
 def download_file(request,file_path,file_name):
     import os,mimetypes
-#     # Define Django project base directory
-#     BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
-#     # Define text file name
-#     filename = 'test.xlsx'
-#     # Define the full file path
-#     filepath = BASE_DIR  + "/"+filename
-    # Open the file for reading content
     path = open(file_path, 'rb')
     # # Set the mime type
     mime_type, _ = mimetypes.guess_type(file_path)
@@ -180,3 +175,9 @@ def download_file(request,file_path,file_name):
     # # Return the response value
     return response
 
+def delete_temp_folder(tempDir):
+    import os , shutil
+    # shutil.rmtree(tempDir)
+    if  os.path.exists(tempDir):
+        print('temp directory deleted')
+        shutil.rmtree(tempDir)

@@ -41,7 +41,7 @@ from industry_updates import views as industry_views
 from sms_notifications import views as sms_notifications_views
 from django.views.generic.base import RedirectView
 from django.contrib.staticfiles.storage import staticfiles_storage
-from django.conf.urls import handler404, handler500
+from application_videos import views as application_videos_views
 from rest_framework_simplejwt.views import (
     TokenObtainPairView,
     TokenRefreshView,
@@ -64,6 +64,7 @@ router.register(r'industryUpdates', industry_views.IndustryUpdateViewSet, basena
 router.register(r'slider', slider_views.SliderViewSet, basename='CreateSlider')
 router.register(r'product/modifyProduct', product_views.ProductViewSet, basename='CreateProduct')
 router.register(r'product/productImage', product_views.ProductImagesViewSet, basename='CreateProductImage')
+router.register(r'applicationVideos/productAppVideo', application_videos_views.ProductApplicationVideosViewSet, basename='CreateProductApplicationVideos')
 # router.register(r'product/productVideo', product_views.ProductVideoViewSet, basename='CreateProductVideo')
 router.register(r'product/similarProduct', product_views.SimilarProductViewSet, basename='LinkSimilarProducts')
 router.register(r'project/createProject', project_views.ProjectViewSet, basename='CreateProject')
