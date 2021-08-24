@@ -344,58 +344,12 @@ def all_products(request):
         headers = []
         headers.append("Product Name") if request.POST.get('product_header') is not None else ''
         headers.append("Category") if request.POST.get('category_header') is not None else ''
-        headers.append("Description") if request.POST.get('description_header') is not None else ''
         headers.append("Supplier") if request.POST.get('supplier_header') is not None else ''
+        headers.append("Description") if request.POST.get('description_header') is not None else ''
         headers.append("Added Date") if request.POST.get('added_date_header') is not None else ''
-        if request.POST.get('allData') == 'allData':
-            # get the original query of page and then structure the data
-            query = searchManObj.getPaginator()
-
-            if len(headers) > 0:
-                constructor = {}
-                headers, product_name, category, supplier, description, added_date = prepare_query(query,
-                                                                                                     headers=headers)
-                if len(product_name) > 0:
-                    constructor.update({"product_name": product_name})
-                if len(category) > 0:
-                    constructor.update({"category": category})
-                if len(supplier) > 0:
-                    constructor.update({"supplier": supplier})
-                if len(description) > 0:
-                    constructor.update({"description": description})
-                if len(added_date) > 0:
-                    constructor.update({"added_date": added_date})
-                status, report_man.filePath, report_man.fileName = createExelFile(report_man, 'Report_For_Products',
-                                                                                  headers, **constructor)
-                if status:
-                    request.session['temp_dir'] = report_man.tempDir
-                    messages.success(request, f"Report Successfully Created ")
-                    # return redirect('download_file',filepath=filepath,filename=filename)
-
-                    return redirect('downloadReport', str(report_man.filePath), str(report_man.fileName))
-                else:
-                    messages.error(request, "Sorry Report Failed To Create , Please Try Again!")
-
-            else:
-                headers, product_name, category, supplier, description, added_date = prepare_query(query)
-                status, report_man.filePath, report_man.fileName = createExelFile(report_man, 'Report_For_Products',
-                                                                                  headers, product_name=product_name,
-                                                                                  category=category,
-                                                                                  supplier=supplier,
-                                                                                  description=description,
-                                                                                  added_date=added_date)
-                if status:
-                    messages.success(request, f"Report Successfully Created")
-                    # return redirect('download_file',filepath=filepath,filename=filename)
-
-                    return redirect('downloadReport', str(report_man.filePath), str(report_man.fileName))
-
-
-                else:
-                    messages.error(request, "Sorry Report Failed To Create , Please Try Again!")
-
-
-        elif request.POST.get('pages_collector') != 'none':
+        # create report functionality
+        # setting all data as default behaviour
+        if request.POST.get('pages_collector') != 'none':
             # get requested pages from the paginator of original page
             selected_pages = []
             query = searchManObj.getPaginator()
@@ -445,6 +399,50 @@ def all_products(request):
 
                 else:
                     messages.error(request, "Sorry Report Failed To Create , Please Try Again!")
+            # get the original query of page and then structure the data
+        else:
+            query = searchManObj.getPaginator()
+            if len(headers) > 0:
+                constructor = {}
+                headers, product_name, category, supplier, description, added_date = prepare_query(query,
+                                                                                                     headers=headers)
+                if len(product_name) > 0:
+                    constructor.update({"product_name": product_name})
+                if len(category) > 0:
+                    constructor.update({"category": category})
+                if len(supplier) > 0:
+                    constructor.update({"supplier": supplier})
+                if len(description) > 0:
+                    constructor.update({"description": description})
+                if len(added_date) > 0:
+                    constructor.update({"added_date": added_date})
+                status, report_man.filePath, report_man.fileName = createExelFile(report_man, 'Report_For_Products',
+                                                                                  headers, **constructor)
+                if status:
+                   request.session['temp_dir'] = report_man.tempDir
+                   messages.success(request, f"Report Successfully Created ")
+                   # return redirect('download_file',filepath=filepath,filename=filename)
+
+                   return redirect('downloadReport', str(report_man.filePath), str(report_man.fileName))
+                else:
+                   messages.error(request, "Sorry Report Failed To Create , Please Try Again!")
+
+            else:
+                headers, product_name, category, supplier, description, added_date = prepare_query(query)
+                status, report_man.filePath, report_man.fileName = createExelFile(report_man, 'Report_For_Products',
+                                                                                  headers, product_name=product_name,
+                                                                                  category=category,
+                                                                                  supplier=supplier,
+                                                                                  description=description,
+                                                                                  added_date=added_date)
+                if status:
+                    messages.success(request, f"Report Successfully Created")
+                    return redirect('downloadReport', str(report_man.filePath), str(report_man.fileName))
+                else:
+                   messages.error(request, "Sorry Report Failed To Create , Please Try Again!")
+
+
+
 
     if request.GET.get('page'):
         # Grab the current page from query parameter

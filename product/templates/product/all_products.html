@@ -90,6 +90,7 @@
     </div>
 </div>
              <h5 class="mt-3"> {% trans 'Export All Pages' %}</h5>
+          <i>{% trans '(By default all pages will be exported)' %}</i>
           <div class="form-check">
           <label for="allData-report" >{%  trans 'All Pages' %}</label>
           <input id="allData-report" class="form-check-input" type="checkbox" value="allData" name="allData">
@@ -97,7 +98,7 @@
 
 
 <div>
-    <h5 class="mt-4">{% trans 'Export Selected Pages Only' %}</h5>
+    <h5 class="mt-4">{% trans 'Or Export Selected Pages Only' %}</h5>
 
 <div class="pages-range">
                  {% for i in page_range %}
