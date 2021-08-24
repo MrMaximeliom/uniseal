@@ -64,7 +64,7 @@ router.register(r'industryUpdates', industry_views.IndustryUpdateViewSet, basena
 router.register(r'slider', slider_views.SliderViewSet, basename='CreateSlider')
 router.register(r'product/modifyProduct', product_views.ProductViewSet, basename='CreateProduct')
 router.register(r'product/productImage', product_views.ProductImagesViewSet, basename='CreateProductImage')
-router.register(r'product/productVideo', product_views.ProductVideoViewSet, basename='CreateProductVideo')
+# router.register(r'product/productVideo', product_views.ProductVideoViewSet, basename='CreateProductVideo')
 router.register(r'product/similarProduct', product_views.SimilarProductViewSet, basename='LinkSimilarProducts')
 router.register(r'project/createProject', project_views.ProjectViewSet, basename='CreateProject')
 router.register(r'project/projectImage', project_views.ProjectImagesViewSet, basename='CreateProjectImages')

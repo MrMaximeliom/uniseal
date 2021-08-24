@@ -15,11 +15,11 @@ class ProductImageSerializer(serializers.ModelSerializer):
         fields = "__all__"
 
 
-class ProductVideoSerializer(serializers.ModelSerializer):
-    class Meta:
-        from .models import ProductVideos
-        model = ProductVideos
-        fields = "__all__"
+# class ProductVideoSerializer(serializers.ModelSerializer):
+#     class Meta:
+#         from .models import ProductVideos
+#         model = ProductVideos
+#         fields = "__all__"
 
 
 class SimilarProductSerializer(serializers.ModelSerializer):

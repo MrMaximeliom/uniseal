@@ -57,7 +57,8 @@ INSTALLED_APPS = [
     'company_info',
     'project_application',
     'industry_updates',
-    'handle_errors'
+    'handle_errors',
+    'application_videos',
 
 
 ]

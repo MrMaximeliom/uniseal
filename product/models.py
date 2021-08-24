@@ -41,6 +41,12 @@ class Product(models.Model):
         verbose_name=_('Product Slug')
 
     )
+    video = models.URLField(
+        verbose_name=_('Product Video Url'),
+        blank=True,
+        null=True
+
+    )
 
 
     def __str__(self):
@@ -68,11 +74,10 @@ class ProductImages(models.Model):
 
 
 class ProductVideos(models.Model):
-    video = models.FileField(
-        verbose_name=_("Application Video"),
-        upload_to="product_videos"
-    )
-
+    # video = models.FileField(
+    #     verbose_name=_("Application Video"),
+    #     upload_to="product_videos"
+    # )
 
     product = models.ForeignKey(
         Product,

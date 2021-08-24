@@ -102,6 +102,10 @@ class ProjectImages(models.Model):
         on_delete=models.CASCADE,
         verbose_name=_('Project')
     )
+    default_image = models.BooleanField(
+        verbose_name=_('Default Image?'),
+        default = False
+    )
 
 
 class ProjectVideos(models.Model):
