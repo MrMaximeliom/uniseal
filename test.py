@@ -12,6 +12,10 @@ def testFun(param,**kwargs):
         for item in range(len(value)):
             print(item + 1, x_position, value[item])
 
+
+
+
+
 if __name__ == "__main__":
     # dir = os.path.abspath('.').split(os.path.sep)[0]+os.path.sep
     # print(dir)
@@ -32,20 +36,44 @@ if __name__ == "__main__":
     # current_time = now.strftime("%H:%M:%S")
     # print("Current Time =", current_time)
     # print(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
-    import tempfile
-    import shutil
-
-    # tempfile.TemporaryDirectory(dir=os.getcwd())
-
-    op = tempfile.TemporaryDirectory(dir=os.getcwd())
-    dd = "lolp"
-    path = os.path.join(op.name, dd)
-    os.mkdir(path)
-    tempDir = tempfile.mkdtemp('tmplnqjxx1q2sss')
-    print(tempDir," --- ---- -- ")
+    # import tempfile
+    # import shutil
+    #
+    # # tempfile.TemporaryDirectory(dir=os.getcwd())
+    #
+    # op = tempfile.TemporaryDirectory(dir=os.getcwd())
+    # dd = "lolp"
+    # path = os.path.join(op.name, dd)
+    # os.mkdir(path)
+    # tempDir = tempfile.mkdtemp('tmplnqjxx1q2sss')
+    # print(tempDir," --- ---- -- ")
     # remove temprorary directory
     # shutil.rmtree(tempDir)
-    print()
+    import re
+
+    # initializing string
+    test_string = input("Enter a sentence now\n")
+
+    # # printing original string
+    # print("The original string is : " + test_string)
+    # # removing all leading and spaces in beginning and endings
+    # tito = test_string.strip()
+    # tito2 = tito.replace(" ", "")
+    # print("The original string without spaces : " + tito2)
+    #
+    # search_phrase = re.findall(r'\w+', test_string)
+    # special_char = re.findall(r'\W', test_string.replace(" ", ""))
+    # if len(special_char) > 0 :
+    #     print("You have special chars in your sentence")
+    # else:
+    #     print("Your sentence is ready to be used in db connection")
+    # print("original words are: ",search_phrase)
+    # print("special words are: ",special_char)
+    isOK,phone_number = check_phone_number(test_string)
+    if isOK:
+        print(phone_number)
+
+
 
 
 

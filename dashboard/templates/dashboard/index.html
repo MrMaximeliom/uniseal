@@ -61,9 +61,7 @@
                                         <thead>
                                           <tr>
                                             <th scope="col">Project Name</th>
-                                            <th scope="col">Project Title</th>
-                                            <th scope="col">category</th>
-                                            <th scope="col">Beneficiary</th>
+                                            <th scope="col">Main Material Used</th>
                                             <th scope="col">Description</th>
                                             <th scope="col"></th>
                                           </tr>
@@ -72,9 +70,7 @@
                                         {% for project in all_projects %}
                                           <tr>
                                             <th scope="row">{{project.name}}</th>
-                                            <td>{{project.title}}</td>
-                                            <td>{{project.category}}</td>
-                                            <td>{{project.beneficiary}}</td>
+                                            <td>{{project.main_material}}</td>
                                             <td>{{project.description}}</td>
                                             <td><a href="{% url 'projectDetails' slug=project.slug%}" class="btn btn-sm btn-primary">View</a></td>
                                           </tr>

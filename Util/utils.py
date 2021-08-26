@@ -24,15 +24,29 @@ def rand_slug():
     return ''.join(random.choice(string.ascii_letters + string.digits) for _ in range(20))
 SMS_USERNAME = 'uniseal'
 SMS_PASSWORD = '823178'
+def check_string_search_phrase(search_phrase):
+    temp_holder = search_phrase
+    special_char = re.findall(r'\W', temp_holder.replace(" ", ""))
+    # returns true if search_phrase contains special chars and returns search_phrase without leading spaces
+    return len(special_char) > 0 , search_phrase.strip()
 # TODO add logic to this function to use it later in the search functionality
+
 def check_phone_number(phone):
-    pass
+    import re
+    default_regex = r'^9\d{8}$|^1\d{8}$'
+    another_regex = r'^09\d{8}$|^01\d{8}$'
+    if re.findall(default_regex, phone):
+        return True,re.findall(default_regex,phone)[0]
+    elif re.findall(another_regex,phone):
+        return True, re.findall(another_regex,phone)[0][1:]
+    else:
+        return False,''
+
 class ReportMan:
     import tempfile
     filePath = ''
     fileName = ''
     tempDir = ''
-    print('hi man how are you')
     def setFilePath(self,file_path):
         self.filePath = file_path
     def setFileName(self,file_name):

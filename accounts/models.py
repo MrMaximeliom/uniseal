@@ -78,19 +78,6 @@ class User(AbstractBaseUser):
         blank=False,
         null=False
     )
-    # working_field = models.CharField(
-    #     max_length=150,
-    #     verbose_name=_('Working Field'),
-    #     blank=True,
-    #     null=True,
-    #     choices=WORKING_FILED
-    # )
-    # working = models.ForeignKey(
-    #     "working_field.WorkingField",
-    #     on_delete=models.SET_NULL,
-    #     null=True,
-    #     verbose_name=_('Working'),
-    # )
     phone_number = models.CharField(
         verbose_name=_('Phone Number'),
         blank=False,
@@ -98,22 +85,7 @@ class User(AbstractBaseUser):
         max_length=100,
         unique=True
     )
-    # gender = models.CharField(
-    #     verbose_name=_('Gender'),
-    #     blank=False,
-    #     null=False,
-    #     max_length=10,
-    #     choices=GENDER_CHOICES
-    # )
-    # # to be added later on
-    #
-    #
-    # city = models.ForeignKey(
-    #     "address.City",
-    #     on_delete=models.SET_NULL,
-    #     null=True,
-    #     verbose_name=_('City'),
-    # )
+
     email = models.EmailField(
         verbose_name=_('Email Address'),
         max_length=255,
