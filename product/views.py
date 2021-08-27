@@ -94,35 +94,6 @@ class ProductImagesViewSet(viewsets.ModelViewSet):
     filterset_fields = ['product']
 
 
-# class ProductVideoViewSet(viewsets.ModelViewSet):
-#     """API endpoint to add or modify products' videos by admin
-#         this endpoint allows GET,PUT,PATCH,DELETE functions
-#         permissions to this view is restricted as the following:
-#         - Only admin users can use all functions on this endpoint
-#         - Registered users are only allowed to use GET function
-#         Data will be retrieved in the following format for GET function:
-#         {
-#          "id":id,
-#          "video": "product_video_url",
-#          "product":product_id
-#          }
-#          Use other functions by accessing this url:
-#          product/productVideo/<productVideo's_id>
-#          Format of data will be as the previous data format for GET function
-#          To Get All Product's Videos for one product use this url:
-#          product/productVideo/?product=<product_id>
-#         """
-#
-#     def get_view_name(self):
-#         return _("Create/Modify Products Videos")
-#
-#     from .serializers import ProductVideoSerializer
-#     serializer_class = ProductVideoSerializer
-#     from .models import ProductVideos
-#     permission_classes = [UnisealPermission]
-#     queryset = ProductVideos.objects.all()
-#     filter_backends = [DjangoFilterBackend]
-#     filterset_fields = ['product']
 
 
 class SimilarProductViewSet(viewsets.ModelViewSet):
@@ -284,9 +255,6 @@ def prepare_query(paginator_obj,headers=None):
 searchManObj = SearchMan("Product")
 report_man = ReportMan()
 report_man.setTempDir(tempfile.mkdtemp())
-
-
-
 print("report man temp dir is: ",report_man.tempDir)
 @login_required(login_url='login')
 def all_products(request):

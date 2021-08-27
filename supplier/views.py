@@ -5,6 +5,8 @@ from django_filters.rest_framework import DjangoFilterBackend
 from django.shortcuts import render, get_object_or_404, redirect
 from django.utils.translation import gettext_lazy as _
 from django.contrib import messages
+from Util.utils import  SearchMan,createExelFile,ReportMan,delete_temp_folder
+import tempfile
 
 
 
@@ -49,10 +51,183 @@ from django.contrib.auth.decorators import login_required
 from .models import Supplier, rand_slug
 
 suppliers = Supplier.objects.all().order_by("id")
+searchManObj = SearchMan("Supplier")
+report_man = ReportMan()
+report_man.setTempDir(tempfile.mkdtemp())
+def prepare_selected_query(selected_pages,paginator_obj,headers=None):
+    link_list = []
+    supplier_list = []
+    headers_here = ["Supplier Name", "Supplier Website"]
+    if headers is not None:
+        print("in headers section of selected query")
+        headers_here = headers
+        for header in headers_here:
+            if header == "Supplier Name":
+                for page in selected_pages:
+                    for supplier in paginator_obj.page(page):
+                        supplier_list.append(supplier.name)
+            elif header == "Supplier Website":
+                print("here in supplier website")
+                for page in selected_pages:
+                    print("in for loop for supplier website")
+                    for supplier in paginator_obj.page(page):
+                        print("appending supplier links")
+                        link_list.append(supplier.link)
+    else:
+        print("in else section of selected query")
+        for page in range(1, paginator_obj.num_pages):
+            for supplier in paginator_obj.page(page):
+                link_list.append(supplier.link)
+                supplier_list.append(supplier.name)
+
+
+    return headers_here, supplier_list , link_list
+def prepare_query(paginator_obj,headers=None):
+    supplier_list = []
+    link_list = []
+    headers_here = ["Supplier Name","Supplier Website"]
+    if headers is not None:
+        print("in headers section of prepare query")
+        headers_here = headers
+        for header in headers_here:
+            if header == "Supplier Name":
+                for page in range(1, paginator_obj.num_pages):
+                    for supplier in paginator_obj.page(page):
+                        supplier_list.append(supplier.name)
+            elif header == "Supplier Website":
+                for page in range(1, paginator_obj.num_pages):
+                    for supplier in paginator_obj.page(page):
+                        link_list.append(supplier.link)
+    else:
+        print("in else section of prepare query")
+        for page in range(1, paginator_obj.num_pages):
+            for supplier in paginator_obj.page(page):
+                supplier_list.append(supplier.name)
+                link_list.append(supplier.link)
+    return headers_here, supplier_list, link_list
 @login_required(login_url='login')
 def all_suppliers(request):
     from django.core.paginator import Paginator, PageNotAnInteger, EmptyPage
     paginator = Paginator(suppliers, 5)
+    from Util.search_form_strings import (
+        EMPTY_SEARCH_PHRASE,
+    SUPPLIER_NAME_SYNTAX_ERROR
+
+    )
+    search_result = ''
+    if 'temp_dir' in request.session and request.method == "GET":
+        # deleting temp dir in GET requests
+        if request.session['temp_dir'] != '':
+            delete_temp_folder(request.session['temp_dir'])
+    if request.method == "POST" and 'clear' not in request.POST and 'createExcel' not in request.POST:
+        searchManObj.setSearch(True)
+        if request.POST.get('search_phrase') != '':
+            search_message = request.POST.get('search_phrase')
+            search_result = Supplier.objects.filter(name=search_message).order_by('id')
+            searchManObj.setPaginator(search_result)
+            searchManObj.setSearchPhrase(search_message)
+            searchManObj.setSearchOption('Supplier Name')
+            searchManObj.setSearchError(False)
+
+        else:
+            messages.error(request,
+                           "Please enter supplier name first!")
+            searchManObj.setSearchError(True)
+    if request.method == "GET" and 'page' not in request.GET:
+        all_suppliers = Supplier.objects.all().order_by("id")
+        searchManObj.setPaginator(all_suppliers)
+        searchManObj.setSearch(False)
+    if request.method == "POST" and request.POST.get('clear') == 'clear':
+        all_suppliers = Supplier.objects.all().order_by("id")
+        searchManObj.setPaginator(all_suppliers)
+        searchManObj.setSearch(False)
+    if request.method == "POST" and request.POST.get('createExcel') == 'done':
+        headers = []
+        headers.append("Supplier Name")
+        headers.append("Supplier Website")
+        # create report functionality
+        # setting all data as default behaviour
+        if request.POST.get('pages_collector') != 'none':
+            print("pages collector is not none")
+            # get requested pages from the paginator of original page
+            selected_pages = []
+            query = searchManObj.getPaginator()
+            print("original values: ", request.POST.get('pages_collector'))
+            for item in request.POST.get('pages_collector'):
+                print('in page selectors')
+                if item != ",":
+                    selected_pages.append(item)
+            print("selected pages are: ",selected_pages)
+            if len(headers) > 0:
+                print("headers hase value with collector is not none")
+                constructor = {}
+                headers, supplier ,link = prepare_selected_query(
+                    selected_pages=selected_pages, paginator_obj=query,
+                    headers=headers)
+                print("suppliers: ",supplier,"\n","links: ",link)
+                if len(supplier) > 0:
+                    constructor.update({"supplier": supplier})
+                if len(link) > 0:
+                    constructor.update({"link": link})
+                status, report_man.filePath, report_man.fileName = createExelFile(report_man, 'Report_For_Suppliers',
+                                                                                  headers, **constructor)
+                if status:
+                    messages.success(request, f"Report Successfully Created ")
+                    return redirect('downloadReport', str(report_man.filePath), str(report_man.fileName))
+
+                else:
+                    messages.error(request, "Sorry Report Failed To Create , Please Try Again!")
+
+
+            else:
+                headers, supplier , link = prepare_selected_query(
+                    selected_pages, query, headers)
+                status, report_man.filePath, report_man.fileName = createExelFile(report_man, 'Report_For_Suppliers',
+                                                                                  headers, supplier=supplier,
+                                                                                  link=link
+                                                                                  )
+                if status:
+                    messages.success(request, f"Report Successfully Created ")
+                    # return redirect('download_file',filepath=filepath,filename=filename)
+
+                    return redirect('downloadReport', str(report_man.filePath), str(report_man.fileName))
+
+                else:
+                    messages.error(request, "Sorry Report Failed To Create , Please Try Again!")
+            # get the original query of page and then structure the data
+        else:
+            print("pages collector is none")
+            query = searchManObj.getPaginator()
+            if len(headers) > 0:
+                constructor = {}
+                headers,  supplier , link = prepare_query(query,headers=headers)
+                if len(supplier) > 0:
+                    constructor.update({"supplier": supplier})
+                if len(link) > 0:
+                    constructor.update({"link": link})
+                status, report_man.filePath, report_man.fileName = createExelFile(report_man, 'Report_For_Suppliers',
+                                                                                  headers, **constructor)
+                if status:
+                   request.session['temp_dir'] = report_man.tempDir
+                   messages.success(request, f"Report Successfully Created ")
+                   # return redirect('download_file',filepath=filepath,filename=filename)
+
+                   return redirect('downloadReport', str(report_man.filePath), str(report_man.fileName))
+                else:
+                   messages.error(request, "Sorry Report Failed To Create , Please Try Again!")
+
+            else:
+                headers, supplier,link = prepare_query(query)
+                status, report_man.filePath, report_man.fileName = createExelFile(report_man, 'Report_For_Suppliers',
+                                                                                  headers,supplier=supplier,
+                                                                                  link=link)
+                if status:
+                    messages.success(request, f"Report Successfully Created")
+                    return redirect('downloadReport', str(report_man.filePath), str(report_man.fileName))
+                else:
+                   messages.error(request, "Sorry Report Failed To Create , Please Try Again!")
+
+
     if request.GET.get('page'):
         # Grab the current page from query parameter
         page = int(request.GET.get('page'))
@@ -60,6 +235,7 @@ def all_suppliers(request):
         page = None
 
     try:
+        paginator = searchManObj.getPaginator()
         supplier_data = paginator.page(page)
         # Create a page object for the current page.
     except PageNotAnInteger:
@@ -78,13 +254,50 @@ def all_suppliers(request):
                       'all_suppliers_data': supplier_data,
                       'page_range': paginator.page_range,
                       'num_pages': paginator.num_pages,
-                      'current_page': page
+                      'current_page': page,
+                      'search': searchManObj.getSearch(),
+                      'search_result': search_result,
+                      'search_phrase': searchManObj.getSearchPhrase(),
+                      'search_option': searchManObj.getSearchOption(),
+                      'search_error': searchManObj.getSearchError(),
+                      'data_js': {
+                          "empty_search_phrase": EMPTY_SEARCH_PHRASE,
+                          "supplier_error": SUPPLIER_NAME_SYNTAX_ERROR,
+                      }
                   }
                   )
 @login_required(login_url='login')
 def edit_suppliers(request):
     from django.core.paginator import Paginator, PageNotAnInteger, EmptyPage
+    from Util.search_form_strings import (
+        EMPTY_SEARCH_PHRASE,
+    SUPPLIER_NAME_SYNTAX_ERROR
+
+    )
+    search_result = ''
     paginator = Paginator(suppliers, 5)
+    if request.method == "POST" and 'clear' not in request.POST and 'createExcel' not in request.POST:
+        searchManObj.setSearch(True)
+        if request.POST.get('search_phrase') != '':
+            search_message = request.POST.get('search_phrase')
+            search_result = Supplier.objects.filter(name=search_message).order_by('id')
+            searchManObj.setPaginator(search_result)
+            searchManObj.setSearchPhrase(search_message)
+            searchManObj.setSearchOption('Supplier Name')
+            searchManObj.setSearchError(False)
+
+        else:
+            messages.error(request,
+                           "Please enter supplier name first!")
+            searchManObj.setSearchError(True)
+    if request.method == "GET" and 'page' not in request.GET:
+        all_suppliers = Supplier.objects.all().order_by("id")
+        searchManObj.setPaginator(all_suppliers)
+        searchManObj.setSearch(False)
+    if request.method == "POST" and request.POST.get('clear') == 'clear':
+        all_suppliers = Supplier.objects.all().order_by("id")
+        searchManObj.setPaginator(all_suppliers)
+        searchManObj.setSearch(False)
     if request.GET.get('page'):
         # Grab the current page from query parameter
         page = int(request.GET.get('page'))
@@ -92,6 +305,7 @@ def edit_suppliers(request):
         page = None
 
     try:
+        paginator = searchManObj.getPaginator()
         supplier_data = paginator.page(page)
         # Create a page object for the current page.
     except PageNotAnInteger:
@@ -110,7 +324,16 @@ def edit_suppliers(request):
                       'all_suppliers_data': supplier_data,
                       'page_range': paginator.page_range,
                       'num_pages': paginator.num_pages,
-                      'current_page': page
+                      'current_page': page,
+                      'search': searchManObj.getSearch(),
+                      'search_result': search_result,
+                      'search_phrase': searchManObj.getSearchPhrase(),
+                      'search_option': searchManObj.getSearchOption(),
+                      'search_error': searchManObj.getSearchError(),
+                      'data_js': {
+                          "empty_search_phrase": EMPTY_SEARCH_PHRASE,
+                          "supplier_error": SUPPLIER_NAME_SYNTAX_ERROR,
+                      }
                   }
                   )
 
@@ -143,6 +366,34 @@ def add_suppliers(request):
 def delete_suppliers(request):
     from django.core.paginator import Paginator, PageNotAnInteger, EmptyPage
     paginator = Paginator(suppliers, 5)
+    from Util.search_form_strings import (
+        EMPTY_SEARCH_PHRASE,
+    SUPPLIER_NAME_SYNTAX_ERROR
+
+    )
+    search_result = ''
+    if request.method == "POST" and 'clear' not in request.POST and 'createExcel' not in request.POST:
+        searchManObj.setSearch(True)
+        if request.POST.get('search_phrase') != '':
+            search_message = request.POST.get('search_phrase')
+            search_result = Supplier.objects.filter(name=search_message).order_by('id')
+            searchManObj.setPaginator(search_result)
+            searchManObj.setSearchPhrase(search_message)
+            searchManObj.setSearchOption('Supplier Name')
+            searchManObj.setSearchError(False)
+
+        else:
+            messages.error(request,
+                           "Please enter supplier name first!")
+            searchManObj.setSearchError(True)
+    if request.method == "GET" and 'page' not in request.GET:
+        all_suppliers = Supplier.objects.all().order_by("id")
+        searchManObj.setPaginator(all_suppliers)
+        searchManObj.setSearch(False)
+    if request.method == "POST" and request.POST.get('clear') == 'clear':
+        all_suppliers = Supplier.objects.all().order_by("id")
+        searchManObj.setPaginator(all_suppliers)
+        searchManObj.setSearch(False)
     if request.GET.get('page'):
         # Grab the current page from query parameter
         page = int(request.GET.get('page'))
@@ -150,6 +401,7 @@ def delete_suppliers(request):
         page = None
 
     try:
+        paginator = searchManObj.getPaginator()
         supplier_data = paginator.page(page)
         # Create a page object for the current page.
     except PageNotAnInteger:
@@ -168,7 +420,16 @@ def delete_suppliers(request):
                       'all_suppliers_data': supplier_data,
                       'page_range': paginator.page_range,
                       'num_pages': paginator.num_pages,
-                      'current_page': page
+                      'current_page': page,
+                      'search': searchManObj.getSearch(),
+                      'search_result': search_result,
+                      'search_phrase': searchManObj.getSearchPhrase(),
+                      'search_option': searchManObj.getSearchOption(),
+                      'search_error': searchManObj.getSearchError(),
+                      'data_js': {
+                          "empty_search_phrase": EMPTY_SEARCH_PHRASE,
+                          "supplier_error": SUPPLIER_NAME_SYNTAX_ERROR,
+                      }
                   }
                   )
 

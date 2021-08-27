@@ -6,6 +6,14 @@
 {% block title %}
 {{title}}
 {% endblock title %}
+  {% block custom_css %}
+    <link rel="stylesheet" href="{% static 'product/css/product.css' %}">
+<link rel="stylesheet" href="{% static 'dashboard/css/search.css' %}">
+    {% endblock %}
+   {% block custom_js %}
+<script src="{% static 'dashboard/js/search.js' %}" defer></script>
+  {{ data_js|json_script:"my-data" }}
+    {% endblock %}
          {% block breadcrumb_content %}
    <nav aria-label="crumb">
                     <ol class="crumb breadcrumb-light breadcrumb-dark">
@@ -16,9 +24,80 @@
                 </nav>
                 {% endblock breadcrumb_content %}
 {% block content %}
-                <h1 class="h2">All Suppliers</h1>
-                <p>{% trans 'This is the Suppliers' %}</p>
-{% if all_suppliers_data|length > 0 %}
+                <h1 class="h2">{% trans 'All Suppliers' %}</h1>
+            <div class="col-auto">
+<form class="row g-2 mb-3" action="" method="post" id="searchForm" autocomplete="off">
+    {% csrf_token %}
+  <div class="col-3">
+    <label for="searchPhrase" class="visually-hidden">{% trans 'Search Phrase' %}</label>
+    <input type="text" class="form-control" name="search_phrase" id="searchPhrase" placeholder="Search By Supplier Name">
+          <span style="display:none;color:red;" id="search_phrase_error"></span>
+  </div>
+  <div class="col-auto">
+    <button type="submit" class="btn btn-primary mb-3" id="searchButton" value="supplier">{% trans 'Search' %}</button>
+    <button type="submit" name="clear" value="clear" class="btn btn-danger mb-3">{% trans 'Clear Search' %}</button>
+   <button type="button" class="btn btn-success mb-3" data-bs-toggle="modal" data-bs-target="#exportData">{% trans 'Export Execl' %}</button>
+
+  </div>
+</form>
+    <div>
+        <div class="modal fade" id="exportData" tabindex="-1" aria-labelledby="exampleModalData" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="exampleModalData">{% trans 'Export To Excel File' %}</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+        <form action="" method="post">
+            {% csrf_token %}
+      <div class="modal-body">
+             <h5 class="mt-3"> {% trans 'Export All Pages' %}</h5>
+          <i>{% trans '(By default all pages will be exported)' %}</i>
+          <div class="form-check">
+          <label for="allData-report" >{%  trans 'All Pages' %}</label>
+          <input id="allData-report" class="form-check-input" type="checkbox" value="allData" name="allData">
+          </div>
+
+
+<div>
+    <h5 class="mt-4">{% trans 'Or Export Selected Pages Only' %}</h5>
+
+<div class="pages-range">
+                 {% for i in page_range %}
+
+              <div class="form-check">
+          <label for="select{{i}}" >page{{i}}</label>
+          <input id="select{{i}}" class="form-check-input page-js" type="checkbox" value="{{i}}" name="subData">
+
+          </div>
+
+                 {% endfor %}
+    </div>
+      <input hidden type="text" name="pages_collector" id="pages_collector" value="none">
+
+
+    </div>
+
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+        <button type="submit" class="btn btn-success" name="createExcel" value="done">Save</button>
+
+      </div>
+              </form>
+    </div>
+  </div>
+</div>
+
+    </div>
+
+
+    </div>
+  {% if  search and not search_error %}
+<h2>{% trans 'Showing Search Results For ' %}</h2>
+<h3>{{search_option}}="{{search_phrase}}"</h3>
+{% endif %}
+{% if all_suppliers_data|length %}
 <div class="row card-group">
 
 {% for supplier in all_suppliers_data %}
@@ -45,10 +124,11 @@
              <span class="sr-only">Previous</span>
             </a>
            </li>
+             {% if page_range|length != 1 %}
            {% for i in page_range %}
            <li class="page-item {% if i == current_page %} active {% endif %}"><a class="page-link " href="?page={{ i }}">{{ i }}</a></li>
            {% endfor %}
-
+                 {% endif %}
            <li class="page-item {% if current_page == num_pages %} disabled disabled-item {% endif %}">
             <a class="page-link" href="?page={{ current_page|add:1 }}" aria-label="Next">
              <span aria-hidden="true">»</span>
@@ -58,9 +138,12 @@
           </ul>
        </nav>
   </div>
-{% else %}
+{% endif %}
+{% if all_suppliers_data|length == 0 and not search %}
 <h3>{% trans 'There is no suppliers yet .. you can add new ones from ' %} <a href="{% url 'addSuppliers' %}">{% trans 'Here' %}</a></h3>
-
+{% endif %}
+{% if search and search_result.count == 0 %}
+<h3 style="color:red;">{% trans 'Sorry No Users found that matches your search!' %}</h3>
 {% endif %}
 
 {% endblock content %}

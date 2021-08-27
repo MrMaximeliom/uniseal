@@ -7,8 +7,9 @@ from django.utils.translation import gettext_lazy as _
 from django.shortcuts import render, get_object_or_404, redirect
 from  django.contrib import messages
 from django.contrib.auth.decorators import login_required
-
+from Util.utils import  SearchMan,createExelFile,ReportMan,delete_temp_folder
 from Util.utils import rand_slug
+import tempfile
 
 
 class ProjectViewSet(viewsets.ModelViewSet):
@@ -21,11 +22,13 @@ class ProjectViewSet(viewsets.ModelViewSet):
     {
      "id":id,
      "name": "project_name",
-     "title":"project_title",
-     "category":"project_category",
      "beneficiary":"beneficiary_name",
-     "image":"project_image_url",
      "description":"project_description",
+     "beneficiary_description":"project_beneficiary_description",
+     "main_material":"project_main_material_used",
+     "project_type":project_type_id,
+     "execution_date":"project_execution_date",
+     "date":"project_date",
      }
      Use other functions by accessing this url:
      project/createProject/<project's_id>
@@ -137,14 +140,81 @@ class ProjectSolutionViewSet(viewsets.ModelViewSet):
     filterset_fields = ['project','solution']
 
 #Views for dashboard
-
+searchManObj = SearchMan("Project")
+report_man = ReportMan()
+report_man.setTempDir(tempfile.mkdtemp())
 
 @login_required(login_url='login')
 def all_projects(request):
     from project.models import Project
     from django.core.paginator import Paginator, PageNotAnInteger, EmptyPage
+    from Util.search_form_strings import (
+        EMPTY_SEARCH_PHRASE,
+      PROJECT_NAME_SYNTAX_ERROR,
+    PROJECT_TYPE_SYNTAX_ERROR,
+    BENEFICIARY_NAME_SYNTAX_ERROR,
+    MAIN_MATERIAL_SYNTAX_ERROR,
+    EXECUTION_DATE_ERROR
+
+    )
+    search_result = ''
     all_projects = Project.objects.all().order_by("id")
     paginator = Paginator(all_projects, 5)
+
+    if 'temp_dir' in request.session and request.method == "GET":
+        # deleting temp dir in GET requests
+        if request.session['temp_dir'] != '':
+            delete_temp_folder(request.session['temp_dir'])
+    if request.method == "POST" and 'clear' not in request.POST and 'createExcel' not in request.POST:
+        searchManObj.setSearch(True)
+        if request.POST.get('search_options') == 'project':
+            search_message = request.POST.get('search_phrase')
+            search_result = Project.objects.filter(name=search_message).order_by('id')
+            searchManObj.setPaginator(search_result)
+            searchManObj.setSearchPhrase(search_message)
+            searchManObj.setSearchOption('Project Name')
+            searchManObj.setSearchError(False)
+        elif request.POST.get('search_options') == 'beneficiary':
+            print('here now in category search')
+            search_phrase = request.POST.get('search_phrase')
+            search_result = Project.objects.filter(beneficiary=search_phrase).order_by("id")
+            searchManObj.setPaginator(search_result)
+            searchManObj.setSearchPhrase(search_phrase)
+            searchManObj.setSearchOption('Beneficiary Name')
+            searchManObj.setSearchError(False)
+        elif request.POST.get('search_options') == 'main_material':
+            search_phrase = request.POST.get('search_phrase')
+            search_result = Project.objects.filter(main_material=search_phrase).order_by("id")
+            searchManObj.setPaginator(search_result)
+            searchManObj.setSearchPhrase(search_phrase)
+            searchManObj.setSearchOption('Main Material Used:')
+            searchManObj.setSearchError(False)
+        elif request.POST.get('search_options') == 'type':
+            search_phrase = request.POST.get('search_phrase')
+            search_result = Project.objects.filter(project_type__name=search_phrase).order_by("id")
+            searchManObj.setPaginator(search_result)
+            searchManObj.setSearchPhrase(search_phrase)
+            searchManObj.setSearchOption('Project Type:')
+            searchManObj.setSearchError(False)
+        elif request.POST.get('search_options') == 'execution_date':
+            search_phrase = request.POST.get('search_phrase_date')
+            search_result = Project.objects.filter(date=search_phrase).order_by("id")
+            searchManObj.setPaginator(search_result)
+            searchManObj.setSearchPhrase(search_phrase)
+            searchManObj.setSearchOption('Execution Date')
+            searchManObj.setSearchError(False)
+        else:
+            messages.error(request,
+                           "Please choose an item from list , then write search phrase to search by it!")
+            searchManObj.setSearchError(True)
+    if request.method == "GET" and 'page' not in request.GET:
+        all_projects = Project.objects.all().order_by("id")
+        searchManObj.setPaginator(all_projects)
+        searchManObj.setSearch(False)
+    if request.method == "POST" and request.POST.get('clear') == 'clear':
+        all_projects = Project.objects.all().order_by("id")
+        searchManObj.setPaginator(all_projects)
+        searchManObj.setSearch(False)
 
     if request.GET.get('page'):
         # Grab the current page from query parameter
@@ -153,6 +223,7 @@ def all_projects(request):
         page = None
 
     try:
+        paginator = searchManObj.getPaginator()
         projects = paginator.page(page)
         # Create a page object for the current page.
     except PageNotAnInteger:
@@ -171,7 +242,20 @@ def all_projects(request):
                       'all_projects_data': projects,
                       'page_range': paginator.page_range,
                       'num_pages': paginator.num_pages,
-                      'current_page': page
+                      'current_page': page,
+                      'search': searchManObj.getSearch(),
+                      'search_result': search_result,
+                      'search_phrase': searchManObj.getSearchPhrase(),
+                      'search_option': searchManObj.getSearchOption(),
+                      'search_error': searchManObj.getSearchError(),
+                      'data_js': {
+                          "empty_search_phrase": EMPTY_SEARCH_PHRASE,
+                          "project_error": PROJECT_NAME_SYNTAX_ERROR,
+                          "beneficiary_error": BENEFICIARY_NAME_SYNTAX_ERROR,
+                          "main_material_error": MAIN_MATERIAL_SYNTAX_ERROR,
+                          "type_error":PROJECT_TYPE_SYNTAX_ERROR,
+                          "execution_date_error":EXECUTION_DATE_ERROR,
+                      }
                   }
                   )
 @login_required(login_url='login')

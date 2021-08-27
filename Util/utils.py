@@ -72,6 +72,14 @@ class SearchMan:
             from product.models import Product
             products = Product.objects.all().order_by("id")
             self.paginator = Paginator(products, 5)
+        if model == "Supplier":
+            from supplier.models import Supplier
+            suppliers = Supplier.objects.all().order_by("id")
+            self.paginator = Paginator(suppliers, 5)
+        if model == "Project":
+            from project.models import Project
+            projects = Project.objects.all().order_by("id")
+            self.paginator = Paginator(projects, 5)
 
 
     def setPaginator(self,query):

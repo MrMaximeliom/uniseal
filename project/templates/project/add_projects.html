@@ -6,7 +6,11 @@
 {% block title %}
 {{title}}
 {% endblock title %}
+  {% block custom_css %}
+<link rel= "stylesheet" href= "https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.4.1/css/bootstrap-datepicker3.css"/>
+    {% endblock %}
     {% block custom_js %}
+<script type= "text/javascript" src= "https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.4.1/js/bootstrap-datepicker.min.js" defer></script>
 <script src="{% static 'dashboard/js/general.js' %}" defer></script>
     {% endblock %}
 
@@ -25,7 +29,7 @@
 <div class="card ">
   <div class="card-body">
     <h5 class="card-title">Please Add your project details here</h5>
-  <form class="card-form" method="post" action="" enctype="multipart/form-data">
+  <form class="card-form" method="post" action="" enctype="multipart/form-data" autocomplete="off">
       {% csrf_token %}
   <div class="mb-4 row">
     <div class="col-sm-6">
@@ -34,12 +38,16 @@
   </div>
            <div class="mb-4 row">
     <div class="col-sm-6">
-<!--             {{form.execution_date|as_crispy_field}}-->
         <label class="requiredField" for="execution_date">
             {% trans 'Execution Date' %}
             <span class="asteriskField">*</span>
         </label>
             <input type="date" name="execution_date" id="execution_date" class="form-control">
+    </div>
+  </div>
+              <div class="mb-4 row">
+    <div class="col-sm-6">
+          {{form.date|as_crispy_field}}
     </div>
   </div>
         <div class="mb-4 row">

@@ -11,3 +11,9 @@ PHONE_NUMBER_SYNTAX_ERROR = _("Phone Number contains only numbers! , in the form
 PRODUCT_NAME_SYNTAX_ERROR = _("Product name contains alphanumeric English letters with dashes only!")
 CATEGORY_NAME_SYNTAX_ERROR = _("Category name contains alphanumeric English letters only!")
 SUPPLIER_NAME_SYNTAX_ERROR = _("Supplier name contains alphanumeric English letters only!")
+# used by project search pages
+PROJECT_NAME_SYNTAX_ERROR = _("Project name contains alphanumeric English letters with dashes only!")
+BENEFICIARY_NAME_SYNTAX_ERROR = _("Beneficiary name contains alphanumeric English letters with dashes only!")
+MAIN_MATERIAL_SYNTAX_ERROR = _("Main material name contains alphanumeric English letters with dashes only!")
+PROJECT_TYPE_SYNTAX_ERROR = _("Project type name contains alphanumeric English letters with dashes only!")
+EXECUTION_DATE_ERROR = _("Please choose project's execution date")

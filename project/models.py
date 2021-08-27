@@ -78,7 +78,12 @@ class Project(models.Model):
         _('Execution Year'),
 max_length=200,
 
-
+    )
+    date = models.CharField(
+        _('Project Date'),
+        max_length=100,
+        null=True,
+        blank=True
     )
 
 

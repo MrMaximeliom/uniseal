@@ -27,10 +27,15 @@ class ProjectForm(forms.ModelForm):
     # # execution_date = forms.DateField(input_formats='YYYY', widget=forms.SelectDateWidget,label=_('Project Execution Date'),required=True)
     # application = forms.ModelChoiceField(queryset=Application.objects.all())
     # execution_date = forms.DateField(input_formats='dd-mm-yyyy', widget=forms.SelectDateWidget,label=_('Project Execution Date'),required=True)
+    # date = forms.CharField(max_length=100,required=False,label=_('Project Date'),attrs = {'placeholder': _('Select Project Date')})
     class Meta:
         model = Project
         fields = '__all__'
         exclude = ('slug',)
+        widgets = {
+            'date':forms.TextInput(attrs={'placeholder': _('Select Project Date')})
+            }
+
 class ProjectImagesForm(forms.ModelForm):
     class Meta:
         model = ProjectImages

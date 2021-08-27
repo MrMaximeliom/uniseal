@@ -1,9 +1,23 @@
 let error_messages
 $( document ).ready(function() {
 error_messages = JSON.parse($('#my-data').html())
-console.log(error_messages.sd)
+console.log(new Date().getFullYear())
+$("#searchPhraseDate").datepicker({
+  format: "mm-yyyy",
+    viewMode: "months",
+    minViewMode: "months",
+    autoclose:true,
+    clearBtn:true,
+    endDate:new Date().getFullYear().toString(),
+    startDate:'01-2000'
+});
+
 
 })
+$('searchPhraseDate').on('input',function(){
+$(this).prop('value',$(this).datepicker ('getDate'))
+})
+$
 
 // if user chooses to select all pages , then select all pages also in export data functionality
 
@@ -73,34 +87,68 @@ $('#searchPhrase').prop("placeholder","search by organization name ..")
 else if(selected_value == 'phone_number'){
 $('#searchPhrase').prop("placeholder","search by phone number ..")
 }
+else if(selected_value == 'project'){
+$('#searchPhrase').prop("placeholder","search by project name ..")
+}
+else if(selected_value == 'beneficiary'){
+$('#searchPhrase').prop("placeholder","search by beneficiary name ..")
+}
+else if(selected_value == 'main_material'){
+$('#searchPhrase').prop("placeholder","search by main material name ..")
+}
+else if(selected_value == 'type'){
+$('#searchPhrase').prop("placeholder","search by project type name ..")
+}
+if(selected_value == "execution_date"){
+$('#search_phrase_holder').css('display','none')
+$('#search_phrase_date_holder').css('display','block')
+}
+else{
+$('#search_phrase_holder').css('display','block')
+$('#search_phrase_date_holder').css('display','none')
+}
+
 })
 function validate_string_search_phrase(search_phrase,search_option){
 let error_message
 console.log("search option is: ",search_option)
 if(search_option == 'username'){
-console.log("username error man")
+
 error_message =  error_messages.username_error
 }
 else if(search_option == 'full_name'){
-console.log("full name error man")
+
 error_message =  error_messages.full_name_error
 }
 else if(search_option == 'organization'){
-console.log("organization error man")
+
 error_message =  error_messages.organization_error
 }
 else if(search_option == 'product'){
-console.log("organization error man")
+
 error_message =  error_messages.product_error
 }
 else if(search_option == 'category'){
-console.log("organization error man")
+
 error_message =  error_messages.category_error
 }
 else if(search_option == 'supplier'){
-console.log("organization error man")
 error_message =  error_messages.supplier_error
 }
+else if(search_option == 'project'){
+error_message =  error_messages.project_error
+}
+else if(search_option == 'beneficiary'){
+error_message =  error_messages.beneficiary_error
+}
+else if(search_option == 'main_material'){
+error_message =  error_messages.main_material_error
+}
+else if(search_option == 'type'){
+error_message =  error_messages.type_error
+}
+
+
 
 const special_chars_regex = /\W+/g;
 //let search_phrase = $('#searchPhrase').prop("value")
@@ -132,11 +180,6 @@ return false
 else{
 extracted_words.forEach((word) => {
 if (special_chars_regex.test(word)){
-//dash_regex = /[-]+/g
-//if(dash_regex.test(word)){
-//console.log("word is: ",word)
-//console.log("word can pass")
-//}
 special_chars_array.push(word)
 }
 })
@@ -173,7 +216,10 @@ return false
 $('#searchButton').on('click',function(event){
 $('#selection_error').html('')
 $('#search_phrase_error').html('')
-
+$('#search_phrase_date_error').html('')
+console.log("in this function")
+if($('#search_phrase_holder').css('display') == 'block'){
+console.log("search phrase holder not hidden")
 if($('#searchBy').find(":selected").prop("value") == "none"){
 $('#selection_error').html(error_messages.empty_search_phrase)
 $('#selection_error').css('display','block')
@@ -185,8 +231,35 @@ else if($('#searchBy').find(":selected").prop("value") == "phone_number"){
 return validate_phone_number($('#searchPhrase').prop("value"))
 }
 else{
-console.log("here now")
+if($('#searchBy').find(":selected").prop("value")  == null){
+return validate_string_search_phrase($('#searchPhrase').prop("value"),$('#searchButton').prop("value"))
+}
 return validate_string_search_phrase($('#searchPhrase').prop("value"),$('#searchBy').find(":selected").prop("value"))
+}
+
+}
+else{
+console.log($('#searchPhraseDate').prop("value") )
+if($('#searchBy').find(":selected").prop("value") == "none"){
+$('#selection_error').html(error_messages.empty_search_phrase)
+$('#selection_error').css('display','block')
+console.log("please select value first")
+
+return false
+}
+else{
+if($('#searchPhraseDate').prop("value") != "" ){
+return true
+}
+else{
+console.log("please enter execution date first")
+$('#search_phrase_date_error').html(error_messages.execution_date_error)
+$('#search_phrase_date_error').css('display','block')
+return false
+}
+}
+
+
 }
 
 

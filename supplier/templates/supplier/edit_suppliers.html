@@ -6,6 +6,14 @@
 {% block title %}
 {{title}}
 {% endblock title %}
+  {% block custom_css %}
+    <link rel="stylesheet" href="{% static 'product/css/product.css' %}">
+<link rel="stylesheet" href="{% static 'dashboard/css/search.css' %}">
+    {% endblock %}
+   {% block custom_js %}
+<script src="{% static 'dashboard/js/search.js' %}" defer></script>
+  {{ data_js|json_script:"my-data" }}
+    {% endblock %}
          {% block breadcrumb_content %}
    <nav aria-label="crumb">
                     <ol class="crumb breadcrumb-light breadcrumb-dark">
@@ -16,8 +24,31 @@
                 </nav>
                 {% endblock breadcrumb_content %}
 {% block content %}
-                <h1 class="h2">All Suppliers</h1>
-                <p>{% trans 'This is the Suppliers' %}</p>
+                <h1 class="h2">{% trans 'Edit Suppliers' %}</h1>
+            <div class="col-auto">
+<form class="row g-2 mb-3" action="" method="post" id="searchForm" autocomplete="off">
+    {% csrf_token %}
+  <div class="col-3">
+    <label for="searchPhrase" class="visually-hidden">{% trans 'Search Phrase' %}</label>
+    <input type="text" class="form-control" name="search_phrase" id="searchPhrase" placeholder="Search By Supplier Name">
+          <span style="display:none;color:red;" id="search_phrase_error"></span>
+  </div>
+  <div class="col-auto">
+    <button type="submit" class="btn btn-primary mb-3" id="searchButton" value="supplier">{% trans 'Search' %}</button>
+    <button type="submit" name="clear" value="clear" class="btn btn-danger mb-3">{% trans 'Clear Search' %}</button>
+
+  </div>
+</form>
+
+
+
+    </div>
+
+  {% if  search and not search_error %}
+<h2>{% trans 'Showing Search Results For ' %}</h2>
+<h3>{{search_option}}="{{search_phrase}}"</h3>
+{% endif %}
+{% if all_suppliers_data|length %}
 <div class="row card-group">
 
 {% for supplier in all_suppliers_data %}
@@ -57,5 +88,11 @@
           </ul>
        </nav>
   </div>
-
+{% endif %}
+{% if all_suppliers_data|length == 0 and not search %}
+<h3>{% trans 'There is no suppliers yet .. you can add new ones from ' %} <a href="{% url 'addSuppliers' %}">{% trans 'Here' %}</a></h3>
+{% endif %}
+{% if search and search_result.count == 0 %}
+<h3 style="color:red;">{% trans 'Sorry No Users found that matches your search!' %}</h3>
+{% endif %}
 {% endblock content %}
