@@ -170,7 +170,9 @@ def prepare_selected_query(selected_pages,paginator_obj,headers=None):
     added_date = []
     category = []
     supplier = []
+    print("here is selected query")
     if headers is not None:
+        print("headers are not none")
         headers_here = headers
         for header in headers_here:
             if header == "Product Name":
@@ -192,11 +194,13 @@ def prepare_selected_query(selected_pages,paginator_obj,headers=None):
                     for product in paginator_obj.page(page):
                         supplier.append(product.supplier.name)
             elif header == "Added Date":
+                print("adding added date in headers not none")
                 for page in selected_pages:
                     for product in paginator_obj.page(page):
                         added_date.append(product.added_date.strftime('%d-%m-%y'))
     else:
         headers_here = ["Product Name", "Category", "Supplier", "Description", "Added Date"]
+        print("headers are none in selected query")
         for page in range(1, paginator_obj.num_pages+1):
             for product in paginator_obj.page(page):
                 product_name.append(product.name)
@@ -234,7 +238,7 @@ def prepare_query(paginator_obj,headers=None):
                 for page in range(1, paginator_obj.num_pages+1):
                     for product in paginator_obj.page(page):
                         description.append(product.description)
-            elif header == "Last Login":
+            elif header == "Added Date":
                 for page in range(1, paginator_obj.num_pages+1):
                     for product in paginator_obj.page(page):
                         added_date.append(product.added_date.strftime('%d-%m-%y'))
@@ -246,7 +250,7 @@ def prepare_query(paginator_obj,headers=None):
                 category.append(product.category.name)
                 supplier.append(product.supplier.name)
                 description.append(product.description)
-                added_date.append(product.added_date.strftime('%d-%m-%y'))
+                added_date.append(product.added_date)
 
     # later for extracting actual data
 
@@ -268,7 +272,7 @@ def all_products(request):
     paginator = Paginator(all_products, 5)
     search_result = ''
     if 'temp_dir' in request.session and request.method == "GET":
-        # deleting temp dir in GET requests
+        print("delete reports")
         if request.session['temp_dir'] != '':
             delete_temp_folder()
     if request.method == "POST" and 'clear' not in request.POST and 'createExcel' not in request.POST :

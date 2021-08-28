@@ -217,7 +217,7 @@ def delete_temp_folder():
     # delete all files inside directory
 
 
-    mypath = "/home/moayed/PycharmProjects/uniseal/Util/Reports"
+    mypath = os.path.dirname(os.path.abspath(__file__)) + "/Reports"
 
     for root, dirs, files in os.walk(mypath):
         for file in files:
