@@ -46,7 +46,7 @@ class ReportMan:
     import tempfile
     filePath = ''
     fileName = ''
-    tempDir = ''
+    # tempDir = ''
     def setFilePath(self,file_path):
         self.filePath = file_path
     def setFileName(self,file_name):
@@ -55,15 +55,16 @@ class ReportMan:
         return self.filePath
     def getFileName(self):
         return self.fileName
-    def setTempDir(self,dir_name):
-        self.tempDir = dir_name
-    def getTempDir(self):
-        return self.tempDir
+    # def setTempDir(self,dir_name):
+    #     self.tempDir = dir_name
+    # def getTempDir(self):
+    #     return self.tempDir
 class SearchMan:
     search_error = False
 
     def __init__(self,model):
         from django.core.paginator import Paginator
+        from django.db.models import Count
         if model == "User":
             from accounts.models import User
             users = User.objects.all().order_by("id")
@@ -80,6 +81,10 @@ class SearchMan:
             from project.models import Project
             projects = Project.objects.all().order_by("id")
             self.paginator = Paginator(projects, 5)
+        if model == "Application":
+            from project.models import Application
+            applications = Application.objects.annotate(num_projects=Count('project')).order_by('-num_projects')
+            self.paginator = Paginator(applications, 5)
 
 
     def setPaginator(self,query):
@@ -107,7 +112,8 @@ class SearchMan:
     def getSearchError(self):
         return self.search_error
 
-def createExelFile(report_man,report_name,headers,**kwargs):
+def createExelFile(report_name,headers,request=None,**kwargs):
+    from django.contrib import messages
     import xlsxwriter , os
     from string import ascii_uppercase
     from datetime import date
@@ -118,11 +124,11 @@ def createExelFile(report_man,report_name,headers,**kwargs):
     now = datetime.now()
     current_time = now.strftime("%H:%M:%S")
     # getting root file system directory
-    rootDir = os.path.abspath('.').split(os.path.sep)[0] + os.path.sep
-    # getting desktop directory
-    desktop_dir = os.path.expanduser("~/Desktop")
-    # creating Reports directory
-    reports_dir = "Reports"
+    # rootDir = os.path.abspath('.').split(os.path.sep)[0] + os.path.sep
+    # # getting desktop directory
+    # desktop_dir = os.path.expanduser("~/Desktop")
+    # # creating Reports directory
+    # reports_dir = "Reports"
     # create reports directory in desktop directory
     # path = os.path.join( desktop_dir, reports_dir)
     # check if it's not created , create it now otherwise ignore
@@ -130,15 +136,16 @@ def createExelFile(report_man,report_name,headers,**kwargs):
     #     os.mkdir(path)
     # complete_file_name = os.path.abspath(path)+"/"+
     # create temp directory and add excel file in it
-    import tempfile , shutil
+    # import tempfile , shutil
     # create temp directory
-    import os
-    if not os.path.exists(report_man.getTempDir()):
-        report_man.setTempDir(tempfile.mkdtemp())
-    tempDir = report_man.tempDir
+    # import os
+    # if not os.path.exists(report_man.getTempDir()):
+    #     report_man.setTempDir(tempfile.mkdtemp())
+    # tempDir = report_man.tempDir
     # shutil.rmtree(tempDir)
     # path = os.path.join(tempDir, reports_dir)
-    path = tempDir
+    # path = tempDir
+    path  = os.path.dirname(os.path.abspath(__file__)) + "/Reports"
     # if os.path.isfile(path):
     #     os.mkdir(path) print("here in supplier")
     # else:
@@ -175,11 +182,14 @@ def createExelFile(report_man,report_name,headers,**kwargs):
         workBok.close()
         file_creation_status = True
         print("created")
-        return file_creation_status,complete_file_name,file_name
+        if request is not None:
+            messages.success(request, f"Report Successfully Created ")
+
+        return file_creation_status,str(complete_file_name),str(file_name)
 
     except:
         file_creation_status = False
-    return file_creation_status,complete_file_name,file_name
+    return file_creation_status,str(complete_file_name),str(file_name)
 
 
     # return workBok
@@ -197,9 +207,17 @@ def download_file(request,file_path,file_name):
     # # Return the response value
     return response
 
-def delete_temp_folder(tempDir):
-    import os , shutil
-    # shutil.rmtree(tempDir)
-    if  os.path.exists(tempDir):
-        print('temp directory deleted')
-        shutil.rmtree(tempDir)
+def delete_temp_folder():
+    # import os , shutil
+    # if  os.path.exists(tempDir):
+    #     print('temp directory deleted')
+    #     shutil.rmtree(tempDir)
+    import os, re, os.path
+    # delete all files inside directory
+
+
+    mypath = "/home/moayed/PycharmProjects/uniseal/Util/Reports"
+
+    for root, dirs, files in os.walk(mypath):
+        for file in files:
+            os.remove(os.path.join(root, file))

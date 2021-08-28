@@ -17,3 +17,5 @@ BENEFICIARY_NAME_SYNTAX_ERROR = _("Beneficiary name contains alphanumeric Englis
 MAIN_MATERIAL_SYNTAX_ERROR = _("Main material name contains alphanumeric English letters with dashes only!")
 PROJECT_TYPE_SYNTAX_ERROR = _("Project type name contains alphanumeric English letters with dashes only!")
 EXECUTION_DATE_ERROR = _("Please choose project's execution date")
+# used by project type pages
+PROJECT_APPLICATION_NAME_SYNTAX_ERROR = _("Project type name contains alphanumeric English letters with dashes only!")

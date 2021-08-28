@@ -3,6 +3,16 @@
 {% load static %}
 {% load static i18n %}
 {% load mathfilters %}
+  {% block custom_css %}
+<link rel= "stylesheet" href= "https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.4.1/css/bootstrap-datepicker3.css"/>
+<link rel="stylesheet" href="{% static 'dashboard/css/search.css' %}">
+    <link rel="stylesheet" href="{% static 'dashboard/css/product.css' %}">
+    {% endblock %}
+   {% block custom_js %}
+<script type= "text/javascript" src= "https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.4.1/js/bootstrap-datepicker.min.js" defer></script>
+<script src="{% static 'dashboard/js/search.js' %}" defer></script>
+  {{ data_js|json_script:"my-data" }}
+    {% endblock %}
 {% block title %}
 {{title}}
 {% endblock title %}
@@ -17,7 +27,49 @@
                 {% endblock breadcrumb_content %}
 {% block content %}
                 <h1 class="h2">Edit Projects</h1>
-                <p>{% trans 'This is the projects of Uniseal Company' %}</p>
+<div class="col-auto">
+<form class="row g-2 mb-3" action="" method="post" id="searchForm" autocomplete="off">
+    {% csrf_token %}
+  <div class="col-3" id="search_phrase_holder">
+    <label for="searchPhrase" class="visually-hidden">{% trans 'Search Phrase' %}</label>
+    <input type="text" class="form-control" name="search_phrase" id="searchPhrase" placeholder="Search ..">
+          <span style="display:none;color:red;" id="search_phrase_error"></span>
+  </div>
+       <div class="col-2 mr-2" style="display:none;" id="search_phrase_date_holder">
+            <label for="searchPhrase" class="visually-hidden">{% trans 'Search Phrase' %}</label>
+           <input type= "text" class="form-control" id="searchPhraseDate" name="search_phrase_date" placeholder="Select Execution Year">
+          <span style="display:none;color:red;" id="search_phrase_date_error"></span>
+     </div>
+
+    <div class="col-2 mr-3">
+    <select class="form-select search-select" id="searchBy" name="search_options" aria-label="Default select example">
+  <option selected value="none">{% trans 'Search By' %}</option>
+  <option value="project">{% trans 'Project Name' %}</option>
+  <option value="beneficiary">{% trans 'Beneficiary Name' %}</option>
+  <option value="main_material">{% trans 'Main Material Used' %}</option>
+  <option value="type">{% trans 'Project Type' %}</option>
+  <option value="execution_year">{% trans 'Execution Year' %}</option>
+</select>
+                <span style="display:none;color:red;" id="selection_error"></span>
+
+    </div>
+
+
+  <div class="col-auto">
+    <button type="submit" class="btn btn-primary mb-3" id="searchButton">{% trans 'Search' %}</button>
+    <button type="submit" name="clear" value="clear" class="btn btn-danger mb-3">{% trans 'Clear Search' %}</button>
+
+  </div>
+</form>
+
+
+
+    </div>
+  {% if  search and not search_error %}
+<h2>{% trans 'Showing Search Results For ' %}</h2>
+<h3>{{search_option}}="{{search_phrase}}"</h3>
+{% endif %}
+{% if all_projects_data|length %}
 <div class="row card-group">
 
 {% for project in all_projects_data %}
@@ -40,7 +92,7 @@
    <span>  {% trans 'Execution Date:' %} </span>
 <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-clock"><circle cx="12" cy="12" r="10"></circle><polyline points="12 6 12 12 16 14"></polyline></svg>
 
-            {{project.execution_date}}
+           {{project.date}}
     </p>
     <a href="{% url 'editProject' slug=project.slug %}" class="btn btn-primary">{% trans 'Update' %}</a>
   </div>
@@ -58,9 +110,11 @@
              <span class="sr-only">Previous</span>
             </a>
            </li>
+                   {% if page_range|length != 1 %}
            {% for i in page_range %}
            <li class="page-item {% if i == current_page %} active {% endif %}"><a class="page-link " href="?page={{ i }}">{{ i }}</a></li>
            {% endfor %}
+                 {% endif %}
 
            <li class="page-item {% if current_page == num_pages %} disabled disabled-item {% endif %}">
             <a class="page-link" href="?page={{ current_page|add:1 }}" aria-label="Next">
@@ -71,4 +125,11 @@
           </ul>
        </nav>
   </div>
+{% endif %}
+{% if all_projects_data|length == 0 and not search %}
+<h3>{% trans 'There is no projects yet .. you can add new ones from ' %} <a href="{% url 'addProjects' %}">{% trans 'Here' %}</a></h3>
+{% endif %}
+{% if search and search_result.count == 0 %}
+<h3 style="color:red;">{% trans 'Sorry No Users found that matches your search!' %}</h3>
+{% endif %}
 {% endblock content %}

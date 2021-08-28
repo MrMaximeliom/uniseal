@@ -239,17 +239,20 @@ class ContactUsViewSet(viewsets.ModelViewSet):
 from django.contrib.auth.decorators import login_required
 # the following function prepares the data to be used in the process of creating excel file
 def prepare_selected_query(selected_pages,paginator_obj,headers=None):
+    print("we are in selected query")
     full_name = []
     username = []
     organization = []
     phone_number = []
     last_login = []
     if headers is not None:
+        print("headers are not none")
         headers_here = headers
         for header in headers_here:
             if header == "Full Name":
                 for page in selected_pages:
                     for user in paginator_obj.page(page):
+                        print("adding full name data")
                         full_name.append(user.full_name)
             elif header == "Username":
                 for page in selected_pages:
@@ -269,8 +272,11 @@ def prepare_selected_query(selected_pages,paginator_obj,headers=None):
                         last_login.append(user.last_login.strftime('%d-%m-%y %a %H:%M %p'))
     else:
         headers_here = ["Full Name", "Username", "Organization", "Phone Number", "Last Login"]
+        print("headers are none")
         for page in range(1, paginator_obj.num_pages):
             for user in paginator_obj.page(page):
+                print("adding user data")
+                print("user names: ",user.full_name)
                 full_name.append(user.full_name)
                 username.append(user.username)
                 organization.append(user.organization)
@@ -288,28 +294,28 @@ def prepare_query(paginator_obj,headers=None):
         headers_here = headers
         for header in headers_here:
             if header == "Full Name":
-                for page in range(1, paginator_obj.num_pages):
+                for page in range(1, paginator_obj.num_pages+1):
                     for user in paginator_obj.page(page):
                         full_name.append(user.full_name)
             elif header == "Username":
-                for page in range(1, paginator_obj.num_pages):
+                for page in range(1, paginator_obj.num_pages+1):
                     for user in paginator_obj.page(page):
                         username.append(user.username)
             elif header == "Organization":
-                for page in range(1, paginator_obj.num_pages):
+                for page in range(1, paginator_obj.num_pages+1):
                     for user in paginator_obj.page(page):
                         organization.append(user.organization)
             elif header == "Phone Number":
-                for page in range(1, paginator_obj.num_pages):
+                for page in range(1, paginator_obj.num_pages+1):
                     for user in paginator_obj.page(page):
                         phone_number.append("0"+user.phone_number)
             elif header == "Last Login":
-                for page in range(1, paginator_obj.num_pages):
+                for page in range(1, paginator_obj.num_pages+1):
                     for user in paginator_obj.page(page):
                         last_login.append(user.last_login.strftime('%d-%m-%y %a %H:%M %p'))
     else:
         headers_here = ["Full Name","Username","Organization","Phone Number","Last Login"]
-        for page in range(1, paginator_obj.num_pages):
+        for page in range(1, paginator_obj.num_pages+1):
             for user in paginator_obj.page(page):
                 full_name.append(user.full_name)
                 username.append(user.username)
@@ -325,7 +331,7 @@ def prepare_query(paginator_obj,headers=None):
 
 searchManObj = SearchMan("User")
 report_man = ReportMan()
-report_man.setTempDir(tempfile.mkdtemp())
+# report_man.setTempDir(tempfile.mkdtemp())
 @login_required(login_url='login')
 def all_users(request):
     from Util.search_form_strings import (
@@ -343,7 +349,7 @@ def all_users(request):
     if 'temp_dir' in request.session and request.method == "GET":
         # deleting temp dir in GET requests
         if request.session['temp_dir'] != '':
-            delete_temp_folder(request.session['temp_dir'])
+            delete_temp_folder()
     # create search functionality
     if request.method == "POST" and 'clear' not in request.POST and 'createExcel' not in request.POST :
         searchManObj.setSearch(True)
@@ -393,54 +399,13 @@ def all_users(request):
     # create report functionality
     if request.method == "POST" and request.POST.get('createExcel') == 'done':
         headers = []
+        set_default_headers = True
         headers.append("Full Name") if request.POST.get('full_name_header') is not None else ''
         headers.append("Username") if request.POST.get('username_header') is not None else ''
         headers.append("Organization") if request.POST.get('organization_header') is not None else ''
         headers.append("Phone Number") if request.POST.get('phone_number_header') is not None else ''
         headers.append("Last Login") if request.POST.get('last_login_header') is not None else ''
-        if request.POST.get('allData') == 'allData':
-            # get the original query of page and then structure the data
-            query = searchManObj.getPaginator()
-
-            if len(headers) > 0 :
-                constructor = {}
-                headers, full_name, username, organization, phone_number, last_login = prepare_query(query,headers=headers)
-                if len(full_name) > 0 :
-                    constructor.update({"full_name": full_name})
-                if len(username) > 0:
-                    constructor.update({"username": username})
-                if len(organization) > 0:
-                    constructor.update({"organization": organization})
-                if len(phone_number) > 0:
-                    constructor.update({"phone_number": phone_number})
-                if len(last_login) > 0:
-                    constructor.update({"last_login": last_login})
-                status,report_man.filePath,report_man.fileName = createExelFile(report_man,'Report_For_Users',headers, **constructor)
-                if status:
-                    request.session['temp_dir'] =  report_man.tempDir
-                    messages.success(request,f"Report Successfully Created ")
-                    # return redirect('download_file',filepath=filepath,filename=filename)
-
-                    return redirect('downloadReport',str(report_man.filePath),str(report_man.fileName))
-                else:
-                    messages.error(request, "Sorry Report Failed To Create , Please Try Again!")
-
-            else:
-                headers, full_name, username, organization, phone_number, last_login = prepare_query(query)
-                status,report_man.filePath,report_man.fileName = createExelFile(report_man,'Report_For_Users',headers, full_name=full_name, username=username,
-                               organization=organization, phone_number=phone_number, last_login=last_login)
-                if status:
-                    messages.success(request,f"Report Successfully Created")
-                    # return redirect('download_file',filepath=filepath,filename=filename)
-
-                    return redirect('downloadReport',str(report_man.filePath),str(report_man.fileName))
-
-
-                else:
-                    messages.error(request, "Sorry Report Failed To Create , Please Try Again!")
-
-
-        elif request.POST.get('pages_collector') != 'none':
+        if request.POST.get('pages_collector') != 'none' and len(request.POST.get('pages_collector')) > 0:
             # get requested pages from the paginator of original page
             selected_pages = []
             query = searchManObj.getPaginator()
@@ -451,8 +416,10 @@ def all_users(request):
             if len(headers) > 0:
                 constructor = {}
                 headers, full_name, username, organization, phone_number, last_login = prepare_selected_query(selected_pages=selected_pages,paginator_obj=query,
-                                                                                                     headers=headers)
+                                                                                                 headers=headers)
+
                 if len(full_name) > 0:
+                    print("full name is ",full_name)
                     constructor.update({"full_name": full_name})
                 if len(username) > 0:
                     constructor.update({"username": username})
@@ -462,8 +429,9 @@ def all_users(request):
                     constructor.update({"phone_number": phone_number})
                 if len(last_login) > 0:
                     constructor.update({"last_login": last_login})
-                status,report_man.filePath,report_man.fileName = createExelFile(report_man,'Report_For_Users',headers, **constructor)
+                status,report_man.filePath,report_man.fileName = createExelFile('Report_For_Users',headers, **constructor)
                 if status:
+                    request.session['temp_dir'] = 'delete man!'
                     messages.success(request,f"Report Successfully Created ")
                     return redirect('downloadReport',str(report_man.filePath),str(report_man.fileName))
 
@@ -473,9 +441,10 @@ def all_users(request):
 
             else:
                 headers, full_name, username, organization, phone_number, last_login = prepare_selected_query(selected_pages,query,headers)
-                status,report_man.filePath,report_man.fileName = createExelFile(report_man,'Report_For_Users',headers, full_name=full_name, username=username,
+                status,report_man.filePath,report_man.fileName = createExelFile('Report_For_Users',headers, full_name=full_name, username=username,
                                organization=organization, phone_number=phone_number, last_login=last_login)
                 if status:
+                    request.session['temp_dir'] = 'delete man!'
                     messages.success(request,f"Report Successfully Created ")
                     # return redirect('download_file',filepath=filepath,filename=filename)
 
@@ -483,6 +452,51 @@ def all_users(request):
 
                 else:
                     messages.error(request, "Sorry Report Failed To Create , Please Try Again!")
+        else:
+            # get the original query of page and then structure the data
+            query = searchManObj.getPaginator()
+            print("headers are: ", headers)
+
+            if len(headers) > 0 :
+                constructor = {}
+                headers, full_name, username, organization, phone_number, last_login = prepare_query(query,headers=headers)
+                if len(full_name) > 0 :
+                    print("full names are: ", full_name)
+                    constructor.update({"full_name": full_name})
+                if len(username) > 0:
+                    constructor.update({"username": username})
+                if len(organization) > 0:
+                    constructor.update({"organization": organization})
+                if len(phone_number) > 0:
+                    constructor.update({"phone_number": phone_number})
+                if len(last_login) > 0:
+                    constructor.update({"last_login": last_login})
+                status,report_man.filePath,report_man.fileName = createExelFile('Report_For_Users',headers, **constructor)
+                if status:
+                    request.session['temp_dir'] = 'delete man!'
+                    # request.session['temp_dir'] =  report_man.tempDir
+                    messages.success(request,f"Report Successfully Created ")
+                    # return redirect('download_file',filepath=filepath,filename=filename)
+
+                    return redirect('downloadReport',str(report_man.filePath),str(report_man.fileName))
+                else:
+                    messages.error(request, "Sorry Report Failed To Create , Please Try Again!")
+
+            else:
+                headers, full_name, username, organization, phone_number, last_login = prepare_query(query)
+                status,report_man.filePath,report_man.fileName = createExelFile('Report_For_Users',headers, full_name=full_name, username=username,
+                               organization=organization, phone_number=phone_number, last_login=last_login)
+                if status:
+                    request.session['temp_dir'] = 'delete man!'
+                    messages.success(request,f"Report Successfully Created")
+                    # return redirect('download_file',filepath=filepath,filename=filename)
+
+                    return redirect('downloadReport',str(report_man.filePath),str(report_man.fileName))
+
+
+                else:
+                    messages.error(request, "Sorry Report Failed To Create , Please Try Again!")
+
 
 
 

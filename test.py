@@ -49,10 +49,10 @@ if __name__ == "__main__":
     # print(tempDir," --- ---- -- ")
     # remove temprorary directory
     # shutil.rmtree(tempDir)
-    import re
+    # import re
 
     # initializing string
-    test_string = input("Enter a sentence now\n")
+    # test_string = input("Enter a sentence now\n")
 
     # # printing original string
     # print("The original string is : " + test_string)
@@ -69,10 +69,19 @@ if __name__ == "__main__":
     #     print("Your sentence is ready to be used in db connection")
     # print("original words are: ",search_phrase)
     # print("special words are: ",special_char)
-    isOK,phone_number = check_phone_number(test_string)
-    if isOK:
-        print(phone_number)
+    # isOK,phone_number = check_phone_number(test_string)
+    # if isOK:
+    #     print(phone_number)
+    # main directory for reports
+    # os.path.dirname(os.path.abspath(__file__)) + "/Reports"
+    import os, re, os.path
+    # delete all files inside directory
 
+    mypath = "/home/moayed/PycharmProjects/uniseal/Util/Reports"
+    print("deleting all files")
+    for root, dirs, files in os.walk(mypath):
+        for file in files:
+            os.remove(os.path.join(root, file))
 
 
 

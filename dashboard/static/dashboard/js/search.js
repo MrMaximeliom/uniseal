@@ -3,13 +3,13 @@ $( document ).ready(function() {
 error_messages = JSON.parse($('#my-data').html())
 console.log(new Date().getFullYear())
 $("#searchPhraseDate").datepicker({
-  format: "mm-yyyy",
-    viewMode: "months",
-    minViewMode: "months",
+  format: "yyyy",
+    viewMode: "years",
+    minViewMode: "years",
     autoclose:true,
     clearBtn:true,
     endDate:new Date().getFullYear().toString(),
-    startDate:'01-2000'
+    startDate:'2000'
 });
 
 
@@ -56,6 +56,7 @@ selected_pages.splice(removed_item, 1);
 }
 }
 $('#pages_collector').prop("value",selected_pages)
+console.log("selected pages are: ",selected_pages)
 });
 
 $('#searchBy').on('change',function(){
@@ -99,7 +100,7 @@ $('#searchPhrase').prop("placeholder","search by main material name ..")
 else if(selected_value == 'type'){
 $('#searchPhrase').prop("placeholder","search by project type name ..")
 }
-if(selected_value == "execution_date"){
+if(selected_value == "execution_year"){
 $('#search_phrase_holder').css('display','none')
 $('#search_phrase_date_holder').css('display','block')
 }
@@ -146,6 +147,9 @@ error_message =  error_messages.main_material_error
 }
 else if(search_option == 'type'){
 error_message =  error_messages.type_error
+}
+else if(search_option == 'application'){
+error_message =  error_messages.application_error
 }
 
 
@@ -232,7 +236,16 @@ return validate_phone_number($('#searchPhrase').prop("value"))
 }
 else{
 if($('#searchBy').find(":selected").prop("value")  == null){
+
+if($('#searchPhrase').prop("value") == ''){
+$('#search_phrase_error').html(error_messages.empty_search_phrase)
+$('#search_phrase_error').css('display','block')
+return false
+}
+else{
 return validate_string_search_phrase($('#searchPhrase').prop("value"),$('#searchButton').prop("value"))
+
+}
 }
 return validate_string_search_phrase($('#searchPhrase').prop("value"),$('#searchBy').find(":selected").prop("value"))
 }

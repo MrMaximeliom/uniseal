@@ -197,7 +197,7 @@ def prepare_selected_query(selected_pages,paginator_obj,headers=None):
                         added_date.append(product.added_date.strftime('%d-%m-%y'))
     else:
         headers_here = ["Product Name", "Category", "Supplier", "Description", "Added Date"]
-        for page in range(1, paginator_obj.num_pages):
+        for page in range(1, paginator_obj.num_pages+1):
             for product in paginator_obj.page(page):
                 product_name.append(product.name)
                 category.append(product.category.name)
@@ -217,30 +217,30 @@ def prepare_query(paginator_obj,headers=None):
         headers_here = headers
         for header in headers_here:
             if header == "Product Name":
-                for page in range(1, paginator_obj.num_pages):
+                for page in range(1, paginator_obj.num_pages+1):
                     for product in paginator_obj.page(page):
                         product_name.append(product.name)
             elif header == "Category":
-                for page in range(1, paginator_obj.num_pages):
+                for page in range(1, paginator_obj.num_pages+1):
                     for product in paginator_obj.page(page):
                         category.append(product.category.name)
             elif header == "Supplier":
                 print("here in supplier")
-                for page in range(1, paginator_obj.num_pages):
+                for page in range(1, paginator_obj.num_pages+1):
                     for product in paginator_obj.page(page):
                         supplier.append(product.supplier.name)
             elif header == "Description":
                 print("here in description")
-                for page in range(1, paginator_obj.num_pages):
+                for page in range(1, paginator_obj.num_pages+1):
                     for product in paginator_obj.page(page):
                         description.append(product.description)
             elif header == "Last Login":
-                for page in range(1, paginator_obj.num_pages):
+                for page in range(1, paginator_obj.num_pages+1):
                     for product in paginator_obj.page(page):
                         added_date.append(product.added_date.strftime('%d-%m-%y'))
     else:
         headers_here = ["Product Name","Category","Supplier","Description","Added Date"]
-        for page in range(1, paginator_obj.num_pages):
+        for page in range(1, paginator_obj.num_pages+1):
             for product in paginator_obj.page(page):
                 product_name.append(product.name)
                 category.append(product.category.name)
@@ -254,8 +254,6 @@ def prepare_query(paginator_obj,headers=None):
     return headers_here,product_name,category,supplier,description,added_date
 searchManObj = SearchMan("Product")
 report_man = ReportMan()
-report_man.setTempDir(tempfile.mkdtemp())
-print("report man temp dir is: ",report_man.tempDir)
 @login_required(login_url='login')
 def all_products(request):
     from product.models import Product
@@ -272,7 +270,7 @@ def all_products(request):
     if 'temp_dir' in request.session and request.method == "GET":
         # deleting temp dir in GET requests
         if request.session['temp_dir'] != '':
-            delete_temp_folder(request.session['temp_dir'])
+            delete_temp_folder()
     if request.method == "POST" and 'clear' not in request.POST and 'createExcel' not in request.POST :
         searchManObj.setSearch(True)
         if request.POST.get('search_options') == 'product':
@@ -324,7 +322,7 @@ def all_products(request):
         headers.append("Added Date") if request.POST.get('added_date_header') is not None else ''
         # create report functionality
         # setting all data as default behaviour
-        if request.POST.get('pages_collector') != 'none':
+        if request.POST.get('pages_collector') != 'none' and len(request.POST.get('pages_collector')) > 0:
             # get requested pages from the paginator of original page
             selected_pages = []
             query = searchManObj.getPaginator()
@@ -347,9 +345,10 @@ def all_products(request):
                     constructor.update({"description": description})
                 if len(added_date) > 0:
                     constructor.update({"added_date": added_date})
-                status, report_man.filePath, report_man.fileName = createExelFile(report_man, 'Report_For_Products',
+                status, report_man.filePath, report_man.fileName = createExelFile('Report_For_Products',
                                                                                   headers, **constructor)
                 if status:
+                    request.session['temp_dir'] = 'delete man!'
                     messages.success(request, f"Report Successfully Created ")
                     return redirect('downloadReport', str(report_man.filePath), str(report_man.fileName))
 
@@ -360,13 +359,14 @@ def all_products(request):
             else:
                 headers, product_name, category, supplier, description, added_date = prepare_selected_query(
                     selected_pages, query, headers)
-                status, report_man.filePath, report_man.fileName = createExelFile(report_man, 'Report_For_Users',
+                status, report_man.filePath, report_man.fileName = createExelFile('Report_For_Users',
                                                                                   headers, product_name=product_name,
                                                                                   category=category,
                                                                                   suppplier=supplier,
                                                                                   description=description,
                                                                                   added_date=added_date)
                 if status:
+                    request.session['temp_dir'] = 'delete man!'
                     messages.success(request, f"Report Successfully Created ")
                     # return redirect('download_file',filepath=filepath,filename=filename)
 
@@ -391,11 +391,12 @@ def all_products(request):
                     constructor.update({"description": description})
                 if len(added_date) > 0:
                     constructor.update({"added_date": added_date})
-                status, report_man.filePath, report_man.fileName = createExelFile(report_man, 'Report_For_Products',
+                status, report_man.filePath, report_man.fileName = createExelFile( 'Report_For_Products',
                                                                                   headers, **constructor)
                 if status:
-                   request.session['temp_dir'] = report_man.tempDir
+
                    messages.success(request, f"Report Successfully Created ")
+                   request.session['temp_dir'] = 'delete man!'
                    # return redirect('download_file',filepath=filepath,filename=filename)
 
                    return redirect('downloadReport', str(report_man.filePath), str(report_man.fileName))
@@ -404,13 +405,18 @@ def all_products(request):
 
             else:
                 headers, product_name, category, supplier, description, added_date = prepare_query(query)
-                status, report_man.filePath, report_man.fileName = createExelFile(report_man, 'Report_For_Products',
+                status, filePath, fileName = createExelFile('Report_For_Products',
                                                                                   headers, product_name=product_name,
                                                                                   category=category,
                                                                                   supplier=supplier,
                                                                                   description=description,
-                                                                                  added_date=added_date)
+                                                                                  added_date=added_date.append
+                                                                                  )
+                print("file path is: ",filePath," file name is: ",fileName)
+                report_man.setFileName(fileName)
+                report_man.setFilePath(filePath)
                 if status:
+                    request.session['temp_dir'] = 'delete man!'
                     messages.success(request, f"Report Successfully Created")
                     return redirect('downloadReport', str(report_man.filePath), str(report_man.fileName))
                 else:

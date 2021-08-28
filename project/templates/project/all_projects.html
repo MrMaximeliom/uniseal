@@ -37,7 +37,7 @@
   </div>
        <div class="col-2 mr-2" style="display:none;" id="search_phrase_date_holder">
             <label for="searchPhrase" class="visually-hidden">{% trans 'Search Phrase' %}</label>
-                                                                                                                                                                                                       <input type= "text" class="form-control" id="searchPhraseDate" name="search_phrase_date" placeholder="Select Execution Date">
+           <input type= "text" class="form-control" id="searchPhraseDate" name="search_phrase_date" placeholder="Select Execution Year">
           <span style="display:none;color:red;" id="search_phrase_date_error"></span>
      </div>
 
@@ -48,7 +48,7 @@
   <option value="beneficiary">{% trans 'Beneficiary Name' %}</option>
   <option value="main_material">{% trans 'Main Material Used' %}</option>
   <option value="type">{% trans 'Project Type' %}</option>
-  <option value="execution_date">{% trans 'Execution Date' %}</option>
+  <option value="execution_year">{% trans 'Execution Year' %}</option>
 </select>
                 <span style="display:none;color:red;" id="selection_error"></span>
 
@@ -174,7 +174,7 @@
         <p class="card-text">
    <span>  {% trans 'Execution Date:' %} </span>
 <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-clock"><circle cx="12" cy="12" r="10"></circle><polyline points="12 6 12 12 16 14"></polyline></svg>
-            {{project.execution_date|date:"M,Y"}}
+            {{project.date}}
     </p>
     <a href="{% url 'projectDetails' slug=project.slug %}" class="btn btn-primary">More Details</a>
   </div>
@@ -208,8 +208,8 @@
        </nav>
   </div>
 {% endif %}
-{% if all_products_data|length == 0 and not search %}
-<h3>{% trans 'There is no products yet .. you can add new ones from ' %} <a href="{% url 'addProducts' %}">{% trans 'Here' %}</a></h3>
+{% if all_projects_data|length == 0 and not search %}
+<h3>{% trans 'There is no projects yet .. you can add new ones from ' %} <a href="{% url 'addProjects' %}">{% trans 'Here' %}</a></h3>
 {% endif %}
 {% if search and search_result.count == 0 %}
 <h3 style="color:red;">{% trans 'Sorry No Users found that matches your search!' %}</h3>

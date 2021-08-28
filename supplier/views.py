@@ -8,8 +8,6 @@ from django.contrib import messages
 from Util.utils import  SearchMan,createExelFile,ReportMan,delete_temp_folder
 import tempfile
 
-
-
 # Create your views here.
 class SupplierViewSet(viewsets.ModelViewSet):
     """API endpoint to add or modify suppliers' data by admin
@@ -53,7 +51,7 @@ from .models import Supplier, rand_slug
 suppliers = Supplier.objects.all().order_by("id")
 searchManObj = SearchMan("Supplier")
 report_man = ReportMan()
-report_man.setTempDir(tempfile.mkdtemp())
+# report_man.setTempDir(tempfile.mkdtemp())
 def prepare_selected_query(selected_pages,paginator_obj,headers=None):
     link_list = []
     supplier_list = []
@@ -118,7 +116,7 @@ def all_suppliers(request):
     if 'temp_dir' in request.session and request.method == "GET":
         # deleting temp dir in GET requests
         if request.session['temp_dir'] != '':
-            delete_temp_folder(request.session['temp_dir'])
+            delete_temp_folder()
     if request.method == "POST" and 'clear' not in request.POST and 'createExcel' not in request.POST:
         searchManObj.setSearch(True)
         if request.POST.get('search_phrase') != '':
@@ -169,9 +167,10 @@ def all_suppliers(request):
                     constructor.update({"supplier": supplier})
                 if len(link) > 0:
                     constructor.update({"link": link})
-                status, report_man.filePath, report_man.fileName = createExelFile(report_man, 'Report_For_Suppliers',
+                status, report_man.filePath, report_man.fileName = createExelFile('Report_For_Suppliers',
                                                                                   headers, **constructor)
                 if status:
+                    request.session['temp_dir'] = 'delete man!'
                     messages.success(request, f"Report Successfully Created ")
                     return redirect('downloadReport', str(report_man.filePath), str(report_man.fileName))
 
@@ -182,11 +181,12 @@ def all_suppliers(request):
             else:
                 headers, supplier , link = prepare_selected_query(
                     selected_pages, query, headers)
-                status, report_man.filePath, report_man.fileName = createExelFile(report_man, 'Report_For_Suppliers',
+                status, report_man.filePath, report_man.fileName = createExelFile('Report_For_Suppliers',
                                                                                   headers, supplier=supplier,
                                                                                   link=link
                                                                                   )
                 if status:
+                    request.session['temp_dir'] = 'delete man!'
                     messages.success(request, f"Report Successfully Created ")
                     # return redirect('download_file',filepath=filepath,filename=filename)
 
@@ -205,10 +205,11 @@ def all_suppliers(request):
                     constructor.update({"supplier": supplier})
                 if len(link) > 0:
                     constructor.update({"link": link})
-                status, report_man.filePath, report_man.fileName = createExelFile(report_man, 'Report_For_Suppliers',
+                status, report_man.filePath, report_man.fileName = createExelFile( 'Report_For_Suppliers',
                                                                                   headers, **constructor)
                 if status:
-                   request.session['temp_dir'] = report_man.tempDir
+                   # request.session['temp_dir'] = report_man.tempDir
+                   request.session['temp_dir'] = 'delete man!'
                    messages.success(request, f"Report Successfully Created ")
                    # return redirect('download_file',filepath=filepath,filename=filename)
 
@@ -218,10 +219,11 @@ def all_suppliers(request):
 
             else:
                 headers, supplier,link = prepare_query(query)
-                status, report_man.filePath, report_man.fileName = createExelFile(report_man, 'Report_For_Suppliers',
+                status, report_man.filePath, report_man.fileName = createExelFile( 'Report_For_Suppliers',
                                                                                   headers,supplier=supplier,
                                                                                   link=link)
                 if status:
+                    request.session['temp_dir'] = 'delete man!'
                     messages.success(request, f"Report Successfully Created")
                     return redirect('downloadReport', str(report_man.filePath), str(report_man.fileName))
                 else:
