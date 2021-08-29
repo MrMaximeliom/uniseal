@@ -74,7 +74,7 @@ class ModifyUserDataViewSet(viewsets.GenericViewSet, mixins.ListModelMixin,
     from .models import User
     queryset = User.objects.all()
     serializer_class = RegisterSerializer
-    permission_classes = [IsSystemBackEndUser]
+    permission_classes = [UnisealPermission]
 
     def get_view_name(self):
         return _("Modify Users' Data")

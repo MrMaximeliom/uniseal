@@ -8,7 +8,7 @@ from django.contrib.auth.decorators import login_required
 from django.shortcuts import render, get_object_or_404
 from django.core.paginator import Paginator, PageNotAnInteger, EmptyPage
 from Util.utils import  SearchMan,createExelFile,ReportMan,delete_temp_folder
-import tempfile
+
 # Create your views here.
 class  ProjectApplicationViewSet(viewsets.ModelViewSet):
     """
@@ -41,7 +41,6 @@ from project.models import Application
 applications = Application.objects.annotate(num_projects=Count('project')).order_by('-num_projects')
 searchManObj = SearchMan("Application")
 report_man = ReportMan()
-# report_man.setTempDir(tempfile.mkdtemp())
 def prepare_selected_query(selected_pages,paginator_obj,headers=None):
     project_list = []
     application_list = []
@@ -198,7 +197,6 @@ def all_applications(request):
                 if status:
 
                    request.session['temp_dir'] = 'delete man!'
-                   delete_temp_folder()
                    messages.success(request, f"Report Successfully Created ")
                    # return redirect('download_file',filepath=filepath,filename=filename)
 

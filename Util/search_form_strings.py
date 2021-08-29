@@ -9,6 +9,7 @@ ORGANIZATION_NAME_SYNTAX_ERROR = _("Organization Name contains only English lett
 PHONE_NUMBER_SYNTAX_ERROR = _("Phone Number contains only numbers! , in the format of 09###### or 01######")
 # used by product search pages
 PRODUCT_NAME_SYNTAX_ERROR = _("Product name contains alphanumeric English letters with dashes only!")
+# used also by category pages
 CATEGORY_NAME_SYNTAX_ERROR = _("Category name contains alphanumeric English letters only!")
 SUPPLIER_NAME_SYNTAX_ERROR = _("Supplier name contains alphanumeric English letters only!")
 # used by project search pages
@@ -19,3 +20,7 @@ PROJECT_TYPE_SYNTAX_ERROR = _("Project type name contains alphanumeric English l
 EXECUTION_DATE_ERROR = _("Please choose project's execution date")
 # used by project type pages
 PROJECT_APPLICATION_NAME_SYNTAX_ERROR = _("Project type name contains alphanumeric English letters with dashes only!")
+# used by country pages
+COUNTRY_NAME_SYNTAX_ERROR = _("Country name alphanumeric English letters only!")
+# used by state pages
+STATE_NAME_SYNTAX_ERROR = _("State name alphanumeric English letters only!")

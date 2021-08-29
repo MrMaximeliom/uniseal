@@ -7,11 +7,9 @@
 {{title}}
 {% endblock title %}
   {% block custom_css %}
-<link rel= "stylesheet" href= "https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.4.1/css/bootstrap-datepicker3.css"/>
 <link rel="stylesheet" href="{% static 'dashboard/css/search.css' %}">
     {% endblock %}
    {% block custom_js %}
-<script type= "text/javascript" src= "https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.4.1/js/bootstrap-datepicker.min.js" defer></script>
 <script src="{% static 'dashboard/js/search.js' %}" defer></script>
   {{ data_js|json_script:"my-data" }}
     {% endblock %}
@@ -25,7 +23,7 @@
                 </nav>
                 {% endblock breadcrumb_content %}
 {% block content %}
-                <h1 class="h2">{% trans 'Project Types' %}</h1>
+                <h1 class="h2">{% trans 'All Project Types' %}</h1>
 <div class="col-auto">
 <form class="row g-2 mb-3" action="" method="post" id="searchForm" autocomplete="off">
     {% csrf_token %}
@@ -166,7 +164,7 @@
 <h3>{% trans 'There is no project types yet .. you can add new ones from ' %} <a href="{% url 'addApplications' %}">{% trans 'Here' %}</a></h3>
 {% endif %}
 {% if search and search_result.count == 0 %}
-<h3 style="color:red;">{% trans 'Sorry No Users found that matches your search!' %}</h3>
+<h3 style="color:red;">{% trans 'Sorry no project types found that matches your search!' %}</h3>
 {% endif %}
 
 

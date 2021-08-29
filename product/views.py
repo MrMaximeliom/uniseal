@@ -414,7 +414,7 @@ def all_products(request):
                                                                                   category=category,
                                                                                   supplier=supplier,
                                                                                   description=description,
-                                                                                  added_date=added_date.append
+                                                                                  added_date=added_date
                                                                                   )
                 print("file path is: ",filePath," file name is: ",fileName)
                 report_man.setFileName(fileName)

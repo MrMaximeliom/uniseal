@@ -2,22 +2,12 @@ let error_messages
 $( document ).ready(function() {
 error_messages = JSON.parse($('#my-data').html())
 console.log(new Date().getFullYear())
-$("#searchPhraseDate").datepicker({
-  format: "yyyy",
-    viewMode: "years",
-    minViewMode: "years",
-    autoclose:true,
-    clearBtn:true,
-    endDate:new Date().getFullYear().toString(),
-    startDate:'2000'
-});
+
 
 
 })
-$('searchPhraseDate').on('input',function(){
-$(this).prop('value',$(this).datepicker ('getDate'))
-})
-$
+
+
 
 // if user chooses to select all pages , then select all pages also in export data functionality
 
@@ -151,7 +141,12 @@ error_message =  error_messages.type_error
 else if(search_option == 'application'){
 error_message =  error_messages.application_error
 }
-
+else if(search_option == 'country'){
+error_message =  error_messages.country_error
+}
+else if(search_option == 'state'){
+error_message =  error_messages.state_error
+}
 
 
 const special_chars_regex = /\W+/g;
@@ -174,6 +169,26 @@ if(special_chars_array.length == 0){
 return true
 }
 else{
+console.log(special_chars_array)
+console.log("showing error message ",error_message)
+$('#search_phrase_error').html(error_message)
+$('#search_phrase_error').css('display','block')
+return false
+}
+}
+else if(search_option == 'category' || search_option == 'country' || search_option == 'state' ){
+dash_regex = /([A-Z])*\s*\W*(a-z)*\s*\w+/g
+//extracted_words.forEach((word) => {
+//if (!dash_regex.test(word)){
+//special_chars_array.push(word)
+//}
+//})
+console.log(tempHolder)
+if(dash_regex.test(tempHolder)){
+return true
+}
+else{
+console.log("search_option is: ", search_option)
 console.log(special_chars_array)
 console.log("showing error message ",error_message)
 $('#search_phrase_error').html(error_message)
@@ -213,10 +228,7 @@ $('#search_phrase_error').html(error_messages.phone_number_error)
 $('#search_phrase_error').css('display','block')
 
 return false
-}
-
-
-}
+}}
 $('#searchButton').on('click',function(event){
 $('#selection_error').html('')
 $('#search_phrase_error').html('')
@@ -228,7 +240,6 @@ if($('#searchBy').find(":selected").prop("value") == "none"){
 $('#selection_error').html(error_messages.empty_search_phrase)
 $('#selection_error').css('display','block')
 console.log("please select value first")
-
 return false
 }
 else if($('#searchBy').find(":selected").prop("value") == "phone_number"){
@@ -248,16 +259,13 @@ return validate_string_search_phrase($('#searchPhrase').prop("value"),$('#search
 }
 }
 return validate_string_search_phrase($('#searchPhrase').prop("value"),$('#searchBy').find(":selected").prop("value"))
-}
-
-}
+}}
 else{
 console.log($('#searchPhraseDate').prop("value") )
 if($('#searchBy').find(":selected").prop("value") == "none"){
 $('#selection_error').html(error_messages.empty_search_phrase)
 $('#selection_error').css('display','block')
 console.log("please select value first")
-
 return false
 }
 else{
@@ -271,9 +279,5 @@ $('#search_phrase_date_error').css('display','block')
 return false
 }
 }
-
-
 }
-
-
 })

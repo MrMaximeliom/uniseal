@@ -73,7 +73,7 @@ def prepare_selected_query(selected_pages,paginator_obj,headers=None):
                         link_list.append(supplier.link)
     else:
         print("in else section of selected query")
-        for page in range(1, paginator_obj.num_pages):
+        for page in range(1, paginator_obj.num_pages+1):
             for supplier in paginator_obj.page(page):
                 link_list.append(supplier.link)
                 supplier_list.append(supplier.name)
@@ -89,16 +89,16 @@ def prepare_query(paginator_obj,headers=None):
         headers_here = headers
         for header in headers_here:
             if header == "Supplier Name":
-                for page in range(1, paginator_obj.num_pages):
+                for page in range(1, paginator_obj.num_pages+1):
                     for supplier in paginator_obj.page(page):
                         supplier_list.append(supplier.name)
             elif header == "Supplier Website":
-                for page in range(1, paginator_obj.num_pages):
+                for page in range(1, paginator_obj.num_pages+1):
                     for supplier in paginator_obj.page(page):
                         link_list.append(supplier.link)
     else:
         print("in else section of prepare query")
-        for page in range(1, paginator_obj.num_pages):
+        for page in range(1, paginator_obj.num_pages+1):
             for supplier in paginator_obj.page(page):
                 supplier_list.append(supplier.name)
                 link_list.append(supplier.link)

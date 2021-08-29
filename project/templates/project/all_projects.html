@@ -10,6 +10,7 @@
     {% endblock %}
    {% block custom_js %}
 <script type= "text/javascript" src= "https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.4.1/js/bootstrap-datepicker.min.js" defer></script>
+<script src="{% static 'dashboard/js/date_picker_search.js' %}" defer></script>
 <script src="{% static 'dashboard/js/search.js' %}" defer></script>
   {{ data_js|json_script:"my-data" }}
     {% endblock %}
@@ -41,7 +42,7 @@
           <span style="display:none;color:red;" id="search_phrase_date_error"></span>
      </div>
 
-    <div class="col-2 mr-3">
+    <div class="col-2 mr-5">
     <select class="form-select search-select" id="searchBy" name="search_options" aria-label="Default select example">
   <option selected value="none">{% trans 'Search By' %}</option>
   <option value="project">{% trans 'Project Name' %}</option>
@@ -212,6 +213,6 @@
 <h3>{% trans 'There is no projects yet .. you can add new ones from ' %} <a href="{% url 'addProjects' %}">{% trans 'Here' %}</a></h3>
 {% endif %}
 {% if search and search_result.count == 0 %}
-<h3 style="color:red;">{% trans 'Sorry No Users found that matches your search!' %}</h3>
+<h3 style="color:red;">{% trans 'Sorry no projects found that matches your search!' %}</h3>
 {% endif %}
 {% endblock content %}

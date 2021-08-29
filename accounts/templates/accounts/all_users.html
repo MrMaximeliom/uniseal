@@ -33,7 +33,7 @@
         <span style="display:none;color:red;" id="search_phrase_error"></span>
   </div>
 
-    <div class="col-2 mr-3">
+    <div class="col-2 mr-5">
     <select class="form-select search-select" id="searchBy" name="search_options" aria-label="Default select example">
   <option selected value="none">{% trans 'Search By' %}</option>
   <option value="full_name">{% trans 'Full Name' %}</option>
@@ -247,6 +247,6 @@
 {% endif %}
 
 {% if search and search_result.count == 0 %}
-<h3 style="color:red;">{% trans 'Sorry No Users found that matches your search!' %}</h3>
+<h3 style="color:red;">{% trans 'Sorry no users found that matches your search!' %}</h3>
 {% endif %}
 {% endblock content %}

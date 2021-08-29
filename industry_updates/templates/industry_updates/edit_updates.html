@@ -18,40 +18,28 @@
 {% block content %}
                 <h1 class="h2">{% trans 'Industry Updates'%}</h1>
                 <p>{% trans 'This is the Industry Updates' %}</p>
- <div class="row">
-                    <div class="col-12 col-xl-11 mb-4 mb-lg-0">
-                        <div class="card-light card-dark">
-                            <h5 class="card-header-light card-header-dark">{% trans 'Industry Updates' %}</h5>
-                            <div class="card-body-light card-body-dark">
-                                <div class="table-responsive">
-                                    <table class="table">
-                                        <thead>
-                                          <tr>
-                                            <th scope="col">{% trans 'Headline' %}</th>
-                                            <th scope="col">{% trans 'Link' %}</th>
-                                            <th scope="col"></th>
-                                          </tr>
-                                        </thead>
-                                        <tbody>
-                                        {% for update in all_updates_data %}
-                                          <tr>
-                                            <th scope="row">{{update.headline}}</th>
-                                            <td>{{ update.link }}</td>
-                                            <td>
-                                                <a href="{% url 'editUpdate' slug=update.slug %}" class="btn btn-sm btn-primary">Update</a>
-                                            </td>
-                                          </tr>
-                                        {% endfor %}
+{% if all_updates_data|length %}
+<div class="row card-group">
 
-                                        </tbody>
-                                      </table>
-                                </div>
+{% for update in all_updates_data %}
 
-                            </div>
-                        </div>
-                    </div>
+ <div class="col-4">
+                <div class="card mb-5 ml-2" >
+  <img class="card-img-top card-image-product" src="{{update.image.url}}" alt="image for industry update">
+  <div class="card-body">
+    <h5 class="card-title">{{update.headline}}</h5>
+    <p class="card-text">
+        {% trans 'Details:' %} {{update.details}}
+    </p>
+      <a href="update.link" class="btn btn-primary mr-2">{% trans 'Main Link' %}</a>
 
-                </div>
+    <a href="#" class="btn btn-primary mr-3">{% trans 'Update' %}</a>
+  </div>
+</div>
+ </div>
+
+{% endfor %}
+</div>
  <div class="container mt-3 d-flex justify-content-center">
         <nav aria-label="Pagination Navigation">
           <ul class="pagination">
@@ -61,9 +49,13 @@
              <span class="sr-only">Previous</span>
             </a>
            </li>
+
+             {% if page_range|length != 1 %}
            {% for i in page_range %}
            <li class="page-item {% if i == current_page %} active {% endif %}"><a class="page-link " href="?page={{ i }}">{{ i }}</a></li>
            {% endfor %}
+                 {% endif %}
+
 
            <li class="page-item {% if current_page == num_pages %} disabled disabled-item {% endif %}">
             <a class="page-link" href="?page={{ current_page|add:1 }}" aria-label="Next">
@@ -74,5 +66,12 @@
           </ul>
        </nav>
   </div>
+{% endif %}
+{% if all_updates_data|length == 0 and not search %}
+<h3>{% trans 'There is no industry updates yet .. you can add new ones from ' %} <a href="{% url 'addUpdates' %}">{% trans 'Here' %}</a></h3>
+{% endif %}
+{% if search and search_result.count == 0 %}
+<h3 style="color:red;">{% trans 'Sorry No results found that matches your search!' %}</h3>
+{% endif %}
 
 {% endblock content %}

@@ -85,6 +85,18 @@ class SearchMan:
             from project.models import Application
             applications = Application.objects.annotate(num_projects=Count('project')).order_by('-num_projects')
             self.paginator = Paginator(applications, 5)
+        if model == "Category":
+            from category.models import Category
+            categories = Category.objects.annotate(num_products=Count('product')).order_by('-num_products')
+            self.paginator = Paginator(categories, 5)
+        if model == "Country":
+            from address.models import Country
+            countries = Country.objects.all().order_by('id')
+            self.paginator = Paginator(countries, 5)
+        if model == "State":
+            from address.models import State
+            states = State.objects.annotate(num_cities=Count('country')).order_by('-num_cities')
+            self.paginator = Paginator(states, 5)
 
 
     def setPaginator(self,query):
@@ -122,63 +134,22 @@ def createExelFile(report_name,headers,request=None,**kwargs):
     today = date.today()
     # get current time to link it to excel file name
     now = datetime.now()
-    current_time = now.strftime("%H:%M:%S")
-    # getting root file system directory
-    # rootDir = os.path.abspath('.').split(os.path.sep)[0] + os.path.sep
-    # # getting desktop directory
-    # desktop_dir = os.path.expanduser("~/Desktop")
-    # # creating Reports directory
-    # reports_dir = "Reports"
-    # create reports directory in desktop directory
-    # path = os.path.join( desktop_dir, reports_dir)
-    # check if it's not created , create it now otherwise ignore
-    # if os.path.isfile(path):
-    #     os.mkdir(path)
-
-    # complete_file_name = os.path.abspath(path)+"/"+
-    # create temp directory and add excel file in it
-    # import tempfile , shutil
-    # create temp directory
-    # import os
-    # if not os.path.exists(report_man.getTempDir()):
-    #     report_man.setTempDir(tempfile.mkdtemp())
-    # tempDir = report_man.tempDir
-    # shutil.rmtree(tempDir)
-    # path = os.path.join(tempDir, reports_dir)
-    # path = tempDir
+    current_time = now.strftime("%H_%M_%S")
     path  = os.path.dirname(os.path.abspath(__file__)) + "/Reports"
-    # if os.path.isfile(path):
-    #     os.mkdir(path) print("here in supplier")
-    # else:
-    #     os.mkdir(path)
     file_name = report_name+'_'+str(today)+'_'+str(current_time)+".xlsx"
     complete_file_name = os.path.abspath(path)+"/"+file_name
     print("file name is ",file_name)
     print("complete file name is: ",complete_file_name)
-    # os.path.join(op.name, dd)
-
-
     workBok = xlsxwriter.Workbook(complete_file_name,options={'remove_timezone': True})
     sheet = workBok.add_worksheet()
     AlphabetLetters = ''.join(c for c in ascii_uppercase)
-    # create the headers first
-    # headers structure should look like this
-    '''
-    headers = {
-    0:"username",
-    1:"Organization",
-    }
-    '''
     for c in range(len(headers)):
-        # print(f"{AlphabetLetters[c]}1", headers[c])
         sheet.write(f"{AlphabetLetters[c]}1",headers[c])
-    # add data to headers , remember that xlsxwriter package renders cells as y,x axis not x,y axis
     x_position = -1
     for key, value in kwargs.items():
         x_position = x_position+1
         for item in range(len(value)):
             sheet.write(item + 1,  x_position, value[item])
-    # file_creation_status = True
     try:
         workBok.close()
         file_creation_status = True
@@ -209,16 +180,9 @@ def download_file(request,file_path,file_name):
     return response
 
 def delete_temp_folder():
-    # import os , shutil
-    # if  os.path.exists(tempDir):
-    #     print('temp directory deleted')
-    #     shutil.rmtree(tempDir)
+
     import os, re, os.path
-    # delete all files inside directory
-
-
-    mypath = os.path.dirname(os.path.abspath(__file__)) + "/Reports"
-
-    for root, dirs, files in os.walk(mypath):
+    myPath = os.path.dirname(os.path.abspath(__file__)) + "/Reports"
+    for root, dirs, files in os.walk(myPath):
         for file in files:
             os.remove(os.path.join(root, file))

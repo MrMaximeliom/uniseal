@@ -74,14 +74,18 @@ if __name__ == "__main__":
     #     print(phone_number)
     # main directory for reports
     # os.path.dirname(os.path.abspath(__file__)) + "/Reports"
-    import os, re, os.path
+    # import os, re, os.path
     # delete all files inside directory
 
-    mypath = "/home/moayed/PycharmProjects/uniseal/Util/Reports"
-    print("deleting all files")
-    for root, dirs, files in os.walk(mypath):
-        for file in files:
-            os.remove(os.path.join(root, file))
+    # mypath = "/home/moayed/PycharmProjects/uniseal/Util/Reports"
+    # print("deleting all files")
+    # for root, dirs, files in os.walk(mypath):
+    #     for file in files:
+    #         os.remove(os.path.join(root, file))
+    from datetime import datetime
+    now = datetime.now()
+    current_time = now.strftime("%H_%M_%S")
+    print(current_time)
 
 
 
