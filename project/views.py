@@ -488,7 +488,7 @@ def add_projects(request):
             project.slug = slugify(rand_slug())
             project.save()
             project_name = form.cleaned_data.get('name')
-            messages.success(request, f"New User Added: {project_name}")
+            messages.success(request, f"New Project Added: {project_name}")
         else:
             for field, items in form.errors.items():
                 for item in items:
