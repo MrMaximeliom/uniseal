@@ -161,15 +161,16 @@ def prepare_query_country(paginator_obj, headers=None):
         for header in headers_here:
             if header == "Country":
                 for page in range(1, paginator_obj.num_pages + 1):
-                    for category in paginator_obj.page(page):
-                        countries.append(category.name)
+                    for country in paginator_obj.page(page):
+                        countries.append(country.name)
     else:
         for page in range(1, paginator_obj.num_pages + 1):
-            for category in paginator_obj.page(page):
-                countries.append(category.name)
+            for country in paginator_obj.page(page):
+                countries.append(country.name)
     return headers_here, countries
 
-
+search_man_countries = SearchMan("Country")
+report_man_countries = ReportMan()
 @login_required(login_url='login')
 def all_countries(request):
     from Util.search_form_strings import (
@@ -178,36 +179,35 @@ def all_countries(request):
 
     )
     search_result = ''
-    searchManObj = SearchMan("Country")
-    report_man = ReportMan()
+
     paginator = Paginator(countries, 5)
     if 'temp_dir' in request.session and request.method == "GET":
         # deleting temp dir in GET requests
         if request.session['temp_dir'] != '':
             delete_temp_folder()
     if request.method == "POST" and 'clear' not in request.POST and 'createExcel' not in request.POST:
-        searchManObj.setSearch(True)
+        search_man_countries.setSearch(True)
         if request.POST.get('search_phrase') != '':
             search_message = request.POST.get('search_phrase')
             search_result = Country.objects.filter(
                 name=search_message).order_by('id')
-            searchManObj.setPaginator(search_result)
-            searchManObj.setSearchPhrase(search_message)
-            searchManObj.setSearchOption('Country')
-            searchManObj.setSearchError(False)
+            search_man_countries.setPaginator(search_result)
+            search_man_countries.setSearchPhrase(search_message)
+            search_man_countries.setSearchOption('Country')
+            search_man_countries.setSearchError(False)
 
         else:
             messages.error(request,
                            "Please enter country name first!")
-            searchManObj.setSearchError(True)
-    if request.method == "GET" and 'page' not in request.GET:
+            search_man_countries.setSearchError(True)
+    if request.method == "GET" and 'page' not in request.GET and not search_man_countries.getSearch():
         all_countries = Country.objects.all().order_by('id')
-        searchManObj.setPaginator(all_countries)
-        searchManObj.setSearch(False)
+        search_man_countries.setPaginator(all_countries)
+        search_man_countries.setSearch(False)
     if request.method == "POST" and request.POST.get('clear') == 'clear':
         all_countries = Country.objects.all().order_by('id')
-        searchManObj.setPaginator(all_countries)
-        searchManObj.setSearch(False)
+        search_man_countries.setPaginator(all_countries)
+        search_man_countries.setSearch(False)
     if request.method == "POST" and request.POST.get('createExcel') == 'done':
         headers = []
         headers.append("Country")
@@ -216,7 +216,7 @@ def all_countries(request):
         if request.POST.get('pages_collector') != 'none' and len(request.POST.get('pages_collector')) > 0:
             # get requested pages from the paginator of original page
             selected_pages = []
-            query = searchManObj.getPaginator()
+            query = search_man_countries.getPaginator()
             print("original values: ", request.POST.get('pages_collector'))
             for item in request.POST.get('pages_collector'):
                 if item != ",":
@@ -229,12 +229,12 @@ def all_countries(request):
                                                                          headers=headers)
                 if len(countries_list) > 0:
                     constructor.update({"country": countries_list})
-                status, report_man.filePath, report_man.fileName = createExelFile('Report_For_Countries',
+                status, report_man_countries.filePath, report_man_countries.fileName = createExelFile('Report_For_Countries',
                                                                                   headers, **constructor)
                 if status:
                     request.session['temp_dir'] = 'delete man!'
                     messages.success(request, f"Report Successfully Created ")
-                    return redirect('downloadReport', str(report_man.filePath), str(report_man.fileName))
+                    return redirect('downloadReport', str(report_man_countries.filePath), str(report_man_countries.fileName))
 
                 else:
                     messages.error(request, "Sorry Report Failed To Create , Please Try Again!")
@@ -244,7 +244,7 @@ def all_countries(request):
                 headers = ["Country"]
                 headers, countries_list = prepare_selected_query_country(
                     selected_pages, query, headers)
-                status, report_man.filePath, report_man.fileName = createExelFile('Report_For_Countries',
+                status, report_man_countries.filePath, report_man_countries.fileName = createExelFile('Report_For_Countries',
                                                                                   headers, category=countries_list,
 
                                                                                   )
@@ -254,14 +254,14 @@ def all_countries(request):
                     messages.success(request, f"Report Successfully Created ")
                     # return redirect('download_file',filepath=filepath,filename=filename)
 
-                    return redirect('downloadReport', str(report_man.filePath), str(report_man.fileName))
+                    return redirect('downloadReport', str(report_man_countries.filePath), str(report_man_countries.fileName))
 
                 else:
                     messages.error(request, "Sorry Report Failed To Create , Please Try Again!")
             # get the original query of page and then structure the data
         else:
             print("pages collector is none")
-            query = searchManObj.getPaginator()
+            query = search_man_countries.getPaginator()
             print("query in major if is: ", query.num_pages)
             if len(headers) > 0:
                 print("in major if")
@@ -271,7 +271,7 @@ def all_countries(request):
                     print("application list is bigger than 0")
                     constructor.update({"category": countries_list})
 
-                status, report_man.filePath, report_man.fileName = createExelFile('Report_For_Countries',
+                status, report_man_countries.filePath, report_man_countries.fileName = createExelFile('Report_For_Countries',
                                                                                   headers, **constructor)
                 if status:
 
@@ -279,20 +279,20 @@ def all_countries(request):
                     messages.success(request, f"Report Successfully Created ")
                     # return redirect('download_file',filepath=filepath,filename=filename)
 
-                    return redirect('downloadReport', str(report_man.filePath), str(report_man.fileName))
+                    return redirect('downloadReport', str(report_man_countries.filePath), str(report_man_countries.fileName))
                 else:
                     messages.error(request, "Sorry Report Failed To Create , Please Try Again!")
 
             else:
                 print("in major else")
                 headers, countries_list = prepare_query_country(query)
-                status, report_man.filePath, report_man.fileName = createExelFile('Report_For_Countries',
+                status, report_man_countries.filePath, report_man_countries.fileName = createExelFile('Report_For_Countries',
                                                                                   headers, category=countries_list,
                                                                                   )
                 if status:
                     request.session['temp_dir'] = 'delete man!'
                     messages.success(request, f"Report Successfully Created")
-                    return redirect('downloadReport', str(report_man.filePath), str(report_man.fileName))
+                    return redirect('downloadReport', str(report_man_countries.filePath), str(report_man_countries.fileName))
                 else:
                     messages.error(request, "Sorry Report Failed To Create , Please Try Again!")
 
@@ -304,7 +304,7 @@ def all_countries(request):
 
     try:
         # Create a page object for the current page.
-        paginator = searchManObj.getPaginator()
+        paginator = search_man_countries.getPaginator()
         countries_paginator = paginator.page(page)
     except PageNotAnInteger:
         # If the query parameter is empty then grab the first page.
@@ -323,11 +323,11 @@ def all_countries(request):
                       'page_range': paginator.page_range,
                       'num_pages': paginator.num_pages,
                       'current_page': page,
-                      'search': searchManObj.getSearch(),
+                      'search': search_man_countries.getSearch(),
                       'search_result': search_result,
-                      'search_phrase': searchManObj.getSearchPhrase(),
-                      'search_option': searchManObj.getSearchOption(),
-                      'search_error': searchManObj.getSearchError(),
+                      'search_phrase': search_man_countries.getSearchPhrase(),
+                      'search_option': search_man_countries.getSearchOption(),
+                      'search_error': search_man_countries.getSearchError(),
                       'data_js': {
                           "empty_search_phrase": EMPTY_SEARCH_PHRASE,
                           "country_error": COUNTRY_NAME_SYNTAX_ERROR,
@@ -372,31 +372,29 @@ def delete_countries(request):
 
     )
     search_result = ''
-    searchManObj = SearchMan("Country")
-    report_man = ReportMan()
     if request.method == "POST" and 'clear' not in request.POST and 'createExcel' not in request.POST:
         searchManObj.setSearch(True)
         if request.POST.get('search_phrase') != '':
             search_message = request.POST.get('search_phrase')
             search_result = Country.objects.filter(
                 name=search_message).order_by('id')
-            searchManObj.setPaginator(search_result)
-            searchManObj.setSearchPhrase(search_message)
-            searchManObj.setSearchOption('Country')
-            searchManObj.setSearchError(False)
+            search_man_countries.setPaginator(search_result)
+            search_man_countries.setSearchPhrase(search_message)
+            search_man_countries.setSearchOption('Country')
+            search_man_countries.setSearchError(False)
 
         else:
             messages.error(request,
                            "Please enter country name first!")
-            searchManObj.setSearchError(True)
-    if request.method == "GET" and 'page' not in request.GET:
+            search_man_countries.setSearchError(True)
+    if request.method == "GET" and 'page' not in request.GET and not search_man_countries.getSearch():
         all_countries = Country.objects.all().order_by('id')
-        searchManObj.setPaginator(all_countries)
-        searchManObj.setSearch(False)
+        search_man_countries.setPaginator(all_countries)
+        search_man_countries.setSearch(False)
     if request.method == "POST" and request.POST.get('clear') == 'clear':
         all_countries = Country.objects.all().order_by('id')
-        searchManObj.setPaginator(all_countries)
-        searchManObj.setSearch(False)
+        search_man_countries.setPaginator(all_countries)
+        search_man_countries.setSearch(False)
     if request.method == "POST" and request.POST.get('createExcel') == 'done':
         headers = []
         headers.append("Country")
@@ -405,7 +403,7 @@ def delete_countries(request):
         if request.POST.get('pages_collector') != 'none' and len(request.POST.get('pages_collector')) > 0:
             # get requested pages from the paginator of original page
             selected_pages = []
-            query = searchManObj.getPaginator()
+            query = search_man_countries.getPaginator()
             print("original values: ", request.POST.get('pages_collector'))
             for item in request.POST.get('pages_collector'):
                 if item != ",":
@@ -418,12 +416,12 @@ def delete_countries(request):
                                                                          headers=headers)
                 if len(countries_list) > 0:
                     constructor.update({"country": countries_list})
-                status, report_man.filePath, report_man.fileName = createExelFile('Report_For_Countries',
+                status, report_man_countries.filePath, report_man_countries.fileName = createExelFile('Report_For_Countries',
                                                                                   headers, **constructor)
                 if status:
                     request.session['temp_dir'] = 'delete man!'
                     messages.success(request, f"Report Successfully Created ")
-                    return redirect('downloadReport', str(report_man.filePath), str(report_man.fileName))
+                    return redirect('downloadReport', str(report_man_countries.filePath), str(report_man_countries.fileName))
 
                 else:
                     messages.error(request, "Sorry Report Failed To Create , Please Try Again!")
@@ -432,7 +430,7 @@ def delete_countries(request):
             else:
                 headers, countries_list = prepare_selected_query_country(
                     selected_pages, query, headers)
-                status, report_man.filePath, report_man.fileName = createExelFile('Report_For_Countries',
+                status, report_man_countries.filePath, report_man_countries.fileName = createExelFile('Report_For_Countries',
                                                                                   headers, category=countries_list,
 
                                                                                   )
@@ -442,14 +440,14 @@ def delete_countries(request):
                     messages.success(request, f"Report Successfully Created ")
                     # return redirect('download_file',filepath=filepath,filename=filename)
 
-                    return redirect('downloadReport', str(report_man.filePath), str(report_man.fileName))
+                    return redirect('downloadReport', str(report_man_countries.filePath), str(report_man_countries.fileName))
 
                 else:
                     messages.error(request, "Sorry Report Failed To Create , Please Try Again!")
             # get the original query of page and then structure the data
         else:
             print("pages collector is none")
-            query = searchManObj.getPaginator()
+            query = search_man_countries.getPaginator()
             print("query in major if is: ", query.num_pages)
             if len(headers) > 0:
                 print("in major if")
@@ -459,7 +457,7 @@ def delete_countries(request):
                     print("application list is bigger than 0")
                     constructor.update({"category": countries_list})
 
-                status, report_man.filePath, report_man.fileName = createExelFile('Report_For_Countries',
+                status, report_man_countries.filePath, report_man_countries.fileName = createExelFile('Report_For_Countries',
                                                                                   headers, **constructor)
                 if status:
 
@@ -467,20 +465,20 @@ def delete_countries(request):
                     messages.success(request, f"Report Successfully Created ")
                     # return redirect('download_file',filepath=filepath,filename=filename)
 
-                    return redirect('downloadReport', str(report_man.filePath), str(report_man.fileName))
+                    return redirect('downloadReport', str(report_man_countries.filePath), str(report_man_countries.fileName))
                 else:
                     messages.error(request, "Sorry Report Failed To Create , Please Try Again!")
 
             else:
                 print("in major else")
                 headers, countries_list = prepare_query_country(query)
-                status, report_man.filePath, report_man.fileName = createExelFile('Report_For_Countries',
+                status, report_man_countries.filePath, report_man_countries.fileName = createExelFile('Report_For_Countries',
                                                                                   headers, category=countries_list,
                                                                                   )
                 if status:
                     request.session['temp_dir'] = 'delete man!'
                     messages.success(request, f"Report Successfully Created")
-                    return redirect('downloadReport', str(report_man.filePath), str(report_man.fileName))
+                    return redirect('downloadReport', str(report_man_countries.filePath), str(report_man_countries.fileName))
                 else:
                     messages.error(request, "Sorry Report Failed To Create , Please Try Again!")
     if request.GET.get('page'):
@@ -491,7 +489,7 @@ def delete_countries(request):
 
     try:
         # Create a page object for the current page.
-        paginator = searchManObj.getPaginator()
+        paginator = search_man_countries.getPaginator()
         countries_paginator = paginator.page(page)
     except PageNotAnInteger:
         # If the query parameter is empty then grab the first page.
@@ -510,11 +508,11 @@ def delete_countries(request):
                       'page_range': paginator.page_range,
                       'num_pages': paginator.num_pages,
                       'current_page': page,
-                      'search': searchManObj.getSearch(),
+                      'search': search_man_countries.getSearch(),
                       'search_result': search_result,
-                      'search_phrase': searchManObj.getSearchPhrase(),
-                      'search_option': searchManObj.getSearchOption(),
-                      'search_error': searchManObj.getSearchError(),
+                      'search_phrase': search_man_countries.getSearchPhrase(),
+                      'search_option': search_man_countries.getSearchOption(),
+                      'search_error': search_man_countries.getSearchError(),
                       'data_js': {
                           "empty_search_phrase": EMPTY_SEARCH_PHRASE,
                           "country_error": COUNTRY_NAME_SYNTAX_ERROR,
@@ -522,8 +520,7 @@ def delete_countries(request):
                   }
                   )
 
-search_man_countries = SearchMan("Country")
-report_man_countries = ReportMan()
+
 @login_required(login_url='login')
 def edit_countries(request):
     paginator = Paginator(countries, 5)
@@ -548,7 +545,7 @@ def edit_countries(request):
             messages.error(request,
                            "Please enter country name first!")
             search_man_countries.setSearchError(True)
-    if request.method == "GET" and 'page' not in request.GET:
+    if request.method == "GET" and 'page' not in request.GET and not search_man_countries.getSearch():
         all_countries = Country.objects.all().order_by('id')
         search_man_countries.setPaginator(all_countries)
         search_man_countries.setSearch(False)
@@ -730,12 +727,207 @@ from address.models import City
 
 cities = City.objects.all().order_by('id')
 
+def prepare_selected_query_city(selected_pages, paginator_obj, headers=None):
+    area_list = []
+    state_list = []
+    city_list = []
+    headers_here = ["City","State","Number of Areas"]
+    if headers is not None:
+        headers_here = headers
+        for header in headers_here:
+            if header == "City":
+                for page in selected_pages:
+                    for city in paginator_obj.page(page):
+                        city_list.append(city.name)
+            elif header == "State":
+                for page in selected_pages:
+                    for city in paginator_obj.page(page):
+                        state_list.append(city.state.name)
+            elif header == "Number of Areas":
+                for page in selected_pages:
+                    for city in paginator_obj.page(page):
+                        area_list.append(city.num_areas)
 
-# cities = City.objects.annotate(num_users=Count('user')).order_by('-num_users')
+    else:
+        for page in range(1, paginator_obj.num_pages + 1):
+            for city in paginator_obj.page(page):
+                city_list.append(city.name)
+                state_list.append(city.state.name)
+                area_list.append(city.num_areas)
+    return headers_here, state_list,city_list,area_list
 
+
+def prepare_query_city(paginator_obj, headers=None):
+    states = []
+    areas = []
+    cities = []
+    headers_here = ["City","State","Number of Areas"]
+    if headers is not None:
+        headers_here = headers
+        for header in headers_here:
+            if header == "State":
+                for page in range(1, paginator_obj.num_pages + 1):
+                    for city in paginator_obj.page(page):
+                        states.append(city.state.name)
+            elif header == "City":
+                for page in range(1, paginator_obj.num_pages + 1):
+                    for city in paginator_obj.page(page):
+                        cities.append(city.name)
+            elif header == "Number of Areas":
+                for page in range(1, paginator_obj.num_pages + 1):
+                    for city in paginator_obj.page(page):
+                        areas.append(city.num_areas)
+    else:
+        for page in range(1, paginator_obj.num_pages + 1):
+            for city in paginator_obj.page(page):
+                cities.append(city.name)
+                states.append(city.state.name)
+                areas.append(city.num_areas)
+    return headers_here, states,cities,areas
+search_man_cities = SearchMan("City")
+report_man_cities = ReportMan()
 @login_required(login_url='login')
 def all_cities(request):
     paginator = Paginator(cities, 5)
+    from Util.search_form_strings import (
+        EMPTY_SEARCH_PHRASE,
+        CITY_NAME_SYNTAX_ERROR,
+    STATE_NAME_SYNTAX_ERROR
+
+    )
+    search_result = ''
+    if request.method == "POST" and 'clear' not in request.POST and 'createExcel' not in request.POST:
+        search_man_cities.setSearch(True)
+        if request.POST.get('search_options') == 'city':
+            search_message = request.POST.get('search_phrase')
+            search_result = City.objects.annotate(num_areas=Count('area')).filter(
+                name__icontains=search_message).order_by('-num_areas')
+            search_man_cities.setPaginator(search_result)
+            search_man_cities.setSearchPhrase(search_message)
+            search_man_cities.setSearchOption('City')
+            search_man_cities.setSearchError(False)
+
+        elif request.POST.get('search_options') == 'state':
+            search_message = request.POST.get('search_phrase')
+            search_result = City.objects.annotate(num_areas=Count('area')).filter(
+                state__name__icontains=search_message).order_by('-num_areas')
+            search_man_cities.setPaginator(search_result)
+            search_man_cities.setSearchPhrase(search_message)
+            search_man_cities.setSearchOption('State')
+            search_man_cities.setSearchError(False)
+
+        else:
+            messages.error(request,
+                           "Please enter city name first!")
+            search_man_cities.setSearchError(True)
+
+    if request.method == "GET" and 'page' not in request.GET and not search_man_cities.getSearch():
+        all_cities = City.objects.annotate(num_areas=Count('area')).order_by('-num_areas')
+        search_man_cities.setPaginator(all_cities)
+        search_man_cities.setSearch(False)
+    if request.method == "POST" and request.POST.get('clear') == 'clear':
+        all_cities = City.objects.annotate(num_areas=Count('area')).order_by('-num_areas')
+        search_man_cities.setPaginator(all_cities)
+        search_man_cities.setSearch(False)
+    if request.method == "POST" and request.POST.get('createExcel') == 'done':
+        headers = []
+        headers.append("City")
+        headers.append("State")
+        headers.append("Number of Areas")
+        # create report functionality
+        # setting all data as default behaviour
+        if request.POST.get('pages_collector') != 'none' and len(request.POST.get('pages_collector')) > 0:
+            # get requested pages from the paginator of original page
+            selected_pages = []
+            query = search_man_cities.getPaginator()
+            print("original values: ", request.POST.get('pages_collector'))
+            for item in request.POST.get('pages_collector'):
+                if item != ",":
+                    selected_pages.append(item)
+            if len(headers) > 0:
+                print("headers hase value with collector is not none")
+                constructor = {}
+                headers, states_list,cities_list,areas_list = prepare_selected_query_city(selected_pages=selected_pages,
+                                                                         paginator_obj=query,
+                                                                         headers=headers)
+                if len(states_list) > 0:
+                    constructor.update({"state": states_list})
+                if len(cities_list) > 0:
+                    constructor.update({"city": cities_list})
+                if len(areas_list) > 0:
+                    constructor.update({"num_areas": areas_list})
+                status, report_man_cities.filePath, report_man_cities.fileName = createExelFile('Report_For_Cities',
+                                                                                  headers, **constructor)
+                if status:
+                    request.session['temp_dir'] = 'delete man!'
+                    messages.success(request, f"Report Successfully Created ")
+                    return redirect('downloadReport', str(report_man_cities.filePath), str(report_man_cities.fileName))
+
+                else:
+                    messages.error(request, "Sorry Report Failed To Create , Please Try Again!")
+
+
+            else:
+                headers, states_list,cities_list,areas_list = prepare_selected_query_city(
+                    selected_pages, query, headers)
+                status, report_man_cities.filePath, report_man_cities.fileName = createExelFile('Report_For_Cities',
+                                                             headers, state=states_list, city=cities_list,area=areas_list
+                                                                                  )
+                if status:
+                    request.session['temp_dir'] = 'delete man!'
+
+                    messages.success(request, f"Report Successfully Created ")
+                    # return redirect('download_file',filepath=filepath,filename=filename)
+
+                    return redirect('downloadReport', str(report_man_cities.filePath), str(report_man_cities.fileName))
+
+                else:
+                    messages.error(request, "Sorry Report Failed To Create , Please Try Again!")
+            # get the original query of page and then structure the data
+        else:
+            print("pages collector is none")
+            query = search_man_cities.getPaginator()
+            print("query in major if is: ", query.num_pages)
+            if len(headers) > 0:
+                print("in major if")
+                constructor = {}
+                headers, states_list,cities_list,areas_list = prepare_query_city(query, headers=headers)
+                if len(states_list) > 0:
+                    print("application list is bigger than 0")
+                    constructor.update({"state": states_list})
+                if len(cities_list) > 0:
+                    print("application list is bigger than 0")
+                    constructor.update({"city": cities_list})
+                if len(areas_list) > 0:
+                    print("application list is bigger than 0")
+                    constructor.update({"area": areas_list})
+
+                status, report_man_cities.filePath, report_man_cities.fileName = createExelFile('Report_For_Cities',
+                                                                                  headers, **constructor)
+                if status:
+
+                    request.session['temp_dir'] = 'delete man!'
+                    messages.success(request, f"Report Successfully Created ")
+                    # return redirect('download_file',filepath=filepath,filename=filename)
+
+                    return redirect('downloadReport', str(report_man_cities.filePath), str(report_man_cities.fileName))
+                else:
+                    messages.error(request, "Sorry Report Failed To Create , Please Try Again!")
+
+            else:
+                print("in major else")
+                headers, states_list,cities_list,areas_list = prepare_query_city(query)
+                status, report_man_cities.filePath, report_man_cities.fileName = createExelFile('Report_For_Cities',
+                                                                                  headers, state=states_list,
+                                                                                                      city=cities_list,area=areas_list
+                                                                                  )
+                if status:
+                    request.session['temp_dir'] = 'delete man!'
+                    messages.success(request, f"Report Successfully Created")
+                    return redirect('downloadReport', str(report_man_cities.filePath), str(report_man_cities.fileName))
+                else:
+                    messages.error(request, "Sorry Report Failed To Create , Please Try Again!")
+
     if request.GET.get('page'):
         # Grab the current page from query parameter
         page = int(request.GET.get('page'))
@@ -744,6 +936,7 @@ def all_cities(request):
 
     try:
         # Create a page object for the current page.
+        paginator = search_man_cities.getPaginator()
         cities_paginator = paginator.page(page)
     except PageNotAnInteger:
         # If the query parameter is empty then grab the first page.
@@ -761,10 +954,19 @@ def all_cities(request):
                       'all_cities_data': cities_paginator,
                       'page_range': paginator.page_range,
                       'num_pages': paginator.num_pages,
-                      'current_page': page
+                      'current_page': page,
+                      'search': search_man_cities.getSearch(),
+                      'search_result': search_result,
+                      'search_phrase': search_man_cities.getSearchPhrase(),
+                      'search_option': search_man_cities.getSearchOption(),
+                      'search_error': search_man_cities.getSearchError(),
+                      'data_js': {
+                          "empty_search_phrase": EMPTY_SEARCH_PHRASE,
+                          "city_error": CITY_NAME_SYNTAX_ERROR,
+                          "state_error": STATE_NAME_SYNTAX_ERROR
+                      }
                   }
                   )
-
 
 @login_required(login_url='login')
 def add_cities(request):
@@ -796,6 +998,47 @@ def add_cities(request):
 @login_required(login_url='login')
 def delete_cities(request):
     paginator = Paginator(cities, 5)
+    from Util.search_form_strings import (
+        EMPTY_SEARCH_PHRASE,
+        CITY_NAME_SYNTAX_ERROR,
+        STATE_NAME_SYNTAX_ERROR
+
+    )
+    search_result = ''
+    if request.method == "POST" and 'clear' not in request.POST and 'createExcel' not in request.POST:
+        search_man_cities.setSearch(True)
+        if request.POST.get('search_options') == 'city':
+            search_message = request.POST.get('search_phrase')
+            search_result = City.objects.annotate(num_areas=Count('area')).filter(
+                name__icontains=search_message).order_by('-num_areas')
+            search_man_cities.setPaginator(search_result)
+            search_man_cities.setSearchPhrase(search_message)
+            search_man_cities.setSearchOption('City')
+            search_man_cities.setSearchError(False)
+
+        elif request.POST.get('search_options') == 'state':
+            search_message = request.POST.get('search_phrase')
+            search_result = City.objects.annotate(num_areas=Count('area')).filter(
+                state__name__icontains=search_message).order_by('-num_areas')
+            search_man_cities.setPaginator(search_result)
+            search_man_cities.setSearchPhrase(search_message)
+            search_man_cities.setSearchOption('State')
+            search_man_cities.setSearchError(False)
+
+        else:
+            messages.error(request,
+                           "Please enter city name first!")
+            search_man_cities.setSearchError(True)
+
+    if request.method == "GET" and 'page' not in request.GET and not search_man_cities.getSearch():
+        all_cities = City.objects.annotate(num_areas=Count('area')).order_by('-num_areas')
+        search_man_cities.setPaginator(all_cities)
+        search_man_cities.setSearch(False)
+    if request.method == "POST" and request.POST.get('clear') == 'clear':
+        all_cities = City.objects.annotate(num_areas=Count('area')).order_by('-num_areas')
+        search_man_cities.setPaginator(all_cities)
+        search_man_cities.setSearch(False)
+
     if request.GET.get('page'):
         # Grab the current page from query parameter
         page = int(request.GET.get('page'))
@@ -804,6 +1047,7 @@ def delete_cities(request):
 
     try:
         # Create a page object for the current page.
+        paginator = search_man_cities.getPaginator()
         cities_paginator = paginator.page(page)
     except PageNotAnInteger:
         # If the query parameter is empty then grab the first page.
@@ -821,7 +1065,17 @@ def delete_cities(request):
                       'all_cities_data': cities_paginator,
                       'page_range': paginator.page_range,
                       'num_pages': paginator.num_pages,
-                      'current_page': page
+                      'current_page': page,
+                      'search': search_man_states.getSearch(),
+                      'search_result': search_result,
+                      'search_phrase': search_man_states.getSearchPhrase(),
+                      'search_option': search_man_states.getSearchOption(),
+                      'search_error': search_man_states.getSearchError(),
+                      'data_js': {
+                          "empty_search_phrase": EMPTY_SEARCH_PHRASE,
+                          "state_error": STATE_NAME_SYNTAX_ERROR,
+
+                      }
                   }
                   )
 
@@ -829,6 +1083,48 @@ def delete_cities(request):
 @login_required(login_url='login')
 def edit_cities(request):
     paginator = Paginator(cities, 5)
+    from Util.search_form_strings import (
+        EMPTY_SEARCH_PHRASE,
+        CITY_NAME_SYNTAX_ERROR,
+        STATE_NAME_SYNTAX_ERROR
+
+    )
+    search_result = ''
+    if request.method == "POST" and 'clear' not in request.POST and 'createExcel' not in request.POST:
+        search_man_cities.setSearch(True)
+        if request.POST.get('search_options') == 'city':
+            search_message = request.POST.get('search_phrase')
+            search_result = City.objects.annotate(num_areas=Count('area')).filter(
+                name__icontains=search_message).order_by('-num_areas')
+            search_man_cities.setPaginator(search_result)
+            search_man_cities.setSearchPhrase(search_message)
+            search_man_cities.setSearchOption('City')
+            search_man_cities.setSearchError(False)
+
+        elif request.POST.get('search_options') == 'state':
+            search_message = request.POST.get('search_phrase')
+            search_result = City.objects.annotate(num_areas=Count('area')).filter(
+                state__name__icontains=search_message).order_by('-num_areas')
+            search_man_cities.setPaginator(search_result)
+            search_man_cities.setSearchPhrase(search_message)
+            search_man_cities.setSearchOption('State')
+            search_man_cities.setSearchError(False)
+
+        else:
+            messages.error(request,
+                           "Please enter city name first!")
+            search_man_cities.setSearchError(True)
+
+    if request.method == "GET" and 'page' not in request.GET and not search_man_cities.getSearch():
+        all_cities = City.objects.annotate(num_areas=Count('area')).order_by('-num_areas')
+        search_man_cities.setPaginator(all_cities)
+        search_man_cities.setSearch(False)
+    if request.method == "POST" and request.POST.get('clear') == 'clear':
+        all_cities = City.objects.annotate(num_areas=Count('area')).order_by('-num_areas')
+        search_man_cities.setPaginator(all_cities)
+        search_man_cities.setSearch(False)
+
+
     if request.GET.get('page'):
         # Grab the current page from query parameter
         page = int(request.GET.get('page'))
@@ -837,6 +1133,7 @@ def edit_cities(request):
 
     try:
         # Create a page object for the current page.
+        paginator = search_man_cities.getPaginator()
         cities_paginator = paginator.page(page)
     except PageNotAnInteger:
         # If the query parameter is empty then grab the first page.
@@ -854,7 +1151,17 @@ def edit_cities(request):
                       'all_cities_data': cities_paginator,
                       'page_range': paginator.page_range,
                       'num_pages': paginator.num_pages,
-                      'current_page': page
+                      'current_page': page,
+                      'search': search_man_cities.getSearch(),
+                      'search_result': search_result,
+                      'search_phrase': search_man_cities.getSearchPhrase(),
+                      'search_option': search_man_cities.getSearchOption(),
+                      'search_error': search_man_cities.getSearchError(),
+                      'data_js': {
+                          "empty_search_phrase": EMPTY_SEARCH_PHRASE,
+                          "city_error": CITY_NAME_SYNTAX_ERROR,
+                          "state_error":STATE_NAME_SYNTAX_ERROR
+                      }
                   }
                   )
 
@@ -974,7 +1281,8 @@ report_man_states = ReportMan()
 def all_states(request):
     from Util.search_form_strings import (
         EMPTY_SEARCH_PHRASE,
-        STATE_NAME_SYNTAX_ERROR
+        STATE_NAME_SYNTAX_ERROR,
+    COUNTRY_NAME_SYNTAX_ERROR
 
     )
     paginator = Paginator(states, 5)
@@ -988,15 +1296,25 @@ def all_states(request):
             delete_temp_folder()
     if request.method == "POST" and 'clear' not in request.POST and 'createExcel' not in request.POST:
         search_man_states.setSearch(True)
-        if request.POST.get('search_phrase') != '':
+        if request.POST.get('search_options') == 'state':
             search_message = request.POST.get('search_phrase')
             search_result = State.objects.annotate(num_cities=Count('country')).filter(
-                name=search_message).order_by('-num_cities')
+                name__icontains=search_message).order_by('-num_cities')
             print("search results are: ", search_result)
             query_mano = search_result
             search_man_states.setPaginator(search_result)
             search_man_states.setSearchPhrase(search_message)
             search_man_states.setSearchOption('State')
+            search_man_states.setSearchError(False)
+        elif request.POST.get('search_options') == 'country':
+            search_message = request.POST.get('search_phrase')
+            search_result = State.objects.annotate(num_cities=Count('country')).filter(
+                country__name__icontains=search_message).order_by('-num_cities')
+            print("search results are: ", search_result)
+            query_mano = search_result
+            search_man_states.setPaginator(search_result)
+            search_man_states.setSearchPhrase(search_message)
+            search_man_states.setSearchOption('Country')
             search_man_states.setSearchError(False)
 
         else:
@@ -1154,6 +1472,7 @@ def all_states(request):
                       'data_js': {
                           "empty_search_phrase": EMPTY_SEARCH_PHRASE,
                           "state_error": STATE_NAME_SYNTAX_ERROR,
+                          "country_error":COUNTRY_NAME_SYNTAX_ERROR
                       }
                   }
                   )
@@ -1182,7 +1501,7 @@ def add_states(request):
         'form': form
     }
 
-    return render(request, 'address/add_states.html', context)
+    return render(requeall_statesst, 'address/add_states.html', context)
 
 
 @login_required(login_url='login')
@@ -1190,12 +1509,12 @@ def delete_states(request):
     paginator = Paginator(states, 5)
     from Util.search_form_strings import (
         EMPTY_SEARCH_PHRASE,
-        STATE_NAME_SYNTAX_ERROR
+        STATE_NAME_SYNTAX_ERROR,
+    COUNTRY_NAME_SYNTAX_ERROR
 
     )
     paginator = Paginator(states, 5)
-    searchManObj = SearchMan("State")
-    report_man = ReportMan()
+
     search_result = ''
     if 'temp_dir' in request.session and request.method == "GET":
         # deleting temp dir in GET requests
@@ -1203,28 +1522,37 @@ def delete_states(request):
         if request.session['temp_dir'] != '':
             delete_temp_folder()
     if request.method == "POST" and 'clear' not in request.POST and 'createExcel' not in request.POST:
-        searchManObj.setSearch(True)
-        if request.POST.get('search_phrase') != '':
+        search_man_states.setSearch(True)
+        if request.POST.get('search_options') == 'state':
             search_message = request.POST.get('search_phrase')
             search_result = State.objects.annotate(num_cities=Count('country')).filter(
-                name=search_message).order_by('-num_cities')
-            searchManObj.setPaginator(search_result)
-            searchManObj.setSearchPhrase(search_message)
-            searchManObj.setSearchOption('Category')
-            searchManObj.setSearchError(False)
+                name__icontains=search_message).order_by('-num_cities')
+            search_man_states.setPaginator(search_result)
+            search_man_states.setSearchPhrase(search_message)
+            search_man_states.setSearchOption('State')
+            search_man_states.setSearchError(False)
+        elif request.POST.get('search_options') == 'country':
+            print("country")
+            search_message = request.POST.get('search_phrase')
+            search_result = State.objects.annotate(num_cities=Count('country')).filter(
+                country__name__icontains=search_message).order_by('-num_cities')
+            search_man_states.setPaginator(search_result)
+            search_man_states.setSearchPhrase(search_message)
+            search_man_states.setSearchOption('Country')
+            search_man_states.setSearchError(False)
 
         else:
             messages.error(request,
                            "Please enter category  first!")
-            searchManObj.setSearchError(True)
+            search_man_states.setSearchError(True)
     if request.method == "GET" and 'page' not in request.GET:
         all_states = State.objects.annotate(num_cities=Count('country')).order_by('-num_cities')
-        searchManObj.setPaginator(all_states)
-        searchManObj.setSearch(False)
+        search_man_states.setPaginator(all_states)
+        search_man_states.setSearch(False)
     if request.method == "POST" and request.POST.get('clear') == 'clear':
         all_states = State.objects.annotate(num_cities=Count('country')).order_by('-num_cities')
-        searchManObj.setPaginator(all_states)
-        searchManObj.setSearch(False)
+        search_man_states.setPaginator(all_states)
+        search_man_states.setSearch(False)
     if request.method == "POST" and request.POST.get('createExcel') == 'done':
         headers = []
         headers.append("State")
@@ -1235,7 +1563,7 @@ def delete_states(request):
         if request.POST.get('pages_collector') != 'none' and len(request.POST.get('pages_collector')) > 0:
             # get requested pages from the paginator of original page
             selected_pages = []
-            query = searchManObj.getPaginator()
+            query = search_man_states.getPaginator()
             print("original values: ", request.POST.get('pages_collector'))
             for item in request.POST.get('pages_collector'):
                 if item != ",":
@@ -1252,12 +1580,12 @@ def delete_states(request):
                     constructor.update({"country": countries_list})
                 if len(cities_list) > 0:
                     constructor.update({"num_cities": cities_list})
-                status, report_man.filePath, report_man.fileName = createExelFile('Report_For_States',
+                status, report_man_states.filePath, report_man_states.fileName = createExelFile('Report_For_States',
                                                                                   headers, **constructor)
                 if status:
                     request.session['temp_dir'] = 'delete man!'
                     messages.success(request, f"Report Successfully Created ")
-                    return redirect('downloadReport', str(report_man.filePath), str(report_man.fileName))
+                    return redirect('downloadReport', str(report_man_states.filePath), str(report_man_states.fileName))
 
                 else:
                     messages.error(request, "Sorry Report Failed To Create , Please Try Again!")
@@ -1266,7 +1594,7 @@ def delete_states(request):
             else:
                 headers, states_list, countries_list, cities_list = prepare_selected_query_state(
                     selected_pages, query, headers)
-                status, report_man.filePath, report_man.fileName = createExelFile('Report_For_States',
+                status, report_man_states.filePath, report_man_states.fileName = createExelFile('Report_For_States',
                                                                                   headers, state=states_list,
                                                                                   country=countries_list,
                                                                                   num_cities=cities_list
@@ -1277,14 +1605,14 @@ def delete_states(request):
                     messages.success(request, f"Report Successfully Created ")
                     # return redirect('download_file',filepath=filepath,filename=filename)
 
-                    return redirect('downloadReport', str(report_man.filePath), str(report_man.fileName))
+                    return redirect('downloadReport', str(report_man_states.filePath), str(report_man_states.fileName))
 
                 else:
                     messages.error(request, "Sorry Report Failed To Create , Please Try Again!")
             # get the original query of page and then structure the data
         else:
             print("pages collector is none")
-            query = searchManObj.getPaginator()
+            query = search_man_states.getPaginator()
             print("query in major if is: ", query.num_pages)
             if len(headers) > 0:
                 print("in major if")
@@ -1296,7 +1624,7 @@ def delete_states(request):
                     constructor.update({"country": countries_list})
                 if len(cities_list) > 0:
                     constructor.update({"num_cities": cities_list})
-                status, report_man.filePath, report_man.fileName = createExelFile('Report_For_States',
+                status, report_man_states.filePath, report_man_states.fileName = createExelFile('Report_For_States',
                                                                                   headers, **constructor)
                 if status:
 
@@ -1304,14 +1632,14 @@ def delete_states(request):
                     messages.success(request, f"Report Successfully Created ")
                     # return redirect('download_file',filepath=filepath,filename=filename)
 
-                    return redirect('downloadReport', str(report_man.filePath), str(report_man.fileName))
+                    return redirect('downloadReport', str(report_man_states.filePath), str(report_man_states.fileName))
                 else:
                     messages.error(request, "Sorry Report Failed To Create , Please Try Again!")
 
             else:
                 print("in major else")
                 headers, states_list, countries_list, cities_list = prepare_query_state(query)
-                status, report_man.filePath, report_man.fileName = createExelFile('Report_For_States',
+                status, report_man_states.filePath, report_man_states.fileName = createExelFile('Report_For_States',
                                                                                   headers, state=states_list,
                                                                                   num_cities=cities_list,
                                                                                   country=countries_list
@@ -1319,7 +1647,7 @@ def delete_states(request):
                 if status:
                     request.session['temp_dir'] = 'delete man!'
                     messages.success(request, f"Report Successfully Created")
-                    return redirect('downloadReport', str(report_man.filePath), str(report_man.fileName))
+                    return redirect('downloadReport', str(report_man_states.filePath), str(report_man_states.fileName))
                 else:
                     messages.error(request, "Sorry Report Failed To Create , Please Try Again!")
 
@@ -1331,7 +1659,7 @@ def delete_states(request):
 
     try:
         # Create a page object for the current page.
-        paginator = searchManObj.getPaginator()
+        paginator = search_man_states.getPaginator()
         states_paginator = paginator.page(page)
     except PageNotAnInteger:
         # If the query parameter is empty then grab the first page.
@@ -1350,11 +1678,11 @@ def delete_states(request):
                       'page_range': paginator.page_range,
                       'num_pages': paginator.num_pages,
                       'current_page': page,
-                      'search': searchManObj.getSearch(),
+                      'search': search_man_states.getSearch(),
                       'search_result': search_result,
-                      'search_phrase': searchManObj.getSearchPhrase(),
-                      'search_option': searchManObj.getSearchOption(),
-                      'search_error': searchManObj.getSearchError(),
+                      'search_phrase': search_man_states.getSearchPhrase(),
+                      'search_option': search_man_states.getSearchOption(),
+                      'search_error': search_man_states.getSearchError(),
                       'data_js': {
                           "empty_search_phrase": EMPTY_SEARCH_PHRASE,
                           "state_error": STATE_NAME_SYNTAX_ERROR,
@@ -1383,20 +1711,28 @@ def edit_states(request):
             delete_temp_folder()
     if request.method == "POST" and 'clear' not in request.POST and 'createExcel' not in request.POST:
         searchManObj.setSearch(True)
-        if request.POST.get('search_phrase') != '':
-            search_message = request.POST.get('search_phrase')
+        if request.POST.get('search_options') == 'state':
+            search_message = request.POST.get('search_options')
             search_result = State.objects.annotate(num_cities=Count('country')).filter(
                 name=search_message).order_by('-num_cities')
             searchManObj.setPaginator(search_result)
             searchManObj.setSearchPhrase(search_message)
-            searchManObj.setSearchOption('Category')
+            searchManObj.setSearchOption('State')
+            searchManObj.setSearchError(False)
+        elif request.POST.get('search_options') == 'country':
+            search_message = request.POST.get('search_options')
+            search_result = State.objects.annotate(num_cities=Count('country')).filter(
+                country__name__icontains=search_message).order_by('-num_cities')
+            searchManObj.setPaginator(search_result)
+            searchManObj.setSearchPhrase(search_message)
+            searchManObj.setSearchOption('Country')
             searchManObj.setSearchError(False)
 
         else:
             messages.error(request,
                            "Please enter category  first!")
             searchManObj.setSearchError(True)
-    if request.method == "GET" and 'page' not in request.GET:
+    if request.method == "GET" and 'page' not in request.GET and not searchManObj.getPaginator()   :
         all_states = State.objects.annotate(num_cities=Count('country')).order_by('-num_cities')
         searchManObj.setPaginator(all_states)
         searchManObj.setSearch(False)

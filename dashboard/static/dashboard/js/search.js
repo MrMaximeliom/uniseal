@@ -90,6 +90,12 @@ $('#searchPhrase').prop("placeholder","search by main material name ..")
 else if(selected_value == 'type'){
 $('#searchPhrase').prop("placeholder","search by project type name ..")
 }
+else if(selected_value == 'city'){
+$('#searchPhrase').prop("placeholder","search by city name ..")
+}
+else if(selected_value == 'state'){
+$('#searchPhrase').prop("placeholder","search by state name ..")
+}
 if(selected_value == "execution_year"){
 $('#search_phrase_holder').css('display','none')
 $('#search_phrase_date_holder').css('display','block')
@@ -142,10 +148,14 @@ else if(search_option == 'application'){
 error_message =  error_messages.application_error
 }
 else if(search_option == 'country'){
+console.log("here nowww!!")
 error_message =  error_messages.country_error
 }
 else if(search_option == 'state'){
 error_message =  error_messages.state_error
+}
+else if(search_option == 'city'){
+error_message =  error_messages.city_error
 }
 
 
@@ -176,7 +186,7 @@ $('#search_phrase_error').css('display','block')
 return false
 }
 }
-else if(search_option == 'category' || search_option == 'country' || search_option == 'state' ){
+else if(search_option == 'category' || search_option == 'country' || search_option == 'state' || search_option == 'city'  ){
 dash_regex = /([A-Z])*\s*\W*(a-z)*\s*\w+/g
 //extracted_words.forEach((word) => {
 //if (!dash_regex.test(word)){
@@ -272,7 +282,7 @@ else{
 if($('#searchPhraseDate').prop("value") != "" ){
 return true
 }
-else{
+else{sudan
 console.log("please enter execution date first")
 $('#search_phrase_date_error').html(error_messages.execution_date_error)
 $('#search_phrase_date_error').css('display','block')

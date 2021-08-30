@@ -96,7 +96,11 @@ class SearchMan:
             self.paginator = Paginator(countries, 5)
         if model == "State":
             from address.models import State
-            states = State.objects.annotate(num_cities=Count('country')).order_by('-num_cities')
+            states = State.objects.annotate(num_cities=Count('city')).order_by('-num_cities')
+            self.paginator = Paginator(states, 5)
+        if model == "City":
+            from address.models import City
+            states = City.objects.annotate(num_areas=Count('area')).order_by('-num_areas')
             self.paginator = Paginator(states, 5)
 
 

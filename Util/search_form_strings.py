@@ -24,3 +24,5 @@ PROJECT_APPLICATION_NAME_SYNTAX_ERROR = _("Project type name contains alphanumer
 COUNTRY_NAME_SYNTAX_ERROR = _("Country name alphanumeric English letters only!")
 # used by state pages
 STATE_NAME_SYNTAX_ERROR = _("State name alphanumeric English letters only!")
+# used by city pages
+CITY_NAME_SYNTAX_ERROR = _("City name alphanumeric English letters only!")

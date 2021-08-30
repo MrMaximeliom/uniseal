@@ -303,7 +303,7 @@ def all_projects(request):
             messages.error(request,
                            "Please choose an item from list , then write search phrase to search by it!")
             searchManObj.setSearchError(True)
-    if request.method == "GET" and 'page' not in request.GET:
+    if request.method == "GET" and 'page' not in request.GET and not searchManObj.getSearch():
         all_projects = Project.objects.all().order_by("id")
         searchManObj.setPaginator(all_projects)
         searchManObj.setSearch(False)
@@ -559,7 +559,7 @@ def delete_projects(request):
             messages.error(request,
                            "Please choose an item from list , then write search phrase to search by it!")
             searchManObj.setSearchError(True)
-    if request.method == "GET" and 'page' not in request.GET:
+    if request.method == "GET" and 'page' not in request.GET and not searchManObj.getSearch():
         all_projects = Project.objects.all().order_by("id")
         searchManObj.setPaginator(all_projects)
         searchManObj.setSearch(False)
@@ -668,7 +668,7 @@ def edit_projects(request):
             messages.error(request,
                            "Please choose an item from list , then write search phrase to search by it!")
             searchManObj.setSearchError(True)
-    if request.method == "GET" and 'page' not in request.GET:
+    if request.method == "GET" and 'page' not in request.GET and not searchManObj.getSearch():
         all_projects = Project.objects.all().order_by("id")
         searchManObj.setPaginator(all_projects)
         searchManObj.setSearch(False)

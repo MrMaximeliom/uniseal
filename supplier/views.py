@@ -131,7 +131,7 @@ def all_suppliers(request):
             messages.error(request,
                            "Please enter supplier name first!")
             searchManObj.setSearchError(True)
-    if request.method == "GET" and 'page' not in request.GET:
+    if request.method == "GET" and 'page' not in request.GET  and not searchManObj.getSearch():
         all_suppliers = Supplier.objects.all().order_by("id")
         searchManObj.setPaginator(all_suppliers)
         searchManObj.setSearch(False)
@@ -293,7 +293,7 @@ def edit_suppliers(request):
             messages.error(request,
                            "Please enter supplier name first!")
             searchManObj.setSearchError(True)
-    if request.method == "GET" and 'page' not in request.GET:
+    if request.method == "GET" and 'page' not in request.GET  and not searchManObj.getSearch():
         all_suppliers = Supplier.objects.all().order_by("id")
         searchManObj.setPaginator(all_suppliers)
         searchManObj.setSearch(False)
@@ -389,7 +389,7 @@ def delete_suppliers(request):
             messages.error(request,
                            "Please enter supplier name first!")
             searchManObj.setSearchError(True)
-    if request.method == "GET" and 'page' not in request.GET:
+    if request.method == "GET" and 'page' not in request.GET  and not searchManObj.getSearch():
         all_suppliers = Supplier.objects.all().order_by("id")
         searchManObj.setPaginator(all_suppliers)
         searchManObj.setSearch(False)

@@ -117,7 +117,7 @@ def all_applications(request):
             messages.error(request,
                            "Please enter project type  first!")
             searchManObj.setSearchError(True)
-    if request.method == "GET" and 'page' not in request.GET:
+    if request.method == "GET" and 'page' not in request.GET and not searchManObj.getSearch():
         all_applications = Application.objects.annotate(num_projects=Count('project')).order_by('-num_projects')
         searchManObj.setPaginator(all_applications)
         searchManObj.setSearch(False)

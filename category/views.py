@@ -302,7 +302,7 @@ def delete_categories(request):
             messages.error(request,
                            "Please enter category  first!")
             searchManObj.setSearchError(True)
-    if request.method == "GET" and 'page' not in request.GET:
+    if request.method == "GET" and 'page' not in request.GET and not searchManObj.getSearch():
         all_categories = Category.objects.annotate(num_products=Count('product')).order_by('-num_products')
         searchManObj.setPaginator(all_categories)
         searchManObj.setSearch(False)
@@ -373,7 +373,7 @@ def edit_categories(request):
             messages.error(request,
                            "Please enter category  first!")
             searchManObj.setSearchError(True)
-    if request.method == "GET" and 'page' not in request.GET:
+    if request.method == "GET" and 'page' not in request.GET and not searchManObj.getSearch():
         all_categories = Category.objects.annotate(num_products=Count('product')).order_by('-num_products')
         searchManObj.setPaginator(all_categories)
         searchManObj.setSearch(False)
