@@ -109,9 +109,9 @@ class User(AbstractBaseUser):
             self.slug = slugify(rand_slug() + "-" + str(self.username))
         return super().save(*args, **kwargs)
 
-    USERNAME_FIELD = 'email'
+    USERNAME_FIELD = 'phone_number'
     REQUIRED_FIELDS = ['password', 'full_name',
-                       'username','phone_number']  # Email & Password are required by default.
+                       'username']  # Email & Password are required by default.
     objects = UserAccountManager()
 
     def get_full_name(self):

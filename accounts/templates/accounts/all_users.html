@@ -246,7 +246,7 @@
 <h3>{% trans 'There is no users yet .. you can add new ones from ' %} <a href="{% url 'addUsers' %}">{% trans 'Here' %}</a></h3>
 {% endif %}
 
-{% if search and search_result.count == 0 %}
+{% if search and search_result.count == 0 and search_result != "" %}
 <h3 style="color:red;">{% trans 'Sorry no users found that matches your search!' %}</h3>
 {% endif %}
 {% endblock content %}

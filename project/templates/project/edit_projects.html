@@ -114,7 +114,12 @@
            </li>
                    {% if page_range|length != 1 %}
            {% for i in page_range %}
-           <li class="page-item {% if i == current_page %} active {% endif %}"><a class="page-link " href="?page={{ i }}">{{ i }}</a></li>
+              {% if i == current_page %}
+                         <li class="page-item active "><span class="page-link ">{{ i }}</span></li>
+              {% else %}
+                         <li class="page-item"><a class="page-link " href="?page={{ i }}">{{ i }}</a></li>
+
+              {% endif %}
            {% endfor %}
                  {% endif %}
 
@@ -131,7 +136,8 @@
 {% if all_projects_data|length == 0 and not search %}
 <h3>{% trans 'There is no projects yet .. you can add new ones from ' %} <a href="{% url 'addProjects' %}">{% trans 'Here' %}</a></h3>
 {% endif %}
-{% if search and search_result.count == 0 %}
-<h3 style="color:red;">{% trans 'Sorry No Users found that matches your search!' %}</h3>
+{% if search and search_result.count == 0 and search_result != "" %}
+
+<h3 style="color:red;">{% trans 'Sorry no projects found that matches your search!' %}</h3>
 {% endif %}
 {% endblock content %}

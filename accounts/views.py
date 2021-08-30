@@ -1,6 +1,4 @@
-import tempfile
-
-from django.http import HttpResponse
+from django_filters.rest_framework import DjangoFilterBackend
 from django.template.defaultfilters import slugify
 from django.utils.translation import gettext_lazy as _
 from rest_framework import viewsets
@@ -8,11 +6,10 @@ from rest_framework import mixins
 from django.contrib.auth import update_session_auth_hash
 from django.contrib.auth.forms import PasswordChangeForm
 from Util.utils import EnablePartialUpdateMixin, rand_slug , SearchMan,createExelFile,ReportMan,delete_temp_folder,check_phone_number
-from Util.permissions import IsSystemBackEndUser, IsAnonymousUser, UnisealPermission
+from Util.permissions import  IsAnonymousUser, UnisealPermission
 from rest_framework.permissions import IsAuthenticated
 from django.core.paginator import Paginator, PageNotAnInteger, EmptyPage
 from django.contrib import messages
-import shutil
 
 
 
@@ -75,6 +72,8 @@ class ModifyUserDataViewSet(viewsets.GenericViewSet, mixins.ListModelMixin,
     queryset = User.objects.all()
     serializer_class = RegisterSerializer
     permission_classes = [UnisealPermission]
+    filter_backends = [DjangoFilterBackend]
+    filterset_fields = ['email','username','phone_number']
 
     def get_view_name(self):
         return _("Modify Users' Data")

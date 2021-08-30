@@ -142,7 +142,7 @@
 {% if all_suppliers_data|length == 0 and not search %}
 <h3>{% trans 'There is no suppliers yet .. you can add new ones from ' %} <a href="{% url 'addSuppliers' %}">{% trans 'Here' %}</a></h3>
 {% endif %}
-{% if search and search_result.count == 0 %}
+{% if search and search_result.count == 0 and search_result != "" %}
 <h3 style="color:red;">{% trans 'Sorry no suppliers found that matches your search!' %}</h3>
 {% endif %}
 
