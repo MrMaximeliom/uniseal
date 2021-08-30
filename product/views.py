@@ -173,7 +173,9 @@ def prepare_selected_query(selected_pages,paginator_obj,headers=None):
     print("here is selected query")
     if headers is not None:
         print("headers are not none")
+
         headers_here = headers
+        print(headers_here)
         for header in headers_here:
             if header == "Product Name":
                 for page in selected_pages:
@@ -361,9 +363,14 @@ def all_products(request):
 
 
             else:
+                headers = ["Product Name", "Category", "Supplier", "Description", "Added Date"]
+
                 headers, product_name, category, supplier, description, added_date = prepare_selected_query(
                     selected_pages, query, headers)
-                status, report_man.filePath, report_man.fileName = createExelFile('Report_For_Users',
+
+                print ("selected pages are:",selected_pages)
+                print("products are:\n ",product_name)
+                status, report_man.filePath, report_man.fileName = createExelFile('Report_For_Products',
                                                                                   headers, product_name=product_name,
                                                                                   category=category,
                                                                                   suppplier=supplier,

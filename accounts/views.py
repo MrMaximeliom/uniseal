@@ -440,6 +440,7 @@ def all_users(request):
 
 
             else:
+                headers = ["Full Name", "Username", "Organization", "Phone Number", "Last Login"]
                 headers, full_name, username, organization, phone_number, last_login = prepare_selected_query(selected_pages,query,headers)
                 status,report_man.filePath,report_man.fileName = createExelFile('Report_For_Users',headers, full_name=full_name, username=username,
                                organization=organization, phone_number=phone_number, last_login=last_login)

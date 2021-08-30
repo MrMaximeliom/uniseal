@@ -179,6 +179,7 @@ def all_suppliers(request):
 
 
             else:
+                headers = ["Supplier Name", "Supplier Website"]
                 headers, supplier , link = prepare_selected_query(
                     selected_pages, query, headers)
                 status, report_man.filePath, report_man.fileName = createExelFile('Report_For_Suppliers',

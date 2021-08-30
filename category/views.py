@@ -158,6 +158,7 @@ def all_categories(request):
 
 
             else:
+                headers = ["Category", "Number of Products"]
                 headers, categories_list, product_list = prepare_selected_query(
                     selected_pages, query, headers)
                 status, report_man.filePath, report_man.fileName = createExelFile('Report_For_Categories',

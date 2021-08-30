@@ -82,10 +82,15 @@ if __name__ == "__main__":
     # for root, dirs, files in os.walk(mypath):
     #     for file in files:
     #         os.remove(os.path.join(root, file))
-    from datetime import datetime
-    now = datetime.now()
-    current_time = now.strftime("%H_%M_%S")
-    print(current_time)
+    # from datetime import datetime
+    # now = datetime.now()
+    # current_time = now.strftime("%H_%M_%S")
+    # print(current_time)
+    path = os.path.dirname(os.path.abspath(__file__)) + "/Reports"
+    selected_pages = ['1','2']
+    for i in selected_pages:
+        print("hi")
+
 
 
 

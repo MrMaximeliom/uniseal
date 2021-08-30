@@ -360,6 +360,9 @@ def all_projects(request):
 
 
             else:
+                headers = ["Project Name", "Beneficiary", "Description", "Main Material Used", "Project Type",
+                                "Execution Date"]
+
                 headers,project_name,beneficiary,description,main_material,project_type,execution_date = prepare_selected_query(
                     selected_pages, query, headers)
                 status, report_man.filePath, report_man.fileName = createExelFile( 'Report_For_Projects',

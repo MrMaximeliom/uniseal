@@ -161,6 +161,7 @@ def all_applications(request):
 
 
             else:
+                headers = ["Project Type", "Number of Projects"]
                 headers, application_list , project_list = prepare_selected_query(
                     selected_pages, query, headers)
                 status, report_man.filePath, report_man.fileName = createExelFile( 'Report_For_Project_Types',

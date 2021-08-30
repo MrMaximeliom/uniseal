@@ -25,6 +25,7 @@ def rand_slug():
 SMS_USERNAME = 'uniseal'
 SMS_PASSWORD = '823178'
 def check_string_search_phrase(search_phrase):
+    import re
     temp_holder = search_phrase
     special_char = re.findall(r'\W', temp_holder.replace(" ", ""))
     # returns true if search_phrase contains special chars and returns search_phrase without leading spaces
@@ -102,6 +103,7 @@ class SearchMan:
     def setPaginator(self,query):
         from django.core.paginator import Paginator
         self.paginator = Paginator(query, 5)
+
     def getPaginator(self):
         return self.paginator
     search = False
@@ -136,6 +138,8 @@ def createExelFile(report_name,headers,request=None,**kwargs):
     now = datetime.now()
     current_time = now.strftime("%H_%M_%S")
     path  = os.path.dirname(os.path.abspath(__file__)) + "/Reports"
+    if not os.path.isdir(path):
+        os.mkdir(path)
     file_name = report_name+'_'+str(today)+'_'+str(current_time)+".xlsx"
     complete_file_name = os.path.abspath(path)+"/"+file_name
     print("file name is ",file_name)
