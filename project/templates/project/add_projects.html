@@ -36,15 +36,7 @@
              {{form.name|as_crispy_field}}
     </div>
   </div>
-           <div class="mb-4 row">
-    <div class="col-sm-6">
-        <label class="requiredField" for="execution_date">
-            {% trans 'Execution Date' %}
-            <span class="asteriskField">*</span>
-        </label>
-            <input type="date" name="execution_date" id="execution_date" class="form-control">
-    </div>
-  </div>
+
               <div class="mb-4 row">
     <div class="col-sm-6">
           {{form.date|as_crispy_field}}
@@ -66,12 +58,7 @@
              {{form.beneficiary|as_crispy_field}}
     </div>
   </div>
-            <div class="mb-4 row">
-    <div class="col-sm-6">
-                     {{form.beneficiary_description|as_crispy_field}}
 
-    </div>
-  </div>
             <div class="mb-4 row">
     <div class="col-sm-6">
                      {{form.image|as_crispy_field}}

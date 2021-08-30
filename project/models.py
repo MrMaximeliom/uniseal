@@ -49,11 +49,7 @@ class Project(models.Model):
         null=True,
         blank=True
     )
-    beneficiary_description = models.TextField(
-        verbose_name=_('Beneficiary Description'),
-        null=True,
-        blank=True
-    )
+
     slug = models.SlugField(
         default=slugify(rand_slug()),
         verbose_name=_('Project Slug')
@@ -74,16 +70,11 @@ class Project(models.Model):
         null=True
     )
 
-    execution_date = models.DateField(
-        _('Execution Year'),
-max_length=200,
 
-    )
     date = models.CharField(
         _('Project Date'),
         max_length=100,
-        null=True,
-        blank=True
+
     )
 
 
@@ -107,10 +98,7 @@ class ProjectImages(models.Model):
         on_delete=models.CASCADE,
         verbose_name=_('Project')
     )
-    default_image = models.BooleanField(
-        verbose_name=_('Default Image?'),
-        default = False
-    )
+
 
 
 class ProjectVideos(models.Model):
