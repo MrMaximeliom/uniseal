@@ -156,6 +156,8 @@ class ForgetPasswordView(EnablePartialUpdateMixin,viewsets.ModelViewSet):
 
 
 
+
+
     def get_queryset(self):
         from .models import User
         return User.objects.all()
