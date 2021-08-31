@@ -81,7 +81,7 @@ class Project(models.Model):
 
     def save(self, *args, **kwargs):
         if not self.slug:
-            self.slug = slugify(rand_slug() + "-" + str(self.title))
+            self.slug = slugify(rand_slug() + "-" + str(self.name))
         return super().save(*args, **kwargs)
 
 

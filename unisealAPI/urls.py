@@ -8,7 +8,6 @@ from accounts.urls import urlpatterns as account_urls
 from category.urls import urlpatterns as category_urls
 from supplier.urls import urlpatterns as supplier_urls
 from company_info.urls import urlpatterns as company_urls
-# from working_field.urls import urlpatterns as working_urls
 from address.urls import countries_urlpatterns as country_urls
 from address.urls import states_urlpatterns as state_urls
 from address.urls import cities_urlpatterns as city_urls
@@ -35,7 +34,7 @@ from brochures import views as brochures_views
 from solution import views as solution_views
 from admin_panel import views as admin_views
 from django.conf import settings
-from address import views as address_views
+from address import endpoints_urls as address_endpoints_urls
 from dashboard import views as dashboard_views
 from industry_updates import views as industry_views
 from sms_notifications import views as sms_notifications_views
@@ -55,10 +54,10 @@ router.register(r'accounts/modifyUsersData', accounts_views.ModifyUserDataViewSe
 router.register(r'accounts/me', accounts_views.CurrentUserDataViewSet, basename='CurrentUser')
 router.register(r'accounts/changePassword', accounts_views.ChangePasswordView, basename='ChangePassword')
 router.register(r'supplier', supplier_views.SupplierViewSet, basename='CreateSupplier')
-router.register(r'address/modifyCountry', address_views.CountryViewSet, basename='CreateCountry')
-router.register(r'address/modifyState', address_views.StateViewSet, basename='CreateState')
-router.register(r'address/modifyCity', address_views.CityViewSet, basename='CreateCity')
-router.register(r'address/modifyArea', address_views.AreaViewSet, basename='CreateArea')
+router.register(r'address/modifyCountry', address_endpoints_urls.CountryViewSet, basename='CreateCountry')
+router.register(r'address/modifyState', address_endpoints_urls.StateViewSet, basename='CreateState')
+router.register(r'address/modifyCity', address_endpoints_urls.CityViewSet, basename='CreateCity')
+router.register(r'address/modifyArea', address_endpoints_urls.AreaViewSet, basename='CreateArea')
 router.register(r'category', category_views.CategoryViewSet, basename='CreateCategory')
 router.register(r'industryUpdates', industry_views.IndustryUpdateViewSet, basename='CreateIndustry')
 router.register(r'slider', slider_views.SliderViewSet, basename='CreateSlider')
