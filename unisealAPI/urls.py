@@ -1,5 +1,5 @@
 from django.conf.urls.static import static
-
+# from django.contrib.auth import views as auth_views
 import dashboard.views
 from product.urls import urlpatterns as product_urls
 from project.urls import urlpatterns as project_urls
@@ -53,6 +53,7 @@ router.register(r'accounts/signUp', accounts_views.RegisterUserViewSet, basename
 router.register(r'accounts/modifyUsersData', accounts_views.ModifyUserDataViewSet, basename='ModifyUser')
 router.register(r'accounts/me', accounts_views.CurrentUserDataViewSet, basename='CurrentUser')
 router.register(r'accounts/changePassword', accounts_views.ChangePasswordView, basename='ChangePassword')
+router.register(r'accounts/forgetPassword', accounts_views.ForgetPasswordView, basename='ForgetPassword')
 router.register(r'supplier', supplier_views.SupplierViewSet, basename='CreateSupplier')
 router.register(r'address/modifyCountry', address_endpoints_urls.CountryViewSet, basename='CreateCountry')
 router.register(r'address/modifyState', address_endpoints_urls.StateViewSet, basename='CreateState')
@@ -64,7 +65,6 @@ router.register(r'slider', slider_views.SliderViewSet, basename='CreateSlider')
 router.register(r'product/modifyProduct', product_views.ProductViewSet, basename='CreateProduct')
 router.register(r'product/productImage', product_views.ProductImagesViewSet, basename='CreateProductImage')
 router.register(r'applicationVideos/productAppVideo', application_videos_views.ProductApplicationVideosViewSet, basename='CreateProductApplicationVideos')
-# router.register(r'product/productVideo', product_views.ProductVideoViewSet, basename='CreateProductVideo')
 router.register(r'product/similarProduct', product_views.SimilarProductViewSet, basename='LinkSimilarProducts')
 router.register(r'project/createProject', project_views.ProjectViewSet, basename='CreateProject')
 router.register(r'project/projectImage', project_views.ProjectImagesViewSet, basename='CreateProjectImages')
@@ -92,6 +92,7 @@ urlpatterns = [
     path('', include(router.urls)),
     path('admin_panel/', include(admin_router.urls)),
     path('admin/', admin.site.urls),
+# path('accounts/forgetPassword/', accounts_views.ForgetPasswordView.as_view(), name='ForgetPassword'),
     path('dashboard/', dashboard_views.dashboard, name='dashboard'),
     path('dashboard/login', dashboard_views.LoginView.as_view(), name='login'),
     path('dashboard/logout', dashboard_views.logout_view, name='logout_user'),

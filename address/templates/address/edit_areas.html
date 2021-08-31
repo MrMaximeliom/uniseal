@@ -60,7 +60,6 @@
                                           <tr>
                                             <th scope="col">{% trans 'Name' %}</th>
                                             <th scope="col">{% trans 'City' %}</th>
-                                            <th scope="col">{% trans 'Number of Areas in City' %}</th>
                                             <th scope="col">{% trans 'Update' %}</th>
                                           </tr>
                                         </thead>
@@ -68,8 +67,7 @@
                                         {% for area in all_areas_data %}
                                           <tr>
                                             <th scope="row">{{area.name}}</th>
-                                            <td>{{ area.city }}</td>
-                                            <td>{{ area.num }}</td>
+                                            <td>{{ area.city.name }}</td>
                                             <td><a href="{% url 'editArea' slug=area.slug %}" class="btn btn-sm btn-primary">{% trans 'Update' %}</a></td>
                                           </tr>
                                         {% endfor %}

@@ -1,5 +1,4 @@
 from django.template.defaultfilters import slugify
-
 from Util.permissions import UnisealPermission
 from django_filters.rest_framework import DjangoFilterBackend
 from rest_framework import viewsets
@@ -9,7 +8,6 @@ from  django.contrib import messages
 from django.contrib.auth.decorators import login_required
 from Util.utils import  SearchMan,createExelFile,ReportMan,delete_temp_folder
 from Util.utils import rand_slug
-import tempfile
 
 
 class ProjectViewSet(viewsets.ModelViewSet):

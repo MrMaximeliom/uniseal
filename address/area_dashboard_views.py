@@ -9,10 +9,67 @@ from Util.utils import SearchMan, createExelFile, ReportMan, delete_temp_folder
 from django.contrib.auth.decorators import login_required
 
 from address.models import Area
-
 areas = Area.objects.annotate(num=Count('city')).order_by('-num')
 
+def prepare_selected_query_city(selected_pages, paginator_obj, headers=None):
+    area_list = []
+    state_list = []
+    city_list = []
+    headers_here = ["City","State","Number of Areas"]
+    if headers is not None:
+        headers_here = headers
+        for header in headers_here:
+            if header == "City":
+                for page in selected_pages:
+                    for city in paginator_obj.page(page):
+                        city_list.append(city.name)
+            elif header == "State":
+                for page in selected_pages:
+                    for city in paginator_obj.page(page):
+                        state_list.append(city.state.name)
+            elif header == "Number of Areas":
+                for page in selected_pages:
+                    for city in paginator_obj.page(page):
+                        area_list.append(city.num_areas)
 
+    else:
+        for page in range(1, paginator_obj.num_pages + 1):
+            for city in paginator_obj.page(page):
+                city_list.append(city.name)
+                state_list.append(city.state.name)
+                area_list.append(city.num_areas)
+    return headers_here, state_list,city_list,area_list
+
+
+def prepare_query_city(paginator_obj, headers=None):
+    states = []
+    areas = []
+    cities = []
+    headers_here = ["City","State","Number of Areas"]
+    if headers is not None:
+        headers_here = headers
+        for header in headers_here:
+            if header == "State":
+                for page in range(1, paginator_obj.num_pages + 1):
+                    for city in paginator_obj.page(page):
+                        states.append(city.state.name)
+            elif header == "City":
+                for page in range(1, paginator_obj.num_pages + 1):
+                    for city in paginator_obj.page(page):
+                        cities.append(city.name)
+            elif header == "Number of Areas":
+                for page in range(1, paginator_obj.num_pages + 1):
+                    for city in paginator_obj.page(page):
+                        areas.append(city.num_areas)
+    else:
+        for page in range(1, paginator_obj.num_pages + 1):
+            for city in paginator_obj.page(page):
+                cities.append(city.name)
+                states.append(city.state.name)
+                areas.append(city.num_areas)
+    return headers_here, states,cities,areas
+search_man_cities = SearchMan("City")
+report_man_cities = ReportMan()
 @login_required(login_url='login')
 def all_areas(request):
     paginator = Paginator(areas, 5)

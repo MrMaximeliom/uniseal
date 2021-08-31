@@ -5,17 +5,17 @@ from rest_framework import viewsets
 from rest_framework import mixins
 from django.contrib.auth import update_session_auth_hash
 from django.contrib.auth.forms import PasswordChangeForm
-from Util.utils import EnablePartialUpdateMixin, rand_slug , SearchMan,createExelFile,ReportMan,delete_temp_folder,check_phone_number
-from Util.permissions import  IsAnonymousUser, UnisealPermission
-from rest_framework.permissions import IsAuthenticated
+from Util.utils import EnablePartialUpdateMixin, rand_slug, SearchMan, createExelFile, ReportMan, delete_temp_folder, \
+    check_phone_number
+from Util.permissions import IsAnonymousUser, UnisealPermission
+from rest_framework.permissions import IsAuthenticated,AllowAny
 from django.core.paginator import Paginator, PageNotAnInteger, EmptyPage
 from django.contrib import messages
-
-
-
 # Create your views here.
 from rest_framework.views import APIView
 from django.shortcuts import render, get_object_or_404, redirect
+
+
 # class ReportMan:
 #     filePath = ''
 #     fileName = ''
@@ -29,6 +29,7 @@ from django.shortcuts import render, get_object_or_404, redirect
 #         return self.fileName
 class Logout(APIView):
     def post(self, request):
+
         from rest_framework_simplejwt.tokens import RefreshToken
         from rest_framework.response import Response
         from rest_framework import status
@@ -71,12 +72,13 @@ class ModifyUserDataViewSet(viewsets.GenericViewSet, mixins.ListModelMixin,
     from .models import User
     queryset = User.objects.all()
     serializer_class = RegisterSerializer
-    permission_classes = [UnisealPermission]
+    permission_classes = []
     filter_backends = [DjangoFilterBackend]
-    filterset_fields = ['email','username','phone_number']
+    filterset_fields = ['email', 'username', 'phone_number']
 
     def get_view_name(self):
         return _("Modify Users' Data")
+
 
 # def download_file(request,file_path,file_name):
 #     import os,mimetypes
@@ -139,6 +141,39 @@ class ChangePasswordView(viewsets.GenericViewSet, mixins.UpdateModelMixin):
     def get_queryset(self):
         from .models import User
         return User.objects.filter(id=self.request.user.id)
+
+from rest_framework import generics
+class ForgetPasswordView(EnablePartialUpdateMixin,viewsets.ModelViewSet):
+    """
+        An endpoint for changing password.
+        """
+    from accounts.serializers import ForgetPasswordSerializer
+
+
+    serializer_class = ForgetPasswordSerializer
+
+    permission_classes = [IsAnonymousUser]
+
+
+
+    def get_queryset(self):
+        from .models import User
+        return User.objects.all()
+
+
+    def get_view_name(self):
+        return _("Forget Password")
+
+    # def save(self, commit=True):
+    #     """Save the new password."""
+    #     from .models import User
+    #     password = self.validated_data["password"]
+    #     phone_number = self.request.query_params.get('phone_number', None)
+    #     user = User.objects.filter(phone_number=phone_number)
+    #     user.set_password(password)
+    #     if commit:
+    #         user.save()
+    #     return user
 
 
 class CurrentUserDataViewSet(EnablePartialUpdateMixin, viewsets.ModelViewSet):
@@ -233,11 +268,12 @@ class ContactUsViewSet(viewsets.ModelViewSet):
     permission_classes = [UnisealPermission]
 
 
-
 # Views for dashboard
 from django.contrib.auth.decorators import login_required
+
+
 # the following function prepares the data to be used in the process of creating excel file
-def prepare_selected_query(selected_pages,paginator_obj,headers=None):
+def prepare_selected_query(selected_pages, paginator_obj, headers=None):
     print("we are in selected query")
     full_name = []
     username = []
@@ -275,7 +311,7 @@ def prepare_selected_query(selected_pages,paginator_obj,headers=None):
         for page in range(1, paginator_obj.num_pages):
             for user in paginator_obj.page(page):
                 print("adding user data")
-                print("user names: ",user.full_name)
+                print("user names: ", user.full_name)
                 full_name.append(user.full_name)
                 username.append(user.username)
                 organization.append(user.organization)
@@ -283,7 +319,8 @@ def prepare_selected_query(selected_pages,paginator_obj,headers=None):
                 last_login.append(user.last_login.strftime('%d-%m-%y %a %H:%M %p'))
     return headers_here, full_name, username, organization, phone_number, last_login
 
-def prepare_query(paginator_obj,headers=None):
+
+def prepare_query(paginator_obj, headers=None):
     full_name = []
     username = []
     organization = []
@@ -293,52 +330,53 @@ def prepare_query(paginator_obj,headers=None):
         headers_here = headers
         for header in headers_here:
             if header == "Full Name":
-                for page in range(1, paginator_obj.num_pages+1):
+                for page in range(1, paginator_obj.num_pages + 1):
                     for user in paginator_obj.page(page):
                         full_name.append(user.full_name)
             elif header == "Username":
-                for page in range(1, paginator_obj.num_pages+1):
+                for page in range(1, paginator_obj.num_pages + 1):
                     for user in paginator_obj.page(page):
                         username.append(user.username)
             elif header == "Organization":
-                for page in range(1, paginator_obj.num_pages+1):
+                for page in range(1, paginator_obj.num_pages + 1):
                     for user in paginator_obj.page(page):
                         organization.append(user.organization)
             elif header == "Phone Number":
-                for page in range(1, paginator_obj.num_pages+1):
+                for page in range(1, paginator_obj.num_pages + 1):
                     for user in paginator_obj.page(page):
-                        phone_number.append("0"+user.phone_number)
+                        phone_number.append("0" + user.phone_number)
             elif header == "Last Login":
-                for page in range(1, paginator_obj.num_pages+1):
+                for page in range(1, paginator_obj.num_pages + 1):
                     for user in paginator_obj.page(page):
                         last_login.append(user.last_login.strftime('%d-%m-%y %a %H:%M %p'))
     else:
-        headers_here = ["Full Name","Username","Organization","Phone Number","Last Login"]
-        for page in range(1, paginator_obj.num_pages+1):
+        headers_here = ["Full Name", "Username", "Organization", "Phone Number", "Last Login"]
+        for page in range(1, paginator_obj.num_pages + 1):
             for user in paginator_obj.page(page):
                 full_name.append(user.full_name)
                 username.append(user.username)
                 organization.append(user.organization)
-                phone_number.append("0"+user.phone_number)
+                phone_number.append("0" + user.phone_number)
                 last_login.append(user.last_login.strftime('%d-%m-%y %a %H:%M %p'))
 
     # later for extracting actual data
 
-
-    return headers_here,full_name,username,organization,phone_number,last_login
+    return headers_here, full_name, username, organization, phone_number, last_login
 
 
 searchManObj = SearchMan("User")
 report_man = ReportMan()
+
+
 # report_man.setTempDir(tempfile.mkdtemp())
 @login_required(login_url='login')
 def all_users(request):
     from Util.search_form_strings import (
-    EMPTY_SEARCH_PHRASE,
-    USERNAME_SYNTAX_ERROR,
-    FULL_NAME_SYNTAX_ERROR,
-    ORGANIZATION_NAME_SYNTAX_ERROR,
-    PHONE_NUMBER_SYNTAX_ERROR
+        EMPTY_SEARCH_PHRASE,
+        USERNAME_SYNTAX_ERROR,
+        FULL_NAME_SYNTAX_ERROR,
+        ORGANIZATION_NAME_SYNTAX_ERROR,
+        PHONE_NUMBER_SYNTAX_ERROR
     )
     from accounts.models import User
     all_users = User.objects.all().order_by("id")
@@ -350,7 +388,7 @@ def all_users(request):
         if request.session['temp_dir'] != '':
             delete_temp_folder()
     # create search functionality
-    if request.method == "POST" and 'clear' not in request.POST and 'createExcel' not in request.POST :
+    if request.method == "POST" and 'clear' not in request.POST and 'createExcel' not in request.POST:
         searchManObj.setSearch(True)
         if request.POST.get('search_options') == 'full_name':
             print('here now')
@@ -376,8 +414,8 @@ def all_users(request):
             searchManObj.setSearchError(False)
         elif request.POST.get('search_options') == 'phone_number':
             search_phrase = request.POST.get('search_phrase')
-            is_number_ok , phone_number = check_phone_number(search_phrase)
-            if(is_number_ok):
+            is_number_ok, phone_number = check_phone_number(search_phrase)
+            if (is_number_ok):
                 search_result = User.objects.filter(phone_number=phone_number).order_by("id")
                 searchManObj.setPaginator(search_result)
                 searchManObj.setSearchPhrase(search_phrase)
@@ -408,17 +446,18 @@ def all_users(request):
             # get requested pages from the paginator of original page
             selected_pages = []
             query = searchManObj.getPaginator()
-            print("original values: ",request.POST.get('pages_collector'))
+            print("original values: ", request.POST.get('pages_collector'))
             for item in request.POST.get('pages_collector'):
                 if item != ",":
                     selected_pages.append(item)
             if len(headers) > 0:
                 constructor = {}
-                headers, full_name, username, organization, phone_number, last_login = prepare_selected_query(selected_pages=selected_pages,paginator_obj=query,
-                                                                                                 headers=headers)
+                headers, full_name, username, organization, phone_number, last_login = prepare_selected_query(
+                    selected_pages=selected_pages, paginator_obj=query,
+                    headers=headers)
 
                 if len(full_name) > 0:
-                    print("full name is ",full_name)
+                    print("full name is ", full_name)
                     constructor.update({"full_name": full_name})
                 if len(username) > 0:
                     constructor.update({"username": username})
@@ -428,11 +467,12 @@ def all_users(request):
                     constructor.update({"phone_number": phone_number})
                 if len(last_login) > 0:
                     constructor.update({"last_login": last_login})
-                status,report_man.filePath,report_man.fileName = createExelFile('Report_For_Users',headers, **constructor)
+                status, report_man.filePath, report_man.fileName = createExelFile('Report_For_Users', headers,
+                                                                                  **constructor)
                 if status:
                     request.session['temp_dir'] = 'delete man!'
-                    messages.success(request,f"Report Successfully Created ")
-                    return redirect('downloadReport',str(report_man.filePath),str(report_man.fileName))
+                    messages.success(request, f"Report Successfully Created ")
+                    return redirect('downloadReport', str(report_man.filePath), str(report_man.fileName))
 
                 else:
                     messages.error(request, "Sorry Report Failed To Create , Please Try Again!")
@@ -440,15 +480,20 @@ def all_users(request):
 
             else:
                 headers = ["Full Name", "Username", "Organization", "Phone Number", "Last Login"]
-                headers, full_name, username, organization, phone_number, last_login = prepare_selected_query(selected_pages,query,headers)
-                status,report_man.filePath,report_man.fileName = createExelFile('Report_For_Users',headers, full_name=full_name, username=username,
-                               organization=organization, phone_number=phone_number, last_login=last_login)
+                headers, full_name, username, organization, phone_number, last_login = prepare_selected_query(
+                    selected_pages, query, headers)
+                status, report_man.filePath, report_man.fileName = createExelFile('Report_For_Users', headers,
+                                                                                  full_name=full_name,
+                                                                                  username=username,
+                                                                                  organization=organization,
+                                                                                  phone_number=phone_number,
+                                                                                  last_login=last_login)
                 if status:
                     request.session['temp_dir'] = 'delete man!'
-                    messages.success(request,f"Report Successfully Created ")
+                    messages.success(request, f"Report Successfully Created ")
                     # return redirect('download_file',filepath=filepath,filename=filename)
 
-                    return redirect('downloadReport',str(report_man.filePath),str(report_man.fileName))
+                    return redirect('downloadReport', str(report_man.filePath), str(report_man.fileName))
 
                 else:
                     messages.error(request, "Sorry Report Failed To Create , Please Try Again!")
@@ -457,10 +502,11 @@ def all_users(request):
             query = searchManObj.getPaginator()
             print("headers are: ", headers)
 
-            if len(headers) > 0 :
+            if len(headers) > 0:
                 constructor = {}
-                headers, full_name, username, organization, phone_number, last_login = prepare_query(query,headers=headers)
-                if len(full_name) > 0 :
+                headers, full_name, username, organization, phone_number, last_login = prepare_query(query,
+                                                                                                     headers=headers)
+                if len(full_name) > 0:
                     print("full names are: ", full_name)
                     constructor.update({"full_name": full_name})
                 if len(username) > 0:
@@ -471,34 +517,36 @@ def all_users(request):
                     constructor.update({"phone_number": phone_number})
                 if len(last_login) > 0:
                     constructor.update({"last_login": last_login})
-                status,report_man.filePath,report_man.fileName = createExelFile('Report_For_Users',headers, **constructor)
+                status, report_man.filePath, report_man.fileName = createExelFile('Report_For_Users', headers,
+                                                                                  **constructor)
                 if status:
                     request.session['temp_dir'] = 'delete man!'
                     # request.session['temp_dir'] =  report_man.tempDir
-                    messages.success(request,f"Report Successfully Created ")
+                    messages.success(request, f"Report Successfully Created ")
                     # return redirect('download_file',filepath=filepath,filename=filename)
 
-                    return redirect('downloadReport',str(report_man.filePath),str(report_man.fileName))
+                    return redirect('downloadReport', str(report_man.filePath), str(report_man.fileName))
                 else:
                     messages.error(request, "Sorry Report Failed To Create , Please Try Again!")
 
             else:
                 headers, full_name, username, organization, phone_number, last_login = prepare_query(query)
-                status,report_man.filePath,report_man.fileName = createExelFile('Report_For_Users',headers, full_name=full_name, username=username,
-                               organization=organization, phone_number=phone_number, last_login=last_login)
+                status, report_man.filePath, report_man.fileName = createExelFile('Report_For_Users', headers,
+                                                                                  full_name=full_name,
+                                                                                  username=username,
+                                                                                  organization=organization,
+                                                                                  phone_number=phone_number,
+                                                                                  last_login=last_login)
                 if status:
                     request.session['temp_dir'] = 'delete man!'
-                    messages.success(request,f"Report Successfully Created")
+                    messages.success(request, f"Report Successfully Created")
                     # return redirect('download_file',filepath=filepath,filename=filename)
 
-                    return redirect('downloadReport',str(report_man.filePath),str(report_man.fileName))
+                    return redirect('downloadReport', str(report_man.filePath), str(report_man.fileName))
 
 
                 else:
                     messages.error(request, "Sorry Report Failed To Create , Please Try Again!")
-
-
-
 
     if request.GET.get('page'):
         # Grab the current page from query parameter
@@ -531,13 +579,13 @@ def all_users(request):
                       'search_result': search_result,
                       'search_phrase': searchManObj.getSearchPhrase(),
                       'search_option': searchManObj.getSearchOption(),
-                      'search_error':searchManObj.getSearchError(),
+                      'search_error': searchManObj.getSearchError(),
                       'data_js': {
                           "empty_search_phrase": EMPTY_SEARCH_PHRASE,
-                          "username_error":USERNAME_SYNTAX_ERROR,
-                          "organization_error":ORGANIZATION_NAME_SYNTAX_ERROR,
-                          "full_name_error":FULL_NAME_SYNTAX_ERROR,
-                          "phone_number_error":PHONE_NUMBER_SYNTAX_ERROR
+                          "username_error": USERNAME_SYNTAX_ERROR,
+                          "organization_error": ORGANIZATION_NAME_SYNTAX_ERROR,
+                          "full_name_error": FULL_NAME_SYNTAX_ERROR,
+                          "phone_number_error": PHONE_NUMBER_SYNTAX_ERROR
                       }
                   }
                   )
@@ -572,7 +620,7 @@ def add_users(request):
 
 
 @login_required(login_url='login')
-def edit_user(request,slug):
+def edit_user(request, slug):
     from accounts.models import User
     from .forms import UserForm
     obj = get_object_or_404(User, slug=slug)
@@ -590,25 +638,26 @@ def edit_user(request,slug):
         'title': _('Edit User'),
         'edit_user': 'active',
         'all_users': all_users,
-        'user':obj,
-        'form':user_form
+        'user': obj,
+        'form': user_form
     }
     return render(request, 'accounts/edit_user.html', context)
+
 
 @login_required(login_url='login')
 def edit_users(request):
     from accounts.models import User
     from Util.search_form_strings import (
-    EMPTY_SEARCH_PHRASE,
-    USERNAME_SYNTAX_ERROR,
-    FULL_NAME_SYNTAX_ERROR,
-    ORGANIZATION_NAME_SYNTAX_ERROR,
-    PHONE_NUMBER_SYNTAX_ERROR
+        EMPTY_SEARCH_PHRASE,
+        USERNAME_SYNTAX_ERROR,
+        FULL_NAME_SYNTAX_ERROR,
+        ORGANIZATION_NAME_SYNTAX_ERROR,
+        PHONE_NUMBER_SYNTAX_ERROR
     )
     all_users = User.objects.all().order_by("id")
     search_result = ''
     paginator = Paginator(all_users, 5)
-    if request.method == "POST" and 'clear' not in request.POST and 'createExcel' not in request.POST :
+    if request.method == "POST" and 'clear' not in request.POST and 'createExcel' not in request.POST:
         searchManObj.setSearch(True)
         if request.POST.get('search_options') == 'full_name':
             print('here now')
@@ -634,8 +683,8 @@ def edit_users(request):
             searchManObj.setSearchError(False)
         elif request.POST.get('search_options') == 'phone_number':
             search_phrase = request.POST.get('search_phrase')
-            is_number_ok , phone_number = check_phone_number(search_phrase)
-            if(is_number_ok):
+            is_number_ok, phone_number = check_phone_number(search_phrase)
+            if (is_number_ok):
                 search_result = User.objects.filter(phone_number=phone_number).order_by("id")
                 searchManObj.setPaginator(search_result)
                 searchManObj.setSearchPhrase(search_phrase)
@@ -695,6 +744,7 @@ def edit_users(request):
                   }
                   )
 
+
 @login_required(login_url='login')
 def delete_users(request):
     from accounts.models import User
@@ -722,16 +772,17 @@ def delete_users(request):
                   {
                       'title': _('Delete Users'),
                       'delete_users': 'active',
-                      'all_users':all_users,
+                      'all_users': all_users,
                       'all_users_data': users,
                       'page_range': paginator.page_range,
                       'num_pages': paginator.num_pages,
                       'current_page': page,
-                      'current_user':request.user.username
+                      'current_user': request.user.username
                   }
                   )
 
-def confirm_delete(request,id,url):
+
+def confirm_delete(request, id, url):
     from accounts.models import User
     obj = get_object_or_404(User, id=id)
     try:
@@ -741,6 +792,8 @@ def confirm_delete(request,id,url):
         messages.error(request, f"User {obj.username} was not deleted , please try again!")
 
     return redirect(url)
+
+
 @login_required(login_url='login')
 def change_password(request):
     if request.method == 'POST':

@@ -19,7 +19,6 @@
                         <li class="breadcrumb-item"><a href="{% url 'dashboard' %}">{% trans 'Dashboard' %}</a></li>
                         <li class="breadcrumb-item" aria-current="page">{% trans 'Address' %}</li>
                         <li class="breadcrumb-item" aria-current="page">{% trans 'Areas' %}</li>
-                        <li class="breadcrumb-item" aria-current="page">{% trans 'All Areas' %}</li>
                     </ol>
                 </nav>
                 {% endblock breadcrumb_content %}
@@ -111,24 +110,19 @@
                                           <tr>
                                             <th scope="col">{% trans 'Name' %}</th>
                                             <th scope="col">{% trans 'City' %}</th>
-                                            <th scope="col">{% trans 'Number of Areas in City' %}</th>
-                                            <th scope="col"></th>
                                           </tr>
                                         </thead>
                                         <tbody>
                                         {% for area in all_areas_data %}
                                           <tr>
                                             <th scope="row">{{area.name}}</th>
-                                            <td>{{ area.city }}</td>
-                                            <td>{{ area.num }}</td>
-                                            <td><a href="#" class="btn btn-sm btn-primary">View</a></td>
+                                            <td>{{ area.city.name }}</td>
                                           </tr>
                                         {% endfor %}
 
                                         </tbody>
                                       </table>
                                 </div>
-                                <a href="#" class="btn btn-block btn-light">More Details</a>
                             </div>
                         </div>
                     </div>
