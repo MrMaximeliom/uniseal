@@ -99,6 +99,12 @@ $('#searchPhrase').prop("placeholder","search by state name ..")
 else if(selected_value == 'area'){
 $('#searchPhrase').prop("placeholder","search by area name ..")
 }
+else if(selected_value == 'country'){
+$('#searchPhrase').prop("placeholder","search by country name ..")
+}
+else if(selected_value == 'selling_point_name'){
+$('#searchPhrase').prop("placeholder","search by selling point name ..")
+}
 if(selected_value == "execution_year"){
 $('#search_phrase_holder').css('display','none')
 $('#search_phrase_date_holder').css('display','block')
@@ -163,6 +169,9 @@ error_message =  error_messages.city_error
 else if(search_option == 'area'){
 error_message =  error_messages.area_error
 }
+else if(search_option == 'selling_point_name'){
+error_message =  error_messages.point_error
+}
 
 
 const special_chars_regex = /\W+/g;
@@ -192,15 +201,27 @@ $('#search_phrase_error').css('display','block')
 return false
 }
 }
-else if(search_option == 'category' || search_option == 'country' || search_option == 'state' || search_option == 'city'  ){
+else if(search_option == 'category'){
 dash_regex = /([A-Z])*\s*\W*(a-z)*\s*\w+/g
-//extracted_words.forEach((word) => {
-//if (!dash_regex.test(word)){
-//special_chars_array.push(word)
-//}
-//})
+
 console.log(tempHolder)
 if(dash_regex.test(tempHolder)){
+return true
+}
+else{
+console.log("search_option is: ", search_option)
+console.log(special_chars_array)
+console.log("showing error message ",error_message)
+$('#search_phrase_error').html(error_message)
+$('#search_phrase_error').css('display','block')
+return false
+}
+}
+else if(search_option == 'country' || search_option == 'state' || search_option == 'city' || search_option == 'selling_point_name'){
+dash_regex = /([A-Z])*\s*\W*(a-z)*\s*\w+/g
+names_with_dashes = /\w+[-]*\s*/g
+console.log(tempHolder)
+if(dash_regex.test(tempHolder) || names_with_dashes.test(tempHolder) ){
 return true
 }
 else{

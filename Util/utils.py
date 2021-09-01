@@ -106,6 +106,10 @@ class SearchMan:
             from address.models import Area
             areas = Area.objects.all().order_by('id')
             self.paginator = Paginator(areas, 5)
+        if model == "Selling Point":
+            from sellingPoint.models import SellingPoint
+            selling = SellingPoint.objects.all().order_by('id')
+            self.paginator = Paginator(selling, 5)
 
 
     def setPaginator(self,query):

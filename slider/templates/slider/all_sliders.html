@@ -31,14 +31,12 @@
   <img class="card-img-top card-image-product" src="{{slider.image.url}}" alt="Card image cap">
                          <div class="card-body" {% if link is  None %} style="display:none;" {% endif%}>
 
-                    {% if link is not None %}
+        {% if slider.link %}
 
 
-       <p class="card-text">
-          <p>{% trans 'Navigation Link of Slider Image' %}</p>
-      <a href="{{slider.link}}" target="_blank" class="btn btn-primary mr-3">{% trans 'Link' %}</a>
-        </p>
-{% endif %}
+              <a href="{{slider.link}}" target="_blank" class="btn btn-primary mr-3">{% trans 'Visit' %}</a>
+
+          {% endif %}
 
   </div>
 </div>

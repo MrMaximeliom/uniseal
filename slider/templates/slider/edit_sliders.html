@@ -30,8 +30,12 @@
   <img class="card-img-top card-image-product" src="{{slider.image.url}}" alt="Card image cap">
   <div class="card-body">
       <p class="card-text">
-          <p>{% trans 'Navigation Link of Slider Image' %}</p>
-              <a href="{{slider.link}}" target="_blank" class="btn btn-primary mr-3">{% trans 'Link' %}</a>
+          {% if slider.link %}
+
+
+              <a href="{{slider.link}}" target="_blank" class="btn btn-primary mr-3">{% trans 'Visit' %}</a>
+
+          {% endif %}
               <a href="{% url 'editSlider' slug=slider.slug %}"  class="btn btn-primary mr-3">{% trans 'Update' %}</a>
 
     </p>

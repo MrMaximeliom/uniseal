@@ -21,10 +21,12 @@ EXECUTION_DATE_ERROR = _("Please choose project's execution date")
 # used by project type pages
 PROJECT_APPLICATION_NAME_SYNTAX_ERROR = _("Project type name contains alphanumeric English letters with dashes only!")
 # used by country pages
-COUNTRY_NAME_SYNTAX_ERROR = _("Country name alphanumeric English letters only!")
+COUNTRY_NAME_SYNTAX_ERROR = _("Country name contains alphanumeric English letters only!")
 # used by state pages
-STATE_NAME_SYNTAX_ERROR = _("State name alphanumeric English letters only!")
+STATE_NAME_SYNTAX_ERROR = _("State name contains alphanumeric English letters only!")
 # used by city pages
-CITY_NAME_SYNTAX_ERROR = _("City name alphanumeric English letters only!")
+CITY_NAME_SYNTAX_ERROR = _("City name contains alphanumeric English letters only!")
 # used by city pages
-AREA_NAME_SYNTAX_ERROR = _("Area name alphanumeric English letters only!")
+AREA_NAME_SYNTAX_ERROR = _("Area name contains alphanumeric English letters only!")
+# used by selling point pages
+POINT_NAME_SYNTAX_ERROR = _("Selling point name contains alphanumeric English letters only!")

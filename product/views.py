@@ -430,10 +430,6 @@ def all_products(request):
                     return redirect('downloadReport', str(report_man.filePath), str(report_man.fileName))
                 else:
                    messages.error(request, "Sorry Report Failed To Create , Please Try Again!")
-
-
-
-
     if request.GET.get('page'):
         # Grab the current page from query parameter
         page = int(request.GET.get('page'))
