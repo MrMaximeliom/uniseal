@@ -96,6 +96,9 @@ $('#searchPhrase').prop("placeholder","search by city name ..")
 else if(selected_value == 'state'){
 $('#searchPhrase').prop("placeholder","search by state name ..")
 }
+else if(selected_value == 'area'){
+$('#searchPhrase').prop("placeholder","search by area name ..")
+}
 if(selected_value == "execution_year"){
 $('#search_phrase_holder').css('display','none')
 $('#search_phrase_date_holder').css('display','block')
@@ -156,6 +159,9 @@ error_message =  error_messages.state_error
 }
 else if(search_option == 'city'){
 error_message =  error_messages.city_error
+}
+else if(search_option == 'area'){
+error_message =  error_messages.area_error
 }
 
 

@@ -33,6 +33,15 @@
     <input type="text" class="form-control" name="search_phrase" id="searchPhrase" placeholder="Search ..">
           <span style="display:none;color:red;" id="search_phrase_error"></span>
   </div>
+                <div class="col-2 mr-3">
+    <select class="form-select search-select" id="searchBy" name="search_options" aria-label="Default select example">
+  <option selected value="none">{% trans 'Search By' %}</option>
+  <option value="area">{% trans 'Area Name' %}</option>
+  <option value="city">{% trans 'City Name' %}</option>
+</select>
+                <span style="display:none;color:red;" id="selection_error"></span>
+
+    </div>
 
   <div class="col-auto">
     <button type="submit" class="btn btn-primary mb-3" id="searchButton" value="area">{% trans 'Search' %}</button>

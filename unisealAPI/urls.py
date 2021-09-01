@@ -1,5 +1,4 @@
 from django.conf.urls.static import static
-# from django.contrib.auth import views as auth_views
 import dashboard.views
 from product.urls import urlpatterns as product_urls
 from project.urls import urlpatterns as project_urls
@@ -53,7 +52,6 @@ router.register(r'accounts/signUp', accounts_views.RegisterUserViewSet, basename
 router.register(r'accounts/modifyUsersData', accounts_views.ModifyUserDataViewSet, basename='ModifyUser')
 router.register(r'accounts/me', accounts_views.CurrentUserDataViewSet, basename='CurrentUser')
 router.register(r'accounts/changePassword', accounts_views.ChangePasswordView, basename='ChangePassword')
-router.register(r'accounts/forgetPassword', accounts_views.ForgetPasswordView, basename='ForgetPassword')
 router.register(r'supplier', supplier_views.SupplierViewSet, basename='CreateSupplier')
 router.register(r'address/modifyCountry', address_endpoints_urls.CountryViewSet, basename='CreateCountry')
 router.register(r'address/modifyState', address_endpoints_urls.StateViewSet, basename='CreateState')
@@ -92,6 +90,7 @@ urlpatterns = [
     path('', include(router.urls)),
     path('admin_panel/', include(admin_router.urls)),
     path('admin/', admin.site.urls),
+    path('accounts/forgetPassword/<int:pk>/', accounts_views.ForgetPasswordView.as_view(),name='ForgetPassword'),
 # path('accounts/forgetPassword/', accounts_views.ForgetPasswordView.as_view(), name='ForgetPassword'),
     path('dashboard/', dashboard_views.dashboard, name='dashboard'),
     path('dashboard/login', dashboard_views.LoginView.as_view(), name='login'),

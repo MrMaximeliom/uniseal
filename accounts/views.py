@@ -143,39 +143,28 @@ class ChangePasswordView(viewsets.GenericViewSet, mixins.UpdateModelMixin):
         return User.objects.filter(id=self.request.user.id)
 
 from rest_framework import generics
-class ForgetPasswordView(EnablePartialUpdateMixin,viewsets.ModelViewSet):
+class ForgetPasswordView(EnablePartialUpdateMixin,mixins.RetrieveModelMixin,
+                    mixins.UpdateModelMixin,
+                    generics.GenericAPIView):
     """
         An endpoint for changing password.
         """
+
     from accounts.serializers import ForgetPasswordSerializer
-
-
     serializer_class = ForgetPasswordSerializer
 
-    permission_classes = [IsAnonymousUser]
+    def get(self, request, *args, **kwargs):
+        return self.retrieve(request, *args, **kwargs)
 
-
-
-
+    def put(self, request, *args, **kwargs):
+        return self.update(request, *args, **kwargs)
 
     def get_queryset(self):
-        from .models import User
+        from accounts.models import User
         return User.objects.all()
 
 
-    def get_view_name(self):
-        return _("Forget Password")
 
-    # def save(self, commit=True):
-    #     """Save the new password."""
-    #     from .models import User
-    #     password = self.validated_data["password"]
-    #     phone_number = self.request.query_params.get('phone_number', None)
-    #     user = User.objects.filter(phone_number=phone_number)
-    #     user.set_password(password)
-    #     if commit:
-    #         user.save()
-    #     return user
 
 
 class CurrentUserDataViewSet(EnablePartialUpdateMixin, viewsets.ModelViewSet):
@@ -276,14 +265,12 @@ from django.contrib.auth.decorators import login_required
 
 # the following function prepares the data to be used in the process of creating excel file
 def prepare_selected_query(selected_pages, paginator_obj, headers=None):
-    print("we are in selected query")
     full_name = []
     username = []
     organization = []
     phone_number = []
     last_login = []
     if headers is not None:
-        print("headers are not none")
         headers_here = headers
         for header in headers_here:
             if header == "Full Name":
@@ -369,8 +356,6 @@ def prepare_query(paginator_obj, headers=None):
 searchManObj = SearchMan("User")
 report_man = ReportMan()
 
-
-# report_man.setTempDir(tempfile.mkdtemp())
 @login_required(login_url='login')
 def all_users(request):
     from Util.search_form_strings import (

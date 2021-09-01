@@ -100,8 +100,12 @@ class SearchMan:
             self.paginator = Paginator(states, 5)
         if model == "City":
             from address.models import City
-            states = City.objects.annotate(num_areas=Count('area')).order_by('-num_areas')
-            self.paginator = Paginator(states, 5)
+            cities = City.objects.annotate(num_areas=Count('area')).order_by('-num_areas')
+            self.paginator = Paginator(cities, 5)
+        if model == "Area":
+            from address.models import Area
+            areas = Area.objects.all().order_by('id')
+            self.paginator = Paginator(areas, 5)
 
 
     def setPaginator(self,query):
