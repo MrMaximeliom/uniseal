@@ -24,11 +24,11 @@
 
  <div class="col-4">
                 <div class="card mb-5 ml-2" >
-  <img class="card-img-top card-image-product" src="{{update.image.url}}" alt="image for industry update">
+  <img class="card-img-top card-image-product" src="{{update.image_link}}" alt="image for industry update">
   <div class="card-body">
     <h5 class="card-title">{{update.headline}}</h5>
     <p class="card-text">
-        {% trans 'Details:' %} {{update.details}}
+       {{update.details}}
     </p>
 
     <a href="#" class="btn btn-danger mr-3" data-bs-toggle="modal" data-bs-target="#exampleModal{{update.id}}">{% trans 'Delete' %}</a>

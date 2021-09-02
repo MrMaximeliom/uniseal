@@ -191,28 +191,43 @@ class ForgetPasswordView(EnablePartialUpdateMixin,mixins.RetrieveModelMixin,
     # def get(self, request, *args, **kwargs):
     #     print(request.get)
     #     return self.retrieve(request, *args, **kwargs)
-    def get_object(self, pk):
-        from django.http import Http404
-        try:
-            from accounts.models import User
-            return User.objects.get(pk=pk)
-        except User.DoesNotExist:
-            raise Http404
+    # def get_object(self):
+    #     from django.http import Http404
+    #     try:
+    #         from accounts.models import User
+    #         return User.objects.get(id=pk)
+    #     except User.DoesNotExist:
+    #         raise Http404
+    #
+    #
+    #
+    # def get(self, request, pk, format=None):
+    #     from rest_framework.response import Response
+    #     from accounts.serializers import ForgetPasswordSerializer
+    #     user = self.get_object(pk)
+    #     serializer = ForgetPasswordSerializer(user)
+    #     return Response(serializer.data)
+    #
+    # def put(self, request, *args, **kwargs):
+    #     return self.update(request, *args, **kwargs)
+    #
+    # def get_queryset(self):
+    #     from accounts.models import User
+    #     return User.objects.all()
+#     sss
 
-    def get(self, request, pk, format=None):
-        from rest_framework.response import Response
-        from accounts.serializers import ForgetPasswordSerializer
-        user = self.get_object(pk)
-        serializer = ForgetPasswordSerializer(user)
-        return Response(serializer.data)
+    # def get(self, request, *args, **kwargs):
+    #     print(request.get)
+    #     return self.retrieve(request, *args, **kwargs)
+    from accounts.models import User
+    queryset = User.objects.all()
+    lookup_field = 'pk'
+
+    def get(self, request, *args, **kwargs):
+        return self.retrieve(request, *args, **kwargs)
 
     def put(self, request, *args, **kwargs):
         return self.update(request, *args, **kwargs)
-
-    def get_queryset(self):
-        from accounts.models import User
-        return User.objects.all()
-
 
 
 

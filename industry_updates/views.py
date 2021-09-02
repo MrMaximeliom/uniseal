@@ -36,10 +36,10 @@ class IndustryUpdateViewSet(viewsets.ModelViewSet):
     serializer_class = IndustryUpdatesSerializer
     from .models import IndustryUpdates
     permission_classes = [UnisealPermission]
-    queryset = IndustryUpdates.objects.all().order_by('id')
+    queryset = IndustryUpdates.objects.all().order_by('-id')
 #Views for dashboard
 from .models import IndustryUpdates
-updates = IndustryUpdates.objects.all().order_by('id')
+updates = IndustryUpdates.objects.all().order_by('-id')
 
 def all_updates(request):
     paginator = Paginator(updates, 5)
