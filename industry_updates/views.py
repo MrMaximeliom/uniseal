@@ -77,7 +77,7 @@ def all_updates(request):
 def add_updates(request):
     from .forms import IndustryUpdatesForm
     if request.method == 'POST':
-        form = IndustryUpdatesForm(request.POST)
+        form = IndustryUpdatesForm(request.POST,request.FILES)
         if form.is_valid():
             update_form = form.save(commit=False)
             update_form.slug = slugify(rand_slug())
