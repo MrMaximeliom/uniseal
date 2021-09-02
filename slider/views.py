@@ -194,8 +194,8 @@ def edit_slider(request,slug):
             slider = slider_form.save()
             slider.image = request.FILES['image']
             slider.save()
-            slider_link = slider_form.cleaned_data.get('link')
-        messages.success(request, f"Successfully Updated : {slider_link} Data")
+            slider_title = slider_form.cleaned_data.get('title')
+            # messages.success(request, f"Successfully Updated : {slider_title} Data")
         slider_form.save()
     else:
         for field, items in slider_form.errors.items():
