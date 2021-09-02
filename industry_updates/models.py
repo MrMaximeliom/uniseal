@@ -17,6 +17,10 @@ class IndustryUpdates(models.Model):
         verbose_name=_('Link'),
 
     )
+    image_link = models.URLField(
+        verbose_name=_('Image Link'),
+
+    )
     image = models.ImageField(
         verbose_name=_('Image'),
         upload_to="industry_updates_images"

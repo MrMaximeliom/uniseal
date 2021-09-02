@@ -174,7 +174,12 @@ def edit_update(request,slug):
 
     # save the data from the form and
     # redirect to detail_view
+
     if update_form.is_valid()  :
+        if request.FILES:
+            updates = update_form.save()
+            updates.image = request.FILES['image']
+            updates.save()
         update_form.save()
         link =  update_form.cleaned_data.get('link')
         messages.success(request, f"Industry Update: {link} Updated")
