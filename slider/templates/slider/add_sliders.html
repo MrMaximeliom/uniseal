@@ -26,6 +26,11 @@
     <h5 class="card-title">Please Add your project details here</h5>
   <form class="card-form" method="post" action="" enctype="multipart/form-data">
       {% csrf_token %}
+        <div class="mb-4 row">
+    <div class="col-sm-6">
+             {{form.title|as_crispy_field}}
+    </div>
+  </div>
   <div class="mb-4 row">
     <div class="col-sm-6">
              {{form.image|as_crispy_field}}

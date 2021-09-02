@@ -7,6 +7,12 @@ from Util.utils import rand_slug
 
 
 class Slider(models.Model):
+    title = models.CharField(
+        verbose_name=_("Title"),
+        max_length=200,
+        blank=True,
+        null=True
+    )
     image = models.ImageField(
         verbose_name=_('Slider Image'),
         upload_to='slider_images'

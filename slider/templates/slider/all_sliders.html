@@ -29,6 +29,9 @@
  <div class="col-4">
                 <div class="card mb-5 ml-2" >
   <img class="card-img-top card-image-product" src="{{slider.image.url}}" alt="Card image cap">
+                    <p class="card-text">
+        {% trans 'Title:' %} {{slider.title}}
+    </p>
                          <div class="card-body" {% if link is  None %} style="display:none;" {% endif%}>
 
         {% if slider.link %}
@@ -37,6 +40,7 @@
               <a href="{{slider.link}}" target="_blank" class="btn btn-primary mr-3">{% trans 'Visit' %}</a>
 
           {% endif %}
+
 
   </div>
 </div>
