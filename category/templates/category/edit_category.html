@@ -10,17 +10,16 @@
    <nav aria-label="crumb">
                     <ol class="crumb breadcrumb-light breadcrumb-dark">
                         <li class="breadcrumb-item"><a href="{% url 'dashboard' %}">{% trans 'Dashboard' %}</a></li>
-                        <li class="breadcrumb-item" aria-current="page">{% trans 'Categories' %}</li>
-                        <li class="breadcrumb-item" aria-current="page">{% trans 'Edit Category' %}</li>
+                        <li class="breadcrumb-item" aria-current="page">{% trans 'Product Categories' %}</li>
+                        <li class="breadcrumb-item" aria-current="page">{% trans 'Edit Product Category' %}</li>
                     </ol>
                 </nav>
                 {% endblock breadcrumb_content %}
 {% block content %}
-                <h1 class="h2">Edit Category</h1>
-                <p>{% trans 'Here you can add new categories' %}</p>
+                <h1 class="h2">{% trans 'Edit Product Category' %}</h1>
 <div class="card ">
   <div class="card-body">
-    <h5 class="card-title">Please Add your project details here</h5>
+    <h5 class="card-title">{% trans 'Please Add your project details here' %}</h5>
   <form class="card-form" action="" method="post">
       {% csrf_token %}
   <div class="mb-4 row">

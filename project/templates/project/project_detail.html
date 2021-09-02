@@ -25,8 +25,8 @@
 <!--Images of product-->
 <div class="mb-5">
 
-    <h4>{{project_data.name}} / {{project_data.title}} </h4>
-    <h5>{% trans 'For' %} {{project_data.beneficiary}}</h5>
+    <h4>{{project_data.name}} </h4>
+
 
 </div>
 {% if project_images|length > 1 %}
@@ -77,16 +77,10 @@
     <h4>{% trans 'Project Description' %}</h4>
     <p class="description-paragraph">{{project_data.description}}</p>
 </div>
-<div class="mb-3 mt-5 project-description">
-    <h4>{% trans 'Beneficiary Description' %}</h4>
-    <p class="description-paragraph">{{project_data.beneficiary_description}}</p>
-</div>
+
     <div class="row">
            <div class="col-sm-6">
                             <a href="{% url 'allProjects'  %} " class="btn btn-primary mr-3">Back</a>
-
-
-
                         <a href="{% url 'editProject' slug=project_data.slug %} " class="btn btn-primary mr-3">Update</a>
 
     </div>

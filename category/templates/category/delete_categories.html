@@ -17,13 +17,13 @@
    <nav aria-label="crumb">
                     <ol class="crumb breadcrumb-light breadcrumb-dark">
                         <li class="breadcrumb-item"><a href="{% url 'dashboard' %}">{% trans 'Dashboard' %}</a></li>
-                        <li class="breadcrumb-item" aria-current="page">{% trans 'Categories' %}</li>
-                        <li class="breadcrumb-item" aria-current="page">{% trans 'Delete Categories' %}</li>
+                        <li class="breadcrumb-item" aria-current="page">{% trans 'Product Categories' %}</li>
+                        <li class="breadcrumb-item" aria-current="page">{% trans 'Delete Product Categories' %}</li>
                     </ol>
                 </nav>
                 {% endblock breadcrumb_content %}
 {% block content %}
-                <h1 class="h2">{% trans 'Delete Categories' %}</h1>
+                <h1 class="h2 mb-3">{% trans 'Delete Product Categories' %}</h1>
 <div class="col-auto">
 <form class="row g-2 mb-3" action="" method="post" id="searchForm" autocomplete="off">
     {% csrf_token %}
@@ -53,7 +53,7 @@
 <div class="row">
                     <div class="col-12 col-xl-11 mb-4 mb-lg-0">
                         <div class="card-light card-dark">
-                            <h5 class="card-header-light card-header-dark">{% trans 'Categories' %}</h5>
+                            <h5 class="card-header-light card-header-dark">{% trans 'Product Categories' %}</h5>
                             <div class="card-body-light card-body-dark">
                                 <div class="table-responsive">
                                     <table class="table">

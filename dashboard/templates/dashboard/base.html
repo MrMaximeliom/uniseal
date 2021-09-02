@@ -168,7 +168,7 @@
     </nav>
     <div class="container-fluid">
         <div class="row">
-            <nav id="sidebar" class="col-md-3 col-lg-2 d-md-block nav-light nav-dark sidebar collapse ">
+            <nav id="sidebar" class="col-md-3 col-lg-auto d-md-block nav-light nav-dark sidebar collapse ">
                 <div class="position-sticky">
                     <ul class="nav flex-column">
                         {% if user.is_authenticated %}
@@ -407,7 +407,7 @@
         <a class=" nav-link-light nav-link-dark collapsed dropdown-toggle" data-bs-toggle="collapse" data-bs-target="#dashboard-collapse-categories" aria-expanded="false">
                             <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-layers"><polygon points="12 2 2 7 12 12 22 7 12 2"></polygon><polyline points="2 17 12 22 22 17"></polyline><polyline points="2 12 12 17 22 12"></polyline></svg>
 
-                            <span class="ml-2">{% trans 'Categories'%}</span>
+                            <span class="ml-2">{% trans 'Product Categories'%}</span>
         </a>
         <div class="collapse" id="dashboard-collapse-categories">
           <ul class="btn-toggle-nav list-unstyled fw-normal pb-1">
@@ -816,7 +816,7 @@
     <div class="item">Item 5</div>
   </div>
 </div>
-            <main class="col-md-9 ml-sm-auto col-lg-10 px-md-4 py-4">
+            <main class="col-md-9 ml-sm-3 col-lg-9 px-md-4 py-4">
                      {% block breadcrumb_content %}
                 {% endblock breadcrumb_content %}
                  {% if messages %}

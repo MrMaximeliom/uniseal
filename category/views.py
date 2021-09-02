@@ -236,7 +236,7 @@ def all_categories(request):
 
     return render(request, 'category/all_categories.html',
                   {
-                      'title': _('All Categories'),
+                      'title': _('All Product Categories'),
                       'all_categories': 'active',
                       'all_categories_data': categories_paginator,
                       'page_range': paginator.page_range,
@@ -273,7 +273,7 @@ def add_categories(request):
         form = CategoryForm()
 
     context = {
-        'title': _('Add Categories'),
+        'title': _('Add Product Categories'),
         'add_categories': 'active',
         'form': form,
     }
@@ -332,7 +332,7 @@ def delete_categories(request):
 
     return render(request, 'category/delete_categories.html',
                   {
-                      'title': _('Delete Categories'),
+                      'title': _('Delete Product Categories'),
                       'delete_categories': 'active',
                       'all_categories_data': categories_paginator,
                       'page_range': paginator.page_range,
@@ -403,7 +403,7 @@ def edit_categories(request):
 
     return render(request, 'category/edit_categories.html',
                   {
-                      'title': _('Edit Categories'),
+                      'title': _('Edit Product Categories'),
                       'edit_categories': 'active',
                       'all_categories_data': categories_paginator,
                       'page_range': paginator.page_range,
@@ -445,7 +445,7 @@ def edit_category(request,slug):
                 messages.error(request, '{}: {}'.format(field, item))
 
     context = {
-        'title': _('Edit Category'),
+        'title': _('Edit Product Category'),
         'edit_categories': 'active',
         'category_form':category_form,
         'category' : obj,
