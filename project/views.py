@@ -752,41 +752,111 @@ def project_details(request,slug):
                   }
                   )
 @login_required(login_url='login')
-def project_images(request,slug):
+def project_images(request,slug=None):
     from project.models import Project,ProjectImages
     from .forms import ProjectImagesForm
-    # all_products = Product.objects.all().order_by("id")
-    # paginator = Paginator(all_products, 5)
-    # fetch the object related to passed id
-    project = get_object_or_404(Project, slug=slug)
-    projectImages = ProjectImages.objects.filter(project__slug=slug)
-    pureImages = list()
-    if projectImages :
-        pureImages.append(project.image.url)
-        for image in projectImages:
-            pureImages.append(image.image.url)
+    allProjects = Project.objects.all()
+    pureImages = {}
+    context = {
+        'title': _('Project Images'),
+        'all_projects': 'active',
+        'allProjects': allProjects,
+    }
+    if slug != None and request.method =='GET':
+        print("slug is not null")
+        project = get_object_or_404(Project, slug=slug)
+        projectImages = ProjectImages.objects.filter(project__slug=slug)
+        if projectImages:
+            # pureImages.append(project.image.url)
+            pureImages.update({True: project.image.url})
+            for image in projectImages:
+                # pureImages.append(image.image.url)
+                pureImages.update({image.image.url: image.image.url})
+        print(pureImages)
+        context =  {
+            'title': _('Project Images'),
+            'all_projects': 'active',
+            'project_data': project,
+            'project_images': pureImages,
+            'project_original_image': project.image.url,
 
-    if request.method == 'POST':
-        form = ProjectImagesForm(request.POST)
-        if form.is_valid():
-            form.save()
-        else:
-            for msg in form.error_messages:
-                messages.error(request, f"{msg}: {form.error_messages[msg]}")
-    else:
+            'allProjects': allProjects,
+            'slug':slug
+        }
         form = ProjectImagesForm()
+        context.update({"form": form})
+
+
+    if request.method == 'POST' and 'search_project' in request.POST:
+        if request.POST.get('search_options') != 'none':
+            print("searching for a project")
+            chosen_project = request.POST.get('search_options')
+            # project = get_object_or_404(Project,slug=chosen_project)
+            # projectImages = ProjectImages.objects.filter(project__slug=chosen_project)
+            return redirect('projectImages', slug=chosen_project)
+        else:
+            messages.error(request, "Please choose a project from the list")
+
+
+
+
+    if request.method == 'POST' and 'add_images' in request.POST:
+        print("adding new images")
+        # form = ProjectForm(request.POST, request.FILES)
+        # if form.is_valid():
+        #     project = form.save(commit=False)
+        #     project.execution_date = request.POST['execution_date']
+        #     project.save()
+        #     project.slug = slugify(rand_slug())
+        #     project.save()
+        form = ProjectImagesForm(request.POST, request.FILES)
+        project = get_object_or_404(Project, slug=slug)
+        selected_project = Project.objects.filter(slug=slug)
+        files = request.FILES.getlist('image')
+        # form.project = project
+        # form.save(commit=False)
+        form.project = selected_project
+        if form.is_valid():
+            if len(files) == 1:
+                print("there is more than images")
+
+                updated_project = form.save(commit=False)
+                updated_project.image = request.FILES['image']
+                # updated_project.project = selected_project.id
+                updated_project.slug = slugify(rand_slug())
+                # updated_project.save()
+                project_name = project.name
+                messages.success(request, f"New image Added for: {project_name}")
+
+            else:
+                for f in files:
+                    ProjectImages.objects.create(project=project, image=f)
+                project_name = project.name
+                messages.success(request, f"New image Added for: {project_name}")
+
+
+
+
+            # form.save()
+            return redirect('projectImages', slug=slug)
+        else:
+            for field, items in form.errors.items():
+                for item in items:
+                    messages.error(request, '{}: {}'.format(field, item))
+
+    print("context is: \n")
+    print("request is: ",request.method,"data is",request.POST)
+    print(context)
+    print("slug is: ",slug)
+
+
 
 
 
     return render(request, 'project/project_images.html',
-                  {
-                      'title': _('Project Images'),
-                      'all_projects': 'active',
-                      'project_data': project,
-                      'project_images':pureImages,
-                      'project_original_image':project.image.url,
-                      'form':form
-                  })
+                 context
+
+                  )
 
 @login_required(login_url='login')
 def edit_project(request,slug):

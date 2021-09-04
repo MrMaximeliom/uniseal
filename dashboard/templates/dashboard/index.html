@@ -8,7 +8,6 @@
 
 {% block content %}
                 <h1 class="h2">Dashboard</h1>
-                <p>{% trans 'This is the dashboard of Uniseal API System' %}</p>
                 <div class="row my-4">
                     <div class="col-12 col-md-6 col-lg-3 mb-4 mb-lg-0">
                         <div class="card-light card-dark">
@@ -30,7 +29,7 @@
                     </div>
                     <div class="col-12 col-md-6 mb-4 mb-lg-0 col-lg-3">
                         <div class="card-light card-dark">
-                            <p class="card-header-light card-header-dark">{% trans 'Projects' %}</p>
+                            <h5 class="card-header-light card-header-dark">{% trans 'Projects' %}</h5>
                             <div class="card-body-light card-body-dark">
                               <p class="card-title">{% trans "Project's Count: " %}{{projects_count}}</p>
 
@@ -40,7 +39,7 @@
                     </div>
                     <div class="col-12 col-md-6 mb-4 mb-lg-0 col-lg-3">
                         <div class="card-light card-dark">
-                            <p class="card-header-light card-header-dark">{% trans 'Brochures' %}</p>
+                            <h5 class="card-header-light card-header-dark">{% trans 'Brochures' %}</h5>
                             <div class="card-body-light card-body-dark">
                               <p class="card-title">{% trans "Brochure's Count: " %}{{brochures_count}}</p>
                             </div>

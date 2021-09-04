@@ -37,9 +37,25 @@ class ProjectForm(forms.ModelForm):
             }
 
 class ProjectImagesForm(forms.ModelForm):
+    from project.models import Project
+    # project = forms.ChoiceField(required=False,
+    #     choices=[(x.name) for x in Project.objects.all()]
+    # )
+    image = forms.FileField(widget=forms.ClearableFileInput(attrs={'multiple': True}))
+
+    project = forms.ModelMultipleChoiceField(
+        queryset=Project.objects.all()
+    )
+
+    def save(self, commit=True):
+        instance = super().save(commit=False)
+        pub = self.cleaned_data['project']
+        instance.project = pub[0]
+        instance.save(commit)
+        return instance
     class Meta:
         model = ProjectImages
-        fields = '__all__'
+        fields = ('image',)
 
 class ProjectVideosForm(forms.ModelForm):
     class Meta:

@@ -13,9 +13,14 @@ class IndustryUpdates(models.Model):
         blank = True,
         null=True
     )
-    link = models.URLField(
-        verbose_name=_('Link'),
-
+    # link = models.URLField(
+    #     verbose_name=_('Link'),
+    #
+    # )
+    link = models.CharField(
+        verbose_name=_('Source'),
+        default="Uniseal Construction Chemicals Co Ltd",
+        max_length=400
     )
     image_link = models.URLField(
         verbose_name=_('Image Link'),

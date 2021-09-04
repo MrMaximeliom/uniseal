@@ -23,19 +23,45 @@
                 </nav>
                 {% endblock breadcrumb_content %}
 {% block content %}
+<div class="col-auto">
+<form class="row g-2 mb-3" action="" method="post" id="searchForm" autocomplete="off">
+    {% csrf_token %}
+    <div class="col-2 mr-5">
+    <select class="form-select search-select" id="searchBy" name="search_options" aria-label="Default select example">
+  <option selected value="none">{% trans '-- Select Project --' %}</option>
+        {% for project in allProjects %}
+          <option value="{{project.slug}}">{{project.name}}</option>
+        {% endfor %}
 
+</select>
+                <span style="display:none;color:red;" id="selection_error"></span>
+
+    </div>
+
+
+  <div class="col-auto">
+    <button type="submit" class="btn btn-primary mb-3" id="searchButton" value="search_project" name="search_project">{% trans 'View Images' %}</button>
+
+  </div>
+</form>
+
+
+
+    </div>
+{% if project_data %}
 <div class="row card-group">
   {% if project_images|length > 1 %}
    <h1 class="h2">{% trans 'Images for ' %}{{project_data.name}}</h1>
 
-{% for image in project_images %}
-
+{% for key,value in project_images.items %}
+<form class=" row" method="post" action="" enctype="multipart/form-data" autocomplete="off">
+    {% csrf_token %}
  <div class="col-4">
                 <div class="card mb-5 ml-2" >
-  <img class="card-img-top card-image-project" src="{{image}}" alt="Card image cap">
+  <img class="card-img-top card-image-project" src="{{value}}" alt="Card image cap">
   <div class="card-body">
 <div class="form-check form-check-inline">
-  <input class="form-check-input input-default-js" type="checkbox" id="inlineCheckbox2" value="option1">
+  <input class="form-check-input input-default-js" type="checkbox" id="inlineCheckbox2" value="option1" {% if key == True %} checked {% endif %}>
   <label class="form-check-label" for="inlineCheckbox2">Set As Default Image?</label>
 </div>
 <div class="form-check form-check-inline">
@@ -46,6 +72,7 @@
   </div>
 </div>
  </div>
+
   {% endfor %}
 
   {% else %}
@@ -57,7 +84,7 @@
   <div class="card-body">
 
 <div class="form-check form-check-inline">
-  <input class="form-check-input input-default-js" type="checkbox" id="inlineCheckbox3" value="option1">
+  <input class="form-check-input input-default-js" type="checkbox" id="inlineCheckbox3" value="option1" checked>
   <label class="form-check-label " for="inlineCheckbox3">Set As Default Image?</label>
 </div>
 <div class="form-check form-check-inline">
@@ -68,6 +95,7 @@
   </div>
 </div>
  </div>
+
   {% endif %}
  <div class="col-4">
 
@@ -88,6 +116,7 @@
              <div >
     <button type="submit" class="btn btn-primary ">{% trans 'Update' %}</button>
   </div>
+       </form>
 
 <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
   <div class="modal-dialog">
@@ -98,23 +127,49 @@
       </div>
       <div class="modal-body">
           <h3>{% trans 'You can add multiple images' %}</h3>
-         <form class="card-form" enctype="multipart/form-data">
+         <form class="card-form" enctype="multipart/form-data" method="post">
+             {% csrf_token %}
   <div class="mb-4 row">
     <div class="col-sm-6">
+
                      <div class="mb-3">
-  <label for="exampleFormControlInput1" class="form-label">project Image</label>
-  <input type="file" class="form-control" id="exampleFormControlInput1" multiple="multiple">
+                         <div class="col-sm-6">
+             {{form.image|as_crispy_field}}
+    </div>
+<!--  <label for="exampleFormControlInput1" class="form-label">project Image</label>-->
+<!--  <input type="file" class="form-control" id="exampleFormControlInput1" multiple="multiple">-->
 </div>
+         <div class="mb-3">
+                <div class="col-sm-6">
+                 <select class="form-select search-select" id="id_project" name="project"  aria-label="Default select example" hidden>
+        {% for project in allProjects %}
+                     {% if slug == project.slug %}
+                               <option value="{{project.pk}}" selected>{{project.name}}</option>
+
+                     {% else %}
+                               <option value="{{project.pk}}">{{project.name}}</option>
+
+                     {% endif %}
+        {% endfor %}
+
+</select>
+    </div>
+         </div>
+
     </div>
   </div>
+               <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+        <button type="submit" class="btn btn-primary" value="add_images" name="add_images">Save changes</button>
+      </div>
          </form>
       </div>
-      <div class="modal-footer">
-        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-        <button type="button" class="btn btn-primary">Save changes</button>
-      </div>
+
     </div>
   </div>
 </div>
 </div>
+{% else %}
+<h3>{% trans 'Please choose a project to view its images' %}</h3>
+{% endif %}
 {% endblock %}

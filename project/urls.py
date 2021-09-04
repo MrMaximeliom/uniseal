@@ -9,5 +9,6 @@ urlpatterns = [
     path('editProject/<str:slug>', project_views.edit_project, name='editProject'),
     path('projectDetails/<str:slug>', project_views.project_details, name='projectDetails'),
     path('projectImages/<str:slug>', project_views.project_images, name='projectImages'),
+    path('projectImages/', project_views.project_images, name='projectImages-dash'),
 
     ]
