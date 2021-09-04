@@ -87,9 +87,13 @@ if __name__ == "__main__":
     # current_time = now.strftime("%H_%M_%S")
     # print(current_time)
     path = os.path.dirname(os.path.abspath(__file__)) + "/Reports"
-    selected_pages = ['1','2']
-    for i in selected_pages:
-        print("hi")
+    # selected_pages = ['1','2']
+    # for i in selected_pages:
+    #     print("hi")
+    # must end with colon
+    selected_images = '/media/project_images/temp_1_AuGu1HL.png',
+    for i in selected_images:
+        print(i)
 
 
 

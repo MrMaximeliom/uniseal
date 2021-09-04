@@ -112,3 +112,18 @@ color:red;
   opacity: 1;
 }
 /* end styling add new product image */
+
+/* styling adding new images in the modal */
+#new-images-js{
+display:grid;
+max-width: 960px;
+margin: 0 auto;
+grid-template-columns: repeat(2,1fr);
+grid-auto-rows: minmax(100px,auto);
+grid-gap: 9px;
+
+}
+
+
+
+/*  ******   */

@@ -802,19 +802,10 @@ def project_images(request,slug=None):
 
     if request.method == 'POST' and 'add_images' in request.POST:
         print("adding new images")
-        # form = ProjectForm(request.POST, request.FILES)
-        # if form.is_valid():
-        #     project = form.save(commit=False)
-        #     project.execution_date = request.POST['execution_date']
-        #     project.save()
-        #     project.slug = slugify(rand_slug())
-        #     project.save()
         form = ProjectImagesForm(request.POST, request.FILES)
         project = get_object_or_404(Project, slug=slug)
         selected_project = Project.objects.filter(slug=slug)
         files = request.FILES.getlist('image')
-        # form.project = project
-        # form.save(commit=False)
         form.project = selected_project
         if form.is_valid():
             if len(files) == 1:
@@ -833,16 +824,25 @@ def project_images(request,slug=None):
                     ProjectImages.objects.create(project=project, image=f)
                 project_name = project.name
                 messages.success(request, f"New image Added for: {project_name}")
-
-
-
-
-            # form.save()
             return redirect('projectImages', slug=slug)
         else:
             for field, items in form.errors.items():
                 for item in items:
                     messages.error(request, '{}: {}'.format(field, item))
+
+    if request.method == 'POST' and 'updating_images' in request.POST:
+        default_image = request.POST.get('default_images')
+        deleted_images = request.POST.get('deleted_images')
+        print("default image is: ",default_image)
+        for deleted_image in deleted_images:
+            print(deleted_image)
+
+        # selected_deleted_images = []
+        # for item in deleted_images:
+        #     if item != ",":
+        #         selected_deleted_images.append(item)
+        # print("deleted image(s) are: ", deleted_images)
+
 
     print("context is: \n")
     print("request is: ",request.method,"data is",request.POST)
@@ -883,7 +883,7 @@ def edit_project(request,slug):
         'edit_projects': 'active',
         'project':obj,
         'form':project_form,
-        'all_products': all_projects,
+        'all_projects': all_projects,
         'project_form': project_form,
         'project_image_form': project_image_form
     }
