@@ -8,7 +8,7 @@ from  django.contrib import messages
 from django.contrib.auth.decorators import login_required
 from Util.utils import  SearchMan,createExelFile,ReportMan,delete_temp_folder
 from Util.utils import rand_slug
-
+from django.db.models import Count
 
 class ProjectViewSet(viewsets.ModelViewSet):
     """API endpoint to allow the admin to add or modify projects' data
@@ -41,6 +41,8 @@ class ProjectViewSet(viewsets.ModelViewSet):
     from .models import Project
     permission_classes = [UnisealPermission]
     queryset = Project.objects.all().order_by('id')
+    filter_backends = [DjangoFilterBackend]
+    filterset_fields = ['project']
 
 
 class ProjectImagesViewSet(viewsets.ModelViewSet):
@@ -830,27 +832,36 @@ def project_images(request,slug=None):
                 for item in items:
                     messages.error(request, '{}: {}'.format(field, item))
 
-    if request.method == 'POST' and 'updating_images' in request.POST:
-        default_image = request.POST.get('default_images')
-        deleted_images = request.POST.get('deleted_images')
+    if request.method == 'POST' and 'confirm_changes' in request.POST:
+        project_instances = ProjectImages.objects.annotate(num_projects=Count('project')).filter(project__slug=slug)
+        all_project_images_count = project_instances.count()+1
+        print("total images count for selected project: ",all_project_images_count)
+        default_image = request.POST.get('posted_default_image')
+        deleted_images = request.POST.get('posted_deleted_images')
         print("default image is: ",default_image)
-        for deleted_image in deleted_images:
-            print(deleted_image)
+        # handling default image first
+        current_project = Project.objects.get(slug=slug)
+        current_default_image = current_project.image
+        if default_image != 'none':
+            if current_default_image != default_image:
+                default_image_path = default_image
+                just_image_path = default_image_path.split('/media')
+                Project.objects.filter(slug=slug).update(image=just_image_path[1])
+                ProjectImages.objects.create(project=current_project, image=just_image_path[1])
 
-        # selected_deleted_images = []
-        # for item in deleted_images:
-        #     if item != ",":
-        #         selected_deleted_images.append(item)
-        # print("deleted image(s) are: ", deleted_images)
-
-
-    print("context is: \n")
-    print("request is: ",request.method,"data is",request.POST)
-    print(context)
-    print("slug is: ",slug)
-
-
-
+        if deleted_images != 'none':
+            # check that the selected images are not greater than all of the project's images
+            print("deleted images are: ", deleted_images.split(','))
+            print("now deleting images ")
+            for instance in project_instances:
+                for image in deleted_images.split(','):
+                    # print("first image: ",instance.image.url)
+                    # print("second image: ",image)
+                    if instance.image.url == image:
+                        deleted_record = ProjectImages.objects.get(id=instance.id)
+                        deleted_record.delete()
+        messages.success(request,f"Project {current_project.name} was updated successfully!")
+        return redirect('projectImages', slug=slug)
 
 
     return render(request, 'project/project_images.html',

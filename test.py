@@ -91,9 +91,11 @@ if __name__ == "__main__":
     # for i in selected_pages:
     #     print("hi")
     # must end with colon
-    selected_images = '/media/project_images/temp_1_AuGu1HL.png',
-    for i in selected_images:
-        print(i)
+    # selected_images = '/media/project_images/temp_1_AuGu1HL.png',
+    # for i in selected_images:
+    #     print(i)
+
+
 
 
 
