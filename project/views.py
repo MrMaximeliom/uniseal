@@ -42,7 +42,7 @@ class ProjectViewSet(viewsets.ModelViewSet):
     permission_classes = [UnisealPermission]
     queryset = Project.objects.all().order_by('id')
     filter_backends = [DjangoFilterBackend]
-    filterset_fields = ['project']
+    filterset_fields = ['project_type','main_material']
 
 
 class ProjectImagesViewSet(viewsets.ModelViewSet):
@@ -483,7 +483,7 @@ def add_projects(request):
         form = ProjectForm(request.POST,request.FILES)
         if form.is_valid():
             project = form.save(commit=False)
-            project.execution_date = request.POST['execution_date']
+            # project.execution_date = request.POST['execution_date']
             project.save()
             project.slug = slugify(rand_slug())
             project.save()
@@ -755,17 +755,20 @@ def project_details(request,slug):
                   )
 @login_required(login_url='login')
 def project_images(request,slug=None):
+    import os
     from project.models import Project,ProjectImages
     from .forms import ProjectImagesForm
     allProjects = Project.objects.all()
+
     pureImages = {}
     context = {
         'title': _('Project Images'),
-        'all_projects': 'active',
+        'project_images_base': 'active',
         'allProjects': allProjects,
     }
     if slug != None and request.method =='GET':
         print("slug is not null")
+
         project = get_object_or_404(Project, slug=slug)
         projectImages = ProjectImages.objects.filter(project__slug=slug)
         if projectImages:
@@ -793,8 +796,7 @@ def project_images(request,slug=None):
         if request.POST.get('search_options') != 'none':
             print("searching for a project")
             chosen_project = request.POST.get('search_options')
-            # project = get_object_or_404(Project,slug=chosen_project)
-            # projectImages = ProjectImages.objects.filter(project__slug=chosen_project)
+
             return redirect('projectImages', slug=chosen_project)
         else:
             messages.error(request, "Please choose a project from the list")
@@ -825,7 +827,7 @@ def project_images(request,slug=None):
                 for f in files:
                     ProjectImages.objects.create(project=project, image=f)
                 project_name = project.name
-                messages.success(request, f"New image Added for: {project_name}")
+                messages.success(request, f"New images Added for: {project_name}")
             return redirect('projectImages', slug=slug)
         else:
             for field, items in form.errors.items():
@@ -855,12 +857,14 @@ def project_images(request,slug=None):
             print("now deleting images ")
             for instance in project_instances:
                 for image in deleted_images.split(','):
-                    # print("first image: ",instance.image.url)
-                    # print("second image: ",image)
                     if instance.image.url == image:
+                        deleted_image_path = os.path.dirname(os.path.abspath('unisealAPI'))+image
                         deleted_record = ProjectImages.objects.get(id=instance.id)
+                        print("deleted image path: ",image)
                         deleted_record.delete()
-        messages.success(request,f"Project {current_project.name} was updated successfully!")
+                        if os.path.exists(deleted_image_path):
+                            os.remove(deleted_image_path)
+        messages.success(request,f"Project {current_project.name} was successfully updated!")
         return redirect('projectImages', slug=slug)
 
 
@@ -901,10 +905,14 @@ def edit_project(request,slug):
     return render(request, 'project/edit_project.html', context)
 @login_required(login_url='login')
 def confirm_delete(request,id):
+    import os
     from project.models import Project
     obj = get_object_or_404(Project, id=id)
     try:
         obj.delete()
+        deleted_image_path = os.path.dirname(os.path.abspath('unisealAPI')) + obj.image
+        if os.path.exists(deleted_image_path):
+            os.remove(deleted_image_path)
         messages.success(request, f"Project {obj.name} deleted successfully")
     except:
         messages.error(request, f"Project {obj.name} was not deleted , please try again!")

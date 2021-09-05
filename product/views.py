@@ -735,10 +735,6 @@ def edit_products(request):
 @login_required(login_url='login')
 def product_details(request, slug):
     from product.models import Product, ProductImages
-    # from .forms import ProductForm
-    # all_products = Product.objects.all().order_by("id")
-    # paginator = Paginator(all_products, 5)
-    # fetch the object related to passed id
     product = get_object_or_404(Product, slug=slug)
     productImages = ProductImages.objects.filter(product__slug=slug)
     pureImages = list()
@@ -767,51 +763,127 @@ def product_details(request, slug):
 
 
 @login_required(login_url='login')
-def product_images(request, slug):
+def product_images(request, slug=None):
     from product.models import Product, ProductImages
+    import os
+    from django.db.models import Count
     from .forms import ProductImagesForm
-    # all_products = Product.objects.all().order_by("id")
-    # paginator = Paginator(all_products, 5)
-    # fetch the object related to passed id
-    product = get_object_or_404(Product, slug=slug)
-    productImages = ProductImages.objects.filter(product__slug=slug)
-    pureImages = list()
-    if productImages:
-        pureImages.append(product.image.url)
-        for image in productImages:
-            pureImages.append(image.image.url)
+    allProducts = Product.objects.all()
+    pureImages = {}
+    context = {
+        'title': _('Product Images'),
+        'product_images_base': 'active',
+        'allProducts': allProducts,
+    }
+    if slug != None and request.method == 'GET':
+        print("slug is not null")
+        product = get_object_or_404(Product, slug=slug)
+        productImages = ProductImages.objects.filter(product__slug=slug)
+        if productImages:
+            # pureImages.append(project.image.url)
+            pureImages.update({True: product.image.url})
+            for image in productImages:
+                # pureImages.append(image.image.url)
+                pureImages.update({image.image.url: image.image.url})
+        print(pureImages)
+        context = {
+            'title': _('Product Images'),
+            'all_products': 'active',
+            'product_data': product,
+            'product_images': pureImages,
+            'product_original_image': product.image.url,
+            'allProducts': allProducts,
+            'slug': slug
+        }
+        form = ProductImagesForm()
+        context.update({"form": form})
 
-    if request.method == 'POST':
-        form = ProductImagesForm(request.POST)
+    if request.method == 'POST' and 'search_product' in request.POST:
+        if request.POST.get('search_options') != 'none':
+            chosen_project = request.POST.get('search_options')
+            # project = get_object_or_404(Project,slug=chosen_project)
+            # projectImages = ProjectImages.objects.filter(project__slug=chosen_project)
+            return redirect('productImages', slug=chosen_project)
+        else:
+            messages.error(request, "Please choose a project from the list")
+
+    if request.method == 'POST' and 'add_images' in request.POST:
+        form = ProductImagesForm(request.POST, request.FILES)
+        product = get_object_or_404(Product, slug=slug)
+        selected_product = Product.objects.filter(slug=slug)
+        files = request.FILES.getlist('image')
+        form.product = selected_product
         if form.is_valid():
-            form.save()
-            # country_name = form.cleaned_data.get('name')
-            # messages.success(request, f"New Product Image Added: {country_name}")
+            if len(files) == 1:
+
+                updated_product = form.save(commit=False)
+                updated_product.image = request.FILES['image']
+                # updated_project.project = selected_project.id
+                updated_product.slug = slugify(rand_slug())
+                # updated_project.save()
+                product_name = product.name
+                messages.success(request, f"New image Added for: {product_name}")
+
+            else:
+                for f in files:
+                    ProductImages.objects.create(product=product, image=f)
+                product_name = product.name
+                messages.success(request, f"New images Added for: {product_name}")
+            return redirect('productImages', slug=slug)
         else:
             for field, items in form.errors.items():
                 for item in items:
                     messages.error(request, '{}: {}'.format(field, item))
-    else:
-        form = ProductImagesForm()
+
+    if request.method == 'POST' and 'confirm_changes' in request.POST:
+        product_instances = ProductImages.objects.annotate(num_products=Count('product')).filter(product__slug=slug)
+        all_product_images_count = product_instances.count() + 1
+        default_image = request.POST.get('posted_default_image')
+        deleted_images = request.POST.get('posted_deleted_images')
+        print("default image is: ", default_image)
+        # handling default image first
+        current_product = Product.objects.get(slug=slug)
+        current_default_image = current_product.image
+        if default_image != 'none':
+            if current_default_image != default_image:
+                default_image_path = default_image
+                just_image_path = default_image_path.split('/media')
+                Product.objects.filter(slug=slug).update(image=just_image_path[1])
+                ProductImages.objects.create(product=current_product, image=just_image_path[1])
+
+        if deleted_images != 'none':
+            # check that the selected images are not greater than all of the project's images
+            print("deleted images are: ", deleted_images.split(','))
+            print("now deleting images ")
+            for instance in product_instances:
+                for image in deleted_images.split(','):
+                    # print("first image: ",instance.image.url)
+                    # print("second image: ",image)
+                    if instance.image.url == image:
+                        deleted_image_path = os.path.dirname(os.path.abspath('unisealAPI'))+image
+                        deleted_record = ProductImages.objects.get(id=instance.id)
+                        deleted_record.delete()
+                        if os.path.exists(deleted_image_path):
+                            os.remove(deleted_image_path)
+
+        messages.success(request, f"Product {current_product.name} was successfully updated!")
+        return redirect('productImages', slug=slug)
 
     return render(request, 'product/product_images.html',
-                  {
-                      'title': _('Product Images'),
-                      'all_products': 'active',
-                      'product_data': product,
-                      'product_images': pureImages,
-                      'product_original_image': product.image.url,
-                      'form': form
+                  context
 
-                  }
                   )
 
 
 def confirm_delete(request, id):
     from product.models import Product
+    import os
     obj = get_object_or_404(Product, id=id)
     try:
         obj.delete()
+        deleted_image_path = os.path.dirname(os.path.abspath('unisealAPI')) + obj.image
+        if os.path.exists(deleted_image_path):
+            os.remove(deleted_image_path)
         messages.success(request, f"Product {obj.name} deleted successfully")
     except:
         messages.error(request, f"Product {obj.name} was not deleted , please try again!")

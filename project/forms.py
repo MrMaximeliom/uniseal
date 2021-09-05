@@ -38,9 +38,6 @@ class ProjectForm(forms.ModelForm):
 
 class ProjectImagesForm(forms.ModelForm):
     from project.models import Project
-    # project = forms.ChoiceField(required=False,
-    #     choices=[(x.name) for x in Project.objects.all()]
-    # )
     image = forms.FileField(widget=forms.ClearableFileInput(attrs={'multiple': True}))
 
     project = forms.ModelMultipleChoiceField(

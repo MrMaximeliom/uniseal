@@ -26,7 +26,7 @@
 <div class="col-auto">
 <form class="row g-2 mb-3" action="" method="post" id="searchForm" autocomplete="off">
     {% csrf_token %}
-    <div class="col-2 mr-5">
+    <div class="col-3">
     <select class="form-select search-select" id="searchBy" name="search_options" aria-label="Default select example">
   <option selected value="none">{% trans '-- Select Project --' %}</option>
         {% for project in allProjects %}
@@ -62,11 +62,11 @@
   <div class="card-body">
 <div class="form-check form-check-inline">
   <input class="form-check-input input-default-js collect-default-image-js" type="checkbox" id="inlineCheckbox2"  value="{{value}}"  name="set_default" {% if key == True %} checked {% endif %}>
-  <label class="form-check-label" for="inlineCheckbox2">Set As Default Image?</label>
+  <label class="form-check-label" for="inlineCheckbox2">{% trans 'Set As Default Image?' %}</label>
 </div>
 <div class="form-check form-check-inline">
   <input class="form-check-input input-delete-js collect-deleted-images-js" type="checkbox" id="inlineCheckbox"  value="{{value}}"  name="delete_image" {% if key == True %} disabled {% endif %} >
-  <label class="form-check-label delete-project-img" for="inlineCheckbox">Delete Image?</label>
+  <label class="form-check-label delete-project-img" for="inlineCheckbox">{% trans 'Delete Image?' %}</label>
 </div>
 
   </div>
@@ -85,11 +85,12 @@
 
 <div class="form-check form-check-inline">
   <input class="form-check-input input-default-js collect-default-image-js " type="checkbox" id="inlineCheckbox3" value="{{value}}" name="set_default" checked>
-  <label class="form-check-label " for="inlineCheckbox3">Set As Default Image?</label>
+  <label class="form-check-label " for="inlineCheckbox3">{% trans 'Set As Default Image?' %}</label>
+
 </div>
 <div class="form-check form-check-inline">
   <input class="form-check-input input-delete-js collect-deleted-images-js" type="checkbox"  id="inlineCheckbox1"  value="{{value}}"  name="delete_image">
-  <label class="form-check-label delete-project-img" for="inlineCheckbox1">Delete Image?</label>
+  <label class="form-check-label delete-project-img" for="inlineCheckbox1">{% trans 'Delete Image?' %}</label>
 </div>
 
   </div>
@@ -204,8 +205,8 @@
     </div>
   </div>
                <div class="modal-footer">
-        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-        <button type="submit" class="btn btn-primary" value="add_images" name="add_images">Save changes</button>
+        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">{% trans 'Close' %}</button>
+        <button type="submit" class="btn btn-primary" value="add_images" name="add_images">{% trans 'Save changes'%}</button>
       </div>
          </form>
       </div>

@@ -94,6 +94,12 @@ if __name__ == "__main__":
     # selected_images = '/media/project_images/temp_1_AuGu1HL.png',
     # for i in selected_images:
     #     print(i)
+#    /media/product_images/ehab_1.jpg
+    if os.path.exists("/media/product_images/ehab_1.jpg"):
+        print("yeah it is")
+    print(os.path.dirname(os.path.abspath(__file__)))
+        # os.remove("demofile.txt")
+
 
 
 

@@ -23,24 +23,52 @@
                 </nav>
                 {% endblock breadcrumb_content %}
 {% block content %}
+<div class="col-auto">
+<form class="row g-2 mb-3" action="" method="post" id="searchForm" autocomplete="off">
+    {% csrf_token %}
+    <div class="col-3">
 
+    <select class="form-select search-select" id="searchBy" name="search_options" aria-label="Default select example">
+  <option selected value="none">{% trans '-- Select Product --' %}</option>
+        {% for product in allProducts %}
+          <option value="{{product.slug}}">{{product.name}}</option>
+        {% endfor %}
+
+</select>
+                <span style="display:none;color:red;" id="selection_error"></span>
+
+    </div>
+
+
+  <div class="col-auto">
+    <button type="submit" class="btn btn-primary mb-3" id="searchButton" value="search_product" name="search_product">{% trans 'View Images' %}</button>
+
+  </div>
+</form>
+
+
+
+    </div>
+{% if product_data %}
 <div class="row card-group">
   {% if product_images|length > 1 %}
    <h1 class="h2">{% trans 'Images for ' %}{{product_data.name}}</h1>
 
-{% for image in product_images %}
+{% for key,value in product_images.items %}
+<form class=" row" method="post" action="" enctype="multipart/form-data" autocomplete="off">
+    {% csrf_token %}
 
  <div class="col-4">
                 <div class="card mb-5 ml-2" >
-  <img class="card-img-top card-image-product" src="{{image}}" alt="Card image cap">
+  <img class="card-img-top card-image-product" src="{{value}}" alt="Card image cap">
   <div class="card-body">
 <div class="form-check form-check-inline">
-  <input class="form-check-input input-default-js" type="checkbox" id="inlineCheckbox2" value="option1">
-  <label class="form-check-label" for="inlineCheckbox2">Set As Default Image?</label>
+  <input class="form-check-input input-default-js collect-default-image-js" type="checkbox" id="inlineCheckbox2"  value="{{value}}"  name="set_default" {% if key == True %} checked {% endif %}>
+  <label class="form-check-label" for="inlineCheckbox2">{% trans 'Set As Default Image?' %}</label>
 </div>
 <div class="form-check form-check-inline">
-  <input class="form-check-input input-delete-js" type="checkbox" id="inlineCheckbox" value="option1">
-  <label class="form-check-label delete-product-img" for="inlineCheckbox">Delete Image?</label>
+  <input class="form-check-input input-delete-js collect-deleted-images-js" type="checkbox" id="inlineCheckbox" value="{{value}}"  name="delete_image" {% if key == True %} disabled {% endif %}>
+  <label class="form-check-label delete-product-img" for="inlineCheckbox">{% trans 'Delete Image?' %}</label>
 </div>
 
   </div>
@@ -58,12 +86,12 @@
   <div class="card-body">
 
 <div class="form-check form-check-inline">
-  <input class="form-check-input input-default-js" type="checkbox" id="inlineCheckbox3" value="option1">
-  <label class="form-check-label " for="inlineCheckbox3">Set As Default Image?</label>
+  <input class="form-check-input input-default-js collect-default-image-js" type="checkbox" id="inlineCheckbox3" value="{{value}}" name="set_default" checked>
+  <label class="form-check-label " for="inlineCheckbox3">{% trans 'Set As Default Image?' %}</label>
 </div>
 <div class="form-check form-check-inline">
-  <input class="form-check-input input-delete-js" type="checkbox"  id="inlineCheckbox1" value="option1">
-  <label class="form-check-label delete-product-img" for="inlineCheckbox1">Delete Image?</label>
+  <input class="form-check-input input-delete-js collect-deleted-images-js" type="checkbox"  id="inlineCheckbox1" value="{{value}}"  name="delete_image">
+  <label class="form-check-label delete-product-img" for="inlineCheckbox1">{% trans 'Delete Image?' %}</label>
 </div>
 
   </div>
@@ -72,15 +100,6 @@
   {% endif %}
 
  <div class="col-4">
-
-
-<!--<figure class="snip1572">-->
-<!--  <img src="https://s3-us-west-2.amazonaws.com/s.cdpn.io/331810/sample102.jpg" alt="sample102" />-->
-<!--  <figcaption>-->
-<!--    <h3>{% trans 'Add Image' %}</h3>-->
-<!--  </figcaption>-->
-<!--  <a href="#"></a>-->
-<!--</figure>-->
                      <div class="card mb-5 ml-2" >
                          <figure class="snip1572">
   <img src="{% static 'product/img/addImage.png' %}" class="card-img-top" alt="sample102" />
@@ -93,11 +112,52 @@
 
 </div>
  </div>
-         <div >
-    <button type="submit" class="btn btn-primary ">{% trans 'Update' %}</button>
-  </div>
+                  <div >
+       <input hidden type="text" name="deleted_images" id="deleted_images" value="none">
+      <input hidden type="text" name="default_images" id="default_images" value="none">
 
-<!-- Modal -->
+<!--    <button type="submit" class="btn btn-primary" name="updating_images">{% trans 'Update' %}</button>-->
+    <button type="button" class="btn btn-primary" name="updating_images" id="updating_images" data-bs-toggle="modal" data-bs-target="#confirmModal">{% trans 'Update' %}</button>
+  </div>
+       </form>
+        <div class="modal fade" id="confirmModal" tabindex="-1" aria-labelledby="confirmModalLabel" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="confirmModalLabel">{% trans 'Confirm Updates' %}</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body">
+            <form class="card-form" enctype="multipart/form-data" method="post">
+             {% csrf_token %}
+
+          <h3 style="display:none;" id="default_image">{% trans 'Are You Sure You want to set this image as the default Image?' %}</h3>
+          <div id="confirm-default-image">
+
+          </div>
+          <h3 style="display:none;" id="delete_images">{% trans 'Are You Sure You want to delete these images?' %}</h3>
+           <div class="confirm-deleted-images" id="confirm-delete-images">
+
+          </div>
+          <h3 style="display:none;" id="delete_image">{% trans 'Are You Sure You want to delete this image?' %}</h3>
+           <div id="confirm-delete-image">
+
+          </div>
+                <div class="modal-footer">
+                        <input hidden type="text" name="posted_deleted_images" id="posted_deleted_images" value="none">
+      <input hidden type="text" name="posted_default_image" id="posted_default_image" value="none">
+        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">{% trans 'Close' %}</button>
+        <button type="submit" class="btn btn-primary" value="confirm_changes" name="confirm_changes">{% trans 'Confirm Changes' %}</button>
+      </div>
+         </form>
+
+      </div>
+
+
+    </div>
+  </div>
+</div>
+
 <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
   <div class="modal-dialog">
     <div class="modal-content">
@@ -107,21 +167,40 @@
       </div>
       <div class="modal-body">
           <h3>{% trans 'You can add multiple images' %}</h3>
-         <form class="card-form" enctype="multipart/form-data">
+         <form class="card-form" enctype="multipart/form-data" action="" method="post">
+             {% csrf_token %}
   <div class="mb-4 row">
     <div class="col-md-6">
-                     <div class="mb-3">
-  <label for="exampleFormControlInput1" class="form-label">Product Image</label>
-  <input type="file"  id="exampleFormControlInput1" multiple="multiple">
+           <div class="mb-3">
+                         <div class="col-sm-6">
+             {{form.image|as_crispy_field}}
   <div id="new-images-js">
 
   </div>
-</div>
+                         </div>
+           </div>
+
     </div>
   </div>
+                      <div class="mb-3">
+                <div class="col-sm-6">
+                 <select class="form-select search-select" id="id_product" name="product"  aria-label="Default select example" hidden>
+        {% for product in allProducts %}
+                     {% if slug == product.slug %}
+                               <option value="{{product.pk}}" selected>{{product.name}}</option>
+
+                     {% else %}
+                               <option value="{{product.pk}}">{{product.name}}</option>
+
+                     {% endif %}
+        {% endfor %}
+
+</select>
+    </div>
+         </div>
               <div class="modal-footer">
-        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-        <button type="button" class="btn btn-primary">Save changes</button>
+        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">{% trans 'Close' %}</button>
+        <button type="submit" class="btn btn-primary" value="add_images" name="add_images" >{% trans 'Save changes'%}</button>
       </div>
          </form>
       </div>
@@ -133,4 +212,8 @@
 
 
 </div>
+{% else %}
+<h3>{% trans 'Please choose a product to view its images' %}</h3>
+{% endif %}
+
 {% endblock %}
