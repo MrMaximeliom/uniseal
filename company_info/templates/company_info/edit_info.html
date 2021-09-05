@@ -74,6 +74,11 @@
 
 
   </div>
+              <div class="mb-4 row">
+                            <div class="col-sm-6">
+                                {{form.about|as_crispy_field}}
+                            </div>
+              </div>
           <div class="col-auto">
                   <a href="{% url 'CompanyDetails' %}" class="btn btn-primary mr-3 ">{% trans 'Back' %}</a>
 

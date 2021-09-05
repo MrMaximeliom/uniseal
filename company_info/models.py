@@ -96,6 +96,13 @@ class CompanyInfo(models.Model):
         verbose_name=_('Company Slug')
 
     )
+    about = models.TextField(
+
+        verbose_name=_('About Company'),
+        blank=True,
+        null=True,
+
+    )
 
     def __str__(self):
         return self.company_name

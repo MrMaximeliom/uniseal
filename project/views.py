@@ -917,13 +917,21 @@ def edit_project(request,slug):
 @login_required(login_url='login')
 def confirm_delete(request,id):
     import os
-    from project.models import Project
+    from project.models import Project,ProjectImages
     obj = get_object_or_404(Project, id=id)
     try:
         deleted_image_path = os.path.dirname(os.path.abspath('unisealAPI')) + obj.image.url
         print("deleted image path: ",deleted_image_path)
         if os.path.exists(deleted_image_path):
             os.remove(deleted_image_path)
+        # get other images for this product and delete them
+        other_instances = ProjectImages.objects.annotate(num_ins=Count('project')).filter(project=obj)
+        for instance in other_instances:
+            deleted_image = os.path.dirname(os.path.abspath('unisealAPI')) + instance.image.url
+            if os.path.exists(deleted_image):
+                os.remove(deleted_image)
+
+
         obj.delete()
 
         messages.success(request, f"Project << {obj.name} >> deleted successfully")

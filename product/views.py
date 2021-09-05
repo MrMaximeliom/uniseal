@@ -887,8 +887,16 @@ def confirm_delete(request, id):
     import os
     obj = get_object_or_404(Product, id=id)
     try:
+        from product.models import ProductImages
+        from django.db.models import Count
         deleted_image_path = os.path.dirname(os.path.abspath('unisealAPI')) + obj.image.url
         deleted_file_path = os.path.dirname(os.path.abspath('unisealAPI')) + obj.product_file.url
+        # get other images for this product and delete them
+        other_instances = ProductImages.objects.annotate(num_ins=Count('product')).filter(product=obj)
+        for instance in other_instances:
+            deleted_image = os.path.dirname(os.path.abspath('unisealAPI')) + instance.image.url
+            if os.path.exists(deleted_image):
+                os.remove(deleted_image)
 
         if os.path.exists(deleted_image_path):
             os.remove(deleted_image_path)
