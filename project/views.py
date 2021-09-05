@@ -250,7 +250,8 @@ def all_projects(request):
     PROJECT_TYPE_SYNTAX_ERROR,
     BENEFICIARY_NAME_SYNTAX_ERROR,
     MAIN_MATERIAL_SYNTAX_ERROR,
-    EXECUTION_DATE_ERROR
+    EXECUTION_DATE_ERROR,
+    PROJECT_NOT_FOUND
 
     )
     search_result = ''
@@ -473,7 +474,8 @@ def all_projects(request):
                           "main_material_error": MAIN_MATERIAL_SYNTAX_ERROR,
                           "type_error":PROJECT_TYPE_SYNTAX_ERROR,
                           "execution_date_error":EXECUTION_DATE_ERROR,
-                      }
+                      },
+                      'not_found':PROJECT_NOT_FOUND,
                   }
                   )
 @login_required(login_url='login')
@@ -513,12 +515,15 @@ def delete_projects(request):
         PROJECT_TYPE_SYNTAX_ERROR,
         BENEFICIARY_NAME_SYNTAX_ERROR,
         MAIN_MATERIAL_SYNTAX_ERROR,
-        EXECUTION_DATE_ERROR
+        EXECUTION_DATE_ERROR,
+        PROJECT_NOT_FOUND
+
 
     )
     search_result = ''
     if request.method == "POST" and 'clear' not in request.POST and 'createExcel' not in request.POST:
         searchManObj.setSearch(True)
+        print("first")
         if request.POST.get('search_options') == 'project':
             search_message = request.POST.get('search_phrase')
             search_result = Project.objects.filter(name__icontains=search_message).order_by('id')
@@ -560,15 +565,18 @@ def delete_projects(request):
                            "Please choose an item from list , then write search phrase to search by it!")
             searchManObj.setSearchError(True)
     if request.method == "GET" and 'page' not in request.GET and not searchManObj.getSearch():
+        print("second")
         all_projects = Project.objects.all().order_by("id")
         searchManObj.setPaginator(all_projects)
         searchManObj.setSearch(False)
     if request.method == "POST" and request.POST.get('clear') == 'clear':
+        print("third")
         all_projects = Project.objects.all().order_by("id")
         searchManObj.setPaginator(all_projects)
         searchManObj.setSearch(False)
 
     if request.GET.get('page'):
+        print("fourth")
         # Grab the current page from query parameter
         page = int(request.GET.get('page'))
     else:
@@ -607,7 +615,8 @@ def delete_projects(request):
                           "main_material_error": MAIN_MATERIAL_SYNTAX_ERROR,
                           "type_error": PROJECT_TYPE_SYNTAX_ERROR,
                           "execution_date_error": EXECUTION_DATE_ERROR,
-                      }
+                      },
+                      'not_found': PROJECT_NOT_FOUND,
                   }
                   )
 @login_required(login_url='login')
@@ -620,7 +629,8 @@ def edit_projects(request):
     PROJECT_TYPE_SYNTAX_ERROR,
     BENEFICIARY_NAME_SYNTAX_ERROR,
     MAIN_MATERIAL_SYNTAX_ERROR,
-    EXECUTION_DATE_ERROR
+    EXECUTION_DATE_ERROR,
+    PROJECT_NOT_FOUND
 
     )
     search_result = ''
@@ -715,7 +725,8 @@ def edit_projects(request):
                           "main_material_error": MAIN_MATERIAL_SYNTAX_ERROR,
                           "type_error": PROJECT_TYPE_SYNTAX_ERROR,
                           "execution_date_error": EXECUTION_DATE_ERROR,
-                      }
+                      },
+                      'not_found': PROJECT_NOT_FOUND,
                   }
                   )
 @login_required(login_url='login')
@@ -909,13 +920,15 @@ def confirm_delete(request,id):
     from project.models import Project
     obj = get_object_or_404(Project, id=id)
     try:
-        obj.delete()
-        deleted_image_path = os.path.dirname(os.path.abspath('unisealAPI')) + obj.image
+        deleted_image_path = os.path.dirname(os.path.abspath('unisealAPI')) + obj.image.url
+        print("deleted image path: ",deleted_image_path)
         if os.path.exists(deleted_image_path):
             os.remove(deleted_image_path)
-        messages.success(request, f"Project {obj.name} deleted successfully")
+        obj.delete()
+
+        messages.success(request, f"Project << {obj.name} >> deleted successfully")
     except:
-        messages.error(request, f"Project {obj.name} was not deleted , please try again!")
+        messages.error(request, f"Project << {obj.name} >> was not deleted , please try again!")
 
 
     return redirect('deleteProjects')

@@ -265,7 +265,8 @@ def all_products(request):
         EMPTY_SEARCH_PHRASE,
     PRODUCT_NAME_SYNTAX_ERROR,
     CATEGORY_NAME_SYNTAX_ERROR,
-    SUPPLIER_NAME_SYNTAX_ERROR
+    SUPPLIER_NAME_SYNTAX_ERROR,
+    PRODUCT_NOT_FOUND
 
     )
     all_products = Product.objects.all().order_by("id")
@@ -280,7 +281,7 @@ def all_products(request):
         if request.POST.get('search_options') == 'product':
             print('here now in product search')
             search_message = request.POST.get('search_phrase')
-            search_result = Product.objects.filter(name=search_message).order_by('id')
+            search_result = Product.objects.filter(name__icontains=search_message).order_by('id')
             print("search results ", search_result)
             searchManObj.setPaginator(search_result)
             searchManObj.setSearchPhrase(search_message)
@@ -289,7 +290,7 @@ def all_products(request):
         elif request.POST.get('search_options') == 'category':
             print('here now in category search')
             search_phrase = request.POST.get('search_phrase')
-            search_result = Product.objects.filter(category__name=search_phrase).order_by("id")
+            search_result = Product.objects.filter(category__name__icontains=search_phrase).order_by("id")
             print("search results ",search_result)
             searchManObj.setPaginator(search_result)
             searchManObj.setSearchPhrase(search_phrase)
@@ -299,7 +300,7 @@ def all_products(request):
             print('here now in supplier search')
             search_phrase = request.POST.get('search_phrase')
             print('search phrase is ',search_phrase)
-            search_result = Product.objects.filter(supplier__name=search_phrase).order_by("id")
+            search_result = Product.objects.filter(supplier__name__icontains=search_phrase).order_by("id")
             print("search results ", search_result)
             searchManObj.setPaginator(search_result)
             searchManObj.setSearchPhrase(search_phrase)
@@ -467,7 +468,8 @@ def all_products(request):
                           "product_error": PRODUCT_NAME_SYNTAX_ERROR,
                           "category_error": CATEGORY_NAME_SYNTAX_ERROR,
                           "supplier_error": SUPPLIER_NAME_SYNTAX_ERROR,
-                      }
+                      },
+                      'not_found':PRODUCT_NOT_FOUND,
                   }
                   )
 
@@ -482,9 +484,9 @@ def add_products(request):
             product.slug = slugify(rand_slug())
             product.save()
             product_name = form.cleaned_data.get('name')
+            messages.success(request,f"Product << {product_name} >> added successfully!")
 
         else:
-            print('there was an error dude!')
             for field, items in form.errors.items():
                 for item in items:
                     messages.error(request, '{}: {}'.format(field, item))
@@ -506,13 +508,15 @@ def add_products(request):
 @login_required(login_url='login')
 def delete_products(request):
     from product.models import Product
+
     all_products = Product.objects.all().order_by('id')
     paginator = Paginator(all_products, 5)
     from Util.search_form_strings import (
         EMPTY_SEARCH_PHRASE,
         PRODUCT_NAME_SYNTAX_ERROR,
         CATEGORY_NAME_SYNTAX_ERROR,
-        SUPPLIER_NAME_SYNTAX_ERROR
+        SUPPLIER_NAME_SYNTAX_ERROR,
+    PRODUCT_NOT_FOUND
 
     )
     search_result = ''
@@ -521,7 +525,7 @@ def delete_products(request):
         if request.POST.get('search_options') == 'product':
             print('here now in product search')
             search_message = request.POST.get('search_phrase')
-            search_result = Product.objects.filter(name=search_message).order_by('id')
+            search_result = Product.objects.filter(name__icontains=search_message).order_by('id')
             print("search results ", search_result)
             searchManObj.setPaginator(search_result)
             searchManObj.setSearchPhrase(search_message)
@@ -530,7 +534,7 @@ def delete_products(request):
         elif request.POST.get('search_options') == 'category':
             print('here now in category search')
             search_phrase = request.POST.get('search_phrase')
-            search_result = Product.objects.filter(category__name=search_phrase).order_by("id")
+            search_result = Product.objects.filter(category__name__icontains=search_phrase).order_by("id")
             print("search results ", search_result)
             searchManObj.setPaginator(search_result)
             searchManObj.setSearchPhrase(search_phrase)
@@ -540,7 +544,7 @@ def delete_products(request):
             print('here now in supplier search')
             search_phrase = request.POST.get('search_phrase')
             print('search phrase is ', search_phrase)
-            search_result = Product.objects.filter(supplier__name=search_phrase).order_by("id")
+            search_result = Product.objects.filter(supplier__name__icontains=search_phrase).order_by("id")
             print("search results ", search_result)
             searchManObj.setPaginator(search_result)
             searchManObj.setSearchPhrase(search_phrase)
@@ -595,7 +599,8 @@ def delete_products(request):
             "product_error": PRODUCT_NAME_SYNTAX_ERROR,
             "category_error": CATEGORY_NAME_SYNTAX_ERROR,
             "supplier_error": SUPPLIER_NAME_SYNTAX_ERROR,
-        }
+        },
+        'not_found':PRODUCT_NOT_FOUND,
     }
     return render(request, 'product/delete_products.html', context)
 
@@ -618,7 +623,7 @@ def edit_product(request, slug):
     if product_form.is_valid():
         product_form.save()
         product_name = product_form.cleaned_data.get('name')
-        messages.success(request, f"Successfully Updated : {product_name} Data")
+        messages.success(request, f"Successfully Updated : << {product_name} >> Data")
     else:
         for field, items in product_form.errors.items():
             for item in items:
@@ -642,7 +647,8 @@ def edit_products(request):
         EMPTY_SEARCH_PHRASE,
         PRODUCT_NAME_SYNTAX_ERROR,
         CATEGORY_NAME_SYNTAX_ERROR,
-        SUPPLIER_NAME_SYNTAX_ERROR
+        SUPPLIER_NAME_SYNTAX_ERROR,
+    PRODUCT_NOT_FOUND
 
     )
     search_result = ''
@@ -653,7 +659,7 @@ def edit_products(request):
         if request.POST.get('search_options') == 'product':
             print('here now in product search')
             search_message = request.POST.get('search_phrase')
-            search_result = Product.objects.filter(name=search_message).order_by('id')
+            search_result = Product.objects.filter(name__icontains=search_message).order_by('id')
             print("search results ", search_result)
             searchManObj.setPaginator(search_result)
             searchManObj.setSearchPhrase(search_message)
@@ -662,7 +668,7 @@ def edit_products(request):
         elif request.POST.get('search_options') == 'category':
             print('here now in category search')
             search_phrase = request.POST.get('search_phrase')
-            search_result = Product.objects.filter(category__name=search_phrase).order_by("id")
+            search_result = Product.objects.filter(category__name__icontains=search_phrase).order_by("id")
             print("search results ", search_result)
             searchManObj.setPaginator(search_result)
             searchManObj.setSearchPhrase(search_phrase)
@@ -672,7 +678,7 @@ def edit_products(request):
             print('here now in supplier search')
             search_phrase = request.POST.get('search_phrase')
             print('search phrase is ', search_phrase)
-            search_result = Product.objects.filter(supplier__name=search_phrase).order_by("id")
+            search_result = Product.objects.filter(supplier__name__icontains=search_phrase).order_by("id")
             print("search results ", search_result)
             searchManObj.setPaginator(search_result)
             searchManObj.setSearchPhrase(search_phrase)
@@ -727,7 +733,8 @@ def edit_products(request):
                           "product_error": PRODUCT_NAME_SYNTAX_ERROR,
                           "category_error": CATEGORY_NAME_SYNTAX_ERROR,
                           "supplier_error": SUPPLIER_NAME_SYNTAX_ERROR,
-                      }
+                      },
+                      'not_found':PRODUCT_NOT_FOUND
                   }
                   )
 
@@ -880,12 +887,17 @@ def confirm_delete(request, id):
     import os
     obj = get_object_or_404(Product, id=id)
     try:
-        obj.delete()
-        deleted_image_path = os.path.dirname(os.path.abspath('unisealAPI')) + obj.image
+        deleted_image_path = os.path.dirname(os.path.abspath('unisealAPI')) + obj.image.url
+        deleted_file_path = os.path.dirname(os.path.abspath('unisealAPI')) + obj.product_file.url
+
         if os.path.exists(deleted_image_path):
             os.remove(deleted_image_path)
-        messages.success(request, f"Product {obj.name} deleted successfully")
+        if os.path.exists(deleted_file_path):
+            os.remove(deleted_file_path)
+        obj.delete()
+
+        messages.success(request, f"Product << {obj.name} >> deleted successfully")
     except:
-        messages.error(request, f"Product {obj.name} was not deleted , please try again!")
+        messages.error(request, f"Product << {obj.name} >> was not deleted , please try again!")
 
     return redirect('deleteProducts')

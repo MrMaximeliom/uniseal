@@ -30,3 +30,7 @@ CITY_NAME_SYNTAX_ERROR = _("City name contains alphanumeric English letters only
 AREA_NAME_SYNTAX_ERROR = _("Area name contains alphanumeric English letters only!")
 # used by selling point pages
 POINT_NAME_SYNTAX_ERROR = _("Selling point name contains alphanumeric English letters only!")
+# Not found errors
+PRODUCT_NOT_FOUND = _("Sorry no products found that matches your search!")
+# Not found errors
+PROJECT_NOT_FOUND = _("Sorry no projects found that matches your search!")

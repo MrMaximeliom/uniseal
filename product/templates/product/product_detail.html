@@ -67,17 +67,22 @@
     </div>
 
     </div>
+    <div class="mb-2 mt-3">
+        <h4>{% trans 'Product Technical Sheet' %}</h4>
+        <a class="btn btn-primary" href="{{product_data.product_file.url}}" target="_blank">{% trans 'View Sheet' %}</a>
+
+    </div>
 <div class="mb-3 mt-5 product-description">
     <h4>{% trans 'Product Description' %}</h4>
     <p class="description-paragraph">{{product_data.description}}</p>
 </div>
     <div class="row">
            <div class="col-sm-6">
-                            <a href="{% url 'allProducts'  %} " class="btn btn-primary mr-3">Back</a>
+                            <a href="{% url 'allProducts'  %} " class="btn btn-primary mr-3">{% trans 'Back' %}</a>
 
 
 
-                        <a href="{% url 'editProduct' slug=product_data.slug %} " class="btn btn-primary mr-3">Update</a>
+                        <a href="{% url 'editProduct' slug=product_data.slug %} " class="btn btn-primary mr-3">{% trans 'Update' %}</a>
 
     </div>
 

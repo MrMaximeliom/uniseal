@@ -37,13 +37,13 @@
     <input type="text" class="form-control" name="search_phrase" id="searchPhrase" placeholder="Search ..">
           <span style="display:none;color:red;" id="search_phrase_error"></span>
   </div>
-       <div class="col-2 mr-2" style="display:none;" id="search_phrase_date_holder">
+       <div class="col-3" style="display:none;" id="search_phrase_date_holder">
             <label for="searchPhrase" class="visually-hidden">{% trans 'Search Phrase' %}</label>
            <input type= "text" class="form-control" id="searchPhraseDate" name="search_phrase_date" placeholder="Select Execution Year">
           <span style="display:none;color:red;" id="search_phrase_date_error"></span>
      </div>
 
-    <div class="col-2 mr-5">
+    <div class="col-3">
     <select class="form-select search-select" id="searchBy" name="search_options" aria-label="Default select example">
   <option selected value="none">{% trans 'Search By' %}</option>
   <option value="project">{% trans 'Project Name' %}</option>
@@ -138,6 +138,6 @@
 {% endif %}
 {% if search and search_result.count == 0 and search_result != "" %}
 
-<h3 style="color:red;">{% trans 'Sorry no projects found that matches your search!' %}</h3>
+<h3 style="color:red;">{{not_found}}</h3>
 {% endif %}
 {% endblock content %}

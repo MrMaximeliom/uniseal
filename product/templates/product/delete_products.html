@@ -34,7 +34,7 @@
           <span style="display:none;color:red;" id="search_phrase_error"></span>
   </div>
 
-    <div class="col-2 mr-5">
+    <div class="col-3">
     <select class="form-select search-select" id="searchBy" name="search_options" aria-label="Default select example">
   <option selected value="none">{% trans 'Search By' %}</option>
   <option value="product">{% trans 'Product Name' %}</option>
@@ -216,7 +216,7 @@
 <h3>{% trans 'There is no products yet .. you can add new ones from ' %} <a href="{% url 'addProducts' %}">{% trans 'Here' %}</a></h3>
 {% endif %}
 {% if search and search_result.count == 0 and search_result != "" %}
-<h3 style="color:red;">{% trans 'Sorry No Users found that matches your search!' %}</h3>
+<h3 style="color:red;">{{not_found}}</h3>
 {% endif %}
 
 
