@@ -112,7 +112,6 @@ urlpatterns = [
     path('dashboard/CompanyInfo/', include(company_urls)),
     path('dashboard/ProjectApplications/', include(application_urls)),
     path('dashboard/IndustryUpdates/', include(uppdate_urls)),
-    path('dashboard/testing/', dashboard.views.testing_view,name='testingPage'),
     path('login/', TokenObtainPairView.as_view(), name='token_obtain_pair'),
     path('login/refresh/', TokenRefreshView.as_view(), name='token_refresh'),
     path('api-auth/', include('rest_framework.urls', namespace='rest_framework')),

@@ -6,7 +6,7 @@ from django.contrib import messages
 from django.utils.translation import gettext_lazy as _
 from Util.utils import rand_slug
 from Util.utils import SearchMan, createExelFile, ReportMan, delete_temp_folder
-from django.contrib.auth.decorators import login_required
+from django.contrib.admin.views.decorators import staff_member_required
 
 from address.models import Area
 areas = Area.objects.annotate(num=Count('city')).order_by('-num')
@@ -62,7 +62,7 @@ def prepare_query_city(paginator_obj, headers=None):
     return headers_here, cities,areas
 search_man_areas = SearchMan("Area")
 report_man_areas = ReportMan()
-@login_required(login_url='login')
+@staff_member_required(login_url='login')
 def all_areas(request):
     paginator = Paginator(areas, 5)
     from Util.search_form_strings import (
@@ -247,7 +247,7 @@ def all_areas(request):
                   )
 
 
-@login_required(login_url='login')
+@staff_member_required(login_url='login')
 def add_areas(request):
     from .forms import AreaForm
     if request.method == 'POST':
@@ -274,7 +274,7 @@ def add_areas(request):
     return render(request, 'address/add_areas.html', context)
 
 
-@login_required(login_url='login')
+@staff_member_required(login_url='login')
 def delete_areas(request):
     paginator = Paginator(areas, 5)
     from Util.search_form_strings import (
@@ -358,7 +358,7 @@ def delete_areas(request):
                   )
 
 
-@login_required(login_url='login')
+@staff_member_required(login_url='login')
 def edit_areas(request):
     paginator = Paginator(areas, 5)
     from Util.search_form_strings import (

@@ -1,13 +1,13 @@
-from django.contrib.auth.forms import AuthenticationForm
 from django.shortcuts import render
 from django.utils.translation import gettext_lazy  as _
 from django.contrib import messages
 from django.shortcuts import redirect
-from django.contrib.auth import logout, login
+from django.contrib.auth import logout, login,authenticate
+
 # Create your views here.
 from django.contrib.auth import views as auth_views
-from django.contrib.auth.decorators import login_required
-@login_required(login_url='login')
+from django.contrib.admin.views.decorators import staff_member_required
+@staff_member_required(login_url='login')
 def dashboard(request):
     from accounts.models import User
     from product.models import Product
@@ -40,8 +40,18 @@ class LoginView(auth_views.LoginView):
     }
 
 
-def testing_view(request):
-    return render(request,'dashboard/testing.html')
+
+def my_view(request):
+    username = request.POST['username']
+    password = request.POST['password']
+    user = authenticate(request, username=username, password=password)
+    if user is not None:
+        login(request, user)
+        # Redirect to a success page.
+        ...
+    else:
+        # Return an 'invalid login' error message.
+        ...
 
 
 
