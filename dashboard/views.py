@@ -33,6 +33,7 @@ def dashboard(request):
 
 class LoginView(auth_views.LoginView):
     template_name = 'dashboard/login.html'
+
     def form_valid(self, form):
         from django.contrib.auth import login as auth_login
         from django.http import HttpResponseRedirect
@@ -40,6 +41,8 @@ class LoginView(auth_views.LoginView):
         current_user = form.get_user()
         if current_user.staff:
             auth_login(self.request, form.get_user())
+            username = current_user.username
+            messages.success(self.request,f" Welcome {username} Have a nice day")
             return HttpResponseRedirect(self.get_success_url())
         else:
             messages.error(self.request,_('Phone Number or Password Error for Staff User'))
@@ -87,14 +90,16 @@ def Login(request):
 
     }
 
-
-
     return render(request,"dashboard/login.html",context)
 
 
 
-
 def logout_view(request):
+    user = request.user.username
     logout(request)
+    # from accounts.models import User
+    # user = User.objects.get(u=request.user)
+    # username = user.username
+    messages.success(request, f" Good Bye {user} Come Back Again")
     return redirect('login')
     # Redirect to a success page

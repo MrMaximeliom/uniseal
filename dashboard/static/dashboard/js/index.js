@@ -90,6 +90,10 @@ $("#btn-mode").html('<svg xmlns="http://www.w3.org/2000/svg" width="24" height="
 $( document ).ready(function() {
  console.log($('#theme').attr('href'));
   console.log( "ready!" );
+
+//setTimeout(function(){
+// $("#message").css('display','none')
+// }, 2000);
 $( "#btn-mode" ).on( "click", function() {
 if(myStorage.getItem('mode') === "day"){
 console.log("its day");

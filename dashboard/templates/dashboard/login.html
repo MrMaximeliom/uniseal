@@ -15,7 +15,7 @@
 
 </div>
 {% endif %}
-  <form class="card-form" method="post">
+  <form class="card-form row"  method="post">
 	  	{% csrf_token %}
   <div class="mb-4 row">
     <div class="col-sm-6">
@@ -29,10 +29,20 @@
 
     </div>
   </div>
-	     <div class="col-auto">
-			 <p>Don't have an accoount? Create one <a href="#">here</a></p>
-    <button type="submit" class="btn btn-primary ">{% trans 'Login' %}</button>
-  </div>
+      <div class="row">
+          <div class="col-sm-3 mb-3">
+          			<a  href="#">{% trans 'Forgot password?' %}</a>
+
+      </div>
+
+      </div>
+      <div class="row">
+          <div class="col-auto">
+              <button type="submit" class="btn btn-primary ">{% trans 'Login' %}</button>
+      </div>
+      </div>
+
+
   </form>
 <!--     <form method="post" class="from-group">-->
 <!--	{% csrf_token %}-->

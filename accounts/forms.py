@@ -48,7 +48,7 @@ class UserRegistrationForm(forms.ModelForm):
         # fields='__all__'
         fields=[
             'id', 'username', 'full_name','organization', 'email',
-            'phone_number','admin','password']
+            'phone_number','staff','password']
         exclude = ('slug',)
     def create(self, validated_data):
         from accounts.models import User
@@ -58,8 +58,7 @@ class UserRegistrationForm(forms.ModelForm):
                 full_name=validated_data['full_name'],
                 phone_number=validated_data['phone_number'],
                 organization=validated_data['organization'],
-
-
+                staff = validated_data['staff']
             )
 
         user.set_password(validated_data['password'])
@@ -73,7 +72,7 @@ class UserRegistrationForm(forms.ModelForm):
         instance.username = validated_data['username']
         instance.set_password(validated_data['password'])
         instance.organization = validated_data['organization']
-
+        instance.staff = validated_data['staff']
 
         instance.save()
         return instance
