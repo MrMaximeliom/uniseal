@@ -6,7 +6,7 @@ from django.contrib import messages
 from django.utils.translation import gettext_lazy as _
 from Util.utils import rand_slug
 from Util.utils import SearchMan, createExelFile, ReportMan, delete_temp_folder
-from django.contrib.auth.decorators import login_required
+from django.contrib.admin.views.decorators import staff_member_required
 
 # states goes here
 
@@ -77,7 +77,7 @@ def prepare_query_state(paginator_obj, headers=None):
 
 search_man_states = SearchMan("State")
 report_man_states = ReportMan()
-@login_required(login_url='login')
+@staff_member_required(login_url='login')
 def all_states(request):
     from Util.search_form_strings import (
         EMPTY_SEARCH_PHRASE,
@@ -278,7 +278,7 @@ def all_states(request):
                   )
 
 
-@login_required(login_url='login')
+@staff_member_required(login_url='login')
 def add_states(request):
     from .forms import StateForm
     if request.method == 'POST':
@@ -304,7 +304,7 @@ def add_states(request):
     return render(request, 'address/add_states.html', context)
 
 
-@login_required(login_url='login')
+@staff_member_required(login_url='login')
 def delete_states(request):
     paginator = Paginator(states, 5)
     from Util.search_form_strings import (
@@ -492,7 +492,7 @@ def delete_states(request):
                   )
 
 
-@login_required(login_url='login')
+@staff_member_required(login_url='login')
 def edit_states(request):
     paginator = Paginator(states, 5)
     from Util.search_form_strings import (
@@ -677,6 +677,7 @@ def edit_states(request):
                   }
                   )
 
+@staff_member_required(login_url='login')
 
 def edit_state(request, slug):
     from .models import State
@@ -707,6 +708,7 @@ def edit_state(request, slug):
     }
     return render(request, 'address/edit_state.html', context)
 
+@staff_member_required(login_url='login')
 
 def confirm_state_delete(request, id):
     from .models import State

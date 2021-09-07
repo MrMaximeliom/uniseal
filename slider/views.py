@@ -1,12 +1,11 @@
 from django.template.defaultfilters import slugify
 from rest_framework import viewsets
 from Util.permissions import UnisealPermission
-from django.shortcuts import render, redirect
 from django.utils.translation import gettext_lazy as _
 from django.contrib import messages
-from django.contrib.auth.decorators import login_required
-from django.shortcuts import render, get_object_or_404
+from django.shortcuts import render, get_object_or_404,redirect
 from django.core.paginator import Paginator, PageNotAnInteger, EmptyPage
+from django.contrib.admin.views.decorators import staff_member_required
 
 # Create your views here.
 from Util.utils import rand_slug
@@ -43,7 +42,7 @@ class  SliderViewSet(viewsets.ModelViewSet):
 #Views for dashboard
 from slider.models import Slider
 sliders = Slider.objects.all()
-@login_required(login_url='login')
+@staff_member_required(login_url='login')
 def all_sliders(request):
     from .models import Slider
     all_sliders = Slider.objects.all().order_by("id")
@@ -78,7 +77,7 @@ def all_sliders(request):
                       'current_page': page
                   }
                   )
-@login_required(login_url='login')
+@staff_member_required(login_url='login')
 def add_sliders(request):
     from .forms import SliderForm
     if request.method == 'POST':
@@ -106,7 +105,7 @@ def add_sliders(request):
         'form': form,
     }
     return render(request, 'slider/add_sliders.html', context)
-@login_required(login_url='login')
+@staff_member_required(login_url='login')
 def delete_sliders(request):
     from .models import Slider
     all_sliders = Slider.objects.all().order_by("id")
@@ -141,7 +140,7 @@ def delete_sliders(request):
                       'current_page': page
                   }
                   )
-@login_required(login_url='login')
+@staff_member_required(login_url='login')
 def edit_sliders(request):
     from .models import Slider
     all_sliders = Slider.objects.all().order_by("id")
@@ -176,7 +175,7 @@ def edit_sliders(request):
                       'current_page': page
                   }
                   )
-@login_required(login_url='login')
+@staff_member_required(login_url='login')
 def edit_slider(request,slug):
     from .models import Slider
     from .forms import SliderForm
@@ -210,6 +209,7 @@ def edit_slider(request,slug):
         'slider': obj,
     }
     return render(request, 'slider/edit_slider.html', context)
+@staff_member_required(login_url='login')
 def confirm_delete(request,id):
     from .models import Slider
     obj = get_object_or_404(Slider, id=id)

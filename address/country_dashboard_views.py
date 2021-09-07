@@ -7,7 +7,7 @@ from Util.utils import rand_slug
 from Util.utils import SearchMan, createExelFile, ReportMan, delete_temp_folder
 
 from address.models import Country
-from django.contrib.auth.decorators import login_required
+from django.contrib.admin.views.decorators import staff_member_required
 
 # countries = Country.objects.all()
 countries = Country.objects.all().order_by('id')
@@ -48,7 +48,7 @@ def prepare_query_country(paginator_obj, headers=None):
 
 search_man_countries = SearchMan("Country")
 report_man_countries = ReportMan()
-@login_required(login_url='login')
+@staff_member_required(login_url='login')
 def all_countries(request):
     from Util.search_form_strings import (
         EMPTY_SEARCH_PHRASE,
@@ -213,7 +213,7 @@ def all_countries(request):
                   )
 
 
-@login_required(login_url='login')
+@staff_member_required(login_url='login')
 def add_countries(request):
     from .forms import CountryForm
     if request.method == 'POST':
@@ -240,7 +240,7 @@ def add_countries(request):
     return render(request, 'address/add_countries.html', context)
 
 
-@login_required(login_url='login')
+@staff_member_required(login_url='login')
 def delete_countries(request):
     paginator = Paginator(countries, 5)
     from Util.search_form_strings import (
@@ -398,7 +398,7 @@ def delete_countries(request):
                   )
 
 
-@login_required(login_url='login')
+@staff_member_required(login_url='login')
 def edit_countries(request):
     paginator = Paginator(countries, 5)
     from Util.search_form_strings import (
@@ -557,7 +557,7 @@ def edit_countries(request):
                   }
                   )
 
-
+@staff_member_required(login_url='login')
 def edit_country(request, slug):
     from .models import Country
     from .forms import CountryForm
@@ -587,6 +587,7 @@ def edit_country(request, slug):
     }
     return render(request, 'address/edit_country.html', context)
 
+@staff_member_required(login_url='login')
 
 def confirm_country_delete(request, id):
     from .models import Country

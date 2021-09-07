@@ -6,7 +6,6 @@ from django.shortcuts import render, get_object_or_404, redirect
 from django.utils.translation import gettext_lazy as _
 from django.contrib import messages
 from Util.utils import  SearchMan,createExelFile,ReportMan,delete_temp_folder
-import tempfile
 
 # Create your views here.
 class SupplierViewSet(viewsets.ModelViewSet):
@@ -45,8 +44,9 @@ class SupplierViewSet(viewsets.ModelViewSet):
 
 
 # Dashboard Views
-from django.contrib.auth.decorators import login_required
 from .models import Supplier, rand_slug
+from django.contrib.admin.views.decorators import staff_member_required
+
 
 suppliers = Supplier.objects.all().order_by("id")
 searchManObj = SearchMan("Supplier")
@@ -103,7 +103,7 @@ def prepare_query(paginator_obj,headers=None):
                 supplier_list.append(supplier.name)
                 link_list.append(supplier.link)
     return headers_here, supplier_list, link_list
-@login_required(login_url='login')
+@staff_member_required(login_url='login')
 def all_suppliers(request):
     from django.core.paginator import Paginator, PageNotAnInteger, EmptyPage
     paginator = Paginator(suppliers, 5)
@@ -269,7 +269,7 @@ def all_suppliers(request):
                       }
                   }
                   )
-@login_required(login_url='login')
+@staff_member_required(login_url='login')
 def edit_suppliers(request):
     from django.core.paginator import Paginator, PageNotAnInteger, EmptyPage
     from Util.search_form_strings import (
@@ -340,7 +340,7 @@ def edit_suppliers(request):
                   }
                   )
 
-@login_required(login_url='login')
+@staff_member_required(login_url='login')
 def add_suppliers(request):
     from .forms import SupplierForm
     if request.method == 'POST':
@@ -365,7 +365,7 @@ def add_suppliers(request):
         'form': form,
     }
     return render(request, 'supplier/add_suppliers.html', context)
-@login_required(login_url='login')
+@staff_member_required(login_url='login')
 def delete_suppliers(request):
     from django.core.paginator import Paginator, PageNotAnInteger, EmptyPage
     paginator = Paginator(suppliers, 5)
@@ -436,7 +436,7 @@ def delete_suppliers(request):
                   }
                   )
 
-@login_required(login_url='login')
+@staff_member_required(login_url='login')
 def edit_supplier(request,slug):
     from supplier.models import Supplier
     from .forms import SupplierForm
@@ -465,7 +465,7 @@ def edit_supplier(request,slug):
         'supplier':obj
     }
     return render(request, 'supplier/edit_supplier.html', context)
-@login_required(login_url='login')
+@staff_member_required(login_url='login')
 def confirm_delete(request,id):
     from supplier.models import Supplier
     obj = get_object_or_404(Supplier, id=id)

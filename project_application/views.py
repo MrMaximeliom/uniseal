@@ -4,10 +4,10 @@ from rest_framework import viewsets
 from django.utils.translation import gettext_lazy as _
 from Util.permissions import UnisealPermission
 from django.contrib import messages
-from django.contrib.auth.decorators import login_required
 from django.shortcuts import render, get_object_or_404
 from django.core.paginator import Paginator, PageNotAnInteger, EmptyPage
 from Util.utils import  SearchMan,createExelFile,ReportMan,delete_temp_folder
+from django.contrib.admin.views.decorators import staff_member_required
 
 # Create your views here.
 class  ProjectApplicationViewSet(viewsets.ModelViewSet):
@@ -88,7 +88,7 @@ def prepare_query(paginator_obj,headers=None):
                 application_list.append(application.name)
                 project_list.append(application.num_projects)
     return headers_here, application_list, project_list
-@login_required(login_url='login')
+@staff_member_required(login_url='login')
 def all_applications(request):
     from project.models import Application
     from Util.search_form_strings import (
@@ -259,7 +259,7 @@ def all_applications(request):
                       }
                   }
                   )
-@login_required(login_url='login')
+@staff_member_required(login_url='login')
 def add_applications(request):
     from .forms import ProjectApplicationForm
     if request.method == 'POST':
@@ -281,7 +281,7 @@ def add_applications(request):
         'form': form,
     }
     return render(request, 'project_application/add_applications.html', context)
-@login_required(login_url='login')
+@staff_member_required(login_url='login')
 def delete_applications(request):
     from project.models import Application
     all_application = Application.objects.annotate(num_projects=Count('project')).order_by('-num_projects')
@@ -316,7 +316,7 @@ def delete_applications(request):
                       'current_page': page
                   }
                   )
-@login_required(login_url='login')
+@staff_member_required(login_url='login')
 def edit_applications(request):
     from project.models import Application
     all_applications = Application.objects.annotate(num_projects=Count('project')).order_by('-num_projects')
@@ -351,7 +351,7 @@ def edit_applications(request):
                       'current_page': page
                   }
                   )
-@login_required(login_url='login')
+@staff_member_required(login_url='login')
 def edit_application(request,slug):
     from project.models import Application
     from .forms import ProjectApplicationForm
@@ -382,6 +382,7 @@ def edit_application(request,slug):
         'application': obj,
     }
     return render(request, 'project_application/edit_application.html', context)
+@staff_member_required(login_url='login')
 def confirm_delete(request,id):
     from project.models import Application
     obj = get_object_or_404(Application, id=id)

@@ -45,9 +45,8 @@ class  CompanyInfoViewSet(EnablePartialUpdateMixin, viewsets.GenericViewSet,
     queryset = CompanyInfo.objects.all()
     serializer_class = CompanyInfoSerializer
     permission_classes = [UnisealPermission]
-
-from django.contrib.auth.decorators import login_required
-@login_required(login_url='login')
+from django.contrib.admin.views.decorators import staff_member_required
+@staff_member_required(login_url='login')
 def edit_info(request):
     from .models import CompanyInfo
     from .forms import CompanyInfoForm
@@ -70,7 +69,7 @@ def edit_info(request):
     }
     return render(request, 'company_info/edit_info.html', context)
 
-@login_required(login_url='login')
+@staff_member_required(login_url='login')
 def company_details(request):
     from company_info.models import CompanyInfo
     company = get_object_or_404(CompanyInfo, id=1)

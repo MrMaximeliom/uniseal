@@ -33,6 +33,21 @@ def dashboard(request):
 
 class LoginView(auth_views.LoginView):
     template_name = 'dashboard/login.html'
+    def form_valid(self, form):
+        from django.contrib.auth import login as auth_login
+        from django.http import HttpResponseRedirect
+        """Security check complete. Log the user in."""
+        current_user = form.get_user()
+        if current_user.staff:
+            auth_login(self.request, form.get_user())
+            return HttpResponseRedirect(self.get_success_url())
+        else:
+            messages.error(self.request,_('Phone Number or Password Error for Staff User'))
+
+        return redirect('login')
+
+
+
     extra_context = {
         'title':_('Login Page'),
 
@@ -41,18 +56,40 @@ class LoginView(auth_views.LoginView):
 
 
 
-def my_view(request):
-    username = request.POST['username']
-    password = request.POST['password']
-    user = authenticate(request, username=username, password=password)
-    if user is not None:
-        login(request, user)
-        # Redirect to a success page.
-        ...
-    else:
-        # Return an 'invalid login' error message.
-        ...
+def Login(request):
+    from accounts.forms import UserLoginForm
 
+    if request.method == "POST":
+        form = UserLoginForm(request.POST)
+        if form.is_valid():
+            username = request.POST['phone_number']
+            password = request.POST['password']
+            user = authenticate(request, username=username, password=password)
+            if user is not None:
+                if user.staff:
+                    login(request, user)
+                else:
+                    messages.error(request, _("Username or Password error for staff user"))
+                # Redirect to a success page.
+
+            else:
+                messages.error(request, _("Username or Password error for staff user"))
+        else:
+            for field, items in form.errors.items():
+                for item in items:
+                    messages.error(request, '{}: {}'.format(field, item))
+    else:
+        form = UserLoginForm()
+    context = {
+        'title': _('Add Users'),
+        'add_users': 'active',
+        'form': form,
+
+    }
+
+
+
+    return render(request,"dashboard/login.html",context)
 
 
 

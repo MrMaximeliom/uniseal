@@ -40,7 +40,7 @@ class UserForm(forms.ModelForm):
 class UserLoginForm(forms.ModelForm):
     class Meta:
         model=User
-        fields=['email' , 'password']
+        fields=['phone_number' , 'password']
 
 class UserRegistrationForm(forms.ModelForm):
     class Meta:

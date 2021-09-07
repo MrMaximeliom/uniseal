@@ -7,8 +7,7 @@ from django.shortcuts import render, get_object_or_404
 from django.core.paginator import Paginator, PageNotAnInteger, EmptyPage
 from django.contrib import messages
 from django.shortcuts import redirect
-from Util.utils import  SearchMan,createExelFile,ReportMan,delete_temp_folder
-
+from Util.utils import SearchMan, createExelFile, ReportMan, delete_temp_folder
 
 # Create your views here.
 from Util.utils import rand_slug
@@ -92,8 +91,6 @@ class ProductImagesViewSet(viewsets.ModelViewSet):
     filterset_fields = ['product']
 
 
-
-
 class SimilarProductViewSet(viewsets.ModelViewSet):
     """API endpoint to allow the admin to link or unlink similar products together
     this endpoint allows GET,PUT,PATCH,DELETE functions
@@ -161,8 +158,10 @@ class FetchProductsByCategoryViewSet(generics.ListAPIView):
         return queryset
 
 
-from django.contrib.auth.decorators import login_required
-def prepare_selected_query(selected_pages,paginator_obj,headers=None):
+from django.contrib.admin.views.decorators import staff_member_required
+
+
+def prepare_selected_query(selected_pages, paginator_obj, headers=None):
     product_name = []
     description = []
     added_date = []
@@ -201,7 +200,7 @@ def prepare_selected_query(selected_pages,paginator_obj,headers=None):
     else:
         headers_here = ["Product Name", "Category", "Supplier", "Description", "Added Date"]
         print("headers are none in selected query")
-        for page in range(1, paginator_obj.num_pages+1):
+        for page in range(1, paginator_obj.num_pages + 1):
             for product in paginator_obj.page(page):
                 product_name.append(product.name)
                 category.append(product.category.name)
@@ -210,7 +209,8 @@ def prepare_selected_query(selected_pages,paginator_obj,headers=None):
                 added_date.append(product.added_date.strftime('%d-%m-%y'))
     return headers_here, product_name, category, supplier, description, added_date
 
-def prepare_query(paginator_obj,headers=None):
+
+def prepare_query(paginator_obj, headers=None):
     product_name = []
     category = []
     supplier = []
@@ -221,30 +221,30 @@ def prepare_query(paginator_obj,headers=None):
         headers_here = headers
         for header in headers_here:
             if header == "Product Name":
-                for page in range(1, paginator_obj.num_pages+1):
+                for page in range(1, paginator_obj.num_pages + 1):
                     for product in paginator_obj.page(page):
                         product_name.append(product.name)
             elif header == "Category":
-                for page in range(1, paginator_obj.num_pages+1):
+                for page in range(1, paginator_obj.num_pages + 1):
                     for product in paginator_obj.page(page):
                         category.append(product.category.name)
             elif header == "Supplier":
                 print("here in supplier")
-                for page in range(1, paginator_obj.num_pages+1):
+                for page in range(1, paginator_obj.num_pages + 1):
                     for product in paginator_obj.page(page):
                         supplier.append(product.supplier.name)
             elif header == "Description":
                 print("here in description")
-                for page in range(1, paginator_obj.num_pages+1):
+                for page in range(1, paginator_obj.num_pages + 1):
                     for product in paginator_obj.page(page):
                         description.append(product.description)
             elif header == "Added Date":
-                for page in range(1, paginator_obj.num_pages+1):
+                for page in range(1, paginator_obj.num_pages + 1):
                     for product in paginator_obj.page(page):
                         added_date.append(product.added_date.strftime('%d-%m-%y'))
     else:
-        headers_here = ["Product Name","Category","Supplier","Description","Added Date"]
-        for page in range(1, paginator_obj.num_pages+1):
+        headers_here = ["Product Name", "Category", "Supplier", "Description", "Added Date"]
+        for page in range(1, paginator_obj.num_pages + 1):
             for product in paginator_obj.page(page):
                 product_name.append(product.name)
                 category.append(product.category.name)
@@ -254,19 +254,22 @@ def prepare_query(paginator_obj,headers=None):
 
     # later for extracting actual data
 
+    return headers_here, product_name, category, supplier, description, added_date
 
-    return headers_here,product_name,category,supplier,description,added_date
+
 searchManObj = SearchMan("Product")
 report_man = ReportMan()
-@login_required(login_url='login')
+
+
+@staff_member_required(login_url='login')
 def all_products(request):
     from product.models import Product
     from Util.search_form_strings import (
         EMPTY_SEARCH_PHRASE,
-    PRODUCT_NAME_SYNTAX_ERROR,
-    CATEGORY_NAME_SYNTAX_ERROR,
-    SUPPLIER_NAME_SYNTAX_ERROR,
-    PRODUCT_NOT_FOUND
+        PRODUCT_NAME_SYNTAX_ERROR,
+        CATEGORY_NAME_SYNTAX_ERROR,
+        SUPPLIER_NAME_SYNTAX_ERROR,
+        PRODUCT_NOT_FOUND
 
     )
     all_products = Product.objects.all().order_by("id")
@@ -276,7 +279,7 @@ def all_products(request):
         print("delete reports")
         if request.session['temp_dir'] != '':
             delete_temp_folder()
-    if request.method == "POST" and 'clear' not in request.POST and 'createExcel' not in request.POST :
+    if request.method == "POST" and 'clear' not in request.POST and 'createExcel' not in request.POST:
         searchManObj.setSearch(True)
         if request.POST.get('search_options') == 'product':
             print('here now in product search')
@@ -291,7 +294,7 @@ def all_products(request):
             print('here now in category search')
             search_phrase = request.POST.get('search_phrase')
             search_result = Product.objects.filter(category__name__icontains=search_phrase).order_by("id")
-            print("search results ",search_result)
+            print("search results ", search_result)
             searchManObj.setPaginator(search_result)
             searchManObj.setSearchPhrase(search_phrase)
             searchManObj.setSearchOption('Category')
@@ -299,7 +302,7 @@ def all_products(request):
         elif request.POST.get('search_options') == 'supplier':
             print('here now in supplier search')
             search_phrase = request.POST.get('search_phrase')
-            print('search phrase is ',search_phrase)
+            print('search phrase is ', search_phrase)
             search_result = Product.objects.filter(supplier__name__icontains=search_phrase).order_by("id")
             print("search results ", search_result)
             searchManObj.setPaginator(search_result)
@@ -367,8 +370,8 @@ def all_products(request):
                 headers, product_name, category, supplier, description, added_date = prepare_selected_query(
                     selected_pages, query, headers)
 
-                print ("selected pages are:",selected_pages)
-                print("products are:\n ",product_name)
+                print("selected pages are:", selected_pages)
+                print("products are:\n ", product_name)
                 status, report_man.filePath, report_man.fileName = createExelFile('Report_For_Products',
                                                                                   headers, product_name=product_name,
                                                                                   category=category,
@@ -390,7 +393,7 @@ def all_products(request):
             if len(headers) > 0:
                 constructor = {}
                 headers, product_name, category, supplier, description, added_date = prepare_query(query,
-                                                                                                     headers=headers)
+                                                                                                   headers=headers)
                 if len(product_name) > 0:
                     constructor.update({"product_name": product_name})
                 if len(category) > 0:
@@ -401,28 +404,28 @@ def all_products(request):
                     constructor.update({"description": description})
                 if len(added_date) > 0:
                     constructor.update({"added_date": added_date})
-                status, report_man.filePath, report_man.fileName = createExelFile( 'Report_For_Products',
+                status, report_man.filePath, report_man.fileName = createExelFile('Report_For_Products',
                                                                                   headers, **constructor)
                 if status:
 
-                   messages.success(request, f"Report Successfully Created ")
-                   request.session['temp_dir'] = 'delete man!'
-                   # return redirect('download_file',filepath=filepath,filename=filename)
+                    messages.success(request, f"Report Successfully Created ")
+                    request.session['temp_dir'] = 'delete man!'
+                    # return redirect('download_file',filepath=filepath,filename=filename)
 
-                   return redirect('downloadReport', str(report_man.filePath), str(report_man.fileName))
+                    return redirect('downloadReport', str(report_man.filePath), str(report_man.fileName))
                 else:
-                   messages.error(request, "Sorry Report Failed To Create , Please Try Again!")
+                    messages.error(request, "Sorry Report Failed To Create , Please Try Again!")
 
             else:
                 headers, product_name, category, supplier, description, added_date = prepare_query(query)
                 status, filePath, fileName = createExelFile('Report_For_Products',
-                                                                                  headers, product_name=product_name,
-                                                                                  category=category,
-                                                                                  supplier=supplier,
-                                                                                  description=description,
-                                                                                  added_date=added_date
-                                                                                  )
-                print("file path is: ",filePath," file name is: ",fileName)
+                                                            headers, product_name=product_name,
+                                                            category=category,
+                                                            supplier=supplier,
+                                                            description=description,
+                                                            added_date=added_date
+                                                            )
+                print("file path is: ", filePath, " file name is: ", fileName)
                 report_man.setFileName(fileName)
                 report_man.setFilePath(filePath)
                 if status:
@@ -430,7 +433,7 @@ def all_products(request):
                     messages.success(request, f"Report Successfully Created")
                     return redirect('downloadReport', str(report_man.filePath), str(report_man.fileName))
                 else:
-                   messages.error(request, "Sorry Report Failed To Create , Please Try Again!")
+                    messages.error(request, "Sorry Report Failed To Create , Please Try Again!")
     if request.GET.get('page'):
         # Grab the current page from query parameter
         page = int(request.GET.get('page'))
@@ -469,12 +472,12 @@ def all_products(request):
                           "category_error": CATEGORY_NAME_SYNTAX_ERROR,
                           "supplier_error": SUPPLIER_NAME_SYNTAX_ERROR,
                       },
-                      'not_found':PRODUCT_NOT_FOUND,
+                      'not_found': PRODUCT_NOT_FOUND,
                   }
                   )
 
 
-@login_required(login_url='login')
+@staff_member_required(login_url='login')
 def add_products(request):
     from .forms import ProductForm
     if request.method == 'POST':
@@ -484,7 +487,7 @@ def add_products(request):
             product.slug = slugify(rand_slug())
             product.save()
             product_name = form.cleaned_data.get('name')
-            messages.success(request,f"Product << {product_name} >> added successfully!")
+            messages.success(request, f"Product << {product_name} >> added successfully!")
 
         else:
             for field, items in form.errors.items():
@@ -505,7 +508,7 @@ def add_products(request):
     return render(request, 'product/add_products.html', context)
 
 
-@login_required(login_url='login')
+@staff_member_required(login_url='login')
 def delete_products(request):
     from product.models import Product
 
@@ -516,7 +519,7 @@ def delete_products(request):
         PRODUCT_NAME_SYNTAX_ERROR,
         CATEGORY_NAME_SYNTAX_ERROR,
         SUPPLIER_NAME_SYNTAX_ERROR,
-    PRODUCT_NOT_FOUND
+        PRODUCT_NOT_FOUND
 
     )
     search_result = ''
@@ -600,12 +603,12 @@ def delete_products(request):
             "category_error": CATEGORY_NAME_SYNTAX_ERROR,
             "supplier_error": SUPPLIER_NAME_SYNTAX_ERROR,
         },
-        'not_found':PRODUCT_NOT_FOUND,
+        'not_found': PRODUCT_NOT_FOUND,
     }
     return render(request, 'product/delete_products.html', context)
 
 
-@login_required(login_url='login')
+@staff_member_required(login_url='login')
 def edit_product(request, slug):
     from product.models import Product
     from .forms import ProductForm, ProductImagesForm
@@ -640,7 +643,7 @@ def edit_product(request, slug):
     return render(request, 'product/edit_product.html', context)
 
 
-@login_required(login_url='login')
+@staff_member_required(login_url='login')
 def edit_products(request):
     from product.models import Product
     from Util.search_form_strings import (
@@ -648,7 +651,7 @@ def edit_products(request):
         PRODUCT_NAME_SYNTAX_ERROR,
         CATEGORY_NAME_SYNTAX_ERROR,
         SUPPLIER_NAME_SYNTAX_ERROR,
-    PRODUCT_NOT_FOUND
+        PRODUCT_NOT_FOUND
 
     )
     search_result = ''
@@ -734,12 +737,12 @@ def edit_products(request):
                           "category_error": CATEGORY_NAME_SYNTAX_ERROR,
                           "supplier_error": SUPPLIER_NAME_SYNTAX_ERROR,
                       },
-                      'not_found':PRODUCT_NOT_FOUND
+                      'not_found': PRODUCT_NOT_FOUND
                   }
                   )
 
 
-@login_required(login_url='login')
+@staff_member_required(login_url='login')
 def product_details(request, slug):
     from product.models import Product, ProductImages
     product = get_object_or_404(Product, slug=slug)
@@ -769,7 +772,7 @@ def product_details(request, slug):
                   )
 
 
-@login_required(login_url='login')
+@staff_member_required(login_url='login')
 def product_images(request, slug=None):
     from product.models import Product, ProductImages
     import os
@@ -867,7 +870,7 @@ def product_images(request, slug=None):
                     # print("first image: ",instance.image.url)
                     # print("second image: ",image)
                     if instance.image.url == image:
-                        deleted_image_path = os.path.dirname(os.path.abspath('unisealAPI'))+image
+                        deleted_image_path = os.path.dirname(os.path.abspath('unisealAPI')) + image
                         deleted_record = ProductImages.objects.get(id=instance.id)
                         deleted_record.delete()
                         if os.path.exists(deleted_image_path):
@@ -881,7 +884,7 @@ def product_images(request, slug=None):
 
                   )
 
-
+@staff_member_required(login_url='login')
 def confirm_delete(request, id):
     from product.models import Product
     import os

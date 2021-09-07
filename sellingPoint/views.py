@@ -1,15 +1,11 @@
-from django.template.defaultfilters import slugify
-
 from Util.permissions import UnisealPermission
 from rest_framework import viewsets
 from django.shortcuts import render, get_object_or_404, redirect
-# Create your views here.
 from django.contrib import messages
 from django.utils.translation import gettext_lazy as _
-from django.contrib.auth.decorators import login_required
 from Util.utils import  SearchMan,createExelFile,ReportMan,delete_temp_folder
-
-from Util.utils import rand_slug
+from django.contrib.admin.views.decorators import staff_member_required
+from django.contrib.admin.views.decorators import staff_member_required
 
 
 class SellingPointViewSet(viewsets.ModelViewSet):
@@ -182,7 +178,7 @@ from sellingPoint.models import SellingPoint
 sellingPoints = SellingPoint.objects.all().order_by("id")
 searchManObj = SearchMan("Selling Point")
 report_man = ReportMan()
-@login_required(login_url='login')
+@staff_member_required(login_url='login')
 def all_selling_points(request):
     from Util.search_form_strings import (
         EMPTY_SEARCH_PHRASE,
@@ -428,7 +424,7 @@ def all_selling_points(request):
 
                   }
                   )
-@login_required(login_url='login')
+@staff_member_required(login_url='login')
 def add_selling_points(request):
     from .forms import SellingPointForm
     if request.method == 'POST':
@@ -453,7 +449,7 @@ def add_selling_points(request):
         'form': form,
     }
     return render(request, 'sellingPoints/add_selling_points.html', context)
-@login_required(login_url='login')
+@staff_member_required(login_url='login')
 def delete_selling_points(request):
     from django.core.paginator import Paginator, PageNotAnInteger, EmptyPage
     paginator = Paginator(sellingPoints, 5)
@@ -485,7 +481,7 @@ def delete_selling_points(request):
                       'current_page': page
                   }
                   )
-@login_required(login_url='login')
+@staff_member_required(login_url='login')
 def edit_selling_points(request):
     from django.core.paginator import Paginator, PageNotAnInteger, EmptyPage
     paginator = Paginator(sellingPoints, 5)
@@ -518,7 +514,7 @@ def edit_selling_points(request):
                   }
                   )
 
-@login_required(login_url='login')
+@staff_member_required(login_url='login')
 def edit_selling_point(request,slug):
     from .models import SellingPoint
     from .forms import SellingPointForm
@@ -550,7 +546,7 @@ def edit_selling_point(request,slug):
     }
     return render(request, 'sellingPoints/edit_selling_point.html', context)
 
-@login_required(login_url='login')
+@staff_member_required(login_url='login')
 def selling_point_details(request,slug):
     from .models import SellingPoint
     point = get_object_or_404(SellingPoint, slug=slug)
@@ -563,6 +559,7 @@ def selling_point_details(request,slug):
                       'point_data': point,
                   }
                   )
+@staff_member_required(login_url='login')
 def confirm_delete(request,id):
     from .models import SellingPoint
     obj = get_object_or_404(SellingPoint, id=id)

@@ -8,7 +8,7 @@ from django.shortcuts import render, get_object_or_404, redirect
 from django.core.paginator import Paginator, PageNotAnInteger, EmptyPage
 from Util.utils import rand_slug
 from Util.utils import  SearchMan,createExelFile,ReportMan,delete_temp_folder
-from django.contrib.auth.decorators import login_required
+from django.contrib.admin.views.decorators import staff_member_required
 
 
 class CategoryViewSet(viewsets.ModelViewSet):
@@ -86,7 +86,7 @@ def prepare_query(paginator_obj,headers=None):
                 categories_list.append(category.name)
                 products_list.append(category.num_products)
     return headers_here, categories_list, products_list
-@login_required(login_url='login')
+@staff_member_required(login_url='login')
 def all_categories(request):
     paginator = Paginator(categories, 5)
     from Util.search_form_strings import (
@@ -254,7 +254,7 @@ def all_categories(request):
                   }
                   )
 
-@login_required(login_url='login')
+@staff_member_required(login_url='login')
 def add_categories(request):
     from .forms import CategoryForm
     if request.method == 'POST':
@@ -278,7 +278,7 @@ def add_categories(request):
         'form': form,
     }
     return render(request, 'category/add_categories.html', context)
-@login_required(login_url='login')
+@staff_member_required(login_url='login')
 def delete_categories(request):
     paginator = Paginator(categories, 5)
     from Util.search_form_strings import (
@@ -349,7 +349,7 @@ def delete_categories(request):
                       }
                   }
                   )
-@login_required(login_url='login')
+@staff_member_required(login_url='login')
 def edit_categories(request):
     paginator = Paginator(categories, 5)
     from Util.search_form_strings import (
@@ -421,7 +421,7 @@ def edit_categories(request):
 
                   }
                   )
-@login_required(login_url='login')
+@staff_member_required(login_url='login')
 def edit_category(request,slug):
     from .models import Category
     from .forms import CategoryForm
@@ -451,7 +451,7 @@ def edit_category(request,slug):
         'category' : obj,
     }
     return render(request, 'category/edit_category.html', context)
-@login_required(login_url='login')
+@staff_member_required(login_url='login')
 def confirm_delete(request,id):
     from category.models import Category
     obj = get_object_or_404(Category, id=id)

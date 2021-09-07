@@ -8,7 +8,7 @@ from django.contrib.auth.forms import PasswordChangeForm
 from Util.utils import EnablePartialUpdateMixin, rand_slug, SearchMan, createExelFile, ReportMan, delete_temp_folder, \
     check_phone_number
 from Util.permissions import IsAnonymousUser, UnisealPermission
-from rest_framework.permissions import IsAuthenticated,AllowAny
+from rest_framework.permissions import IsAuthenticated
 from django.core.paginator import Paginator, PageNotAnInteger, EmptyPage
 from django.contrib import messages
 # Create your views here.
@@ -325,7 +325,7 @@ class ContactUsViewSet(viewsets.ModelViewSet):
 
 
 # Views for dashboard
-from django.contrib.auth.decorators import login_required
+from django.contrib.admin.views.decorators import staff_member_required
 
 
 # the following function prepares the data to be used in the process of creating excel file
@@ -421,7 +421,7 @@ def prepare_query(paginator_obj, headers=None):
 searchManObj = SearchMan("User")
 report_man = ReportMan()
 
-@login_required(login_url='login')
+@staff_member_required(login_url='login')
 def all_users(request):
     from Util.search_form_strings import (
         EMPTY_SEARCH_PHRASE,
@@ -643,7 +643,7 @@ def all_users(request):
                   )
 
 
-@login_required(login_url='login')
+@staff_member_required(login_url='login')
 def add_users(request):
     from .forms import UserRegistrationForm
     if request.method == 'POST':
@@ -671,7 +671,7 @@ def add_users(request):
     return render(request, 'accounts/add_users.html', context)
 
 
-@login_required(login_url='login')
+@staff_member_required(login_url='login')
 def edit_user(request, slug):
     from accounts.models import User
     from .forms import UserForm
@@ -696,7 +696,7 @@ def edit_user(request, slug):
     return render(request, 'accounts/edit_user.html', context)
 
 
-@login_required(login_url='login')
+@staff_member_required(login_url='login')
 def edit_users(request):
     from accounts.models import User
     from Util.search_form_strings import (
@@ -797,7 +797,7 @@ def edit_users(request):
                   )
 
 
-@login_required(login_url='login')
+@staff_member_required(login_url='login')
 def delete_users(request):
     from accounts.models import User
     all_users = User.objects.all().order_by("id")
@@ -846,7 +846,7 @@ def confirm_delete(request, id, url):
     return redirect(url)
 
 
-@login_required(login_url='login')
+@staff_member_required(login_url='login')
 def change_password(request):
     if request.method == 'POST':
         form = PasswordChangeForm(request.user, request.POST)

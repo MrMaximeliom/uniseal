@@ -53,8 +53,7 @@ class UserAccountManager(BaseUserManager):
 
 
 class User(AbstractBaseUser):
-    from Util.ListsOfData import  WORKING_FILED
-    from Util.ListsOfData import GENDER_CHOICES
+
     # from django.core.validators import RegexValidator
     # phone_regex = RegexValidator(regex=r'^9\d{8}$|^1\d{8}$',
     #                              message=_("Phone number must start with 9 or 1 (no zeros) and includes 9 numbers."))

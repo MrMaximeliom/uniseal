@@ -3,6 +3,7 @@ from Util.permissions import UnisealPermission
 from django.shortcuts import render, get_object_or_404, redirect
 from django.utils.translation import gettext_lazy as _
 from django.contrib import messages
+from django.contrib.admin.views.decorators import staff_member_required
 
 # Create your views here.
 class  BrochuresViewSet(viewsets.ModelViewSet):
@@ -35,9 +36,8 @@ class  BrochuresViewSet(viewsets.ModelViewSet):
 
 # Dashboard Views
 from .models import Brochures
-from django.contrib.auth.decorators import login_required
 brochures = Brochures.objects.all().order_by("id")
-@login_required(login_url='login')
+@staff_member_required(login_url='login')
 def all_brochures(request):
     from django.core.paginator import Paginator, PageNotAnInteger, EmptyPage
     paginator = Paginator(brochures, 5)
@@ -71,7 +71,7 @@ def all_brochures(request):
                   )
 
 
-@login_required(login_url='login')
+@staff_member_required(login_url='login')
 def add_brochures(request):
     from .forms import BrochuresForm
     if request.method == 'POST':
@@ -95,7 +95,7 @@ def add_brochures(request):
     }
     return render(request, 'brochures/add_brochures.html', context)
 
-@login_required(login_url='login')
+@staff_member_required(login_url='login')
 def delete_brochures(request):
     from django.core.paginator import Paginator, PageNotAnInteger, EmptyPage
     paginator = Paginator(brochures, 5)
@@ -129,7 +129,7 @@ def delete_brochures(request):
                   )
 
 
-@login_required(login_url='login')
+@staff_member_required(login_url='login')
 def edit_brochures(request):
     from django.core.paginator import Paginator, PageNotAnInteger, EmptyPage
     paginator = Paginator(brochures, 5)
@@ -161,7 +161,7 @@ def edit_brochures(request):
                       'current_page': page
                   }
                   )
-@login_required(login_url='login')
+@staff_member_required(login_url='login')
 def edit_brochure(request,slug):
     from .models import Brochures
     from .forms import BrochuresForm

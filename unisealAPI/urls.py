@@ -87,11 +87,12 @@ admin_router.register(r'manageSellingPoints', admin_views.ManageSellingPointsVie
 admin_router.register(r'manageBrochures', admin_views.ManageBrochuresViewSet, basename='MManageBrochures')
 
 urlpatterns = [
-    path('', include(router.urls)),
+    path('api/', include(router.urls)),
     path('admin_panel/', include(admin_router.urls)),
     path('admin/', admin.site.urls),
     path('accounts/forgetPassword/<int:pk>/', accounts_views.ForgetPasswordView.as_view(),name='ForgetPassword'),
 # path('accounts/forgetPassword/', accounts_views.ForgetPasswordView.as_view(), name='ForgetPassword'),
+    path('', dashboard_views.dashboard, name='dashboard'),
     path('dashboard/', dashboard_views.dashboard, name='dashboard'),
     path('dashboard/login', dashboard_views.LoginView.as_view(), name='login'),
     path('dashboard/logout', dashboard_views.logout_view, name='logout_user'),

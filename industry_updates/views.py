@@ -1,10 +1,8 @@
-from django.db.models import Count
 from django.template.defaultfilters import slugify
 from rest_framework import viewsets
 from django.contrib import messages
-
 from Util.permissions import  UnisealPermission
-
+from django.contrib.admin.views.decorators import staff_member_required
 from django.utils.translation import gettext_lazy as _
 from django.shortcuts import render, get_object_or_404, redirect
 from django.core.paginator import Paginator, PageNotAnInteger, EmptyPage
@@ -40,7 +38,7 @@ class IndustryUpdateViewSet(viewsets.ModelViewSet):
 #Views for dashboard
 from .models import IndustryUpdates
 updates = IndustryUpdates.objects.all().order_by('-id')
-
+@staff_member_required(login_url='login')
 def all_updates(request):
     paginator = Paginator(updates, 5)
 
@@ -73,7 +71,7 @@ def all_updates(request):
                   }
                   )
 
-
+@staff_member_required(login_url='login')
 def add_updates(request):
     from .forms import IndustryUpdatesForm
     if request.method == 'POST':
@@ -97,7 +95,7 @@ def add_updates(request):
         'form': form,
     }
     return render(request, 'industry_updates/add_updates.html', context)
-
+@staff_member_required(login_url='login')
 def delete_updates(request):
     paginator = Paginator(updates, 5)
 
@@ -129,7 +127,7 @@ def delete_updates(request):
                       'current_page': page
                   }
                   )
-
+@staff_member_required(login_url='login')
 def edit_updates(request):
     paginator = Paginator(updates, 5)
 
@@ -161,7 +159,7 @@ def edit_updates(request):
                       'current_page': page
                   }
                   )
-
+@staff_member_required(login_url='login')
 def edit_update(request,slug):
     from .models import IndustryUpdates
     from .forms import IndustryUpdatesForm
@@ -195,7 +193,7 @@ def edit_update(request,slug):
         'update' : obj,
     }
     return render(request, 'industry_updates/edit_update.html', context)
-
+@staff_member_required(login_url='login')
 def confirm_delete(request,id):
     from .models import IndustryUpdates
     obj = get_object_or_404(IndustryUpdates, id=id)

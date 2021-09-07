@@ -6,7 +6,8 @@ from django.contrib import messages
 from django.utils.translation import gettext_lazy as _
 from Util.utils import rand_slug
 from Util.utils import SearchMan, createExelFile, ReportMan, delete_temp_folder
-from django.contrib.auth.decorators import login_required
+from django.contrib.admin.views.decorators import staff_member_required
+
 from address.models import City
 
 cities = City.objects.all().order_by('id')
@@ -70,7 +71,7 @@ def prepare_query_city(paginator_obj, headers=None):
     return headers_here, states,cities,areas
 search_man_cities = SearchMan("City")
 report_man_cities = ReportMan()
-@login_required(login_url='login')
+@staff_member_required(login_url='login')
 def all_cities(request):
     paginator = Paginator(cities, 5)
     from Util.search_form_strings import (
@@ -256,7 +257,8 @@ def all_cities(request):
                   }
                   )
 
-@login_required(login_url='login')
+@staff_member_required(login_url='login')
+
 def add_cities(request):
     from .forms import CityForm
     if request.method == 'POST':
@@ -283,7 +285,7 @@ def add_cities(request):
     return render(request, 'address/add_cities.html', context)
 
 
-@login_required(login_url='login')
+@staff_member_required(login_url='login')
 def delete_cities(request):
     paginator = Paginator(cities, 5)
     from Util.search_form_strings import (
@@ -368,7 +370,7 @@ def delete_cities(request):
                   )
 
 
-@login_required(login_url='login')
+@staff_member_required(login_url='login')
 def edit_cities(request):
     paginator = Paginator(cities, 5)
     from Util.search_form_strings import (
@@ -453,6 +455,7 @@ def edit_cities(request):
                   }
                   )
 
+@staff_member_required(login_url='login')
 
 def edit_city(request, slug):
     from .models import City
@@ -483,6 +486,7 @@ def edit_city(request, slug):
     }
     return render(request, 'address/edit_city.html', context)
 
+@staff_member_required(login_url='login')
 
 def confirm_city_delete(request, id):
     from .models import City

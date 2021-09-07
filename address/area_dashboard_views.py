@@ -441,6 +441,7 @@ def edit_areas(request):
                   }
                   )
 
+@staff_member_required(login_url='login')
 
 def edit_area(request, slug):
     from .models import Area
@@ -471,6 +472,7 @@ def edit_area(request, slug):
     }
     return render(request, 'address/edit_area.html', context)
 
+@staff_member_required(login_url='login')
 
 def confirm_area_delete(request, id):
     from .models import Area

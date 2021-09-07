@@ -5,7 +5,7 @@ from rest_framework.permissions import IsAdminUser
 from django.core.paginator import Paginator, PageNotAnInteger, EmptyPage
 from django.utils.translation import gettext_lazy as _
 from django.contrib import messages
-from django.contrib.auth.decorators import login_required
+from django.contrib.admin.views.decorators import staff_member_required
 
 # Create your views here.
 
@@ -125,7 +125,7 @@ class SearchMan:
         return self.search_option
 
 searchManObj = SearchMan()
-@login_required(login_url='login')
+@staff_member_required(login_url='login')
 def all_sms(request):
     from sms_notifications.models import SMSNotification
     all_sms = SMSNotification.objects.all().order_by("id")
@@ -205,7 +205,7 @@ def all_sms(request):
                       'search_option':searchManObj.getSearchOption(),
                   }
                   )
-@login_required(login_url='login')
+@staff_member_required(login_url='login')
 def send_sms(request):
     from .forms import SMSNotificationForm
     if request.method == 'POST':
@@ -245,7 +245,7 @@ def prepare_group_contacts(group):
 
 
 
-@login_required(login_url='login')
+@staff_member_required(login_url='login')
 def send_sms_to_group(request):
     from .forms import SMSGroupMessagesForm
     if request.method == 'POST':
@@ -281,7 +281,7 @@ def send_sms_to_group(request):
 
     }
     return render(request, 'sms_notifications/send_group_sms.html', context)
-@login_required(login_url='login')
+@staff_member_required(login_url='login')
 def add_sms_group(request):
     from .forms import SMSGroupsForm
     if request.method == 'POST':
@@ -302,7 +302,7 @@ def add_sms_group(request):
 
     }
     return render(request, 'sms_notifications/add_group.html', context)
-@login_required(login_url='login')
+@staff_member_required(login_url='login')
 def add_sms_contact(request):
     from .forms import SMSContactsForm
     if request.method == 'POST':
@@ -323,7 +323,7 @@ def add_sms_contact(request):
 
     }
     return render(request, 'sms_notifications/add_contact.html', context)
-@login_required(login_url='login')
+@staff_member_required(login_url='login')
 def delete_sms(request):
     from sms_notifications.models import SMSNotification
     all_sms = SMSNotification.objects.all().order_by("id")
@@ -356,7 +356,7 @@ def delete_sms(request):
                       'current_page': page
                   }
                   )
-@login_required(login_url='login')
+@staff_member_required(login_url='login')
 def delete_sms_group(request):
     from sms_notifications.models import SMSGroups
     all_groups = SMSGroups.objects.all().order_by("id")
@@ -389,6 +389,8 @@ def delete_sms_group(request):
                       'current_page': page
                   }
                   )
+@staff_member_required(login_url='login')
+
 def all_sms_groups(request):
     from sms_notifications.models import SMSGroups
     all_groups = SMSGroups.objects.all().order_by("id")
@@ -421,7 +423,7 @@ def all_sms_groups(request):
                       'current_page': page
                   }
                   )
-@login_required(login_url='login')
+@staff_member_required(login_url='login')
 def delete_sms_contact(request):
     from sms_notifications.models import SMSContacts
     all_contacts = SMSContacts.objects.all().order_by("id")
@@ -454,7 +456,7 @@ def delete_sms_contact(request):
                       'current_page': page
                   }
                   )
-@login_required(login_url='login')
+@staff_member_required(login_url='login')
 def all_sms_contacts(request):
     from sms_notifications.models import SMSContacts
     all_contacts = SMSContacts.objects.all().order_by("id")
@@ -487,7 +489,7 @@ def all_sms_contacts(request):
                       'current_page': page
                   }
                   )
-
+@staff_member_required(login_url='login')
 def sendSMS(request, sender, receiver, msq, single=True):
     from Util.utils import SMS_USERNAME,SMS_PASSWORD
     if single:
@@ -523,7 +525,7 @@ def sendSMS(request, sender, receiver, msq, single=True):
     return sms_status
 
 
-
+@staff_member_required(login_url='login')
 def confirm_delete_sms_notification(request,id):
     from sms_notifications.models import SMSNotification
     obj = get_object_or_404(SMSNotification, id=id)
@@ -547,7 +549,7 @@ def confirm_delete_sms_group(request,id):
 
 
     return redirect('deleteSMSGroups')
-
+@staff_member_required(login_url='login')
 def confirm_delete_sms_contact(request,id):
     from sms_notifications.models import SMSContacts
     obj = get_object_or_404(SMSContacts, id=id)
@@ -559,7 +561,7 @@ def confirm_delete_sms_contact(request,id):
 
 
     return redirect('deleteSMSContacts')
-
+@staff_member_required(login_url='login')
 def edit_SMSs(request):
     from sms_notifications.models import SMSNotification
     all_sms = SMSNotification.objects.all().order_by("id")
@@ -592,6 +594,7 @@ def edit_SMSs(request):
                       'current_page': page
                   }
                   )
+@staff_member_required(login_url='login')
 def edit_sms(request,slug):
     from .models import SMSNotification
     from .forms import SMSNotificationForm
@@ -621,7 +624,7 @@ def edit_sms(request,slug):
         'sms' : obj,
     }
     return render(request, 'sms_notifications/edit_sms.html', context)
-
+@staff_member_required(login_url='login')
 def edit_contacts(request):
     from sms_notifications.models import SMSContacts
     all_contacts = SMSContacts.objects.all().order_by("id")
@@ -654,6 +657,7 @@ def edit_contacts(request):
                       'current_page': page
                   }
                   )
+@staff_member_required(login_url='login')
 def edit_contact(request,slug):
     from .models import SMSContacts
     from .forms import SMSContactsForm
@@ -683,6 +687,7 @@ def edit_contact(request,slug):
         'sms' : obj,
     }
     return render(request, 'sms_notifications/edit_contact.html', context)
+@staff_member_required(login_url='login')
 def edit_groups(request):
     from sms_notifications.models import SMSGroups
     all_groups = SMSGroups.objects.all().order_by("id")
@@ -715,7 +720,7 @@ def edit_groups(request):
                       'current_page': page
                   }
                   )
-
+@staff_member_required(login_url='login')
 def edit_group(request,slug):
     from .models import SMSGroups
     from .forms import SMSGroupsForm
@@ -745,6 +750,7 @@ def edit_group(request,slug):
         'group' : obj,
     }
     return render(request, 'sms_notifications/edit_group.html', context)
+@staff_member_required(login_url='login')
 def validate_search_phrase(search_phrase):
     from django.core.validators import validate_slug
     try:
