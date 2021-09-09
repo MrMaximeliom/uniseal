@@ -90,7 +90,7 @@ urlpatterns = [
     path('api/', include(router.urls)),
     path('admin_panel/', include(admin_router.urls)),
     path('admin/', admin.site.urls),
-    path('accounts/forgetPassword/<int:pk>/', accounts_views.ForgetPasswordView.as_view(),name='ForgetPassword'),
+    path('api/accounts/forgetPassword/<int:pk>/', accounts_views.ForgetPasswordView.as_view(),name='ForgetPassword'),
 # path('accounts/forgetPassword/', accounts_views.ForgetPasswordView.as_view(), name='ForgetPassword'),
     path('', dashboard_views.dashboard, name='dashboard'),
     path('dashboard/', dashboard_views.dashboard, name='dashboard'),
@@ -113,10 +113,10 @@ urlpatterns = [
     path('dashboard/CompanyInfo/', include(company_urls)),
     path('dashboard/ProjectApplications/', include(application_urls)),
     path('dashboard/IndustryUpdates/', include(uppdate_urls)),
-    path('login/', TokenObtainPairView.as_view(), name='token_obtain_pair'),
-    path('login/refresh/', TokenRefreshView.as_view(), name='token_refresh'),
-    path('api-auth/', include('rest_framework.urls', namespace='rest_framework')),
-    path('logout/', accounts_views.Logout.as_view(), name='logout'),
+    path('api/login/', TokenObtainPairView.as_view(), name='token_obtain_pair'),
+    path('api/login/refresh/', TokenRefreshView.as_view(), name='token_refresh'),
+    path('api/api-auth/', include('rest_framework.urls', namespace='rest_framework')),
+    path('api/logout/', accounts_views.Logout.as_view(), name='logout'),
     path('favicon.ico', RedirectView.as_view(url=staticfiles_storage.url('dashboard/images/favicon.ico'))),
 
 ]
