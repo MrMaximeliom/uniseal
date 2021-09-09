@@ -1,22 +1,5 @@
 from django.conf.urls.static import static
-import dashboard.views
-from product.urls import urlpatterns as product_urls
-from project.urls import urlpatterns as project_urls
-from solution.urls import urlpatterns as solution_urls
-from accounts.urls import urlpatterns as account_urls
-from category.urls import urlpatterns as category_urls
-from supplier.urls import urlpatterns as supplier_urls
-from company_info.urls import urlpatterns as company_urls
-from address.urls import countries_urlpatterns as country_urls
-from address.urls import states_urlpatterns as state_urls
-from address.urls import cities_urlpatterns as city_urls
-from address.urls import areas_urlpatterns as area_urls
-from slider.urls import urlpatterns as slider_urls
-from brochures.urls import urlpatterns as brochure_urls
-from sellingPoint.urls import urlpatterns as selling_urls
-from sms_notifications.urls import urlpatterns as sms_urls
-from project_application.urls import urlpatterns as application_urls
-from industry_updates.urls import urlpatterns as uppdate_urls
+from dashboard.urls import urlpatterns as dashboard_urls
 from django.contrib import admin
 from django.urls import path, include
 from rest_framework import routers
@@ -91,28 +74,8 @@ urlpatterns = [
     path('admin_panel/', include(admin_router.urls)),
     path('admin/', admin.site.urls),
     path('api/accounts/forgetPassword/<int:pk>/', accounts_views.ForgetPasswordView.as_view(),name='ForgetPassword'),
-# path('accounts/forgetPassword/', accounts_views.ForgetPasswordView.as_view(), name='ForgetPassword'),
     path('', dashboard_views.dashboard, name='dashboard'),
-    path('dashboard/', dashboard_views.dashboard, name='dashboard'),
-    path('dashboard/login', dashboard_views.LoginView.as_view(), name='login'),
-    path('dashboard/logout', dashboard_views.logout_view, name='logout_user'),
-    path('dashboard/products/', include(product_urls)),
-    path('dashboard/projects/', include(project_urls)),
-    path('dashboard/solutions/', include(solution_urls)),
-    path('dashboard/categories/', include(category_urls)),
-    path('dashboard/users/', include(account_urls)),
-    path('dashboard/suppliers/', include(supplier_urls)),
-    path('dashboard/countries/', include(country_urls)),
-    path('dashboard/states/', include(state_urls)),
-    path('dashboard/areas/', include(area_urls)),
-    path('dashboard/cities/', include(city_urls)),
-    path('dashboard/sliders/', include(slider_urls)),
-    path('dashboard/sellingPoints/', include(selling_urls)),
-    path('dashboard/brochures/', include(brochure_urls)),
-    path('dashboard/SMSs/', include(sms_urls)),
-    path('dashboard/CompanyInfo/', include(company_urls)),
-    path('dashboard/ProjectApplications/', include(application_urls)),
-    path('dashboard/IndustryUpdates/', include(uppdate_urls)),
+    path('dashboard/', include(dashboard_urls)),
     path('api/login/', TokenObtainPairView.as_view(), name='token_obtain_pair'),
     path('api/login/refresh/', TokenRefreshView.as_view(), name='token_refresh'),
     path('api/api-auth/', include('rest_framework.urls', namespace='rest_framework')),

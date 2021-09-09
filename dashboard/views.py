@@ -3,7 +3,9 @@ from django.utils.translation import gettext_lazy  as _
 from django.contrib import messages
 from django.shortcuts import redirect
 from django.contrib.auth import logout, login,authenticate
-
+from django.http import JsonResponse
+from django.db.models.functions import TruncMonth
+# Orders.objects.annotate(month=TruncMonth('pickupdate')).values('month').annotate(total=Count('orderid'))
 # Create your views here.
 from django.contrib.auth import views as auth_views
 from django.contrib.admin.views.decorators import staff_member_required
@@ -30,6 +32,44 @@ def dashboard(request):
 
     }
     return render(request, 'dashboard/index.html', context)
+
+
+def products_categories_chart(request):
+    from django.db.models import Count
+    from category.models import Category
+    labels = []
+    data = []
+
+    # queryset = City.objects.values('country__name').annotate(country_population=Sum('population')).order_by(
+    #     '-country_population')
+    queryset = Category.objects.values('name').annotate(products_count=Count('product')).order_by("-products_count")
+
+    for entry in queryset:
+        labels.append(entry['name'])
+        data.append(entry['products_count'])
+
+    return JsonResponse(data={
+        'labels': labels,
+        'data': data,
+    })
+def users_registration_count_each_month_chart(request):
+    from django.db.models import Count
+    from accounts.models import User
+    labels = []
+    data = []
+
+    # queryset = City.objects.values('country__name').annotate(country_population=Sum('population')).order_by(
+    #     '-country_population')
+    queryset = User.objects.annotate(month=TruncMonth('registration_datetime')).values('month').annotate(total=Count('id')).order_by('-total')
+
+    for entry in queryset:
+        labels.append(entry['month'])
+        data.append(entry['total'])
+
+    return JsonResponse(data={
+        'labels': labels,
+        'data': data,
+    })
 
 class LoginView(auth_views.LoginView):
     template_name = 'dashboard/login.html'

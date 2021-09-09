@@ -5,6 +5,12 @@
 {% block title %}
 {{title}}
 {% endblock title %}
+ {% block custom_js %}
+  <script src="https://code.jquery.com/jquery-3.4.1.min.js" defer></script>
+  <script src="https://cdn.jsdelivr.net/npm/chart.js@2.9.3/dist/Chart.min.js" defer></script>
+<script src="{% static 'dashboard/js/chart.js' %}" defer></script>
+
+{% endblock %}
 
 {% block content %}
                 <h1 class="h2">Dashboard</h1>
@@ -46,6 +52,12 @@
                         </div>
                     </div>
                 </div>
+  <div id="container" style="width: 75%;">
+    <canvas id="population-chart" data-url="{% url 'product-categories-chart' %}"></canvas>
+  </div>
+  <div id="users-container" style="width: 75%;">
+    <canvas id="users-chart" data-url="{% url 'users-count-month-chart' %}"></canvas>
+  </div>
                 <div class="row">
                     <div class="col-12 col-xl-11 mb-4 mb-lg-0">
                         <div class="card-light card-dark">
