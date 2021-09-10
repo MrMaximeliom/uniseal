@@ -15,6 +15,7 @@ from sellingPoint import views as selling_point_views
 from brochures import views as brochures_views
 from solution import views as solution_views
 from admin_panel import views as admin_views
+from notifications import views as notifications_views
 from django.conf import settings
 from address import endpoints_urls as address_endpoints_urls
 from dashboard import views as dashboard_views
@@ -63,6 +64,7 @@ router.register(r'solution/solutionVideos', solution_views.SolutionVideosViewSet
 router.register(r'SMS/modifySMSGroups', sms_notifications_views.SMSGroupsViewSet, basename='CreateSMSGroup')
 router.register(r'SMS/modifySMSNotifications', sms_notifications_views.SMSNotificationViewSet, basename='CreateSMSNotification')
 router.register(r'SMS/modifySMSContacts', sms_notifications_views.SMSContactsViewSet, basename='CreateSMSContact')
+router.register(r'notifications/registerTokenId', notifications_views.registerTokenIds, basename='RegisterNotifications')
 admin_router.register(r'manageProducts', admin_views.ManageProductsViewSet, basename='ManageProducts')
 admin_router.register(r'manageProjects', admin_views.ManageProjectsViewSet, basename='ManageProjects')
 admin_router.register(r'manageSolution', admin_views.ManageSolutionViewSet, basename='ManageSolution')

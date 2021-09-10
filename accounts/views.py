@@ -80,21 +80,6 @@ class ModifyUserDataViewSet(viewsets.GenericViewSet, mixins.ListModelMixin,
         return _("Modify Users' Data")
 
 
-# def download_file(request,file_path,file_name):
-#     import os,mimetypes
-#     print("hi there")
-#     # filepath = report_man.filePath
-#     # filename = report_man.fileName
-#     path = open(file_path, 'rb')
-#     # # Set the mime type
-#     mime_type, _ = mimetypes.guess_type(file_path)
-#     # # Set the return value of the HttpResponse
-#     response = HttpResponse(path, content_type=mime_type)
-#     # # Set the HTTP header for sending to browser
-#     response['Content-Disposition'] = "attachment; filename=%s" % file_name
-#     # # Return the response value
-#     return response
-
 
 class RegisterUserViewSet(viewsets.GenericViewSet, mixins.CreateModelMixin):
     """
@@ -143,41 +128,7 @@ class ChangePasswordView(viewsets.GenericViewSet, mixins.UpdateModelMixin):
         return User.objects.filter(id=self.request.user.id)
 
 from rest_framework import generics
-# Forget Password by phone number
-# class ForgetPasswordView(EnablePartialUpdateMixin,mixins.RetrieveModelMixin,
-#                     mixins.UpdateModelMixin,
-#                     generics.GenericAPIView):
-#     """
-#         An endpoint for changing password.
-#         """
-#
-#     from accounts.serializers import ForgetPasswordSerializer
-#     serializer_class = ForgetPasswordSerializer
-#
-#     # def get(self, request, *args, **kwargs):
-#     #     print(request.get)
-#     #     return self.retrieve(request, *args, **kwargs)
-#     def get_object(self, phone_number):
-#         from django.http import Http404
-#         try:
-#             from accounts.models import User
-#             return User.objects.get(phone_number=phone_number)
-#         except User.DoesNotExist:
-#             raise Http404
-#
-#     def get(self, request, phone_number, format=None):
-#         from rest_framework.response import Response
-#         from accounts.serializers import ForgetPasswordSerializer
-#         user = self.get_object(phone_number)
-#         serializer = ForgetPasswordSerializer(user)
-#         return Response(serializer.data)
-#
-#     def put(self, request, *args, **kwargs):
-#         return self.update(request, *args, **kwargs)
-#
-#     def get_queryset(self):
-#         from accounts.models import User
-#         return User.objects.all()
+
 class ForgetPasswordView(EnablePartialUpdateMixin,mixins.RetrieveModelMixin,
                     mixins.UpdateModelMixin,
                     generics.GenericAPIView):
@@ -188,37 +139,6 @@ class ForgetPasswordView(EnablePartialUpdateMixin,mixins.RetrieveModelMixin,
     from accounts.serializers import ForgetPasswordSerializer
     serializer_class = ForgetPasswordSerializer
 
-    # def get(self, request, *args, **kwargs):
-    #     print(request.get)
-    #     return self.retrieve(request, *args, **kwargs)
-    # def get_object(self):
-    #     from django.http import Http404
-    #     try:
-    #         from accounts.models import User
-    #         return User.objects.get(id=pk)
-    #     except User.DoesNotExist:
-    #         raise Http404
-    #
-    #
-    #
-    # def get(self, request, pk, format=None):
-    #     from rest_framework.response import Response
-    #     from accounts.serializers import ForgetPasswordSerializer
-    #     user = self.get_object(pk)
-    #     serializer = ForgetPasswordSerializer(user)
-    #     return Response(serializer.data)
-    #
-    # def put(self, request, *args, **kwargs):
-    #     return self.update(request, *args, **kwargs)
-    #
-    # def get_queryset(self):
-    #     from accounts.models import User
-    #     return User.objects.all()
-#     sss
-
-    # def get(self, request, *args, **kwargs):
-    #     print(request.get)
-    #     return self.retrieve(request, *args, **kwargs)
     from accounts.models import User
     queryset = User.objects.all()
     lookup_field = 'pk'

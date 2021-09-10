@@ -110,6 +110,10 @@ class SearchMan:
             from sellingPoint.models import SellingPoint
             selling = SellingPoint.objects.all().order_by('id')
             self.paginator = Paginator(selling, 5)
+        if model == "Notifications":
+            from notifications.models import Notifications
+            notifications = Notifications.objects.all().order_by('id')
+            self.paginator = Paginator(notifications, 5)
 
 
     def setPaginator(self,query):

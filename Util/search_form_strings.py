@@ -30,7 +30,12 @@ CITY_NAME_SYNTAX_ERROR = _("City name contains alphanumeric English letters only
 AREA_NAME_SYNTAX_ERROR = _("Area name contains alphanumeric English letters only!")
 # used by selling point pages
 POINT_NAME_SYNTAX_ERROR = _("Selling point name contains alphanumeric English letters only!")
-# Not found errors
+# Product Not found errors
 PRODUCT_NOT_FOUND = _("Sorry no products found that matches your search!")
-# Not found errors
+# Project Not found errors
 PROJECT_NOT_FOUND = _("Sorry no projects found that matches your search!")
+# Used by notifications pages
+NOTIFICATION_TITLE_SYNTAX_ERROR = _("Notification title contains English letters only!")
+NOTIFICATION_BODY_SYNTAX_ERROR = _("Notification body contains English letters only!")
+# Notification Not found errors
+NOTIFICATION_NOT_FOUND = _("Sorry no notifications found that matches your search!")

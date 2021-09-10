@@ -17,6 +17,7 @@ from sellingPoint.urls import urlpatterns as selling_urls
 from sms_notifications.urls import urlpatterns as sms_urls
 from project_application.urls import urlpatterns as application_urls
 from industry_updates.urls import urlpatterns as update_urls
+from notifications.urls import urlpatterns as notifications_urls
 urlpatterns = [
     path('home/', dashboard_views.dashboard, name='dashboard'),
     path('product-categories-chart/', dashboard_views.products_categories_chart, name='product-categories-chart'),
@@ -39,4 +40,8 @@ urlpatterns = [
     path('SMSs/', include(sms_urls)),
     path('CompanyInfo/', include(company_urls)),
     path('ProjectApplications/', include(application_urls)),
-    path('IndustryUpdates/', include(update_urls))]
+    path('IndustryUpdates/', include(update_urls)),
+    path('Notifications/', include(notifications_urls)),
+
+
+]
