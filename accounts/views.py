@@ -722,13 +722,72 @@ def delete_users(request):
     from accounts.models import User
     all_users = User.objects.all().order_by("id")
     paginator = Paginator(all_users, 5)
+    from accounts.models import User
+    from Util.search_form_strings import (
+        EMPTY_SEARCH_PHRASE,
+        USERNAME_SYNTAX_ERROR,
+        FULL_NAME_SYNTAX_ERROR,
+        ORGANIZATION_NAME_SYNTAX_ERROR,
+        PHONE_NUMBER_SYNTAX_ERROR
+    )
+    all_users = User.objects.all().order_by("id")
+    search_result = ''
+    paginator = Paginator(all_users, 5)
+    if request.method == "POST" and 'clear' not in request.POST and 'createExcel' not in request.POST:
+        searchManObj.setSearch(True)
+        if request.POST.get('search_options') == 'full_name':
+            print('here now')
+            search_message = request.POST.get('search_phrase')
+            search_result = User.objects.filter(full_name=search_message).order_by("id")
+            searchManObj.setPaginator(search_result)
+            searchManObj.setSearchPhrase(search_message)
+            searchManObj.setSearchOption('Full Name')
+            searchManObj.setSearchError(False)
+        elif request.POST.get('search_options') == 'username':
+            search_phrase = request.POST.get('search_phrase')
+            search_result = User.objects.filter(username=search_phrase).order_by("id")
+            searchManObj.setPaginator(search_result)
+            searchManObj.setSearchPhrase(search_phrase)
+            searchManObj.setSearchOption('Username')
+            searchManObj.setSearchError(False)
+        elif request.POST.get('search_options') == 'organization':
+            search_phrase = request.POST.get('search_phrase')
+            search_result = User.objects.filter(organization=search_phrase).order_by("id")
+            searchManObj.setPaginator(search_result)
+            searchManObj.setSearchPhrase(search_phrase)
+            searchManObj.setSearchOption('Organization')
+            searchManObj.setSearchError(False)
+        elif request.POST.get('search_options') == 'phone_number':
+            search_phrase = request.POST.get('search_phrase')
+            is_number_ok, phone_number = check_phone_number(search_phrase)
+            if (is_number_ok):
+                search_result = User.objects.filter(phone_number=phone_number).order_by("id")
+                searchManObj.setPaginator(search_result)
+                searchManObj.setSearchPhrase(search_phrase)
+                searchManObj.setSearchOption('Phone Number')
+                searchManObj.setSearchError(False)
+        else:
+            messages.error(request,
+                           "Please choose an item from list , then write search phrase to search by it!")
+            searchManObj.setSearchError(True)
+    if request.method == "GET" and 'page' not in request.GET:
+        all_users = User.objects.all().order_by("id")
+        searchManObj.setPaginator(all_users)
+        searchManObj.setSearch(False)
+    if request.method == "POST" and request.POST.get('clear') == 'clear':
+        all_users = User.objects.all().order_by("id")
+        searchManObj.setPaginator(all_users)
+        searchManObj.setSearch(False)
+
     if request.GET.get('page'):
         # Grab the current page from query parameter
         page = int(request.GET.get('page'))
+
     else:
         page = None
 
     try:
+        paginator = searchManObj.getPaginator()
         users = paginator.page(page)
         # Create a page object for the current page.
     except PageNotAnInteger:
@@ -749,7 +808,19 @@ def delete_users(request):
                       'page_range': paginator.page_range,
                       'num_pages': paginator.num_pages,
                       'current_page': page,
-                      'current_user': request.user.username
+                      'current_user': request.user.username,
+                      'search': searchManObj.getSearch(),
+                      'search_result': search_result,
+                      'search_phrase': searchManObj.getSearchPhrase(),
+                      'search_option': searchManObj.getSearchOption(),
+                      'search_error': searchManObj.getSearchError(),
+                      'data_js': {
+                          "empty_search_phrase": EMPTY_SEARCH_PHRASE,
+                          "username_error": USERNAME_SYNTAX_ERROR,
+                          "organization_error": ORGANIZATION_NAME_SYNTAX_ERROR,
+                          "full_name_error": FULL_NAME_SYNTAX_ERROR,
+                          "phone_number_error": PHONE_NUMBER_SYNTAX_ERROR
+                      }
                   }
                   )
 

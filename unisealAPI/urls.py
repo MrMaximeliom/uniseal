@@ -62,16 +62,22 @@ router.register(r'solution/createSolution', solution_views.SolutionViewSet, base
 router.register(r'solution/solutionImages', solution_views.SolutionImagesViewSet, basename='CreateSolutionImages')
 router.register(r'solution/solutionVideos', solution_views.SolutionVideosViewSet, basename='CreateSolutionVideo')
 router.register(r'SMS/modifySMSGroups', sms_notifications_views.SMSGroupsViewSet, basename='CreateSMSGroup')
-router.register(r'SMS/modifySMSNotifications', sms_notifications_views.SMSNotificationViewSet, basename='CreateSMSNotification')
+router.register(r'SMS/modifySMSNotifications', sms_notifications_views.SMSNotificationViewSet,
+                basename='CreateSMSNotification')
 router.register(r'SMS/modifySMSContacts', sms_notifications_views.SMSContactsViewSet, basename='CreateSMSContact')
-router.register(r'notifications/registerTokenId', notifications_views.registerTokenIds, basename='RegisterNotifications')
+router.register(r'notifications/registerTokenId', notifications_views.registerTokenIds,
+                basename='RegisterNotifications')
+router.register(r'notifications/handleNotifications', notifications_views.handleNotifications, basename='HandleNotifications')
 admin_router.register(r'manageProducts', admin_views.ManageProductsViewSet, basename='ManageProducts')
 admin_router.register(r'manageProjects', admin_views.ManageProjectsViewSet, basename='ManageProjects')
 admin_router.register(r'manageSolution', admin_views.ManageSolutionViewSet, basename='ManageSolution')
 admin_router.register(r'manageSellingPoints', admin_views.ManageSellingPointsViewSet, basename='ManageSellingPoints')
 admin_router.register(r'manageBrochures', admin_views.ManageBrochuresViewSet, basename='MManageBrochures')
 
+
+
 urlpatterns = [
+
     path('api/', include(router.urls)),
     path('admin_panel/', include(admin_router.urls)),
     path('admin/', admin.site.urls),

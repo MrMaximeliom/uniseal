@@ -105,6 +105,20 @@ $('#searchPhrase').prop("placeholder","search by country name ..")
 else if(selected_value == 'selling_point_name'){
 $('#searchPhrase').prop("placeholder","search by selling point name ..")
 }
+else if(selected_value == 'selling_point_name'){
+$('#searchPhrase').prop("placeholder","search by selling point name ..")
+}
+else if(selected_value == 'title'){
+$('#searchPhrase').prop("placeholder","search by notification title ..")
+}
+else if(selected_value == 'body'){
+$('#searchPhrase').prop("placeholder","search by notification body ..")
+}
+else if(selected_value == 'os_type'){
+$('#searchPhrase').prop("placeholder","search by OS type..")
+}
+
+
 if(selected_value == "execution_year"){
 $('#search_phrase_holder').css('display','none')
 $('#search_phrase_date_holder').css('display','block')

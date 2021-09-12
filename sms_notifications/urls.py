@@ -1,5 +1,7 @@
 from django.urls import path
 from sms_notifications import views as sms_notifications_views
+from rest_framework import routers
+
 urlpatterns = [
     path('allSMS', sms_notifications_views.all_sms, name='allSMS'),
     path('sendSMS', sms_notifications_views.send_sms, name='sendSMS'),
@@ -21,3 +23,7 @@ urlpatterns = [
     path('deleteSMSContacts', sms_notifications_views.delete_sms_contact, name='deleteSMSContacts'),
     path('deleteSMSContact/<int:id>', sms_notifications_views.confirm_delete_sms_group, name='deleteSMSContact'),
 ]
+router = routers.DefaultRouter()
+router.register(r'SMS/modifySMSGroups', sms_notifications_views.SMSGroupsViewSet, basename='CreateSMSGroup')
+router.register(r'SMS/modifySMSNotifications', sms_notifications_views.SMSNotificationViewSet, basename='CreateSMSNotification')
+router.register(r'SMS/modifySMSContacts', sms_notifications_views.SMSContactsViewSet, basename='CreateSMSContact')
