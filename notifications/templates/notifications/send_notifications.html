@@ -25,6 +25,13 @@
     <h5 class="card-title">Please Add your product details here</h5>
   <form class="card-form" action="" method="post">
       {% csrf_token %}
+
+  <div class="mb-4 row">
+    <div class="col-sm-6">
+                          {{form.token_id|as_crispy_field}}
+
+    </div>
+  </div>
   <div class="mb-4 row">
     <div class="col-sm-6">
                           {{form.title|as_crispy_field}}
