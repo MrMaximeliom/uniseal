@@ -36,7 +36,12 @@ class Notifications(models.Model):
         verbose_name=("Notification Body"),
         max_length=400
     )
-    notification_sending_date = models.DateField(
+    notification_date = models.DateField(
+        auto_now_add=True,
+        null=True,
+        blank=True
+    )
+    notification_time = models.TimeField(
         auto_now_add=True,
         null=True,
         blank=True
