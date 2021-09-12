@@ -653,9 +653,9 @@
                  <span class="ml-2">{% trans 'All Notifications' %} </span>
             </a>
             </li>
-            <li class="nav-item"><a href="{% url 'addBrochures' %}" class="nav-link-light nav-link-dark {{add_notifications}}">
-            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-plus"><line x1="12" y1="5" x2="12" y2="19"></line><line x1="5" y1="12" x2="19" y2="12"></line></svg>
-            <span class="ml-2">{% trans 'Add Notifications' %}</span>
+            <li class="nav-item"><a href="{% url 'sendNotifications' %}" class="nav-link-light nav-link-dark {{send_notifications}}">
+<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-send"><line x1="22" y1="2" x2="11" y2="13"></line><polygon points="22 2 15 22 11 13 2 9 22 2"></polygon></svg>
+            <span class="ml-2">{% trans 'Send Notifications' %}</span>
             </a>
             </li>
             <li class="nav-item"><a href="{% url 'deleteBrochures' %}" class="nav-link-light nav-link-dark {{delete_notifications}}">

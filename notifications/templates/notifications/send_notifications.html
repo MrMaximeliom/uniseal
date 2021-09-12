@@ -27,56 +27,35 @@
       {% csrf_token %}
   <div class="mb-4 row">
     <div class="col-sm-6">
-                          {{form.username|as_crispy_field}}
+                          {{form.title|as_crispy_field}}
 
     </div>
   </div>
        <div class="mb-4 row">
     <div class="col-sm-6">
-         {{form.email|as_crispy_field}}
+         {{form.body|as_crispy_field}}
 
     </div>
   </div>
-  <div class="mb-4 row">
+            <div class="mb-4 row">
     <div class="col-sm-6">
-          {{form.full_name|as_crispy_field}}
+        <div class="form-group">
+       <select class="form-select " id="choose-OS" name="os-options" aria-label="Default select example">
+  <option selected value="none">{% trans 'Choose Operating System' %}</option>
+  <option value="android">{% trans 'Android Devices' %}</option>
+  <option value="ios">{% trans 'Apple Devices' %}</option>
+  <option value="both">{% trans 'Both' %}</option>
+</select>
+            </div>
+
     </div>
   </div>
 
-              <div class="mb-4 row">
-    <div class="col-sm-6">
-          {{form.phone_number|as_crispy_field}}
-    </div>
-  </div>
-              <div class="mb-4 row">
-             <div class="col-sm-6">
-        {{form.organization|as_crispy_field}}
-             </div>
 
-  </div>
-
-
-                        <div class="mb-4 row">
-             <div class="col-sm-6">
-
-          {{form.password|as_crispy_field}}
-
-             </div>
-  </div>
-      {% if user.admin %}
-
-                         <div class="mb-4 row">
-             <div class="col-sm-6">
-
-          {{form.staff|as_crispy_field}}
-
-             </div>
-  </div>
-      {% endif %}
 
 
        <div class="col-auto">
-    <button type="submit" class="btn btn-primary mr-3">{% trans 'Register User' %}</button>
+    <button type="submit" class="btn btn-primary mr-3">{% trans 'Send Notification' %}</button>
     <button type="button" class="btn btn-danger" id="clear">{% trans 'Clear' %}</button>
 
   </div>

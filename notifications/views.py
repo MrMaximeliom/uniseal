@@ -1,5 +1,7 @@
 from django.shortcuts import render
 from Util.permissions import IsAnonymousUser, UnisealPermission
+from django.template.defaultfilters import slugify
+
 from rest_framework import viewsets
 from django.utils.translation import gettext_lazy as _
 from django.core.paginator import Paginator, PageNotAnInteger, EmptyPage
@@ -134,3 +136,28 @@ def all_notifications(request):
                       }
                   }
                   )
+@staff_member_required(login_url='login')
+def send_notifications(request):
+    from .forms import NotificationsForm
+    if request.method == 'POST':
+        form = NotificationsForm(request.POST)
+        if form.is_valid():
+            notification = form.save()
+            notification.slug = slugify(rand_slug())
+            notification.save()
+            title = form.cleaned_data.get('title')
+            messages.success(request, f" Notification << {title} >> has been sent successfully!")
+        else:
+            for field, items in form.errors.items():
+                for item in items:
+                    messages.error(request, '{}: {}'.format(field, item))
+    else:
+        form = NotificationsForm()
+
+    context = {
+        'title': _('Send Notifications'),
+        'send_notifications': 'active',
+        'form': form,
+
+    }
+    return render(request, 'notifications/send_notifications.html', context)
