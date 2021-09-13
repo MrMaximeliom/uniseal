@@ -59,7 +59,6 @@ class ProductViewSet(viewsets.ModelViewSet):
     filter_backends = [DjangoFilterBackend]
     filterset_fields = ['category', 'supplier']
 
-
 class ProductImagesViewSet(viewsets.ModelViewSet):
     """API endpoint to add or modify products' images by admin
     this endpoint allows GET,PUT,PATCH,DELETE functions
