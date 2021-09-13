@@ -911,3 +911,100 @@ def confirm_delete(request, id):
         messages.error(request, f"Product << {obj.name} >> was not deleted , please try again!")
 
     return redirect('deleteProducts')
+
+@staff_member_required(login_url='login')
+def top_products(request):
+    from product.models import Product
+    from Util.search_form_strings import (
+        EMPTY_SEARCH_PHRASE,
+        PRODUCT_NAME_SYNTAX_ERROR,
+        CATEGORY_NAME_SYNTAX_ERROR,
+        SUPPLIER_NAME_SYNTAX_ERROR,
+        PRODUCT_NOT_FOUND
+
+    )
+    all_products = Product.objects.filter(is_top=True).order_by("id")
+    paginator = Paginator(all_products, 5)
+    search_result = ''
+    displaying_type = 'Top Products'
+    if request.method == "POST" and 'clear' not in request.POST and 'createExcel' not in request.POST:
+        searchManObj.setSearch(True)
+        if request.POST.get('search_options') == 'product':
+            print('here now in product search')
+            search_message = request.POST.get('search_phrase')
+            search_result = Product.objects.filter(name__icontains=search_message).order_by('id')
+            print("search results ", search_result)
+            searchManObj.setPaginator(search_result)
+            searchManObj.setSearchPhrase(search_message)
+            searchManObj.setSearchOption('Product Name')
+            searchManObj.setSearchError(False)
+        elif request.POST.get('search_options') == 'category':
+            print('here now in category search')
+            search_phrase = request.POST.get('search_phrase')
+            search_result = Product.objects.filter(category__name__icontains=search_phrase).order_by("id")
+            print("search results ", search_result)
+            searchManObj.setPaginator(search_result)
+            searchManObj.setSearchPhrase(search_phrase)
+            searchManObj.setSearchOption('Category')
+            searchManObj.setSearchError(False)
+        elif request.POST.get('search_options') == 'supplier':
+            print('here now in supplier search')
+            search_phrase = request.POST.get('search_phrase')
+            print('search phrase is ', search_phrase)
+            search_result = Product.objects.filter(supplier__name__icontains=search_phrase).order_by("id")
+            print("search results ", search_result)
+            searchManObj.setPaginator(search_result)
+            searchManObj.setSearchPhrase(search_phrase)
+            searchManObj.setSearchOption('Supplier')
+            searchManObj.setSearchError(False)
+        else:
+            messages.error(request,
+                           "Please choose an item from list , then write search phrase to search by it!")
+            searchManObj.setSearchError(True)
+    if request.method == "GET" and 'page' not in request.GET and not searchManObj.getSearch():
+        all_products = Product.objects.filter(is_top=True).order_by("id")
+        searchManObj.setPaginator(all_products)
+        searchManObj.setSearch(False)
+    if request.method == "POST" and request.POST.get('clear') == 'clear':
+        all_products = Product.objects.filter(is_top=True).order_by("id")
+        searchManObj.setPaginator(all_products)
+        searchManObj.setSearch(False)
+    if request.GET.get('page'):
+        # Grab the current page from query parameter
+        page = int(request.GET.get('page'))
+    else:
+        page = None
+
+    try:
+        paginator = searchManObj.getPaginator()
+        products = paginator.page(page)
+        # Create a page object for the current page.
+    except PageNotAnInteger:
+        # If the query parameter is empty then grab the first page.
+        products = paginator.page(1)
+        page = 1
+    except EmptyPage:
+        # If the query parameter is greater than num_pages then grab the last page.
+        products = paginator.page(paginator.num_pages)
+        page = paginator.num_pages
+
+    return render(request, 'product/top_products.html',
+                  {
+                      'title': _('Top Products'),
+                      'all_products': 'active',
+                      'all_products_data': products,
+                      'displaying_type':displaying_type,
+                      'search': searchManObj.getSearch(),
+                      'search_result': search_result,
+                      'search_phrase': searchManObj.getSearchPhrase(),
+                      'search_option': searchManObj.getSearchOption(),
+                      'search_error': searchManObj.getSearchError(),
+                      'data_js': {
+                          "empty_search_phrase": EMPTY_SEARCH_PHRASE,
+                          "product_error": PRODUCT_NAME_SYNTAX_ERROR,
+                          "category_error": CATEGORY_NAME_SYNTAX_ERROR,
+                          "supplier_error": SUPPLIER_NAME_SYNTAX_ERROR,
+                      },
+                      'not_found': PRODUCT_NOT_FOUND,
+                  }
+                  )
