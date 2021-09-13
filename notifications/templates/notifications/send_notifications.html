@@ -26,21 +26,38 @@
   <form class="card-form" action="" method="post">
       {% csrf_token %}
 
+
   <div class="mb-4 row">
     <div class="col-sm-6">
-                          {{form.token_id|as_crispy_field}}
+                         <div id="div_id_title" class="form-group">
+
+            <label for="id_title" class=" requiredField">
+                Notification Title<span class="asteriskField">*</span>
+            </label>
+                <div class="">
+
+                        <input type="text" name="title" maxlength="250" class="textinput textInput form-control" required id="id_title">
+
+                </div>
 
     </div>
-  </div>
-  <div class="mb-4 row">
-    <div class="col-sm-6">
-                          {{form.title|as_crispy_field}}
 
     </div>
   </div>
        <div class="mb-4 row">
     <div class="col-sm-6">
-         {{form.body|as_crispy_field}}
+ <div id="div_id_body" class="form-group">
+
+            <label for="id_body" class=" requiredField">
+                Notification Body<span class="asteriskField">*</span>
+            </label>
+
+                <div class="">
+
+                        <input type="text" name="body" maxlength="400" class="textinput textInput form-control" required id="id_body">
+
+                </div>
+ </div>
 
     </div>
   </div>

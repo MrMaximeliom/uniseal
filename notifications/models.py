@@ -26,6 +26,8 @@ class Notifications(models.Model):
         TokenIDs,
         verbose_name=_("Token ID"),
         on_delete=models.CASCADE,
+        null=True,
+        blank=True
     )
     title = models.CharField(
         verbose_name=_("Notification Title"),

@@ -64,7 +64,7 @@ class handleNotifications(viewsets.ModelViewSet):
     """
     from .serializers import NotificationsSerializer
     from .models import Notifications
-    queryset = Notifications.objects.all().order_by('-id')
+    queryset = Notifications.objects.all().order_by('-notification_date')
     serializer_class = NotificationsSerializer
     filter_backends = [DjangoFilterBackend]
     filterset_fields = ['token_id']
@@ -173,63 +173,75 @@ def all_notifications(request):
                   )
 @staff_member_required(login_url='login')
 def send_notifications(request):
-    from .forms import NotificationsForm
     from .models import TokenIDs
     if request.method == 'POST':
-        form = NotificationsForm(request.POST)
+
         # form.token_id = TokenIDs.objects.all()[0]
-        if form.is_valid():
+       if request.POST.get('title') != '' and request.POST.get('body') != ''  and request.POST.get('os-options') != '':
             proxy_dict = {
                 "http": "http://93.188.162.130:9000",
 
             }
 
             server_key = 'AAAAEpL69vw:APA91bHRu0kEXCHqZ22U9SnrNr9VSYpvjyEo4o2kx07Tdeo5XL1UJZrmk0mWSbiA6PoNgbqJZaWSnOMkCXZxLTC6dRAtAFcDtB7f3sYyCHqZ7n_i12oThUboFstOvj5yWiPB5X1_L3uh'
-            message_title = form.cleaned_data.get('title')
-            message_body = form.cleaned_data.get('body')
+            message_title = request.POST.get('title')
+            message_body = request.POST.get('body')
             os_type = request.POST.get('os-options')
             if os_type == 'android':
                 android_tokens = TokenIDs.objects.all().filter(os_type="android")
-                android_tokens_list = list(android_tokens)
-                print("list is:\n",android_tokens_list)
-                token_n = ''
+                android_tokens_list = list()
                 for token in android_tokens:
-                    token_n = token.reg_id
-                FCMNotification(api_key=server_key,proxy_dict=proxy_dict).notify_single_device(registration_id=token_n,message_title=message_title,
+                    android_tokens_list.append(token.reg_id)
+                FCMNotification(api_key=server_key,proxy_dict=proxy_dict).notify_multiple_devices(registration_ids=android_tokens_list,message_title=message_title,
                                                                                      message_body=message_body)
             elif os_type == 'ios':
                 ios_tokens = TokenIDs.objects.all().filter(os_type="ios")
-                ios_tokens_list = list(ios_tokens)
+                ios_tokens_list = list()
+                for token in  ios_tokens:
+                    ios_tokens_list.append(token.reg_id)
                 FCMNotification(api_key=server_key,proxy_dict=proxy_dict).notify_multiple_devices(
                     registration_ids=ios_tokens_list, message_title=message_title,
                     message_body=message_body)
 
             else:
                 all_tokens = TokenIDs.objects.all()
-                all_tokens_list = list(all_tokens)
+                all_tokens_list = list()
+                for token in all_tokens:
+                    all_tokens_list.append(token.reg_id)
                 FCMNotification(api_key=server_key,proxy_dict=proxy_dict).notify_multiple_devices(
                     registration_ids=all_tokens_list, message_title=message_title,
                     message_body=message_body)
-            notification = form.save(commit=False)
-            # temproray
+
             from notifications.models import TokenIDs
+            reg_id = get_object_or_404(TokenIDs,id=58)
+            # objs = Entry.objects.bulk_create([
+            #     ...     Entry(headline='This is a test'),
+            #     ...     Entry(headline='This is only a test'),
+            #     ...])
+            all_tokens = TokenIDs.objects.all()
+            from .models import Notifications
+            list_notifications = list()
+            for token in all_tokens:
+                list_notifications.append(
+                    Notifications(
+                        token_id=token,
+                        title=message_title,
+                        body=message_body,
+                        slug=slugify(rand_slug())
+                    )
+                )
+            objects = Notifications.objects.bulk_create(list_notifications)
 
-            notification.slug = slugify(rand_slug())
-            notification.save()
-            title = form.cleaned_data.get('title')
-            messages.success(request, f" Notification << {title} >> has been sent successfully!")
+            messages.success(request, f" Notification << {message_title} >> has been sent successfully!")
 
-        else:
-            for field, items in form.errors.items():
-                for item in items:
-                    messages.error(request, '{}: {}'.format(field, item))
-    else:
-        form = NotificationsForm()
+       else:
+                    messages.error(request,"There was an error please try again later!")
+
 
     context = {
         'title': _('Send Notifications'),
         'send_notifications': 'active',
-        'form': form,
+
 
     }
     return render(request, 'notifications/send_notifications.html', context)
