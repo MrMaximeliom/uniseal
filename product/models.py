@@ -47,6 +47,10 @@ class Product(models.Model):
         null=True
 
     )
+    is_top = models.BooleanField(
+        verbose_name=_('Is Top Product?'),
+        default=False
+    )
 
 
     def __str__(self):

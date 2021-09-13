@@ -71,7 +71,9 @@
                                             <th scope="col">{% trans 'Notification Title' %}</th>
                                             <th scope="col">{% trans 'Notification Body' %}</th>
                                             <th scope="col">{% trans 'Sending Date' %}</th>
+                                            <th scope="col">{% trans 'Sending Time' %}</th>
                                             <th scope="col">{% trans 'OS Type' %}</th>
+                                            <th scope="col">{% trans 'Resend' %}</th>
                                           </tr>
                                         </thead>
                                         <tbody>
@@ -80,9 +82,10 @@
                                           <tr>
                                             <th scope="row">{{notification.title}}</th>
                                             <td>{{notification.body}}</td>
-                                            <td>{{notification.notification_sending_date}}</td>
-                                            <td>{{notification.os_type}}</td>
-                                            <td><a href="#" class="btn btn-sm btn-primary">{% trans 'Update' %}</a></td>
+                                            <td>{{notification.notification_date}}</td>
+                                            <td>{{notification.notification_time}}</td>
+                                            <td>{{notification.token_id.os_type}}</td>
+                                            <td><a href="#" class="btn btn-sm btn-primary">{% trans 'Resend' %}</a></td>
 
                                           </tr>
 

@@ -39,3 +39,7 @@ class IndustryUpdates(models.Model):
         verbose_name=_('Industry Slug')
 
     )
+    date = models.DateField(
+        verbose_name=_('Date'),
+
+    )

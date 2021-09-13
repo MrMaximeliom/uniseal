@@ -76,6 +76,10 @@ class Project(models.Model):
         max_length=100,
 
     )
+    rank = models.IntegerField(
+        verbose_name=_('Project Order'),
+
+    )
 
 
 
@@ -97,6 +101,10 @@ class ProjectImages(models.Model):
         Project,
         on_delete=models.CASCADE,
         verbose_name=_('Project')
+    )
+    is_default = models.BooleanField(
+        verbose_name=_('Default Image?'),
+        default=False
     )
 
 

@@ -71,7 +71,9 @@
                                             <th scope="col">{% trans 'Notification Title' %}</th>
                                             <th scope="col">{% trans 'Notification Body' %}</th>
                                             <th scope="col">{% trans 'Sending Date' %}</th>
+                                            <th scope="col">{% trans 'Sending Time' %}</th>
                                             <th scope="col">{% trans 'OS Type' %}</th>
+                                            <th scope="col">{% trans 'Delete' %}</th>
                                           </tr>
                                         </thead>
                                         <tbody>
@@ -80,10 +82,9 @@
                                           <tr>
                                             <th scope="row">{{notification.title}}</th>
                                             <td>{{notification.body}}</td>
-                                            <td>{{notification.notification_sending_date}}</td>
-                                            <td>{{notification.os_type}}</td>
-                                            <td><a href="#" class="btn btn-sm btn-primary">{% trans 'Update' %}</a></td>
-                                              {% if user != request.user %}
+                                            <td>{{notification.notification_date}}</td>
+                                            <td>{{notification.notification_time}}</td>
+                                            <td>{{notification.token_id.os_type}}</td>
                                             <td><a href="#" class="btn btn-sm btn-danger" data-bs-toggle="modal" data-bs-target="#exampleModal{{notification.id}}">{% trans 'Delete' %}</a></td>
 <div class="modal fade" id="exampleModal{{notification.id}}" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
   <div class="modal-dialog">
@@ -97,20 +98,18 @@
       <div class="modal-body">
 
           <h3>{% trans 'Are you sure you want to delete this notification?' %}</h3>
-<h4 style="color:red;">{{user.username}}</h4>
+<h4 style="color:red;">{{notification.title}}</h4>
 
-<!--           <input type="number" value="{{product.id}}" hidden name="product_id">-->
       </div>
       <div class="modal-footer">
         <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">{% trans 'Close' %}</button>
-        <a type="submit" class="btn btn-danger" href="#">{% trans 'Delete' %}</a>
+        <a type="submit" class="btn btn-danger" href="{% url 'deleteNotification' id=notification.id%}">{% trans 'Delete' %}</a>
 
       </div>
               </form>
     </div>
   </div>
 </div>
-                                              {% endif %}
 
                                           </tr>
 
