@@ -193,7 +193,7 @@ def send_notifications(request):
                 for token in android_tokens:
                     android_tokens_list.append(token.reg_id)
                 FCMNotification(api_key=server_key,proxy_dict=proxy_dict).notify_multiple_devices(registration_ids=android_tokens_list,message_title=message_title,
-                                                                                     message_body=message_body)
+                                                                                     message_body=message_body,data_message={'type':'notification'},click_action='FLUTTER_NOTIFICATION_CLICK')
             elif os_type == 'ios':
                 ios_tokens = TokenIDs.objects.all().filter(os_type="ios")
                 ios_tokens_list = list()
@@ -201,7 +201,7 @@ def send_notifications(request):
                     ios_tokens_list.append(token.reg_id)
                 FCMNotification(api_key=server_key,proxy_dict=proxy_dict).notify_multiple_devices(
                     registration_ids=ios_tokens_list, message_title=message_title,
-                    message_body=message_body)
+                    message_body=message_body,data_message={'type':'notification'},click_action='FLUTTER_NOTIFICATION_CLICK')
 
             else:
                 all_tokens = TokenIDs.objects.all()
@@ -210,7 +210,7 @@ def send_notifications(request):
                     all_tokens_list.append(token.reg_id)
                 FCMNotification(api_key=server_key,proxy_dict=proxy_dict).notify_multiple_devices(
                     registration_ids=all_tokens_list, message_title=message_title,
-                    message_body=message_body)
+                    message_body=message_body,data_message={'type':'notification'},click_action='FLUTTER_NOTIFICATION_CLICK')
 
             from notifications.models import TokenIDs
             reg_id = get_object_or_404(TokenIDs,id=58)

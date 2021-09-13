@@ -55,7 +55,7 @@ class ProductViewSet(viewsets.ModelViewSet):
     serializer_class = ProductSerializer
     from .models import Product
     permission_classes = [UnisealPermission]
-    queryset = Product.objects.all()
+    queryset = Product.objects.all().order_by('-is_top')
     filter_backends = [DjangoFilterBackend]
     filterset_fields = ['category', 'supplier']
 
