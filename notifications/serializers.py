@@ -6,6 +6,7 @@ class NotificationsSerializer(serializers.ModelSerializer):
         from .models import Notifications
         model = Notifications
         exclude = ('slug',)
+        lookup_field = 'slug'
 
 class TokensSerializer(serializers.ModelSerializer):
 

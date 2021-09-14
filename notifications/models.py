@@ -52,3 +52,7 @@ class Notifications(models.Model):
         verbose_name=_('Notification Slug')
 
     )
+
+
+    def __str__(self):
+        return self.token_id.reg_id

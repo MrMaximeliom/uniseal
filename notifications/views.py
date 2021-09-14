@@ -67,7 +67,7 @@ class handleNotifications(viewsets.ModelViewSet):
     queryset = Notifications.objects.all().order_by('-notification_date')
     serializer_class = NotificationsSerializer
     filter_backends = [DjangoFilterBackend]
-    filterset_fields = ['token_id']
+    filterset_fields = ['token_id',]
 
 
     def get_view_name(self):
