@@ -6,7 +6,11 @@
 {% block title %}
 {{title}}
 {% endblock title %}
+  {% block custom_css %}
+<link rel= "stylesheet" href= "https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.4.1/css/bootstrap-datepicker3.css"/>
+    {% endblock %}
     {% block custom_js %}
+<script type= "text/javascript" src= "https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.4.1/js/bootstrap-datepicker.min.js" defer></script>
 <script src="{% static 'dashboard/js/general.js' %}" defer></script>
     {% endblock %}
          {% block breadcrumb_content %}
@@ -24,11 +28,17 @@
 <div class="card ">
   <div class="card-body">
     <h5 class="card-title">Please Add your project details here</h5>
+      <span hidden id="page-id-js">Industry Updates</span>
   <form class="card-form" action="" method="post" enctype="multipart/form-data">
       {% csrf_token %}
   <div class="mb-4 row">
     <div class="col-sm-6">
              {{form.headline|as_crispy_field}}
+    </div>
+  </div>
+        <div class="mb-4 row">
+    <div class="col-sm-6">
+             {{form.date|as_crispy_field}}
     </div>
   </div>
         <div class="mb-4 row">

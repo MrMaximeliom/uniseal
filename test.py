@@ -86,7 +86,7 @@ if __name__ == "__main__":
     # now = datetime.now()
     # current_time = now.strftime("%H_%M_%S")
     # print(current_time)
-    path = os.path.dirname(os.path.abspath(__file__)) + "/Reports"
+    # path = os.path.dirname(os.path.abspath(__file__)) + "/Reports"
     # selected_pages = ['1','2']
     # for i in selected_pages:
     #     print("hi")
@@ -95,10 +95,21 @@ if __name__ == "__main__":
     # for i in selected_images:
     #     print(i)
 #    /media/product_images/ehab_1.jpg
-    ahmed = list()
-    ahmed.append("a")
-    ahmed.append("b")
-    print(ahmed)
+#     ahmed = list()
+#     ahmed.append("a")
+#     ahmed.append("b")
+#     print(ahmed)
+    # objs = [
+    #       Entry.objects.create(headline='Entry 1'),
+    #      Entry.objects.create(headline='Entry 2'),
+    #    ]
+    # objs[0].headline = 'This is entry 1'
+    # objs[1].headline = 'This is entry 2'
+    # Entry.objects.bulk_update(objs, ['headline'])
+   print("Hi")
+
+
+
 
 
 

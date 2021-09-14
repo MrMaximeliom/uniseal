@@ -114,21 +114,10 @@ $(parent_div).append(new_img)
 
 $('.collect-default-image-js').on("click",function(){
 if($(this).is(':checked')){
-//if(!default_image.includes($(this).prop("value"))){
-//default_image.push($(this).prop("value"))
-//}
 default_image = new Array()
 default_image.push($(this).prop("value"))
-
 }
-//else{
-//console.log("it unchecked now")
-//if(default_image.includes($(this).prop("value"))){
-//console.log("yeah it contains it")
-//removed_item = default_image.indexOf($(this).prop("value"))
-//default_image.splice(removed_item, 1);
-//}
-//}
+
 $('#default_images').prop("value",default_image)
 console.log("default image are: ",default_image)
 });

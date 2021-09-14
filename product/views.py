@@ -57,7 +57,8 @@ class ProductViewSet(viewsets.ModelViewSet):
     permission_classes = [UnisealPermission]
     queryset = Product.objects.all().order_by('-is_top')
     filter_backends = [DjangoFilterBackend]
-    filterset_fields = ['category', 'supplier']
+    filterset_fields = ['category', 'supplier','is_top']
+
 
 class ProductImagesViewSet(viewsets.ModelViewSet):
     """API endpoint to add or modify products' images by admin
@@ -883,6 +884,7 @@ def product_images(request, slug=None):
 
                   )
 
+
 @staff_member_required(login_url='login')
 def confirm_delete(request, id):
     from product.models import Product
@@ -912,6 +914,15 @@ def confirm_delete(request, id):
 
     return redirect('deleteProducts')
 
+class TopProductsHelper:
+    query = ''
+    def setQuery(self, query):
+        self.query = query
+
+    def getQuery(self):
+        return self.query
+
+top_products_helper = TopProductsHelper()
 @staff_member_required(login_url='login')
 def top_products(request):
     from product.models import Product
@@ -925,9 +936,10 @@ def top_products(request):
     )
     all_products = Product.objects.filter(is_top=True).order_by("id")
     paginator = Paginator(all_products, 5)
+    top_products_helper.setQuery(all_products)
     search_result = ''
     displaying_type = 'Top Products'
-    if request.method == "POST" and 'clear' not in request.POST and 'createExcel' not in request.POST:
+    if request.method == "POST" and 'clear' not in request.POST and 'createExcel' not in request.POST and 'updating_top_products' not in request.POST :
         searchManObj.setSearch(True)
         if request.POST.get('search_options') == 'product':
             print('here now in product search')
@@ -938,6 +950,7 @@ def top_products(request):
             searchManObj.setSearchPhrase(search_message)
             searchManObj.setSearchOption('Product Name')
             searchManObj.setSearchError(False)
+            top_products_helper.setQuery(search_result)
         elif request.POST.get('search_options') == 'category':
             print('here now in category search')
             search_phrase = request.POST.get('search_phrase')
@@ -947,6 +960,7 @@ def top_products(request):
             searchManObj.setSearchPhrase(search_phrase)
             searchManObj.setSearchOption('Category')
             searchManObj.setSearchError(False)
+            top_products_helper.setQuery(search_result)
         elif request.POST.get('search_options') == 'supplier':
             print('here now in supplier search')
             search_phrase = request.POST.get('search_phrase')
@@ -957,43 +971,96 @@ def top_products(request):
             searchManObj.setSearchPhrase(search_phrase)
             searchManObj.setSearchOption('Supplier')
             searchManObj.setSearchError(False)
+            top_products_helper.setQuery(search_result)
         else:
             messages.error(request,
                            "Please choose an item from list , then write search phrase to search by it!")
             searchManObj.setSearchError(True)
     if request.method == "GET" and 'page' not in request.GET and not searchManObj.getSearch():
+        print("iam here now")
         all_products = Product.objects.filter(is_top=True).order_by("id")
         searchManObj.setPaginator(all_products)
         searchManObj.setSearch(False)
+        top_products_helper.setQuery(all_products)
     if request.method == "POST" and request.POST.get('clear') == 'clear':
         all_products = Product.objects.filter(is_top=True).order_by("id")
         searchManObj.setPaginator(all_products)
         searchManObj.setSearch(False)
-    if request.GET.get('page'):
-        # Grab the current page from query parameter
-        page = int(request.GET.get('page'))
-    else:
-        page = None
+        top_products_helper.setQuery(all_products)
+    if request.method == 'POST' and 'updating_top_products' in request.POST:
+        print("here now updating top products")
+        searchManObj.setSearch(False)
+        selected_top_products = request.POST.get('selected_top_products')
+        deleted_top_products = request.POST.get('deleted_top_products')
+        print("selected products are: ",selected_top_products)
+        print("deleted top products are: ",deleted_top_products)
+        updated = False
+        if selected_top_products != 'none':
+            selected_products = list()
+            # selected_products_ids = request.POST.get('selected_top_products')
+            print("top products are: ",selected_top_products)
+            print("\ntop products splited: ",selected_top_products.split(','))
+            print("\n cycling throw splited products")
+            for product_id in selected_top_products.split(','):
+                print(product_id)
+            from product.models import Product
+            for product_id in selected_top_products.split(','):
+                selected_products.append(
+                    Product.objects.get(id=product_id)
+                )
+            print("selected products are: \n")
+            print(selected_products)
+            for product in selected_products:
+                product.is_top = True
+            Product.objects.bulk_update(selected_products, ['is_top'])
+        if deleted_top_products != 'none':
+            deleted_products = list()
+            # selected_products_ids = request.POST.get('selected_top_products')
+            print("deleted top products are: ",deleted_top_products)
+            print("\ndeleted top products splited: ",deleted_top_products.split(','))
+            print("\n cycling throw splited products")
+            for product_id in deleted_top_products.split(','):
+                print(product_id)
+            from product.models import Product
+            for product_id in deleted_top_products.split(','):
+                deleted_products.append(
+                    Product.objects.get(id=product_id)
+                )
+            print("selected products are: \n")
+            print(deleted_products)
+            for product in deleted_products:
+                product.is_top = False
+            Product.objects.bulk_update(deleted_products, ['is_top'])
+        if updated:
+            messages.success(request,"Top Products Updated Successfully!")
 
-    try:
-        paginator = searchManObj.getPaginator()
-        products = paginator.page(page)
-        # Create a page object for the current page.
-    except PageNotAnInteger:
-        # If the query parameter is empty then grab the first page.
-        products = paginator.page(1)
-        page = 1
-    except EmptyPage:
-        # If the query parameter is greater than num_pages then grab the last page.
-        products = paginator.page(paginator.num_pages)
-        page = paginator.num_pages
+
+
+    # if request.GET.get('page'):
+    #     # Grab the current page from query parameter
+    #     page = int(request.GET.get('page'))
+    # else:
+    #     page = None
+    #
+    # try:
+    #     paginator = searchManObj.getPaginator()
+    #     products = paginator.page(page)
+    #     # Create a page object for the current page.
+    # except PageNotAnInteger:
+    #     # If the query parameter is empty then grab the first page.
+    #     products = paginator.page(1)
+    #     page = 1
+    # except EmptyPage:
+    #     # If the query parameter is greater than num_pages then grab the last page.
+    #     products = paginator.page(paginator.num_pages)
+    #     page = paginator.num_pages
 
     return render(request, 'product/top_products.html',
                   {
                       'title': _('Top Products'),
                       'all_products': 'active',
-                      'all_products_data': products,
-                      'displaying_type':displaying_type,
+                      'all_products_data': top_products_helper.getQuery(),
+                      'displaying_type': displaying_type,
                       'search': searchManObj.getSearch(),
                       'search_result': search_result,
                       'search_phrase': searchManObj.getSearchPhrase(),

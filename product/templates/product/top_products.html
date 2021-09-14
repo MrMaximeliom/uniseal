@@ -11,7 +11,7 @@
 <link rel="stylesheet" href="{% static 'dashboard/css/search.css' %}">
     {% endblock %}
    {% block custom_js %}
-<script src="{% static 'dashboard/js/search.js' %}" defer></script>
+<script src="{% static 'dashboard/js/top_products.js' %}" defer></script>
   {{ data_js|json_script:"my-data" }}
     {% endblock %}
          {% block breadcrumb_content %}
@@ -159,14 +159,14 @@
       <p class="card-text">
         {% trans 'Supplier:' %} {{product.supplier.name}}
     </p>
-      {% if prodcut.is_top %}
+      {% if product.is_top %}
 <div class="form-check form-check-inline">
-  <input class="form-check-input collect-top-product-js" type="checkbox" id="inlineCheckbox2"  value="true"  name="set_default" checked>
+  <input class="form-check-input collect-top-product-js" type="checkbox" id="inlineCheckbox2"  value="{{product.id}}"  name="set_default" checked>
   <label class="form-check-label" for="inlineCheckbox2">{% trans 'Top Product' %}</label>
 </div>
       {% else %}
       <div class="form-check form-check-inline">
-  <input class="form-check-input collect-top-product-js" type="checkbox" id="inlineCheckbox"  value="false"  name="set_default" checked>
+  <input class="form-check-input selected-top-product-js" type="checkbox" id="inlineCheckbox"  value="{{product.id}}"  name="set_default" >
   <label class="form-check-label" for="inlineCheckbox2">{% trans 'Top Product' %}</label>
 </div>
       {% endif %}
@@ -175,10 +175,12 @@
  </div>
 
 {% endfor %}
-             <input hidden type="text" name="top_products" id="top_products" value="none">
+             <input hidden type="text" name="selected_top_products" id="selected_top_products" value="none">
+      <input hidden type="text" name="deleted_top_products" id="deleted_top_products" value="none">
+
       <div class="row">
           <div class="col-auto">
-                        <button type="submit" class="btn btn-primary" name="updating_top_products">{% trans 'Update' %}</button>
+                        <button type="submit" class="btn btn-primary" name="updating_top_products" value="updating_top_products">{% trans 'Update' %}</button>
 
           </div>
       </div>
