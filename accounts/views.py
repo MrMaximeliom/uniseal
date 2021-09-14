@@ -348,7 +348,11 @@ def all_users(request):
         USERNAME_SYNTAX_ERROR,
         FULL_NAME_SYNTAX_ERROR,
         ORGANIZATION_NAME_SYNTAX_ERROR,
-        PHONE_NUMBER_SYNTAX_ERROR
+        PHONE_NUMBER_SYNTAX_ERROR,
+        SEARCH_USERS_TIP,
+        CLEAR_SEARCH_TIP,
+        CREATE_REPORT_TIP
+
     )
     from accounts.models import User
     all_users = User.objects.all().order_by("id")
@@ -552,6 +556,9 @@ def all_users(request):
                       'search_phrase': searchManObj.getSearchPhrase(),
                       'search_option': searchManObj.getSearchOption(),
                       'search_error': searchManObj.getSearchError(),
+                      'create_report_tip': CREATE_REPORT_TIP,
+                      'clear_search_tip': CLEAR_SEARCH_TIP,
+                      'search_users_tip': SEARCH_USERS_TIP,
                       'data_js': {
                           "empty_search_phrase": EMPTY_SEARCH_PHRASE,
                           "username_error": USERNAME_SYNTAX_ERROR,
@@ -624,7 +631,9 @@ def edit_users(request):
         USERNAME_SYNTAX_ERROR,
         FULL_NAME_SYNTAX_ERROR,
         ORGANIZATION_NAME_SYNTAX_ERROR,
-        PHONE_NUMBER_SYNTAX_ERROR
+        PHONE_NUMBER_SYNTAX_ERROR,
+    CLEAR_SEARCH_TIP,
+    SEARCH_USERS_TIP,
     )
     all_users = User.objects.all().order_by("id")
     search_result = ''
@@ -706,6 +715,8 @@ def edit_users(request):
                       'search_phrase': searchManObj.getSearchPhrase(),
                       'search_option': searchManObj.getSearchOption(),
                       'search_error': searchManObj.getSearchError(),
+                      'clear_search_tip': CLEAR_SEARCH_TIP,
+                      'search_users_tip': SEARCH_USERS_TIP,
                       'data_js': {
                           "empty_search_phrase": EMPTY_SEARCH_PHRASE,
                           "username_error": USERNAME_SYNTAX_ERROR,
@@ -728,7 +739,10 @@ def delete_users(request):
         USERNAME_SYNTAX_ERROR,
         FULL_NAME_SYNTAX_ERROR,
         ORGANIZATION_NAME_SYNTAX_ERROR,
-        PHONE_NUMBER_SYNTAX_ERROR
+        PHONE_NUMBER_SYNTAX_ERROR,
+        CLEAR_SEARCH_TIP,
+        CREATE_REPORT_TIP,
+        SEARCH_USERS_TIP,
     )
     all_users = User.objects.all().order_by("id")
     search_result = ''
@@ -814,6 +828,8 @@ def delete_users(request):
                       'search_phrase': searchManObj.getSearchPhrase(),
                       'search_option': searchManObj.getSearchOption(),
                       'search_error': searchManObj.getSearchError(),
+                      'clear_search_tip': CLEAR_SEARCH_TIP,
+                      'search_users_tip': SEARCH_USERS_TIP,
                       'data_js': {
                           "empty_search_phrase": EMPTY_SEARCH_PHRASE,
                           "username_error": USERNAME_SYNTAX_ERROR,

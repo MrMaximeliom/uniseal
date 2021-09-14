@@ -251,7 +251,10 @@ def all_projects(request):
     BENEFICIARY_NAME_SYNTAX_ERROR,
     MAIN_MATERIAL_SYNTAX_ERROR,
     EXECUTION_DATE_ERROR,
-    PROJECT_NOT_FOUND
+    PROJECT_NOT_FOUND,
+    CREATE_REPORT_TIP,
+     CLEAR_SEARCH_TIP,
+     SEARCH_PROJECTS_TIP,
 
     )
     search_result = ''
@@ -467,6 +470,9 @@ def all_projects(request):
                       'search_phrase': searchManObj.getSearchPhrase(),
                       'search_option': searchManObj.getSearchOption(),
                       'search_error': searchManObj.getSearchError(),
+                      'create_report_tip': CREATE_REPORT_TIP,
+                      'clear_search_tip': CLEAR_SEARCH_TIP,
+                      'search_projects_tip': SEARCH_PROJECTS_TIP,
                       'data_js': {
                           "empty_search_phrase": EMPTY_SEARCH_PHRASE,
                           "project_error": PROJECT_NAME_SYNTAX_ERROR,
@@ -516,7 +522,10 @@ def delete_projects(request):
         BENEFICIARY_NAME_SYNTAX_ERROR,
         MAIN_MATERIAL_SYNTAX_ERROR,
         EXECUTION_DATE_ERROR,
-        PROJECT_NOT_FOUND
+        PROJECT_NOT_FOUND,
+
+     CLEAR_SEARCH_TIP,
+     SEARCH_PROJECTS_TIP,
 
 
     )
@@ -608,6 +617,9 @@ def delete_projects(request):
                       'search_phrase': searchManObj.getSearchPhrase(),
                       'search_option': searchManObj.getSearchOption(),
                       'search_error': searchManObj.getSearchError(),
+
+                      'clear_search_tip': CLEAR_SEARCH_TIP,
+                      'search_projects_tip': SEARCH_PROJECTS_TIP,
                       'data_js': {
                           "empty_search_phrase": EMPTY_SEARCH_PHRASE,
                           "project_error": PROJECT_NAME_SYNTAX_ERROR,
@@ -630,7 +642,10 @@ def edit_projects(request):
     BENEFICIARY_NAME_SYNTAX_ERROR,
     MAIN_MATERIAL_SYNTAX_ERROR,
     EXECUTION_DATE_ERROR,
-    PROJECT_NOT_FOUND
+    PROJECT_NOT_FOUND,
+
+    CLEAR_SEARCH_TIP,
+     SEARCH_PROJECTS_TIP,
 
     )
     search_result = ''
@@ -718,6 +733,9 @@ def edit_projects(request):
                       'search_phrase': searchManObj.getSearchPhrase(),
                       'search_option': searchManObj.getSearchOption(),
                       'search_error': searchManObj.getSearchError(),
+
+                      'clear_search_tip': CLEAR_SEARCH_TIP,
+                      'search_projects_tip': SEARCH_PROJECTS_TIP,
                       'data_js': {
                           "empty_search_phrase": EMPTY_SEARCH_PHRASE,
                           "project_error": PROJECT_NAME_SYNTAX_ERROR,

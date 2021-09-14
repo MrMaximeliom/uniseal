@@ -55,7 +55,7 @@ class ProductViewSet(viewsets.ModelViewSet):
     serializer_class = ProductSerializer
     from .models import Product
     permission_classes = [UnisealPermission]
-    queryset = Product.objects.all().order_by('-is_top')
+    queryset = Product.objects.all().order_by('is_top').order_by('-id')
     filter_backends = [DjangoFilterBackend]
     filterset_fields = ['category', 'supplier','is_top']
 
@@ -269,7 +269,10 @@ def all_products(request):
         PRODUCT_NAME_SYNTAX_ERROR,
         CATEGORY_NAME_SYNTAX_ERROR,
         SUPPLIER_NAME_SYNTAX_ERROR,
-        PRODUCT_NOT_FOUND
+        PRODUCT_NOT_FOUND,
+    CREATE_REPORT_TIP,
+     CLEAR_SEARCH_TIP,
+     SEARCH_PRODUCTS_TIP,
 
     )
     all_products = Product.objects.all().order_by("id")
@@ -466,6 +469,9 @@ def all_products(request):
                       'search_phrase': searchManObj.getSearchPhrase(),
                       'search_option': searchManObj.getSearchOption(),
                       'search_error': searchManObj.getSearchError(),
+                      'create_report_tip': CREATE_REPORT_TIP,
+                      'clear_search_tip': CLEAR_SEARCH_TIP,
+                      'search_products_tip': SEARCH_PRODUCTS_TIP,
                       'data_js': {
                           "empty_search_phrase": EMPTY_SEARCH_PHRASE,
                           "product_error": PRODUCT_NAME_SYNTAX_ERROR,
@@ -519,7 +525,10 @@ def delete_products(request):
         PRODUCT_NAME_SYNTAX_ERROR,
         CATEGORY_NAME_SYNTAX_ERROR,
         SUPPLIER_NAME_SYNTAX_ERROR,
-        PRODUCT_NOT_FOUND
+        PRODUCT_NOT_FOUND,
+
+    CLEAR_SEARCH_TIP,
+     SEARCH_PRODUCTS_TIP,
 
     )
     search_result = ''
@@ -597,6 +606,8 @@ def delete_products(request):
         'search_phrase': searchManObj.getSearchPhrase(),
         'search_option': searchManObj.getSearchOption(),
         'search_error': searchManObj.getSearchError(),
+        'clear_search_tip': CLEAR_SEARCH_TIP,
+        'search_products_tip': SEARCH_PRODUCTS_TIP,
         'data_js': {
             "empty_search_phrase": EMPTY_SEARCH_PHRASE,
             "product_error": PRODUCT_NAME_SYNTAX_ERROR,
@@ -651,7 +662,10 @@ def edit_products(request):
         PRODUCT_NAME_SYNTAX_ERROR,
         CATEGORY_NAME_SYNTAX_ERROR,
         SUPPLIER_NAME_SYNTAX_ERROR,
-        PRODUCT_NOT_FOUND
+        PRODUCT_NOT_FOUND,
+
+   CLEAR_SEARCH_TIP,
+   SEARCH_PRODUCTS_TIP,
 
     )
     search_result = ''
@@ -731,6 +745,9 @@ def edit_products(request):
                       'search_phrase': searchManObj.getSearchPhrase(),
                       'search_option': searchManObj.getSearchOption(),
                       'search_error': searchManObj.getSearchError(),
+
+                      'clear_search_tip': CLEAR_SEARCH_TIP,
+                      'search_products_tip': SEARCH_PRODUCTS_TIP,
                       'data_js': {
                           "empty_search_phrase": EMPTY_SEARCH_PHRASE,
                           "product_error": PRODUCT_NAME_SYNTAX_ERROR,
@@ -931,7 +948,10 @@ def top_products(request):
         PRODUCT_NAME_SYNTAX_ERROR,
         CATEGORY_NAME_SYNTAX_ERROR,
         SUPPLIER_NAME_SYNTAX_ERROR,
-        PRODUCT_NOT_FOUND
+        PRODUCT_NOT_FOUND,
+    CLEAR_SEARCH_TIP,
+    CREATE_REPORT_TIP,
+    SEARCH_PRODUCTS_TIP,
 
     )
     all_products = Product.objects.filter(is_top=True).order_by("id")
@@ -1034,27 +1054,6 @@ def top_products(request):
         if updated:
             messages.success(request,"Top Products Updated Successfully!")
 
-
-
-    # if request.GET.get('page'):
-    #     # Grab the current page from query parameter
-    #     page = int(request.GET.get('page'))
-    # else:
-    #     page = None
-    #
-    # try:
-    #     paginator = searchManObj.getPaginator()
-    #     products = paginator.page(page)
-    #     # Create a page object for the current page.
-    # except PageNotAnInteger:
-    #     # If the query parameter is empty then grab the first page.
-    #     products = paginator.page(1)
-    #     page = 1
-    # except EmptyPage:
-    #     # If the query parameter is greater than num_pages then grab the last page.
-    #     products = paginator.page(paginator.num_pages)
-    #     page = paginator.num_pages
-
     return render(request, 'product/top_products.html',
                   {
                       'title': _('Top Products'),
@@ -1066,11 +1065,15 @@ def top_products(request):
                       'search_phrase': searchManObj.getSearchPhrase(),
                       'search_option': searchManObj.getSearchOption(),
                       'search_error': searchManObj.getSearchError(),
+                      'create_report_tip':CREATE_REPORT_TIP,
+                      'clear_search_tip':CLEAR_SEARCH_TIP,
+                      'search_products_tip':SEARCH_PRODUCTS_TIP,
                       'data_js': {
                           "empty_search_phrase": EMPTY_SEARCH_PHRASE,
                           "product_error": PRODUCT_NAME_SYNTAX_ERROR,
                           "category_error": CATEGORY_NAME_SYNTAX_ERROR,
                           "supplier_error": SUPPLIER_NAME_SYNTAX_ERROR,
+
                       },
                       'not_found': PRODUCT_NOT_FOUND,
                   }

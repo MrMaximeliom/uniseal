@@ -93,7 +93,10 @@ def all_applications(request):
     from project.models import Application
     from Util.search_form_strings import (
         EMPTY_SEARCH_PHRASE,
-        PROJECT_APPLICATION_NAME_SYNTAX_ERROR
+        PROJECT_APPLICATION_NAME_SYNTAX_ERROR,
+   CREATE_REPORT_TIP,
+    CLEAR_SEARCH_TIP,
+     SEARCH_PROJECTS_TYPE_TIP,
 
     )
     all_applications = Application.objects.annotate(num_projects=Count('project')).order_by('-num_projects')
@@ -253,6 +256,9 @@ def all_applications(request):
                       'search_phrase': searchManObj.getSearchPhrase(),
                       'search_option': searchManObj.getSearchOption(),
                       'search_error': searchManObj.getSearchError(),
+                      'create_report_tip': CREATE_REPORT_TIP,
+                      'clear_search_tip': CLEAR_SEARCH_TIP,
+                      'search_projects_types_tip': SEARCH_PROJECTS_TYPE_TIP,
                       'data_js': {
                           "empty_search_phrase": EMPTY_SEARCH_PHRASE,
                           "application_error": PROJECT_APPLICATION_NAME_SYNTAX_ERROR,

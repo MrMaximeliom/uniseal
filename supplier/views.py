@@ -109,7 +109,10 @@ def all_suppliers(request):
     paginator = Paginator(suppliers, 5)
     from Util.search_form_strings import (
         EMPTY_SEARCH_PHRASE,
-    SUPPLIER_NAME_SYNTAX_ERROR
+    SUPPLIER_NAME_SYNTAX_ERROR,
+    CREATE_REPORT_TIP,
+    CLEAR_SEARCH_TIP,
+    SEARCH_SUPPLIERS_TIP,
 
     )
     search_result = ''
@@ -259,6 +262,10 @@ def all_suppliers(request):
                       'num_pages': paginator.num_pages,
                       'current_page': page,
                       'search': searchManObj.getSearch(),
+                      'create_report_tip': CREATE_REPORT_TIP,
+                      'clear_search_tip': CLEAR_SEARCH_TIP,
+                      'search_suppliers_tip': SEARCH_SUPPLIERS_TIP,
+
                       'search_result': search_result,
                       'search_phrase': searchManObj.getSearchPhrase(),
                       'search_option': searchManObj.getSearchOption(),
@@ -274,7 +281,10 @@ def edit_suppliers(request):
     from django.core.paginator import Paginator, PageNotAnInteger, EmptyPage
     from Util.search_form_strings import (
         EMPTY_SEARCH_PHRASE,
-    SUPPLIER_NAME_SYNTAX_ERROR
+    SUPPLIER_NAME_SYNTAX_ERROR,
+
+    CLEAR_SEARCH_TIP,
+     SEARCH_SUPPLIERS_TIP,
 
     )
     search_result = ''
@@ -333,6 +343,9 @@ def edit_suppliers(request):
                       'search_phrase': searchManObj.getSearchPhrase(),
                       'search_option': searchManObj.getSearchOption(),
                       'search_error': searchManObj.getSearchError(),
+
+                      'clear_search_tip': CLEAR_SEARCH_TIP,
+                      'search_suppliers_tip': SEARCH_SUPPLIERS_TIP,
                       'data_js': {
                           "empty_search_phrase": EMPTY_SEARCH_PHRASE,
                           "supplier_error": SUPPLIER_NAME_SYNTAX_ERROR,
@@ -371,7 +384,10 @@ def delete_suppliers(request):
     paginator = Paginator(suppliers, 5)
     from Util.search_form_strings import (
         EMPTY_SEARCH_PHRASE,
-    SUPPLIER_NAME_SYNTAX_ERROR
+    SUPPLIER_NAME_SYNTAX_ERROR,
+
+   CLEAR_SEARCH_TIP,
+   SEARCH_SUPPLIERS_TIP,
 
     )
     search_result = ''
@@ -429,6 +445,8 @@ def delete_suppliers(request):
                       'search_phrase': searchManObj.getSearchPhrase(),
                       'search_option': searchManObj.getSearchOption(),
                       'search_error': searchManObj.getSearchError(),
+                      'clear_search_tip': CLEAR_SEARCH_TIP,
+                      'search_suppliers_tip': SEARCH_SUPPLIERS_TIP,
                       'data_js': {
                           "empty_search_phrase": EMPTY_SEARCH_PHRASE,
                           "supplier_error": SUPPLIER_NAME_SYNTAX_ERROR,
