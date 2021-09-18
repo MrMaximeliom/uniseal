@@ -1,0 +1,163 @@
+<!DOCTYPE html>
+{% extends "dashboard/base.html" %}
+{% load static %}
+{% load crispy_forms_tags %}
+{% load static i18n %}
+{% block title %}
+{{title}}
+{% endblock title %}
+ {% block custom_css %}
+    <link rel="stylesheet"  href="{% static 'product/css/product_images.css' %}">
+    <link rel="stylesheet" href="{% static 'product/css/product.css' %}">
+    {% endblock %}
+  {% block custom_js %}
+ <script src="{% static 'dashboard/js/Application.js' %}" defer ></script>
+    {% endblock %}
+         {% block breadcrumb_content %}
+   <nav aria-label="crumb">
+                    <ol class="crumb breadcrumb-light breadcrumb-dark">
+                        <li class="breadcrumb-item"><a href="{% url 'dashboard' %}">{% trans 'Dashboard' %}</a></li>
+                        <li class="breadcrumb-item" aria-current="page">{% trans 'Application Videos' %}</li>
+                        <li class="breadcrumb-item" aria-current="page">{% trans 'Add Videos' %}</li>
+                    </ol>
+                </nav>
+                {% endblock breadcrumb_content %}
+{% block content %}
+<div class="col-auto">
+<form class="row g-2 mb-3" action="" method="post" id="searchForm" autocomplete="off">
+    {% csrf_token %}
+    <div class="col-3">
+
+    <select class="form-select search-select" id="searchBy" name="search_options" aria-label="Default select example">
+  <option selected value="none">{% trans '-- Select Product --' %}</option>
+        {% for product in allProducts %}
+          <option value="{{product.slug}}">{{product.name}}</option>
+        {% endfor %}
+
+</select>
+                <span style="display:none;color:red;" id="selection_error"></span>
+
+    </div>
+
+
+  <div class="col-auto">
+    <button type="submit" class="btn btn-primary mb-3" id="searchButton" value="search_product" name="search_product">{% trans 'View Videos' %}</button>
+
+  </div>
+</form>
+    </div>
+{% if selected_product %}
+<h2 class="mb-4">{% trans "Selected Product is: " %}{{selected_product}}</h2>
+{% endif %}
+{% if product_videos|length != 0 %}
+<div class="row card-group">
+<h2>Product Videos</h2>
+{% for video in product_videos %}
+
+
+ <div class="col-sm-2 col-md-3 col-lg-3 mb-2 mt-2">
+
+
+
+    <a href="{{video.application_video}}" target="_blank" class="btn btn-primary mr-3">{% trans 'View Video' %}</a>
+
+
+
+
+
+ </div>
+
+
+  {% endfor %}
+     <div class="col-sm-2 col-md-3 col-lg-3 mb-2 mt-2">
+                     <div class="card mb-5 ml-2" >
+                         <figure class="snip1572">
+  <img src="{% static 'product/img/addImage.png' %}" class="card-img-top" alt="sample102" />
+  <figcaption>
+    <h3>{% trans 'Add Videos' %}</h3>
+  </figcaption>
+  <a href="#" data-bs-toggle="modal" data-bs-target="#exampleModal"></a>
+</figure>
+
+
+</div>
+ </div>
+
+
+
+
+                  <div >
+      <input hidden type="text" name="added_videos" id="added_videos" value="none">
+
+  </div>
+
+
+
+
+</div>
+{% elif product_videos|length == 0 and slug %}
+<h3>{% trans 'There is no videos for this product' %}</h3>
+ <div class="col-sm-2 col-md-3 col-lg-3 mb-2 mt-2">
+                     <div class="card mb-5 ml-2" >
+                         <figure class="snip1572">
+  <img src="{% static 'product/img/addImage.png' %}" class="card-img-top" alt="sample102" />
+  <figcaption>
+    <h3>{% trans 'Add Videos' %}</h3>
+  </figcaption>
+  <a href="#" data-bs-toggle="modal" data-bs-target="#exampleModal"></a>
+</figure>
+
+
+</div>
+ </div>
+{% else %}
+<h3 class="mb-4">{% trans 'Please choose a product to view its videos' %}</h3>
+{% endif %}
+<div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="exampleModalLabel">{% trans 'Add New Video' %}</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body">
+          <h3>{% trans 'You can add multiple videos' %}</h3>
+         <form class="card-form" enctype="multipart/form-data" action="" method="post">
+             {% csrf_token %}
+  <div class="row">
+      <div class="col-md-6">
+             <label for="number_videos" class=" requiredField">
+                Choose Number of Application Videos<span class="asteriskField">*</span>
+            </label>
+
+                <div class="input-group">
+
+                        <input type="number" name="number_videos" autofocus autocapitalize="none"  class="form-control" required id="number_videos" min="1" max="4">
+
+
+                </div>
+      </div>
+      <div class="row">
+           <div class="col-md-6" id="space">
+
+
+
+
+
+    </div>
+      </div>
+
+  </div>
+
+              <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">{% trans 'Close' %}</button>
+        <button type="submit" class="btn btn-primary" value="add_videos" name="add_videos" >{% trans 'Save changes'%}</button>
+      </div>
+         </form>
+      </div>
+
+    </div>
+  </div>
+</div>
+
+{% endblock %}
