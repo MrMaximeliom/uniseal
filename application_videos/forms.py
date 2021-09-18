@@ -1,5 +1,7 @@
-from .models import ProductApplicationVideos
 from django import forms
+
+from .models import ProductApplicationVideos
+
 
 class ApplicationVideoForm(forms.ModelForm):
     class Meta:

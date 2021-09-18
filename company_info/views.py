@@ -1,9 +1,12 @@
-from django.shortcuts import render, get_object_or_404
-from rest_framework import viewsets,mixins
-from django.utils.translation import gettext_lazy as _
-from Util.permissions import UnisealPermission
 from django.contrib import messages
+from django.shortcuts import render, get_object_or_404
+from django.utils.translation import gettext_lazy as _
+from rest_framework import viewsets, mixins
+
+from Util.permissions import UnisealPermission
 from Util.utils import EnablePartialUpdateMixin
+
+
 # Create your views here.
 class  CompanyInfoViewSet(EnablePartialUpdateMixin, viewsets.GenericViewSet,
                           mixins.UpdateModelMixin,mixins.ListModelMixin,

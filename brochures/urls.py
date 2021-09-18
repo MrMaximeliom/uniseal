@@ -1,5 +1,6 @@
 from django.urls import path
-from brochures import views as brochures_views
+
+from brochures import dashboard_views as brochures_views
 
 urlpatterns = [
     path('allBrochures', brochures_views.all_brochures, name='allBrochures'),

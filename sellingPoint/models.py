@@ -7,7 +7,6 @@ from Util.utils import rand_slug
 
 
 class SellingPoint(models.Model):
-    from Util.ListsOfData import CITIES_CHOICES, AREA_CHOICES
     name = models.CharField(
         max_length=150,
         verbose_name=_('Sale Point Name')

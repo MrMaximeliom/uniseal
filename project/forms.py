@@ -1,8 +1,9 @@
-from django import forms
 import datetime
-from .models import Project,ProjectImages,ProjectVideos,Application
+
+from django import forms
 from django.utils.translation import gettext_lazy as _
-from Util.utils import current_year
+
+from .models import Project, ProjectImages, ProjectVideos
 
 
 def year_choices():

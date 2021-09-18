@@ -1,16 +1,16 @@
+from django.contrib import messages
+from django.contrib.admin.views.decorators import staff_member_required
+from django.core.paginator import Paginator, PageNotAnInteger, EmptyPage
 from django.db.models import Count
 from django.shortcuts import render, get_object_or_404, redirect
 from django.template.defaultfilters import slugify
-from django.core.paginator import Paginator, PageNotAnInteger, EmptyPage
-from django.contrib import messages
 from django.utils.translation import gettext_lazy as _
-from Util.utils import rand_slug
+
 from Util.utils import SearchMan, createExelFile, ReportMan, delete_temp_folder
-from django.contrib.admin.views.decorators import staff_member_required
+from Util.utils import rand_slug
+from address.models import State
 
 # states goes here
-
-from address.models import State
 
 # cities = City.objects.all()
 states = State.objects.annotate(num_cities=Count('country')).order_by('-num_cities')
@@ -260,6 +260,7 @@ def all_states(request):
                   {
                       'title': _('All States'),
                       'all_states': 'active',
+                      'address': 'active',
                       'all_states_data': states_paginator,
                       'page_range': paginator.page_range,
                       'num_pages': paginator.num_pages,
@@ -298,7 +299,8 @@ def add_states(request):
     context = {
         'title': _('Add States'),
         'add_states': 'active',
-        'form': form
+        'form': form,
+        'address': 'active',
     }
 
     return render(request, 'address/add_states.html', context)
@@ -309,8 +311,7 @@ def delete_states(request):
     paginator = Paginator(states, 5)
     from Util.search_form_strings import (
         EMPTY_SEARCH_PHRASE,
-        STATE_NAME_SYNTAX_ERROR,
-    COUNTRY_NAME_SYNTAX_ERROR
+        STATE_NAME_SYNTAX_ERROR
 
     )
     paginator = Paginator(states, 5)
@@ -474,6 +475,7 @@ def delete_states(request):
                   {
                       'title': _('Delete States'),
                       'delete_states': 'active',
+                      'address': 'active',
                       'all_states_data': states_paginator,
                       'page_range': paginator.page_range,
                       'num_pages': paginator.num_pages,
@@ -661,6 +663,7 @@ def edit_states(request):
                   {
                       'title': _('Edit States'),
                       'edit_states': 'active',
+                      'address': 'active',
                       'all_states_data': states_paginator,
                       'page_range': paginator.page_range,
                       'num_pages': paginator.num_pages,
@@ -705,6 +708,7 @@ def edit_state(request, slug):
         'edit_states': 'active',
         'form': state_form,
         'state': obj,
+        'address': 'active',
     }
     return render(request, 'address/edit_state.html', context)
 

@@ -1,33 +1,34 @@
-from django.conf.urls.static import static
-from dashboard.urls import urlpatterns as dashboard_urls
-from django.contrib import admin
-from django.urls import path, include
-from rest_framework import routers
-from accounts import views as accounts_views
-from supplier import views as supplier_views
-from slider import views as slider_views
-from category import views as category_views
-from product import views as product_views
-from project import views as project_views
-from project_application import views as application_views
-from company_info import views as company_views
-from sellingPoint import views as selling_point_views
-from brochures import views as brochures_views
-from solution import views as solution_views
-from admin_panel import views as admin_views
-from notifications import views as notifications_views
 from django.conf import settings
-from address import endpoints_urls as address_endpoints_urls
-from dashboard import views as dashboard_views
-from industry_updates import views as industry_views
-from sms_notifications import views as sms_notifications_views
-from django.views.generic.base import RedirectView
+from django.conf.urls.static import static
+from django.contrib import admin
 from django.contrib.staticfiles.storage import staticfiles_storage
-from application_videos import views as application_videos_views
+from django.urls import path, include
+from django.views.generic.base import RedirectView
+from rest_framework import routers
 from rest_framework_simplejwt.views import (
     TokenObtainPairView,
     TokenRefreshView,
 )
+
+from accounts import endpoints_urls as accounts_views
+from address import endpoints_urls as address_endpoints_urls
+from admin_panel import views as admin_views
+from application_videos import endpoints_urls as application_videos_views
+from brochures import endpoints_urls as brochures_views
+from category import endpoints_urls as category_views
+from company_info import views as company_views
+from dashboard import views as dashboard_views
+from dashboard.urls import urlpatterns as dashboard_urls
+from industry_updates import endpoints_urls as industry_views
+from notifications import endpoints_urls as notifications_views
+from product import endpoints_urls as product_views
+from project import endpoints_urls as project_views
+from project_application import endpoints_urls as application_views
+from sellingPoint import endpoints_urls as selling_point_views
+from slider import endpoints_urls as slider_views
+from sms_notifications import endpoints_urls as sms_notifications_views
+from solution import endoints_urls as solution_views
+from supplier import endpoints_urls as supplier_views
 
 router = routers.DefaultRouter()
 admin_router = routers.DefaultRouter()

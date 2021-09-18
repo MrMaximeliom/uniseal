@@ -1,5 +1,6 @@
 from django.urls import path
-from sellingPoint import views as selling_point_views
+
+from sellingPoint import dashboard_views as selling_point_views
 
 urlpatterns = [
     path('allSellingPoints', selling_point_views.all_selling_points, name='allSellingPoints'),

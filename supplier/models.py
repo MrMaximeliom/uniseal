@@ -1,7 +1,9 @@
 from django.db import models
+from django.template.defaultfilters import slugify  # new
 from django.utils.translation import gettext_lazy as _
-from django.template.defaultfilters import slugify # new
+
 from Util.utils import rand_slug
+
 
 class Supplier(models.Model):
     slug = models.SlugField(

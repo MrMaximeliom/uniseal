@@ -1,5 +1,7 @@
 from django import forms
-from .models import Country,State,City,Area
+
+from .models import Country, State, City, Area
+
 
 class CountryForm(forms.ModelForm):
     class Meta:

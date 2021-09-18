@@ -1,6 +1,8 @@
-from accounts.models import User
 from rest_framework import authentication
 from rest_framework import exceptions
+
+from accounts.models import User
+
 
 class UnisealAuthentication(authentication.BaseAuthentication):
     def authenticate(self, request):

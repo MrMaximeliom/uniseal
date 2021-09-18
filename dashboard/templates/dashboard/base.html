@@ -10,17 +10,117 @@
 
 
     <link rel="stylesheet" href="{% static 'dashboard/css/index.css' %}">
-    <link rel="stylesheet" id="theme" href="{% static 'dashboard/css/dark-theme.css' %}">
-<script src="https://kit.fontawesome.com/dced961655.js" crossorigin="anonymous" defer></script>
+    <link rel="stylesheet" id="theme" href="{% static 'dashboard/css/light-theme.css' %}">
+<script src="https://kit.fontawesome.com/dced961655.js" crossorigin="anonymous" ></script>
+
 
             <script src="https://code.jquery.com/jquery-3.6.0.slim.min.js" integrity="sha256-u7e5khyithlIdTpu22PHhENmPcRdFiHRjhAuHcs05RI=" crossorigin="anonymous" defer></script>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.1/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-+0n0xVW2eSR5OomGNYDnhzAbDsOXxcvSN1TPprVMTNDbiYZCxYbOOl7+AMvyTG2x" crossorigin="anonymous">
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.1/dist/js/bootstrap.bundle.min.js" integrity="sha384-gtEjrD/SeCtmISkJkNUaaKMoLD0//ElJ19smozuHV6z3Iehds+3Ulb9Bn9Plx0x4" crossorigin="anonymous" defer></script>
 
     {% block custom_css %}
+
     {% endblock %}
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/5.0.0-alpha1/css/bootstrap.min.css" integrity="sha384-r4NyP46KrjDleawBgD5tp8Y7UzmLA05oM1iAEQ17CSuDqnUK2+k9luXQOfXJCJ4I" crossorigin="anonymous">
+<script defer>
+    let body = document.getElementById('body')
+let btn_mode = document.getElementById('#btn-mode')
+myStorage = window.localStorage;
+
+
+window.addEventListener('load', (event) => {
+  console.log('page is fully loaded');
+
+
+      if ( myStorage.getItem("mode") === null) {
+      myStorage.setItem('mode', 'day');
+    }
+
+
+    console.log(myStorage.getItem('mode'))
+
+    if(myStorage.getItem('mode') === "day"){
+//    $('body').removeClass("dark-theme");
+   body.classList.remove("dark-theme");
+console.log("its day removing theme")
+
+
+//    document.documentElement.removeAttribute('theme');
+
+
+$("#btn-mode").html('<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-moon"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path></svg>');
+//btn-mode.innerHTML = '<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-moon"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path></svg>';
+
+
+//  ActivateLightMode();
+       }
+       else{
+       console.log("its night adding theme")
+
+
+
+    document.documentElement.setAttribute('theme', 'dark');
+
+//       $('body').addClass("dark-theme");
+   body.classList.add("dark-theme");
+$("#btn-mode").html('<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-sun"><circle cx="12" cy="12" r="5"></circle><line x1="12" y1="1" x2="12" y2="3"></line><line x1="12" y1="21" x2="12" y2="23"></line><line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line><line x1="1" y1="12" x2="3" y2="12"></line><line x1="21" y1="12" x2="23" y2="12"></line><line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line><line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line></svg>');
+//btn-mode.innerHTML = '<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-sun"><circle cx="12" cy="12" r="5"></circle><line x1="12" y1="1" x2="12" y2="3"></line><line x1="12" y1="21" x2="12" y2="23"></line><line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line><line x1="1" y1="12" x2="3" y2="12"></line><line x1="21" y1="12" x2="23" y2="12"></line><line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line><line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line></svg>';
+
+//  ActivateDarkMode();
+
+       }
+});
+</script>
+    <!--    <script defer>-->
+<!--        let body = document.getElementById('body')-->
+<!--let btn_mode = document.getElementById('#btn-mode')-->
+
+
+<!--window.addEventListener('load', (event) => {-->
+<!--  console.log('page is fully loaded');-->
+
+
+<!--      if ( myStorage.getItem("mode") === null) {-->
+<!--      myStorage.setItem('mode', 'day');-->
+<!--    }-->
+
+
+<!--    console.log(myStorage.getItem('mode'))-->
+
+<!--    if(myStorage.getItem('mode') === "day"){-->
+<!--//    $('body').removeClass("dark-theme");-->
+<!--   body.classList.remove("dark-theme");-->
+<!--console.log("its day removing theme")-->
+
+
+<!--//    document.documentElement.removeAttribute('theme');-->
+
+
+<!--//$("#btn-mode").html('<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-moon"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path></svg>');-->
+<!--btn-mode.innerHTML = '<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-moon"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path></svg>'-->
+
+
+<!--//  ActivateLightMode();-->
+<!--       }-->
+<!--       else{-->
+<!--       console.log("its night adding theme")-->
+
+
+
+<!--    document.documentElement.setAttribute('theme', 'dark');-->
+
+<!--//       $('body').addClass("dark-theme");-->
+<!--   body.classList.add("dark-theme");-->
+<!--//$("#btn-mode").html('<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-sun"><circle cx="12" cy="12" r="5"></circle><line x1="12" y1="1" x2="12" y2="3"></line><line x1="12" y1="21" x2="12" y2="23"></line><line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line><line x1="1" y1="12" x2="3" y2="12"></line><line x1="21" y1="12" x2="23" y2="12"></line><line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line><line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line></svg>');-->
+<!--btn-mode.innerHTML = '<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-sun"><circle cx="12" cy="12" r="5"></circle><line x1="12" y1="1" x2="12" y2="3"></line><line x1="12" y1="21" x2="12" y2="23"></line><line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line><line x1="1" y1="12" x2="3" y2="12"></line><line x1="21" y1="12" x2="23" y2="12"></line><line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line><line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line></svg>'-->
+
+<!--//  ActivateDarkMode();-->
+
+<!--       }-->
+<!--});-->
+<!--    </script>-->
     <script src="{% static 'dashboard/js/index.js' %}" defer></script>
+
 
 
     {% block custom_js %}
@@ -128,7 +228,7 @@
   background-color: rgba(52, 56, 56, 0.2);
 }
 </style>
-<body>
+<body id="body">
     <nav class="navbar nav-light nav-dark p-3">
         <div class="d-flex col-12 col-md-3 col-lg-2 mb-2 mb-lg-0 flex-wrap flex-md-nowrap justify-content-between">
             <a class="navbar-brand-light navbar-brand-dark" href="{% url 'dashboard' %}">
@@ -181,7 +281,7 @@
                         </li>
 
       <li class="nav-item">
-        <a class=" nav-link-light nav-link-dark collapsed dropdown-toggle" data-bs-toggle="collapse" data-bs-target="#dashboard-collapse" aria-expanded="false">
+        <a class=" nav-link-light nav-link-dark collapsed dropdown-toggle {{products}}" data-bs-toggle="collapse" data-bs-target="#dashboard-collapse" aria-expanded="false">
            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-shopping-cart"><circle cx="9" cy="21" r="1"></circle><circle cx="20" cy="21" r="1"></circle><path d="M1 1h4l2.68 13.39a2 2 0 0 0 2 1.61h9.72a2 2 0 0 0 2-1.61L23 6H6"></path></svg>
                             <span class="ml-2">{% trans 'Products' %}</span>
         </a>
@@ -220,11 +320,40 @@
                  <span class="ml-2">{% trans 'Products Images' %}</span>
             </a>
             </li>
+
+          </ul>
+        </div>
+      </li>
+                        <li class="nav-item">
+        <a class=" nav-link-light nav-link-dark collapsed dropdown-toggle {{videos}}" data-bs-toggle="collapse" data-bs-target="#dashboard-collapse-videos" aria-expanded="false">
+<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-film"><rect x="2" y="2" width="20" height="20" rx="2.18" ry="2.18"></rect><line x1="7" y1="2" x2="7" y2="22"></line><line x1="17" y1="2" x2="17" y2="22"></line><line x1="2" y1="12" x2="22" y2="12"></line><line x1="2" y1="7" x2="7" y2="7"></line><line x1="2" y1="17" x2="7" y2="17"></line><line x1="17" y1="17" x2="22" y2="17"></line><line x1="17" y1="7" x2="22" y2="7"></line></svg>
+                            <span class="ml-2">{% trans 'Application Videos' %}</span>
+        </a>
+        <div class="collapse" id="dashboard-collapse-videos">
+          <ul class="btn-toggle-nav list-unstyled fw-normal pb-1">
+              <li class="nav-item">
+                <a href="{% url 'allVideos' %}" class="nav-link-light nav-link-dark {{all_videos}}">
+                 <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-video"><polygon points="23 7 16 12 23 17 23 7"></polygon><rect x="1" y="5" width="15" height="14" rx="2" ry="2"></rect></svg>
+                    <span class="ml-2">{% trans 'All Videos' %}</span>
+            </a>
+            </li>
+                     <li class="nav-item">
+                <a href="{% url 'productVideos-dash' %}" class="nav-link-light nav-link-dark {{add_videos}}">
+                             <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-plus"><line x1="12" y1="5" x2="12" y2="19"></line><line x1="5" y1="12" x2="19" y2="12"></line></svg>
+
+                    <span class="ml-2">{% trans 'Add Videos' %}</span>
+            </a>
+            </li>
+            <li class="nav-item"><a href="{% url 'deleteProducts' %}" class="nav-link-light nav-link-dark {{delete_products}}">
+                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-minus"><line x1="5" y1="12" x2="19" y2="12"></line></svg>
+                 <span class="ml-2">{% trans 'Delete Videos' %}</span>
+            </a>
+            </li>
           </ul>
         </div>
       </li>
                            <li class="nav-item">
-        <a class=" nav-link-light nav-link-dark collapsed dropdown-toggle" data-bs-toggle="collapse" data-bs-target="#dashboard-collapse-users" aria-expanded="false">
+        <a class=" nav-link-light nav-link-dark collapsed dropdown-toggle {{users}}" data-bs-toggle="collapse" data-bs-target="#dashboard-collapse-users" aria-expanded="false">
         <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-users"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"></path><circle cx="9" cy="7" r="4"></circle><path d="M23 21v-2a4 4 0 0 0-3-3.87"></path><path d="M16 3.13a4 4 0 0 1 0 7.75"></path></svg>
                             <span class="ml-2">{% trans 'Users'%}</span>
         </a>
@@ -256,7 +385,7 @@
         </div>
       </li>
                                                   <li class="nav-item">
-        <a class=" nav-link-light nav-link-dark collapsed dropdown-toggle" data-bs-toggle="collapse" data-bs-target="#dashboard-collapse-suppliers" aria-expanded="false">
+        <a class=" nav-link-light nav-link-dark collapsed dropdown-toggle {{suppliers}}" data-bs-toggle="collapse" data-bs-target="#dashboard-collapse-suppliers" aria-expanded="false">
                                 <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-book-open"><path d="M2 3h6a4 4 0 0 1 4 4v14a3 3 0 0 0-3-3H2z"></path><path d="M22 3h-6a4 4 0 0 0-4 4v14a3 3 0 0 1 3-3h7z"></path></svg>
 
                             <span class="ml-2">{% trans 'Suppliers'%}</span>
@@ -288,7 +417,7 @@
         </div>
       </li>
                            <li class="nav-item">
-        <a class=" nav-link-light nav-link-dark collapsed dropdown-toggle" data-bs-toggle="collapse" data-bs-target="#dashboard-collapse-projects" aria-expanded="false">
+        <a class=" nav-link-light nav-link-dark collapsed dropdown-toggle {{projects}}" data-bs-toggle="collapse" data-bs-target="#dashboard-collapse-projects" aria-expanded="false">
                                             <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-archive"><polyline points="21 8 21 21 3 21 3 8"></polyline><rect x="1" y="3" width="22" height="5"></rect><line x1="10" y1="12" x2="14" y2="12"></line></svg>
                             <span class="ml-2">{% trans 'Projects'%}</span>
         </a>
@@ -325,7 +454,7 @@
         </div>
       </li>
                                                    <li class="nav-item">
-        <a class=" nav-link-light nav-link-dark collapsed dropdown-toggle" data-bs-toggle="collapse" data-bs-target="#dashboard-collapse-applications" aria-expanded="false">
+        <a class=" nav-link-light nav-link-dark collapsed dropdown-toggle {{project_types}}" data-bs-toggle="collapse" data-bs-target="#dashboard-collapse-applications" aria-expanded="false">
             <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-hexagon"><path d="M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z"></path></svg>
                            <span class="ml-2">{% trans 'Project Types'%}</span>
         </a>
@@ -358,7 +487,7 @@
       </li>
 
                            <li class="nav-item">
-        <a class=" nav-link-light nav-link-dark collapsed dropdown-toggle" data-bs-toggle="collapse" data-bs-target="#dashboard-collapse-solutions" aria-expanded="false">
+        <a class=" nav-link-light nav-link-dark collapsed dropdown-toggle {{solutions}}" data-bs-toggle="collapse" data-bs-target="#dashboard-collapse-solutions" aria-expanded="false">
         <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-star"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"></polygon></svg>
 
                             <span class="ml-2">{% trans 'Solutions'%}</span>
@@ -390,7 +519,7 @@
         </div>
       </li>
                             <li class="nav-item">
-        <a class=" nav-link-light nav-link-dark collapsed dropdown-toggle" data-bs-toggle="collapse" data-bs-target="#dashboard-collapse-updates" aria-expanded="false">
+        <a class=" nav-link-light nav-link-dark collapsed dropdown-toggle {{industry_updates}}" data-bs-toggle="collapse" data-bs-target="#dashboard-collapse-updates" aria-expanded="false">
 <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-rss"><path d="M4 11a9 9 0 0 1 9 9"></path><path d="M4 4a16 16 0 0 1 16 16"></path><circle cx="5" cy="19" r="1"></circle></svg>
                             <span class="ml-2">{% trans 'Industry Updates'%}</span>
         </a>
@@ -421,7 +550,7 @@
         </div>
       </li>
                          <li class="nav-item">
-        <a class=" nav-link-light nav-link-dark collapsed dropdown-toggle" data-bs-toggle="collapse" data-bs-target="#dashboard-collapse-categories" aria-expanded="false">
+        <a class=" nav-link-light nav-link-dark collapsed dropdown-toggle {{categories}}" data-bs-toggle="collapse" data-bs-target="#dashboard-collapse-categories" aria-expanded="false">
                             <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-layers"><polygon points="12 2 2 7 12 12 22 7 12 2"></polygon><polyline points="2 17 12 22 22 17"></polyline><polyline points="2 12 12 17 22 12"></polyline></svg>
 
                             <span class="ml-2">{% trans 'Product Categories'%}</span>
@@ -453,7 +582,7 @@
         </div>
       </li>
                            <li class="nav-item">
-        <a class=" nav-link-light nav-link-dark collapsed dropdown-toggle" data-bs-toggle="collapse" data-bs-target="#dashboard-collapse-address" aria-expanded="false">
+        <a class=" nav-link-light nav-link-dark collapsed dropdown-toggle {{address}}" data-bs-toggle="collapse" data-bs-target="#dashboard-collapse-address" aria-expanded="false">
                           <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-map"><polygon points="1 6 1 22 8 18 16 22 23 18 23 2 16 6 8 2 1 6"></polygon><line x1="8" y1="2" x2="8" y2="18"></line><line x1="16" y1="6" x2="16" y2="22"></line></svg>
 
                             <span class="ml-2">{% trans 'Address'%}</span>
@@ -549,7 +678,7 @@
         </div>
       </li>
                                <li class="nav-item">
-        <a class=" nav-link-light nav-link-dark collapsed dropdown-toggle" data-bs-toggle="collapse" data-bs-target="#dashboard-collapse-sliders" aria-expanded="false">
+        <a class=" nav-link-light nav-link-dark collapsed dropdown-toggle {{sliders}}" data-bs-toggle="collapse" data-bs-target="#dashboard-collapse-sliders" aria-expanded="false">
                                 <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-sliders"><line x1="4" y1="21" x2="4" y2="14"></line><line x1="4" y1="10" x2="4" y2="3"></line><line x1="12" y1="21" x2="12" y2="12"></line><line x1="12" y1="8" x2="12" y2="3"></line><line x1="20" y1="21" x2="20" y2="16"></line><line x1="20" y1="12" x2="20" y2="3"></line><line x1="1" y1="14" x2="7" y2="14"></line><line x1="9" y1="8" x2="15" y2="8"></line><line x1="17" y1="16" x2="23" y2="16"></line></svg>
 
                             <span class="ml-2">{% trans 'Sliders'%}</span>
@@ -581,7 +710,7 @@
         </div>
       </li>
                         <li class="nav-item">
-        <a class=" nav-link-light nav-link-dark collapsed dropdown-toggle" data-bs-toggle="collapse" data-bs-target="#dashboard-collapse-selling-points" aria-expanded="false">
+        <a class=" nav-link-light nav-link-dark collapsed dropdown-toggle {{selling_points}}" data-bs-toggle="collapse" data-bs-target="#dashboard-collapse-selling-points" aria-expanded="false">
                                 <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-map-pin"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"></path><circle cx="12" cy="10" r="3"></circle></svg>
 
                             <span class="ml-2">{% trans 'Selling Points'%}</span>
@@ -613,7 +742,7 @@
         </div>
       </li>
                           <li class="nav-item">
-        <a class=" nav-link-light nav-link-dark collapsed dropdown-toggle" data-bs-toggle="collapse" data-bs-target="#dashboard-collapse-selling-brochures" aria-expanded="false">
+        <a class=" nav-link-light nav-link-dark collapsed dropdown-toggle {{brochures}}" data-bs-toggle="collapse" data-bs-target="#dashboard-collapse-selling-brochures" aria-expanded="false">
                                 <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-book-open"><path d="M2 3h6a4 4 0 0 1 4 4v14a3 3 0 0 0-3-3H2z"></path><path d="M22 3h-6a4 4 0 0 0-4 4v14a3 3 0 0 1 3-3h7z"></path></svg>
 
                             <span class="ml-2">{% trans 'Brochures'%}</span>
@@ -647,7 +776,7 @@
 
 
                           <li class="nav-item">
-        <a class=" nav-link-light nav-link-dark collapsed dropdown-toggle" data-bs-toggle="collapse" data-bs-target="#dashboard-notifications" aria-expanded="false">
+        <a class=" nav-link-light nav-link-dark collapsed dropdown-toggle {{notifications}}" data-bs-toggle="collapse" data-bs-target="#dashboard-notifications" aria-expanded="false">
                                 <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-bell"><path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9"></path><path d="M13.73 21a2 2 0 0 1-3.46 0"></path></svg>
 
                             <span class="ml-2">{% trans 'Push Notifications'%}</span>
@@ -679,7 +808,7 @@
         </div>
       </li>
                          <li class="nav-item">
-        <a class=" nav-link-light nav-link-dark collapsed dropdown-toggle" data-bs-toggle="collapse" data-bs-target="#dashboard-sms-notifications" aria-expanded="false">
+        <a class=" nav-link-light nav-link-dark collapsed dropdown-toggle {{sms_notifications}}" data-bs-toggle="collapse" data-bs-target="#dashboard-sms-notifications" aria-expanded="false">
                                 <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-bell"><path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9"></path><path d="M13.73 21a2 2 0 0 1-3.46 0"></path></svg>
 
                             <span class="ml-2">{% trans 'SMS Notifs'%}</span>
@@ -833,7 +962,7 @@
     <div class="item">Item 5</div>
   </div>
 </div>
-            <main class="col-md-9 ml-sm-3 col-lg-9 px-md-4 py-4">
+            <main class="col-md-9 ml-sm-3 col-lg-9 px-md-4 py-4" >
                      {% block breadcrumb_content %}
                 {% endblock breadcrumb_content %}
                  {% if messages %}
@@ -861,28 +990,31 @@
                 {% block content %}
                 {% endblock content %}
     </div>
+                {% if not hide_footer %}
 
-
-                <footer class="pt-5 d-flex justify-content-between">
-                    <span class="copyright-light copyright-dark">{% trans 'Made With' %} <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="red" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-heart"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"></path></svg>&nbsp;By <a href="#" class="copyright-light">Moa'yed</a> &nbsp;©
+                <footer class="pt-5 d-flex justify-content-between" >
+                    <span class="copyright-light copyright-dark">{% trans 'Made With' %}
+                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="red" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-heart"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"></path></svg>&nbsp;
+                        By <a href="#" class="copyright-light">Unisoft Development Team</a> &nbsp;©
 
                         <script type="text/JavaScript">
                     document.write(new Date().getFullYear());
 </script>
 
                        </span>
-                    <ul class="nav m-0">
-                        <li class="nav-item">
-                          <a class="nav-link-light nav-link-dark footer-links-light footer-links-dark" aria-current="page" href="#">{% trans 'Privacy Policy' %}</a>
-                        </li>
-                        <li class="nav-item">
-                          <a class="nav-link-light nav-link-dark footer-links-light footer-links-dark" href="#">{% trans 'Terms and conditions' %}</a>
-                        </li>
-                        <li class="nav-item">
-                          <a class="nav-link-light nav-link-dark footer-links-light footer-links-dark" href="#">{% trans 'Contact' %}</a>
-                        </li>
-                      </ul>
+<!--                    <ul class="nav m-0">-->
+<!--                        <li class="nav-item">-->
+<!--                          <a class="nav-link-light nav-link-dark footer-links-light footer-links-dark" aria-current="page" href="#">{% trans 'Privacy Policy' %}</a>-->
+<!--                        </li>-->
+<!--                        <li class="nav-item">-->
+<!--                          <a class="nav-link-light nav-link-dark footer-links-light footer-links-dark" href="#">{% trans 'Terms and conditions' %}</a>-->
+<!--                        </li>-->
+<!--                        <li class="nav-item">-->
+<!--                          <a class="nav-link-light nav-link-dark footer-links-light footer-links-dark" href="#">{% trans 'Contact' %}</a>-->
+<!--                        </li>-->
+<!--                      </ul>-->
                 </footer>
+                {% endif %}
             </main>
 
         </div>

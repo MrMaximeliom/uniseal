@@ -1,9 +1,9 @@
-from .models import Notifications
 from django import forms
+
+from .models import Notifications
 
 
 class NotificationsForm(forms.ModelForm):
-    from .models import TokenIDs
     # token_id = forms.ModelMultipleChoiceField(
     #     queryset=TokenIDs.objects.all(),
     #

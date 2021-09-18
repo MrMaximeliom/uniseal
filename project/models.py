@@ -1,11 +1,10 @@
-from django.db import models
-from django.utils.translation import gettext_lazy as _
-from django.template.defaultfilters import slugify # new
-import string
-import random
-from Util.utils import max_value_current_year,current_year
-from django.core.validators import MinValueValidator
 import datetime
+import random
+import string
+
+from django.db import models
+from django.template.defaultfilters import slugify  # new
+from django.utils.translation import gettext_lazy as _
 
 
 def rand_slug():

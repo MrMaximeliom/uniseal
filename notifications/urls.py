@@ -1,10 +1,6 @@
-from django.urls import path, include
-from notifications import views as notifications_views
-from rest_framework import routers
+from django.urls import path
 
-router = routers.DefaultRouter()
-router.register(r'notifications/registerTokenId', notifications_views.registerTokenIds, basename='RegisterNotifications')
-router.register(r'notifications/handleNotifications', notifications_views.handleNotifications, basename='HandleNotifications')
+from notifications import dashboard_views as notifications_views
 
 urlpatterns = [
     path('allNotifications', notifications_views.all_notifications, name='allNotifications'),

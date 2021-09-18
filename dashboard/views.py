@@ -1,14 +1,16 @@
-from django.shortcuts import render
-from django.utils.translation import gettext_lazy  as _
 from django.contrib import messages
-from django.shortcuts import redirect
-from django.contrib.auth import logout, login,authenticate
-from django.http import JsonResponse
-from django.db.models.functions import TruncMonth
+from django.contrib.admin.views.decorators import staff_member_required
+from django.contrib.auth import logout, login, authenticate
 # Orders.objects.annotate(month=TruncMonth('pickupdate')).values('month').annotate(total=Count('orderid'))
 # Create your views here.
 from django.contrib.auth import views as auth_views
-from django.contrib.admin.views.decorators import staff_member_required
+from django.db.models.functions import TruncMonth
+from django.http import JsonResponse
+from django.shortcuts import redirect
+from django.shortcuts import render
+from django.utils.translation import gettext_lazy as _
+
+
 @staff_member_required(login_url='login')
 def dashboard(request):
     from accounts.models import User
@@ -73,12 +75,24 @@ def users_registration_count_each_month_chart(request):
 
 class LoginView(auth_views.LoginView):
     template_name = 'dashboard/login.html'
+    from accounts.forms import UserLoginForm
+    from Util.utils import delete_temp_folder
+    from Util.handle_login_form_strings import USERNAME_EMPTY_ERROR,USERNAME_BAD_FORMAT,PASSWORD_EMPTY_ERROR
+    form_class = UserLoginForm
+    delete_temp_folder()
+
 
     def form_valid(self, form):
         from django.contrib.auth import login as auth_login
         from django.http import HttpResponseRedirect
         """Security check complete. Log the user in."""
         current_user = form.get_user()
+        phone_number = current_user.phone_number
+        print("user entered phone number is: ",phone_number)
+        if phone_number.startswith("0"):
+            if phone_number.startswith("0"):
+                phone_without_zero = phone_number[1:]
+                print("phone without 0 is: ",phone_without_zero)
         if current_user.staff:
             auth_login(self.request, form.get_user())
             username = current_user.username
@@ -89,16 +103,22 @@ class LoginView(auth_views.LoginView):
 
         return redirect('login')
 
-
-
     extra_context = {
         'title':_('Login Page'),
+        'invalid_login':_('Phone Number or Password Error for Staff User'),
+        'hide_footer':True,
+        'data_js': {
+            "username_empty_error": USERNAME_EMPTY_ERROR,
+            "username_bad_format": USERNAME_BAD_FORMAT,
+            "password_empty_error": PASSWORD_EMPTY_ERROR,
+        }
 
 
     }
 
 
-
+def ForgotPassword(request):
+    pass
 def Login(request):
     from accounts.forms import UserLoginForm
 

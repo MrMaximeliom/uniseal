@@ -1,5 +1,7 @@
 from django.urls import path
-from product import views as product_views
+
+from product import dashboard_views as product_views
+
 urlpatterns = [
     path('allProducts', product_views.all_products, name='allProducts'),
     path('topProducts', product_views.top_products, name='topProducts'),

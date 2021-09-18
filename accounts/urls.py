@@ -1,6 +1,8 @@
 from django.urls import path
-from accounts import views as accounts_views
+
 from Util.utils import download_file
+from accounts import dashboard_views as accounts_views
+
 urlpatterns = [
     path('allUsers', accounts_views.all_users, name='allUsers'),
     path('addUsers', accounts_views.add_users, name='addUsers'),

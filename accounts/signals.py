@@ -1,9 +1,11 @@
 from django.db.models.signals import post_save
+from django.dispatch import receiver
 from django.shortcuts import get_object_or_404
 
-from .models import User
-from django.dispatch import receiver
 from sms_notifications.models import SMSContacts
+from .models import User
+
+
 # from django.contrib.auth import user_logged_in, user_logged_out
 # from django.dispatch.dispatcher import receiver as receiver_second
 # from django.contrib.sessions.models import Session

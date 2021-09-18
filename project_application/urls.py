@@ -1,5 +1,7 @@
 from django.urls import path
-from project_application import views as application_views
+
+from project_application import dashboard_views as application_views
+
 urlpatterns = [
   path('allApplications', application_views.all_applications, name='allApplications'),
   path('addApplications', application_views.add_applications, name='addApplications'),

@@ -1,13 +1,13 @@
+from django.contrib import messages
+from django.contrib.admin.views.decorators import staff_member_required
+from django.core.paginator import Paginator, PageNotAnInteger, EmptyPage
 from django.shortcuts import render, get_object_or_404, redirect
 from django.template.defaultfilters import slugify
-from django.core.paginator import Paginator, PageNotAnInteger, EmptyPage
-from django.contrib import messages
 from django.utils.translation import gettext_lazy as _
-from Util.utils import rand_slug
-from Util.utils import SearchMan, createExelFile, ReportMan, delete_temp_folder
 
+from Util.utils import SearchMan, createExelFile, ReportMan, delete_temp_folder
+from Util.utils import rand_slug
 from address.models import Country
-from django.contrib.admin.views.decorators import staff_member_required
 
 # countries = Country.objects.all()
 countries = Country.objects.all().order_by('id')
@@ -196,6 +196,7 @@ def all_countries(request):
                   {
                       'title': _('All Countries'),
                       'all_countries': 'active',
+                      'address': 'active',
                       'all_countries_data': countries_paginator,
                       'page_range': paginator.page_range,
                       'num_pages': paginator.num_pages,
@@ -234,7 +235,8 @@ def add_countries(request):
         'title': _('Add Countries'),
         'add_countries': 'active',
         'all_countries': countries,
-        'form': form
+        'form': form,
+        'address': 'active',
     }
 
     return render(request, 'address/add_countries.html', context)
@@ -381,6 +383,7 @@ def delete_countries(request):
                   {
                       'title': _('Delete Countries'),
                       'delete_countries': 'active',
+                      'address': 'active',
                       'all_countries_data': countries_paginator,
                       'page_range': paginator.page_range,
                       'num_pages': paginator.num_pages,
@@ -541,6 +544,7 @@ def edit_countries(request):
                   {
                       'title': _('Edit Countries'),
                       'edit_countries': 'active',
+                      'address': 'active',
                       'all_countries_data': countries_paginator,
                       'page_range': paginator.page_range,
                       'num_pages': paginator.num_pages,
@@ -584,6 +588,7 @@ def edit_country(request, slug):
         'edit_countries': 'active',
         'form': country_form,
         'country': obj,
+        'address': 'active',
     }
     return render(request, 'address/edit_country.html', context)
 

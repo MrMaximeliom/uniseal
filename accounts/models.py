@@ -1,32 +1,28 @@
-from django.db import models
-from django.utils.translation import gettext_lazy as _
-from django.template.defaultfilters import slugify # new
-from Util.utils import rand_slug
 from django.contrib.auth.models import (
     BaseUserManager, AbstractBaseUser
 )
+from django.db import models
+from django.template.defaultfilters import slugify  # new
+from django.utils.translation import gettext_lazy as _
+
+from Util.utils import rand_slug
 
 
 class UserAccountManager(BaseUserManager):
 
-    def create_user(self, email, username, full_name, gender, phone_number, password=None, **extra_fields):
-        if not email:
-            raise ValueError(_('Users must have an email address'))
+    def create_user(self, username, full_name, phone_number, password=None, **extra_fields):
+
         if not username:
             raise ValueError(_('Users must have a username'))
         if not full_name:
             raise ValueError(_('Users must provide their full name'))
-        if not gender:
-            raise ValueError(_('Users must provide their gender'))
         if not phone_number:
             raise ValueError(_('Users must provide their phone number'))
 
         # phone_number.setdefault('is_staff', True)
         user = self.model(
-            email=self.normalize_email(email),
             username=username,
             full_name=full_name,
-            gender=gender,
             phone_number=phone_number,
 
         )
@@ -34,13 +30,12 @@ class UserAccountManager(BaseUserManager):
         user.save(using=self._db)
         return user
 
-    def create_superuser(self, email, username, full_name, gender, phone_number,
+    def create_superuser(self, username, full_name, phone_number,
                          password):
         user = self.create_user(
-            email=self.normalize_email(email),
             username=username,
             full_name=full_name,
-            gender=gender,
+
             phone_number=phone_number,
             password=password
 

@@ -1,5 +1,7 @@
 from django.urls import path
-from solution import views as solution_views
+
+from solution import dashboard_views as solution_views
+
 urlpatterns = [
     path('allSolutions', solution_views.all_solutions, name='allSolutions'),
     path('addSolutions', solution_views.add_solutions, name='addSolutions'),

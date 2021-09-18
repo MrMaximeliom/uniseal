@@ -2,9 +2,6 @@ let error_messages
 $( document ).ready(function() {
 error_messages = JSON.parse($('#my-data').html())
 console.log(new Date().getFullYear())
-
-
-
 })
 
 
@@ -323,7 +320,7 @@ else{
 if($('#searchPhraseDate').prop("value") != "" ){
 return true
 }
-else{sudan
+else{
 console.log("please enter execution date first")
 $('#search_phrase_date_error').html(error_messages.execution_date_error)
 $('#search_phrase_date_error').css('display','block')

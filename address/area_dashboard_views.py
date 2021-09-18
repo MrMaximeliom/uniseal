@@ -1,14 +1,15 @@
+from django.contrib import messages
+from django.contrib.admin.views.decorators import staff_member_required
+from django.core.paginator import Paginator, PageNotAnInteger, EmptyPage
 from django.db.models import Count
 from django.shortcuts import render, get_object_or_404, redirect
 from django.template.defaultfilters import slugify
-from django.core.paginator import Paginator, PageNotAnInteger, EmptyPage
-from django.contrib import messages
 from django.utils.translation import gettext_lazy as _
-from Util.utils import rand_slug
-from Util.utils import SearchMan, createExelFile, ReportMan, delete_temp_folder
-from django.contrib.admin.views.decorators import staff_member_required
 
+from Util.utils import SearchMan, createExelFile, ReportMan, delete_temp_folder
+from Util.utils import rand_slug
 from address.models import Area
+
 areas = Area.objects.annotate(num=Count('city')).order_by('-num')
 
 def prepare_selected_query_city(selected_pages, paginator_obj, headers=None):
@@ -229,6 +230,7 @@ def all_areas(request):
                   {
                       'title': _('All Areas'),
                       'all_areas': 'active',
+                      'address': 'active',
                       'all_areas_data': areas_paginator,
                       'page_range': paginator.page_range,
                       'num_pages': paginator.num_pages,
@@ -268,7 +270,8 @@ def add_areas(request):
     context = {
         'title': _('Add Areas'),
         'add_areas': 'active',
-        'form': form
+        'form': form,
+        'address': 'active',
     }
 
     return render(request, 'address/add_areas.html', context)
@@ -340,6 +343,7 @@ def delete_areas(request):
                   {
                       'title': _('Delete Areas'),
                       'delete_areas': 'active',
+                      'address': 'active',
                       'all_areas_data': areas_paginator,
                       'page_range': paginator.page_range,
                       'num_pages': paginator.num_pages,
@@ -424,6 +428,7 @@ def edit_areas(request):
                   {
                       'title': _('Edit Areas'),
                       'edit_areas': 'active',
+                      'address': 'active',
                       'all_areas_data': areas_paginator,
                       'page_range': paginator.page_range,
                       'num_pages': paginator.num_pages,
@@ -469,6 +474,7 @@ def edit_area(request, slug):
         'edit_areas': 'active',
         'form': area_form,
         'area': obj,
+        'address': 'active',
     }
     return render(request, 'address/edit_area.html', context)
 

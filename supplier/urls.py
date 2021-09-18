@@ -1,5 +1,7 @@
 from django.urls import path
-from supplier import views as supplier_views
+
+from supplier import dahsboard_views as supplier_views
+
 urlpatterns = [
     path('allSuppliers', supplier_views.all_suppliers, name='allSuppliers'),
     path('addSuppliers', supplier_views.add_suppliers, name='addSuppliers'),

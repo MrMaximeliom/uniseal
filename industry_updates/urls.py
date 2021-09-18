@@ -1,5 +1,7 @@
 from django.urls import path
-from industry_updates import views as updates_views
+
+from industry_updates import dashboard_views as updates_views
+
 urlpatterns = [
     path('allUpdates', updates_views.all_updates, name='allUpdates'),
     path('addUpdates', updates_views.add_updates, name='addUpdates'),

@@ -1,8 +1,10 @@
 from django.urls import path
+
+from address import area_dashboard_views as area_dashboard_views
 from address import city_dashboard_views as city_dashboard_views
 from address import country_dashboard_views as country_dashboard_views
 from address import state_dashboard_views as state_dashboard_views
-from address import area_dashboard_views as area_dashboard_views
+
 countries_urlpatterns = [
      path('allCountries', country_dashboard_views.all_countries, name='allCountries'),
     path('addCountries', country_dashboard_views.add_countries, name='addCountries'),

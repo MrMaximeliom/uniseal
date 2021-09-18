@@ -44,7 +44,6 @@ def check_phone_number(phone):
         return False,''
 
 class ReportMan:
-    import tempfile
     filePath = ''
     fileName = ''
     # tempDir = ''
@@ -114,6 +113,12 @@ class SearchMan:
             from notifications.models import Notifications
             notifications = Notifications.objects.all().order_by('id')
             self.paginator = Paginator(notifications, 5)
+        if model == "ProductVideos":
+            from application_videos.models import ProductApplicationVideos
+            videos = ProductApplicationVideos.objects.all().order_by('id')
+            self.paginator = Paginator(videos, 5)
+
+
 
 
     def setPaginator(self,query):
@@ -188,7 +193,7 @@ def createExelFile(report_name,headers,request=None,**kwargs):
 
 
 def download_file(request,file_path,file_name):
-    import os,mimetypes
+    import mimetypes
     path = open(file_path, 'rb')
     # # Set the mime type
     mime_type, _ = mimetypes.guess_type(file_path)
@@ -201,7 +206,7 @@ def download_file(request,file_path,file_name):
 
 def delete_temp_folder():
 
-    import os, re, os.path
+    import os.path
     myPath = os.path.dirname(os.path.abspath(__file__)) + "/Reports"
     for root, dirs, files in os.walk(myPath):
         for file in files:

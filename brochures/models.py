@@ -1,7 +1,8 @@
 from django.db import models
-from django.utils.translation import gettext_lazy as _
-from Util.utils import rand_slug
 from django.template.defaultfilters import slugify
+from django.utils.translation import gettext_lazy as _
+
+from Util.utils import rand_slug
 
 
 # Create your models here.

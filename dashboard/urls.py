@@ -1,23 +1,26 @@
-from dashboard import views as dashboard_views
 from django.urls import path, include
-from product.urls import urlpatterns as product_urls
-from project.urls import urlpatterns as project_urls
-from solution.urls import urlpatterns as solution_urls
+
 from accounts.urls import urlpatterns as account_urls
-from category.urls import urlpatterns as category_urls
-from supplier.urls import urlpatterns as supplier_urls
-from company_info.urls import urlpatterns as company_urls
+from address.urls import areas_urlpatterns as area_urls
+from address.urls import cities_urlpatterns as city_urls
 from address.urls import countries_urlpatterns as country_urls
 from address.urls import states_urlpatterns as state_urls
-from address.urls import cities_urlpatterns as city_urls
-from address.urls import areas_urlpatterns as area_urls
-from slider.urls import urlpatterns as slider_urls
 from brochures.urls import urlpatterns as brochure_urls
-from sellingPoint.urls import urlpatterns as selling_urls
-from sms_notifications.urls import urlpatterns as sms_urls
-from project_application.urls import urlpatterns as application_urls
+from category.urls import urlpatterns as category_urls
+from company_info.urls import urlpatterns as company_urls
+from dashboard import views as dashboard_views
 from industry_updates.urls import urlpatterns as update_urls
 from notifications.urls import urlpatterns as notifications_urls
+from product.urls import urlpatterns as product_urls
+from project.urls import urlpatterns as project_urls
+from project_application.urls import urlpatterns as application_urls
+from sellingPoint.urls import urlpatterns as selling_urls
+from slider.urls import urlpatterns as slider_urls
+from sms_notifications.urls import urlpatterns as sms_urls
+from solution.urls import urlpatterns as solution_urls
+from supplier.urls import urlpatterns as supplier_urls
+from application_videos.urls import urlpatterns as product_application_videos
+
 urlpatterns = [
     path('home/', dashboard_views.dashboard, name='dashboard'),
     path('product-categories-chart/', dashboard_views.products_categories_chart, name='product-categories-chart'),
@@ -42,6 +45,7 @@ urlpatterns = [
     path('ProjectApplications/', include(application_urls)),
     path('IndustryUpdates/', include(update_urls)),
     path('Notifications/', include(notifications_urls)),
+    path('applicationVideos/',include(product_application_videos))
 
 
 ]

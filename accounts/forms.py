@@ -1,5 +1,6 @@
-from accounts.models import User
 from django import forms
+from django.contrib.auth import authenticate
+from accounts.models import User
 
 
 class UserForm(forms.ModelForm):
@@ -36,8 +37,25 @@ class UserForm(forms.ModelForm):
 
         instance.save()
         return instance
+from django.contrib.auth.forms import AuthenticationForm
+class UserLoginForm(AuthenticationForm):
+    def clean(self):
+        username = self.cleaned_data.get('username')
+        password = self.cleaned_data.get('password')
+        # altered_username = ''
+        if username is not None and password:
+            # check if phone number starts with 0 or not
+            if username.startswith("0"):
+                # remove the leading 0
+                username = username[1:]
 
-class UserLoginForm(forms.ModelForm):
+            self.user_cache = authenticate(self.request, username=username, password=password)
+            if self.user_cache is None:
+                raise self.get_invalid_login_error()
+            else:
+                self.confirm_login_allowed(self.user_cache)
+
+        return self.cleaned_data
     class Meta:
         model=User
         fields=['phone_number' , 'password']

@@ -1,5 +1,6 @@
 from django.urls import path
-from slider import views as slider_views
+
+from slider import dashboard_views as slider_views
 
 urlpatterns = [
 path('allSliders', slider_views.all_sliders, name='allSliders'),

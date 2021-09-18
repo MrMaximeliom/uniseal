@@ -1,6 +1,3 @@
-import os
-
-import xlsxwriter
 names = ["Moayed","Mazen","Ali"]
 money = [34,90,70]
 def testFun(param,**kwargs):
@@ -106,9 +103,13 @@ if __name__ == "__main__":
     # objs[0].headline = 'This is entry 1'
     # objs[1].headline = 'This is entry 2'
     # Entry.objects.bulk_update(objs, ['headline'])
-   print("Hi")
-
-
+    print("Hi")
+    phone = "0912808000"
+    if phone.startswith("0"):
+        phone_without_zero = phone[1:]
+        print(phone_without_zero)
+    else:
+        print("no")
 
 
 

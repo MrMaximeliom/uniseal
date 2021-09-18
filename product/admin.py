@@ -1,5 +1,7 @@
 from django.contrib import admin
-from .models import ProductImages,Product,ProductVideos,SimilarProduct
+
+from .models import ProductImages, Product, ProductVideos, SimilarProduct
+
 # Register your models here.
 
 admin.site.register(Product)

@@ -1,7 +1,9 @@
 from django.db import models
 from django.template.defaultfilters import slugify
 from django.utils.translation import gettext_lazy as _
+
 from Util.utils import rand_slug
+
 
 class SMSGroups(models.Model):
     name = models.CharField(

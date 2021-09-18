@@ -1,5 +1,7 @@
-from .models import Product,ProductImages
 from django import forms
+
+from .models import Product, ProductImages
+
 
 class ProductForm(forms.ModelForm):
     class Meta:

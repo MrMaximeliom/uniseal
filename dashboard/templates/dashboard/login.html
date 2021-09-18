@@ -6,31 +6,80 @@
 {% block title %}
 {{title}}
 {% endblock title %}
+{% block custom_css %}
+{% endblock %}
+ {% block custom_js %}
+<script src="{% static 'dashboard/js/login.js' %}" defer></script>
+{{ data_js|json_script:"my-data" }}
+{% endblock %}
 {% block content %}
+<div class="parent">
 
+
+
+<div  id="one">
    <h1 class="h2">Login</h1>
 {% if form.errors %}
 <div class="alert alert-danger">
-       username or password not correct
-
+      {{invalid_login}}
 </div>
 {% endif %}
-  <form class="card-form row"  method="post">
+    </div>
+  <form class=""  method="post" id="two">
 	  	{% csrf_token %}
   <div class="mb-4 row">
-    <div class="col-sm-6">
-                          {{form.username|as_crispy_field}}
+    <div class="col-auto">
+                          <div id="div_id_username" class="">
+
+            <label for="id_username" class=" requiredField">
+                Phone Number<span class="asteriskField">*</span>
+            </label>
+
+                <div class="input-group">
+
+                        <input type="text" name="username" autofocus autocapitalize="none" autocomplete="username" maxlength="100" class="textinput textInput form-control" required id="id_username">
+
+
+                </div>
+                                <span style="color:red;" id="username_errors"></span>
+
+
+    </div>
 
     </div>
   </div>
+
+
 	    <div class="mb-4 row">
-    <div class="col-sm-6">
-                          {{form.password|as_crispy_field}}
+    <div class="col-auto">
+                   <div id="div_id_password" class="">
+
+            <label for="id_password" class=" requiredField">
+                Password<span class="asteriskField">*</span>
+            </label>
+
+                <div class="input-group mb-3">
+
+                        <input type="password" name="password" autocomplete="current-password" class="form-control" required id="id_password" aria-label="Default" aria-describedby="inputGroup-sizing-default">
+  <div class="input-group-append">
+                          <span class="input-group-text form-control togglePassword-js" id="eye_password" >
+                              <svg id="show" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-eye"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"></path><circle cx="12" cy="12" r="3"></circle></svg>
+                          <svg id="hide" style="display:none;" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-eye-off"><path d="M17.94 17.94A10.07 10.07 0 0 1 12 20c-7 0-11-8-11-8a18.45 18.45 0 0 1 5.06-5.94M9.9 4.24A9.12 9.12 0 0 1 12 4c7 0 11 8 11 8a18.5 18.5 0 0 1-2.16 3.19m-6.72-1.07a3 3 0 1 1-4.24-4.24"></path><line x1="1" y1="1" x2="23" y2="23"></line></svg>
+                          </span>
+
+  </div>
+
+                </div>
+                           <span style="color:red;" id="password_errors"></span>
+
+
+    </div>
+
 
     </div>
   </div>
       <div class="row">
-          <div class="col-sm-3 mb-3">
+          <div class="col-auto mb-3">
           			<a  href="#">{% trans 'Forgot password?' %}</a>
 
       </div>
@@ -38,16 +87,33 @@
       </div>
       <div class="row">
           <div class="col-auto">
-              <button type="submit" class="btn btn-primary ">{% trans 'Login' %}</button>
+              <button type="submit" class="btn btn-primary" id="login_btn">{% trans 'Login' %}</button>
       </div>
       </div>
 
 
   </form>
-<!--     <form method="post" class="from-group">-->
-<!--	{% csrf_token %}-->
-<!--	{{form|crispy}}-->
-<!--	<p>Don't have an accoount? Create one <a href="#">here</a></p>-->
-<!--	<button type="submit" class="btn btn-success">Login</button>-->
-<!--    </form>-->
+     <footer class="pt-5 d-flex justify-content-between" id="three" >
+                    <span class="copyright-light copyright-dark pt-2">{% trans 'Made With' %} <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="red" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-heart"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"></path></svg>
+                        &nbsp;By <a href="#" class="copyright-light">Unisoft Development Team</a> &nbsp;©
+
+                        <script type="text/JavaScript">
+                    document.write(new Date().getFullYear());
+</script>
+
+                       </span>
+<!--                    <ul class="nav m-0">-->
+<!--                        <li class="nav-item">-->
+<!--                          <a class="nav-link-light nav-link-dark footer-links-light footer-links-dark" aria-current="page" href="#">{% trans 'Privacy Policy' %}</a>-->
+<!--                        </li>-->
+<!--                        <li class="nav-item">-->
+<!--                          <a class="nav-link-light nav-link-dark footer-links-light footer-links-dark" href="#">{% trans 'Terms and conditions' %}</a>-->
+<!--                        </li>-->
+<!--                        <li class="nav-item">-->
+<!--                          <a class="nav-link-light nav-link-dark footer-links-light footer-links-dark" href="#">{% trans 'Contact' %}</a>-->
+<!--                        </li>-->
+<!--                      </ul>-->
+                </footer>
+
+</div>
 {% endblock content %}

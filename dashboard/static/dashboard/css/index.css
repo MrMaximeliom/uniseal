@@ -1,6 +1,47 @@
 @import url('https://fonts.googleapis.com/css2?family=Poppins&display=swap');
+/* declaring variables for the --root element */
+:root {
+  --body-background-color:#fff;
+  --headers-colors:#24292e;
+  --btn-mode-color:gray;
+  --a-copyright-color:#9e1ace;
+  --table-color:#333;
+  --nav-background-color:#fff;
+  --nav-link-color:#333;
+  --nav-link-active:#0d6efd;
+  --breadcrumb-background-color:#e9ecef;
+  --breadcrumb-active:#333;
+  --card-background-color:#fff;
+  --card-header-background-color:rgba(0,0,0,.03);
+  --card-body-background-color:#fff;
+  --navbar-brand-color:#333;
+  --footer-links-color:#333;
+  --copyright-color:#333;
+  --copyright-link-color:#333;
+}
+
+
 body{
     font-family: 'Poppins', sans-serif;
+}
+.dark-theme{
+  --body-background-color:#24292e;
+  --headers-colors:#fff;
+  --btn-mode-color:#fff;
+  --a-copyright-color:#35e6ac;
+  --table-color:#fff;
+  --nav-background-color:#24292e;
+  --nav-link-color:#fff;
+  --nav-link-active:#0d6efd;
+  --breadcrumb-background-color:#4a4a4a;
+  --breadcrumb-active:#fff;
+  --card-background-color:#4a4a4a;
+  --card-header-background-color:#4a4a4a;
+  --card-body-background-color:#24292e;
+  --navbar-brand-color:#fff;
+  --footer-links-color:#fff;
+  --copyright-color:#fff;
+  --copyright-link-color:yellow;
 }
 @media (max-width: 767.98px) {
   /*.sidebar {
@@ -65,3 +106,7 @@ margin-bottom:2rem;
 .search-select{
 width:13rem !important;
 }
+/* supporting responsiveness */
+  @media screen and (min-width:576px) {
+
+  }

@@ -1,13 +1,13 @@
+from django.contrib import messages
+from django.contrib.admin.views.decorators import staff_member_required
+from django.core.paginator import Paginator, PageNotAnInteger, EmptyPage
 from django.db.models import Count
 from django.shortcuts import render, get_object_or_404, redirect
 from django.template.defaultfilters import slugify
-from django.core.paginator import Paginator, PageNotAnInteger, EmptyPage
-from django.contrib import messages
 from django.utils.translation import gettext_lazy as _
-from Util.utils import rand_slug
-from Util.utils import SearchMan, createExelFile, ReportMan, delete_temp_folder
-from django.contrib.admin.views.decorators import staff_member_required
 
+from Util.utils import SearchMan, createExelFile, ReportMan, delete_temp_folder
+from Util.utils import rand_slug
 from address.models import City
 
 cities = City.objects.all().order_by('id')
@@ -240,6 +240,7 @@ def all_cities(request):
                   {
                       'title': _('All Cities'),
                       'all_cities': 'active',
+                      'address': 'active',
                       'all_cities_data': cities_paginator,
                       'page_range': paginator.page_range,
                       'num_pages': paginator.num_pages,
@@ -279,7 +280,8 @@ def add_cities(request):
     context = {
         'title': _('Add Cities'),
         'add_cities': 'active',
-        'form': form
+        'form': form,
+        'address': 'active',
     }
 
     return render(request, 'address/add_cities.html', context)
@@ -290,7 +292,6 @@ def delete_cities(request):
     paginator = Paginator(cities, 5)
     from Util.search_form_strings import (
         EMPTY_SEARCH_PHRASE,
-        CITY_NAME_SYNTAX_ERROR,
         STATE_NAME_SYNTAX_ERROR
 
     )
@@ -352,6 +353,7 @@ def delete_cities(request):
                   {
                       'title': _('Delete Cities'),
                       'delete_cities': 'active',
+                      'address': 'active',
                       'all_cities_data': cities_paginator,
                       'page_range': paginator.page_range,
                       'num_pages': paginator.num_pages,
@@ -438,6 +440,7 @@ def edit_cities(request):
                   {
                       'title': _('Edit Cities'),
                       'edit_cities': 'active',
+                      'address': 'active',
                       'all_cities_data': cities_paginator,
                       'page_range': paginator.page_range,
                       'num_pages': paginator.num_pages,
@@ -483,6 +486,7 @@ def edit_city(request, slug):
         'edit_countries': 'active',
         'form': city_form,
         'city': obj,
+        'address': 'active',
     }
     return render(request, 'address/edit_city.html', context)
 
