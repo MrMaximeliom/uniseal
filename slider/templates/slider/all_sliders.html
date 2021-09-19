@@ -71,6 +71,6 @@
        </nav>
   </div>
 {% else %}
-<h3>{% trans 'There is no sliders yet .. you can add new ones from ' %} <a href="{% url 'addSliders' %}">{% trans 'Here' %}</a></h3>
+<h3 class="delete-warning">{% trans 'There is no sliders yet .. you can add new ones from ' %} <a href="{% url 'addSliders' %}">{% trans 'Here' %}</a></h3>
 {% endif %}
 {% endblock content %}

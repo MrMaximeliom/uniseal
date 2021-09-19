@@ -35,7 +35,7 @@
         {% endfor %}
 
 </select>
-                <span style="display:none;color:red;" id="selection_error"></span>
+                <span class="delete-warning" id="selection_error"></span>
 
     </div>
 
@@ -131,15 +131,15 @@
             <form class="card-form" enctype="multipart/form-data" method="post">
              {% csrf_token %}
 
-          <h3 style="display:none;" id="default_image">{% trans 'Are You Sure You want to set this image as the default Image?' %}</h3>
+          <h3 class="delete-warning" id="default_image">{% trans 'Are You Sure You want to set this image as the default Image?' %}</h3>
           <div id="confirm-default-image">
 
           </div>
-          <h3 style="display:none;" id="delete_images">{% trans 'Are You Sure You want to delete these images?' %}</h3>
+          <h3 class="delete-warning" id="delete_images">{% trans 'Are You Sure You want to delete these images?' %}</h3>
            <div class="confirm-deleted-images" id="confirm-delete-images">
 
           </div>
-          <h3 style="display:none;" id="delete_image">{% trans 'Are You Sure You want to delete this image?' %}</h3>
+          <h3 class="delete-warning" id="delete_image">{% trans 'Are You Sure You want to delete this image?' %}</h3>
            <div id="confirm-delete-image">
 
           </div>
@@ -213,7 +213,7 @@
 
 </div>
 {% else %}
-<h3>{% trans 'Please choose a product to view its images' %}</h3>
+<h3 class="delete-warning">{% trans 'Please choose a product to view its images' %}</h3>
 {% endif %}
 
 {% endblock %}

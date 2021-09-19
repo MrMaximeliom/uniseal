@@ -18,6 +18,7 @@
   --footer-links-color:#333;
   --copyright-color:#333;
   --copyright-link-color:#333;
+  --delete-warning-color:red;
 }
 
 
@@ -42,12 +43,16 @@ body{
   --footer-links-color:#fff;
   --copyright-color:#fff;
   --copyright-link-color:yellow;
+  --delete-warning-color:#ffef00;
 }
 @media (max-width: 767.98px) {
   /*.sidebar {
     top: 11.5rem;
     padding: 0;
   }*/
+}
+.delete-warning{
+color:var(--delete-warning-color);
 }
 
 a.nav-link.active{

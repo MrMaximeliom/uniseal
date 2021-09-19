@@ -16,6 +16,7 @@
                 </nav>
                 {% endblock breadcrumb_content %}
 {% block content %}
+{% if all_sms_data|length > 0 %}
                 <h1 class="h2">{% trans 'Update SMS Notifications' %}</h1>
  <div class="row">
                     <div class="col-12 col-xl-11 mb-4 mb-lg-0">
@@ -81,5 +82,8 @@
           </ul>
        </nav>
   </div>
+{% else %}
+<h3 class="delete-warning">{% trans 'There is no sms notifications yet .. you can add send single SMS from' %} <a href="{% url 'sendSMS' %}">{% trans 'Here' %}</a> {% trans ' Or to SMS Group from '%}<a href="{% url 'sendSMSToSMSGroup' %}">{% trans 'Here' %}</a></h3>
 
+{% endif %}
 {% endblock content %}

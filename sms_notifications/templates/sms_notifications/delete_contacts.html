@@ -16,7 +16,9 @@
                 </nav>
                 {% endblock breadcrumb_content %}
 {% block content %}
+{% if all_contacts_data|length > 0 %}
                 <h1 class="h2">{% trans 'Delete SMS Contacts' %}</h1>
+
  <div class="row">
                     <div class="col-12 col-xl-11 mb-4 mb-lg-0">
                         <div class="card-light card-dark">
@@ -50,7 +52,7 @@
       <div class="modal-body">
 
           <h3>{% trans 'Are you sure you want to delete this sms contact?' %}</h3>
-<h4 style="color:red;">{{contact.contact_number}}</h4>
+<h4 class="delete-warning">{{contact.contact_number}}</h4>
 
 <!--           <input type="number" value="{{product.id}}" hidden name="product_id">-->
       </div>
@@ -95,5 +97,7 @@
           </ul>
        </nav>
   </div>
-
+{% else %}
+<h3 class="delete-warning">{% trans 'There is no contacts yet .. you can add new ones from ' %} <a href="{% url 'addSMSContact' %}">{% trans 'Here' %}</a></h3>
+{% endif %}
 {% endblock content %}

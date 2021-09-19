@@ -845,6 +845,14 @@ def top_products(request):
             searchManObj.setSearchOption('Supplier')
             searchManObj.setSearchError(False)
             top_products_helper.setQuery(search_result)
+        elif request.POST.get('search_options') == 'top_products':
+            search_phrase = request.POST.get('search_phrase')
+            search_result = Product.objects.filter(is_top=True,name=search_phrase).order_by("id")
+            searchManObj.setPaginator(search_result)
+            searchManObj.setSearchPhrase(search_phrase)
+            searchManObj.setSearchOption('Top Products')
+            searchManObj.setSearchError(False)
+            top_products_helper.setQuery(search_result)
         else:
             messages.error(request,
                            "Please choose an item from list , then write search phrase to search by it!")

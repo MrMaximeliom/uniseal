@@ -58,6 +58,6 @@
        </nav>
   </div>
 {% else %}
-<h3>{% trans 'There is no brochures yet .. you can add new ones from ' %} <a href="{% url 'addBrochures' %}">{% trans 'Here' %}</a></h3>
+<h3 class="delete-warning">{% trans 'There is no brochures yet .. you can add new ones from ' %} <a href="{% url 'addBrochures' %}">{% trans 'Here' %}</a></h3>
 {% endif %}
 {% endblock content %}

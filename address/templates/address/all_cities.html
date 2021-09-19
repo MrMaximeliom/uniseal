@@ -32,7 +32,7 @@
   <div class="col-3" id="search_phrase_holder">
     <label for="searchPhrase" class="visually-hidden">{% trans 'Search Phrase' %}</label>
     <input type="text" class="form-control" name="search_phrase" id="searchPhrase" placeholder="Search ..">
-          <span style="display:none;color:red;" id="search_phrase_error"></span>
+          <span class="delete-warning" id="search_phrase_error"></span>
   </div>
         <div class="col-2 mr-3">
     <select class="form-select search-select" id="searchBy" name="search_options" aria-label="Default select example">
@@ -168,9 +168,9 @@
   </div>
 {% endif %}
 {% if all_cities_data|length == 0 and not search %}
-<h3>{% trans 'There are no cities yet .. you can add new ones from ' %} <a href="{% url 'addCities' %}">{% trans 'Here' %}</a></h3>
+<h3 class="delete-warning">{% trans 'There are no cities yet .. you can add new ones from ' %} <a href="{% url 'addCities' %}">{% trans 'Here' %}</a></h3>
 {% endif %}
 {% if search and search_result.count == 0 %}
-<h3 style="color:red;">{% trans 'Sorry no cities found that matches your search!' %}</h3>
+<h3 class="delete-warning">{% trans 'Sorry no cities found that matches your search!' %}</h3>
 {% endif %}
 {% endblock content %}

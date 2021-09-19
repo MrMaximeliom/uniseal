@@ -35,12 +35,12 @@
   <div class="col-3" id="search_phrase_holder">
     <label for="searchPhrase" class="visually-hidden">{% trans 'Search Phrase' %}</label>
     <input type="text" class="form-control" name="search_phrase" id="searchPhrase" placeholder="Search ..">
-          <span style="display:none;color:red;" id="search_phrase_error"></span>
+          <span class="delete-warning" id="search_phrase_error"></span>
   </div>
        <div class="col-2 mr-2" style="display:none;" id="search_phrase_date_holder">
             <label for="searchPhrase" class="visually-hidden">{% trans 'Search Phrase' %}</label>
            <input type= "text" class="form-control" id="searchPhraseDate" name="search_phrase_date" placeholder="Select Execution Year">
-          <span style="display:none;color:red;" id="search_phrase_date_error"></span>
+          <span class="delete-warning" id="search_phrase_date_error"></span>
      </div>
 
     <div class="col-3">
@@ -52,7 +52,7 @@
   <option value="type">{% trans 'Project Type' %}</option>
   <option value="execution_year">{% trans 'Execution Year' %}</option>
 </select>
-                <span style="display:none;color:red;" id="selection_error"></span>
+                <span class="delete-warning" id="selection_error"></span>
 
     </div>
 
@@ -114,7 +114,7 @@
       <div class="modal-body">
 
           <h3>{% trans 'Are you sure you want to delete this project?' %}</h3>
-<h4 style="color:red;">{{project.name}}</h4>
+<h4 class="delete-warning">{{project.name}}</h4>
 
 <!--           <input type="number" value="{{product.id}}" hidden name="product_id">-->
       </div>
@@ -162,9 +162,9 @@
   </div>
 {% endif %}
 {% if all_projects_data|length == 0 and not search %}
-<h3>{% trans 'There is no projects yet .. you can add new ones from ' %} <a href="{% url 'addProjects' %}">{% trans 'Here' %}</a></h3>
+<h3 class="delete-warning">{% trans 'There is no projects yet .. you can add new ones from ' %} <a href="{% url 'addProjects' %}">{% trans 'Here' %}</a></h3>
 {% endif %}
 {% if search and search_result.count == 0 %}
-<h3 style="color:red;">{{not_found}}</h3>
+<h3 class="delete-warning">{{not_found}}</h3>
 {% endif %}
 {% endblock content %}

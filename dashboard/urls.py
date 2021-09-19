@@ -5,6 +5,7 @@ from address.urls import areas_urlpatterns as area_urls
 from address.urls import cities_urlpatterns as city_urls
 from address.urls import countries_urlpatterns as country_urls
 from address.urls import states_urlpatterns as state_urls
+from application_videos.urls import urlpatterns as product_application_videos
 from brochures.urls import urlpatterns as brochure_urls
 from category.urls import urlpatterns as category_urls
 from company_info.urls import urlpatterns as company_urls
@@ -19,7 +20,6 @@ from slider.urls import urlpatterns as slider_urls
 from sms_notifications.urls import urlpatterns as sms_urls
 from solution.urls import urlpatterns as solution_urls
 from supplier.urls import urlpatterns as supplier_urls
-from application_videos.urls import urlpatterns as product_application_videos
 
 urlpatterns = [
     path('home/', dashboard_views.dashboard, name='dashboard'),

@@ -21,6 +21,7 @@
 {% block content %}
                 <h1 class="h2">{% trans 'Edit Sliders' %}</h1>
                 <p>{% trans 'This is the sliders of Uniseal Company' %}</p>
+{% if all_sliders_data|length > 0 %}
 <div class="row card-group">
 
 {% for slider in all_sliders_data %}
@@ -70,4 +71,8 @@
           </ul>
        </nav>
   </div>
+{% else %}
+<h3 class="delete-warning">{% trans 'There is no sliders yet .. you can add new ones from ' %} <a href="{% url 'addSliders' %}">{% trans 'Here' %}</a></h3>
+
+{% endif %}
 {% endblock content %}

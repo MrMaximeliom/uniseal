@@ -114,6 +114,9 @@ $('#searchPhrase').prop("placeholder","search by notification body ..")
 else if(selected_value == 'os_type'){
 $('#searchPhrase').prop("placeholder","search by OS type..")
 }
+else if(selected_value == 'top_products'){
+$('#searchPhrase').prop("placeholder","search by product name in top products")
+}
 
 
 if(selected_value == "execution_year"){

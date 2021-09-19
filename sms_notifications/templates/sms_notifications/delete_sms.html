@@ -17,6 +17,7 @@
                 {% endblock breadcrumb_content %}
 {% block content %}
                 <h1 class="h2">{% trans 'Delete SMS Notifications' %}</h1>
+{% if all_sms_data|length > 0 %}
  <div class="row">
                     <div class="col-12 col-xl-11 mb-4 mb-lg-0">
                         <div class="card-light card-dark">
@@ -60,7 +61,7 @@
       <div class="modal-body">
 
           <h3>{% trans 'Are you sure you want to delete this sms notification?' %}</h3>
-<h4 style="color:red;">{{sms.message}}</h4>
+<h4 class="delete-warning">{{sms.message}}</h4>
 
 <!--           <input type="number" value="{{product.id}}" hidden name="product_id">-->
       </div>
@@ -105,5 +106,8 @@
           </ul>
        </nav>
   </div>
+{% else %}
+<h3 class="delete-warning">{% trans 'There is no sms notifications yet .. you can add send single SMS from' %} <a href="{% url 'sendSMS' %}">{% trans 'Here' %}</a> {% trans ' Or to SMS Group from '%}<a href="{% url 'sendSMSToSMSGroup' %}">{% trans 'Here' %}</a></h3>
+{% endif %}
 
 {% endblock content %}

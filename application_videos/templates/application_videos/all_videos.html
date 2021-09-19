@@ -19,8 +19,8 @@
    <nav aria-label="crumb">
                     <ol class="crumb breadcrumb-light breadcrumb-dark">
                         <li class="breadcrumb-item"><a href="{% url 'dashboard' %}">{% trans 'Dashboard' %}</a></li>
-                        <li class="breadcrumb-item" aria-current="page">{% trans 'Products' %}</li>
-                        <li class="breadcrumb-item" aria-current="page">{% trans 'All Products' %}</li>
+                        <li class="breadcrumb-item" aria-current="page">{% trans 'Application Videos' %}</li>
+                        <li class="breadcrumb-item" aria-current="page">{% trans 'All Videos' %}</li>
                     </ol>
                 </nav>
                 {% endblock breadcrumb_content %}
@@ -32,7 +32,7 @@
   <div class="col-3">
     <label for="searchPhrase" class="visually-hidden">{% trans 'Search Phrase' %}</label>
     <input type="text" class="form-control" name="search_phrase" id="searchPhrase" placeholder="Search ..">
-          <span style="display:none;color:red;" id="search_phrase_error"></span>
+          <span class="delete-warning" id="search_phrase_error"></span>
   </div>
 
     <div class="col-3">
@@ -113,9 +113,9 @@
   </div>
 {% endif %}
 {% if all_products_data|length == 0 and not search %}
-<h3>{% trans 'There is no products yet .. you can add new ones from ' %} <a href="{% url 'addProducts' %}">{% trans 'Here' %}</a></h3>
+<h3 class="delete-warning">{% trans 'There is no products yet .. you can add new ones from ' %} <a href="{% url 'addProducts' %}">{% trans 'Here' %}</a></h3>
 {% endif %}
 {% if search and search_result.count == 0 and search_result != "" %}
-<h3 style="color:red;">{{not_found}}</h3>
+<h3 class="delete-warning">{{not_found}}</h3>
 {% endif %}
 {% endblock content %}

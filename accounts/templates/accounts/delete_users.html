@@ -41,7 +41,7 @@
   <option value="organization">{% trans 'Organization' %}</option>
   <option value="phone_number">{% trans 'Phone Number' %}</option>
 </select>
-        <span style="display:none;color:red;" id="selection_error"></span>
+        <span class="delete-warning" id="selection_error"></span>
     </div>
 
   <div class="col-auto">
@@ -101,7 +101,7 @@
       <div class="modal-body">
 
           <h3>{% trans 'Are you sure you want to delete this user?' %}</h3>
-<h4 style="color:red;"> {{user.full_name}}</h4>
+<h4 class="delete-warning"> {{user.full_name}}</h4>
 
 <!--           <input type="number" value="{{product.id}}" hidden name="product_id">-->
       </div>
@@ -151,11 +151,11 @@
   </div>
 {% endif %}
 {% if all_users_data|length == 0 and not search %}
-<h3>{% trans 'There is no users yet .. you can add new ones from ' %} <a href="{% url 'addUsers' %}">{% trans 'Here' %}</a></h3>
+<h3 class="delete-warning">{% trans 'There is no users yet .. you can add new ones from ' %} <a href="{% url 'addUsers' %}">{% trans 'Here' %}</a></h3>
 {% endif %}
 
 {% if search and search_result.count == 0 and search_result != "" %}
-<h3 style="color:red;">{% trans 'Sorry No Users found that matches your search!' %}</h3>
+<h3 class="delete-warning">{% trans 'Sorry No Users found that matches your search!' %}</h3>
 
 {% endif %}
 {% endblock content %}

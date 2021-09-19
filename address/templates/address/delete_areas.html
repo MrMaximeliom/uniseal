@@ -31,7 +31,7 @@
   <div class="col-3" id="search_phrase_holder">
     <label for="searchPhrase" class="visually-hidden">{% trans 'Search Phrase' %}</label>
     <input type="text" class="form-control" name="search_phrase" id="searchPhrase" placeholder="Search ..">
-          <span style="display:none;color:red;" id="search_phrase_error"></span>
+          <span class="delete-warning" id="search_phrase_error"></span>
   </div>
                 <div class="col-2 mr-3">
     <select class="form-select search-select" id="searchBy" name="search_options" aria-label="Default select example">
@@ -89,7 +89,7 @@
       <div class="modal-body">
 
           <h3>{% trans 'Are you sure you want to delete this area?' %}</h3>
-<h4 style="color:red;">{{area.name}}</h4>
+<h4 class="delete-warning">{{area.name}}</h4>
 
 <!--           <input type="number" value="{{product.id}}" hidden name="product_id">-->
       </div>
@@ -140,10 +140,10 @@
   </div>
 {% endif %}
 {% if all_areas_data|length == 0 and not search %}
-<h3>{% trans 'There are no areas yet .. you can add new ones from ' %} <a href="{% url 'addAreas' %}">{% trans 'Here' %}</a></h3>
+<h3 class="delete-warning">{% trans 'There are no areas yet .. you can add new ones from ' %} <a href="{% url 'addAreas' %}">{% trans 'Here' %}</a></h3>
 {% endif %}
 {% if search and search_result.count == 0 %}
-<h3 style="color:red;">{% trans 'Sorry no areas found that matches your search!' %}</h3>
+<h3 class="delete-warning">{% trans 'Sorry no areas found that matches your search!' %}</h3>
 {% endif %}
 
 {% endblock content %}

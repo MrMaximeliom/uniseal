@@ -30,7 +30,7 @@
   <div class="col-3" id="search_phrase_holder">
     <label for="searchPhrase" class="visually-hidden">{% trans 'Search Phrase' %}</label>
     <input type="text" class="form-control" name="search_phrase" id="searchPhrase" placeholder="Search ..">
-          <span style="display:none;color:red;" id="search_phrase_error"></span>
+          <span class="delete-warning" id="search_phrase_error"></span>
   </div>
 
   <div class="col-auto">
@@ -110,9 +110,9 @@
   </div>
 {% endif %}
 {% if all_categories_data|length == 0 and not search %}
-<h3>{% trans 'There is no categories yet .. you can add new ones from ' %} <a href="{% url 'addCategories' %}">{% trans 'Here' %}</a></h3>
+<h3 class="delete-warning">{% trans 'There is no categories yet .. you can add new ones from ' %} <a href="{% url 'addCategories' %}">{% trans 'Here' %}</a></h3>
 {% endif %}
 {% if search and search_result.count == 0 and search_result != "" %}
-<h3 style="color:red;">{% trans 'Sorry no categories found that matches your search!' %}</h3>
+<h3 class="delete-warning">{% trans 'Sorry no categories found that matches your search!' %}</h3>
 {% endif %}
 {% endblock content %}

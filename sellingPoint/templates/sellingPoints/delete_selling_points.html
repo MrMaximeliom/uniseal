@@ -99,6 +99,6 @@
        </nav>
   </div>
 {% else %}
-<h3>{% trans 'There is no selling points yet .. you can add new ones from ' %} <a href="{% url 'addSellingPoints' %}">{% trans 'Here' %}</a></h3>
+<h3 class="delete-warning">{% trans 'There is no selling points yet .. you can add new ones from ' %} <a href="{% url 'addSellingPoints' %}">{% trans 'Here' %}</a></h3>
 {% endif %}
 {% endblock content %}

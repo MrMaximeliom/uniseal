@@ -32,7 +32,7 @@
   <div class="col-3" id="search_phrase_holder">
     <label for="searchPhrase" class="visually-hidden">{% trans 'Search Phrase' %}</label>
     <input type="text" class="form-control" name="search_phrase" id="searchPhrase" placeholder="Search ..">
-          <span style="display:none;color:red;" id="search_phrase_error"></span>
+          <span class="delete-warning" id="search_phrase_error"></span>
   </div>
 
   <div class="col-auto">
@@ -82,7 +82,7 @@
 
           <h3>{% trans 'Are you sure you want to delete this project type?' %}</h3>
 
-          <h4 style="color:red;">{{application.name}}</h4>
+          <h4 class="delete-warning">{{application.name}}</h4>
 <!--           <input type="number" value="{{product.id}}" hidden name="product_id">-->
       </div>
       <div class="modal-footer">
@@ -136,10 +136,10 @@
   </div>
 {% endif %}
 {% if all_applications_data|length == 0 and not search %}
-<h3>{% trans 'There is no project types yet .. you can add new ones from ' %} <a href="{% url 'addApplications' %}">{% trans 'Here' %}</a></h3>
+<h3 class="delete-warning">{% trans 'There is no project types yet .. you can add new ones from ' %} <a href="{% url 'addApplications' %}">{% trans 'Here' %}</a></h3>
 {% endif %}
 {% if search and search_result.count == 0 %}
-<h3 style="color:red;">{% trans 'Sorry No Users found that matches your search!' %}</h3>
+<h3 class="delete-warning">{% trans 'Sorry No Users found that matches your search!' %}</h3>
 {% endif %}
 
 {% endblock content %}
