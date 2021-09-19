@@ -41,7 +41,7 @@
   <option value="category">{% trans 'Category Name' %}</option>
   <option value="supplier">{% trans 'Supplier Name' %}</option>
 </select>
-                <span style="display:none;color:red;" id="selection_error"></span>
+                <span class="delete-warning" id="selection_error"></span>
 
     </div>
   <div class="col-auto">
@@ -74,7 +74,7 @@
       <p class="card-text">
         {% trans 'Supplier:' %} {{video.product.supplier.name}}
     </p>
-    <a href="#" class="btn btn-danger mr-3"  data-bs-toggle="modal" data-bs-target="#exampleModal{{product.id}}" >{% trans 'Delete Product' %}</a>
+    <a href="#" class="btn btn-danger mr-3"  data-bs-toggle="modal" data-bs-target="#exampleModal{{product.id}}" >{% trans 'Delete Video' %}</a>
   </div>
 </div>
  </div>
@@ -95,8 +95,8 @@
 <!--           <input type="number" value="{{product.id}}" hidden name="product_id">-->
       </div>
       <div class="modal-footer">
-        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-        <a type="submit" class="btn btn-danger" href="{% url 'videoDelete' id=video.id %}">Delete</a>
+        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">{% trans 'Close' %}</button>
+        <a type="submit" class="btn btn-danger" href="{% url 'videoDelete' id=video.id %}">{% trans 'Delete' %}</a>
 
       </div>
               </form>

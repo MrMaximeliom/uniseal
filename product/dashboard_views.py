@@ -416,11 +416,11 @@ def delete_products(request):
             messages.error(request,
                            "Please choose an item from list , then write search phrase to search by it!")
             searchManObj.setSearchError(True)
-    if request.method == "GET" and 'page' not in request.GET:
+    if request.method == "GET" and 'page' not in request.GET and not searchManObj.getSearch():
         all_products = Product.objects.all().order_by("id")
         searchManObj.setPaginator(all_products)
         searchManObj.setSearch(False)
-    if request.method == "POST" and request.POST.get('clear') == 'clear' and not searchManObj.getSearch():
+    if request.method == "POST" and request.POST.get('clear') == 'clear':
         all_products = Product.objects.all().order_by("id")
         searchManObj.setPaginator(all_products)
         searchManObj.setSearch(False)

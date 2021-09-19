@@ -6,7 +6,7 @@ from .models import ProductApplicationVideos
 class ApplicationVideoForm(forms.ModelForm):
     class Meta:
         model = ProductApplicationVideos
-        fields = '__all__'
+        fields = ('application_video',)
         exclude = ('slug',)
 
 

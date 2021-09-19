@@ -143,6 +143,7 @@ def product_videos(request, slug=None):
             print('searching for product videos')
             chosen_project = request.POST.get('search_options')
             # print("chosen one is: ",chosen_project.len())
+            # print("chosen one is: ",chosen_project.len())
             return redirect('productVideos', slug=chosen_project)
         else:
             messages.error(request, "Please choose a project from the list")
@@ -194,6 +195,7 @@ def delete_products_videos(request):
             searchManObj.setSearchPhrase(search_message)
             searchManObj.setSearchOption('Product Name')
             searchManObj.setSearchError(False)
+
         elif request.POST.get('search_options') == 'category':
             print('here now in category search')
             search_phrase = request.POST.get('search_phrase')
@@ -217,11 +219,12 @@ def delete_products_videos(request):
             messages.error(request,
                            "Please choose an item from list , then write search phrase to search by it!")
             searchManObj.setSearchError(True)
-    if request.method == "GET" and 'page' not in request.GET:
+    if request.method == "GET" and 'page' not in request.GET and not searchManObj.getSearch():
         all_videos = ProductApplicationVideos.objects.all().order_by("id")
         searchManObj.setPaginator(all_videos)
         searchManObj.setSearch(False)
-    if request.method == "POST" and request.POST.get('clear') == 'clear' and not searchManObj.getSearch():
+    if request.method == "POST" and request.POST.get('clear') == 'clear':
+        print("clearing data now")
         all_videos = ProductApplicationVideos.objects.all().order_by("id")
         searchManObj.setPaginator(all_videos)
         searchManObj.setSearch(False)
@@ -247,6 +250,7 @@ def delete_products_videos(request):
     context = {
         'title': _('Delete Products Videos'),
         'delete_videos': 'active',
+        'videos':'active',
         'all_videos': all_videos,
         'all_videos_data': videos,
         'page_range': paginator.page_range,
@@ -259,7 +263,6 @@ def delete_products_videos(request):
         'search_error': searchManObj.getSearchError(),
         'clear_search_tip': CLEAR_SEARCH_TIP,
         'search_products_tip': SEARCH_PRODUCTS_TIP,
-        'products': 'active',
         'data_js': {
             "empty_search_phrase": EMPTY_SEARCH_PHRASE,
             "product_error": PRODUCT_NAME_SYNTAX_ERROR,
@@ -294,8 +297,8 @@ def edit_video(request, slug):
     application_video_form = ApplicationVideoForm(request.POST or None, instance=obj)
     if application_video_form.is_valid():
         application_video_form.save()
-        product_name = application_video_form.cleaned_data.get('product')
-        messages.success(request, f"Successfully Updated : << {product_name} >> Data")
+        # application_video = application_video_form.cleaned_data.get('application_video')
+        messages.success(request, f"Successfully Updated : << {obj.product.name} >> Data")
     else:
         for field, items in application_video_form.errors.items():
             for item in items:

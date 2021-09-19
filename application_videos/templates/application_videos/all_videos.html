@@ -78,7 +78,7 @@
     <a href="{{product.application_video}}" target="_blank" class="btn btn-primary mr-3">{% trans 'View Video' %}</a>
 
 
-    <a href="#" class="btn btn-primary mr-3">{% trans 'Update Video' %}</a>
+    <a href="{% url 'editVideo' slug=product.slug %}" class="btn btn-primary mr-3">{% trans 'Update Video' %}</a>
   </div>
 </div>
  </div>
