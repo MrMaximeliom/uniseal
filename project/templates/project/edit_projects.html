@@ -52,7 +52,7 @@
   <option value="type">{% trans 'Project Type' %}</option>
   <option value="execution_year">{% trans 'Execution Year' %}</option>
 </select>
-                <span style="display:none;color:red;" id="selection_error"></span>
+                <span class="delete-warning" id="selection_error"></span>
 
     </div>
 
@@ -69,34 +69,34 @@
     </div>
   {% if  search and not search_error %}
 <h2>{% trans 'Showing Search Results For ' %}</h2>
-<h3>{{search_option}}="{{search_phrase}}"</h3>
+<h3>{{search_option}} "{{search_phrase}}"</h3>
 {% endif %}
 {% if all_projects_data|length %}
 <div class="row card-group">
 
-{% for project in all_projects_data %}
+{% for image in all_projects_data %}
 
  <div class="col-sm col-md-4 col-lg-4">
                 <div class="card-light mb-5 ml-2" >
-  <img class="card-img-top card-image-product" src="{{project.image.url}}" alt="Card image cap">
+  <img class="card-img-top card-image-product" src="{{image.image.url}}" alt="Card image cap">
   <div class="card-body">
-    <h5 class="card-title">{{project.name}}</h5>
+    <h5 class="card-title">{{image.project.name}}</h5>
     <p class="card-text">
-        {% trans 'Project Type:' %} {{project.project_type}}
+        {% trans 'Project Type:' %} {{image.project.project_type}}
     </p>
         <p class="card-text">
-        {% trans 'Main Material Used:' %} {{project.main_material}}
+        {% trans 'Main Material Used:' %} {{image.project.main_material}}
     </p>
       <p class="card-text">
-        {% trans 'Beneficiary:' %} {{project.beneficiary}}
+        {% trans 'Beneficiary:' %} {{image.project.beneficiary}}
     </p>
               <p class="card-text">
    <span>  {% trans 'Execution Date:' %} </span>
 <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-clock"><circle cx="12" cy="12" r="10"></circle><polyline points="12 6 12 12 16 14"></polyline></svg>
 
-           {{project.date}}
+           {{image.project.date}}
     </p>
-    <a href="{% url 'editProject' slug=project.slug %}" class="btn btn-primary">{% trans 'Update' %}</a>
+    <a href="{% url 'editProject' slug=image.project.slug %}" class="btn btn-primary">{% trans 'Update' %}</a>
   </div>
 </div>
  </div>

@@ -24,38 +24,38 @@ def prepare_selected_query(selected_pages,paginator_obj,headers=None):
             if header == "Project Name":
                 for page in selected_pages:
                     for project in paginator_obj.page(page):
-                        project_name.append(project.name)
+                        project_name.append(project.project.name)
             elif header == "Beneficiary":
                 for page in selected_pages:
                     for project in paginator_obj.page(page):
-                        beneficiary.append(project.beneficiary)
+                        beneficiary.append(project.project.beneficiary)
             elif header == "Description":
                 for page in selected_pages:
                     for project in paginator_obj.page(page):
-                        description.append(project.description)
+                        description.append(project.project.description)
             elif header == "Main Material Used":
                 print("here in supplier selected")
                 for page in selected_pages:
                     for project in paginator_obj.page(page):
-                        main_material.append(project.main_material)
+                        main_material.append(project.project.main_material)
             elif header == "Project Type":
                 for page in selected_pages:
                     for project in paginator_obj.page(page):
-                        project_type.append(project.project_type.name)
+                        project_type.append(project.project.project_type.name)
             elif header == "Execution Date":
                 for page in selected_pages:
                     for project in paginator_obj.page(page):
-                        execution_date.append(project.date)
+                        execution_date.append(project.project.date)
     else:
         headers_here = ["Project Name", "Beneficiary","Description", "Main Material Used", "Project Type", "Execution Date"]
         for page in range(1, paginator_obj.num_pages+1):
             for project in paginator_obj.page(page):
-                project_name.append(project.name)
-                beneficiary.append(project.beneficiary)
-                description.append(project.description)
-                main_material.append(project.main_material)
-                project_type.append(project.project_type.name)
-                execution_date.append(project.date)
+                project_name.append(project.project.name)
+                beneficiary.append(project.project.beneficiary)
+                description.append(project.project.description)
+                main_material.append(project.project.main_material)
+                project_type.append(project.project.project_type.name)
+                execution_date.append(project.project.date)
     return headers_here, project_name,  beneficiary, description,main_material, project_type,execution_date
 
 def prepare_query(paginator_obj,headers=None):
@@ -71,37 +71,37 @@ def prepare_query(paginator_obj,headers=None):
             if header == "Project Name":
                 for page in range(1, paginator_obj.num_pages+1):
                     for project in paginator_obj.page(page):
-                        project_name.append(project.name)
+                        project_name.append(project.project.name)
             elif header == "Beneficiary":
                 for page in range(1, paginator_obj.num_pages+1):
                     for project in paginator_obj.page(page):
-                        beneficiary.append(project.beneficiary)
+                        beneficiary.append(project.project.beneficiary)
             elif header == "Description":
                 for page in range(1, paginator_obj.num_pages+1):
                     for project in paginator_obj.page(page):
-                        description.append(project.description)
+                        description.append(project.project.description)
             elif header == "Main Material Used":
                 for page in range(1, paginator_obj.num_pages+1):
                     for project in paginator_obj.page(page):
-                        main_material.append(project.main_material)
+                        main_material.append(project.project.main_material)
             elif header == "Project Type":
                 for page in range(1, paginator_obj.num_pages+1):
                     for project in paginator_obj.page(page):
-                        project_type.append(project.project_type.name)
+                        project_type.append(project.project.project_type.name)
             elif header == "Execution Date":
                 for page in range(1, paginator_obj.num_pages+1):
                     for project in paginator_obj.page(page):
-                        execution_date.append(project.date)
+                        execution_date.append(project.project.date)
     else:
         headers_here = ["Project Name","Beneficiary","Description","Main Material Used","Project Type","Execution Date"]
         for page in range(1, paginator_obj.num_pages+1):
             for project in paginator_obj.page(page):
                 project_name.append(project.name)
-                beneficiary.append(project.beneficiary)
-                description.append(project.description)
-                main_material.append(project.main_material)
-                project_type.append(project.project_type.name)
-                execution_date.append(project.date)
+                beneficiary.append(project.project.beneficiary)
+                description.append(project.project.description)
+                main_material.append(project.project.main_material)
+                project_type.append(project.project.project_type.name)
+                execution_date.append(project.project.date)
 
     # later for extracting actual data
 
@@ -384,10 +384,10 @@ def add_projects(request):
     return render(request, 'project/add_projects.html', context)
 @login_required(login_url='login')
 def delete_projects(request):
-    from project.models import Project
+    from project.models import ProjectImages
     from django.core.paginator import Paginator, PageNotAnInteger, EmptyPage
-    all_projects = Project.objects.all().order_by("id")
-    paginator = Paginator(all_projects, 5)
+    all_projects_images = ProjectImages.objects.all().order_by("project").distinct("project")
+    paginator = Paginator(all_projects_images, 5)
     from Util.search_form_strings import (
         EMPTY_SEARCH_PHRASE,
         PROJECT_NAME_SYNTAX_ERROR,
@@ -408,7 +408,7 @@ def delete_projects(request):
         print("first")
         if request.POST.get('search_options') == 'project':
             search_message = request.POST.get('search_phrase')
-            search_result = Project.objects.filter(name__icontains=search_message).order_by('id')
+            search_result = ProjectImages.objects.filter(project__name__icontains=search_message).order_by("project").distinct("project")
             searchManObj.setPaginator(search_result)
             searchManObj.setSearchPhrase(search_message)
             searchManObj.setSearchOption('Project Name')
@@ -416,28 +416,28 @@ def delete_projects(request):
         elif request.POST.get('search_options') == 'beneficiary':
             print('here now in category search')
             search_phrase = request.POST.get('search_phrase')
-            search_result = Project.objects.filter(beneficiary__icontains=search_phrase).order_by("id")
+            search_result = ProjectImages.objects.filter(project__beneficiary__icontains=search_phrase).order_by("project").distinct("project")
             searchManObj.setPaginator(search_result)
             searchManObj.setSearchPhrase(search_phrase)
             searchManObj.setSearchOption('Beneficiary Name')
             searchManObj.setSearchError(False)
         elif request.POST.get('search_options') == 'main_material':
             search_phrase = request.POST.get('search_phrase')
-            search_result = Project.objects.filter(main_material__icontains=search_phrase).order_by("id")
+            search_result = ProjectImages.objects.filter(project__main_material__icontains=search_phrase).order_by("project").distinct("project")
             searchManObj.setPaginator(search_result)
             searchManObj.setSearchPhrase(search_phrase)
             searchManObj.setSearchOption('Main Material Used:')
             searchManObj.setSearchError(False)
         elif request.POST.get('search_options') == 'type':
             search_phrase = request.POST.get('search_phrase')
-            search_result = Project.objects.filter(project_type__name__icontains=search_phrase).order_by("id")
+            search_result = ProjectImages.objects.filter(project__project_type__name__icontains=search_phrase).order_by("project").distinct("project")
             searchManObj.setPaginator(search_result)
             searchManObj.setSearchPhrase(search_phrase)
             searchManObj.setSearchOption('Project Type:')
             searchManObj.setSearchError(False)
         elif request.POST.get('search_options') == 'execution_year':
             search_phrase = request.POST.get('search_phrase_date')
-            search_result = Project.objects.filter(date__contains=search_phrase).order_by("id")
+            search_result = ProjectImages.objects.filter(project__date__contains=search_phrase).order_by("project").distinct("project")
             searchManObj.setPaginator(search_result)
             searchManObj.setSearchPhrase(search_phrase)
             searchManObj.setSearchOption('Execution Year')
@@ -448,13 +448,13 @@ def delete_projects(request):
             searchManObj.setSearchError(True)
     if request.method == "GET" and 'page' not in request.GET and not searchManObj.getSearch():
         print("second")
-        all_projects = Project.objects.all().order_by("id")
-        searchManObj.setPaginator(all_projects)
+        all_projects_images = ProjectImages.objects.all().order_by("project").distinct("project")
+        searchManObj.setPaginator(all_projects_images)
         searchManObj.setSearch(False)
     if request.method == "POST" and request.POST.get('clear') == 'clear':
         print("third")
-        all_projects = Project.objects.all().order_by("id")
-        searchManObj.setPaginator(all_projects)
+        all_projects_images = ProjectImages.objects.all().order_by("project").distinct("project")
+        searchManObj.setPaginator(all_projects_images)
         searchManObj.setSearch(False)
 
     if request.GET.get('page'):
@@ -507,7 +507,7 @@ def delete_projects(request):
                   )
 @login_required(login_url='login')
 def edit_projects(request):
-    from project.models import Project
+    from project.models import ProjectImages
     from django.core.paginator import Paginator, PageNotAnInteger, EmptyPage
     from Util.search_form_strings import (
         EMPTY_SEARCH_PHRASE,
@@ -523,57 +523,61 @@ def edit_projects(request):
 
     )
     search_result = ''
-    all_projects = Project.objects.all().order_by("id")
-    paginator = Paginator(all_projects, 5)
+    all_projects_images = ProjectImages.objects.all().order_by("project").distinct("project")
+    paginator = Paginator(all_projects_images, 5)
     if request.method == "POST" and 'clear' not in request.POST and 'createExcel' not in request.POST:
         searchManObj.setSearch(True)
         if request.POST.get('search_options') == 'project':
             search_message = request.POST.get('search_phrase')
-            search_result = Project.objects.filter(name__icontains=search_message).order_by('id')
+            search_message = search_message.strip(' ')
+            search_result = ProjectImages.objects.filter(project__name__icontains=search_message).order_by("project").distinct("project")
             searchManObj.setPaginator(search_result)
             searchManObj.setSearchPhrase(search_message)
-            searchManObj.setSearchOption('Project Name')
+            searchManObj.setSearchOption('Project Name:')
             searchManObj.setSearchError(False)
         elif request.POST.get('search_options') == 'beneficiary':
             print('here now in category search')
             search_phrase = request.POST.get('search_phrase')
-            search_result = Project.objects.filter(beneficiary__icontains=search_phrase).order_by("id")
+            search_phrase = search_phrase.strip(' ')
+            search_result = ProjectImages.objects.filter(project__beneficiary__icontains=search_phrase).order_by("project").distinct("project")
             searchManObj.setPaginator(search_result)
             searchManObj.setSearchPhrase(search_phrase)
-            searchManObj.setSearchOption('Beneficiary Name')
+            searchManObj.setSearchOption('Beneficiary Name:')
             searchManObj.setSearchError(False)
         elif request.POST.get('search_options') == 'main_material':
             search_phrase = request.POST.get('search_phrase')
-            search_result = Project.objects.filter(main_material__icontains=search_phrase).order_by("id")
+            search_phrase = search_phrase.strip(' ')
+            search_result = ProjectImages.objects.filter(project__main_material__icontains=search_phrase).order_by("project").distinct("project")
             searchManObj.setPaginator(search_result)
             searchManObj.setSearchPhrase(search_phrase)
             searchManObj.setSearchOption('Main Material Used:')
             searchManObj.setSearchError(False)
         elif request.POST.get('search_options') == 'type':
             search_phrase = request.POST.get('search_phrase')
-            search_result = Project.objects.filter(project_type__name__icontains=search_phrase).order_by("id")
+            search_phrase = search_phrase.strip(' ')
+            search_result = ProjectImages.objects.filter(project__project_type__name__icontains=search_phrase).order_by("project").distinct("project")
             searchManObj.setPaginator(search_result)
             searchManObj.setSearchPhrase(search_phrase)
             searchManObj.setSearchOption('Project Type:')
             searchManObj.setSearchError(False)
         elif request.POST.get('search_options') == 'execution_year':
             search_phrase = request.POST.get('search_phrase_date')
-            search_result = Project.objects.filter(date__contains=search_phrase).order_by("id")
+            search_result = ProjectImages.objects.filter(project__date__contains=search_phrase).order_by("project").distinct("project")
             searchManObj.setPaginator(search_result)
             searchManObj.setSearchPhrase(search_phrase)
-            searchManObj.setSearchOption('Execution Year')
+            searchManObj.setSearchOption('Execution Year:')
             searchManObj.setSearchError(False)
         else:
             messages.error(request,
                            "Please choose an item from list , then write search phrase to search by it!")
             searchManObj.setSearchError(True)
     if request.method == "GET" and 'page' not in request.GET and not searchManObj.getSearch():
-        all_projects = Project.objects.all().order_by("id")
-        searchManObj.setPaginator(all_projects)
+        all_projects_images = ProjectImages.objects.all().order_by("project").distinct("project")
+        searchManObj.setPaginator(all_projects_images)
         searchManObj.setSearch(False)
     if request.method == "POST" and request.POST.get('clear') == 'clear':
-        all_projects = Project.objects.all().order_by("id")
-        searchManObj.setPaginator(all_projects)
+        all_projects_images = ProjectImages.objects.all().order_by("project").distinct("project")
+        searchManObj.setPaginator(all_projects_images)
         searchManObj.setSearch(False)
     if request.GET.get('page'):
         # Grab the current page from query parameter
