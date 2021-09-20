@@ -1,8 +1,6 @@
 from django.contrib import messages
 from django.contrib.admin.views.decorators import staff_member_required
 from django.contrib.auth import logout, login, authenticate
-# Orders.objects.annotate(month=TruncMonth('pickupdate')).values('month').annotate(total=Count('orderid'))
-# Create your views here.
 from django.contrib.auth import views as auth_views
 from django.db.models.functions import TruncMonth
 from django.http import JsonResponse
