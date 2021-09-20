@@ -39,10 +39,6 @@ class Project(models.Model):
         null=True,
         blank=True
     )
-    image = models.ImageField(
-        upload_to='project_images',
-        verbose_name=_('Project Image')
-    )
     description = models.TextField(
         verbose_name=_('Project Description'),
         null=True,
