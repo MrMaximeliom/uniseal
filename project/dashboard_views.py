@@ -110,7 +110,7 @@ def prepare_query(paginator_obj,headers=None):
 
 @login_required(login_url='login')
 def all_projects(request):
-    from project.models import Project
+    from project.models import ProjectImages
     from django.core.paginator import Paginator, PageNotAnInteger, EmptyPage
     from Util.search_form_strings import (
         EMPTY_SEARCH_PHRASE,
@@ -125,9 +125,10 @@ def all_projects(request):
      SEARCH_PROJECTS_TIP,
 
     )
+
     search_result = ''
-    all_projects = Project.objects.all().order_by("id")
-    paginator = Paginator(all_projects, 5)
+    all_projects_images = ProjectImages.objects.all().order_by("project").distinct('project')
+    paginator = Paginator(all_projects_images, 5)
 
 
     if 'temp_dir' in request.session and request.method == "GET":
@@ -138,7 +139,7 @@ def all_projects(request):
         searchManObj.setSearch(True)
         if request.POST.get('search_options') == 'project':
             search_message = request.POST.get('search_phrase')
-            search_result = Project.objects.filter(name__icontains=search_message).order_by('id')
+            search_result = ProjectImages.objects.filter(project__name__icontains=search_message).order_by('project').distinct('project')
             searchManObj.setPaginator(search_result)
             searchManObj.setSearchPhrase(search_message)
             searchManObj.setSearchOption('Project Name')
@@ -146,28 +147,28 @@ def all_projects(request):
         elif request.POST.get('search_options') == 'beneficiary':
             print('here now in category search')
             search_phrase = request.POST.get('search_phrase')
-            search_result = Project.objects.filter(beneficiary__icontains=search_phrase).order_by("id")
+            search_result = ProjectImages.objects.filter(project__beneficiary__icontains=search_phrase).order_by("project").distinct('project')
             searchManObj.setPaginator(search_result)
             searchManObj.setSearchPhrase(search_phrase)
             searchManObj.setSearchOption('Beneficiary Name')
             searchManObj.setSearchError(False)
         elif request.POST.get('search_options') == 'main_material':
             search_phrase = request.POST.get('search_phrase')
-            search_result = Project.objects.filter(main_material__icontains=search_phrase).order_by("id")
+            search_result = ProjectImages.objects.filter(project__main_material__icontains=search_phrase).order_by("project").distinct('project')
             searchManObj.setPaginator(search_result)
             searchManObj.setSearchPhrase(search_phrase)
             searchManObj.setSearchOption('Main Material Used:')
             searchManObj.setSearchError(False)
         elif request.POST.get('search_options') == 'type':
             search_phrase = request.POST.get('search_phrase')
-            search_result = Project.objects.filter(project_type__name__icontains=search_phrase).order_by("id")
+            search_result = ProjectImages.objects.filter(project__project_type__name__icontains=search_phrase).order_by("project").distinct('project')
             searchManObj.setPaginator(search_result)
             searchManObj.setSearchPhrase(search_phrase)
             searchManObj.setSearchOption('Project Type:')
             searchManObj.setSearchError(False)
         elif request.POST.get('search_options') == 'execution_year':
             search_phrase = request.POST.get('search_phrase_date')
-            search_result = Project.objects.filter(date__contains=search_phrase).order_by("id")
+            search_result = ProjectImages.objects.filter(project__date__contains=search_phrase).order_by("project").distinct('project')
             searchManObj.setPaginator(search_result)
             searchManObj.setSearchPhrase(search_phrase)
             searchManObj.setSearchOption('Execution Year')
@@ -177,13 +178,13 @@ def all_projects(request):
                            "Please choose an item from list , then write search phrase to search by it!")
             searchManObj.setSearchError(True)
     if request.method == "GET" and 'page' not in request.GET and not searchManObj.getSearch():
-        all_projects = Project.objects.all().order_by("id")
+        all_projects_images = ProjectImages.objects.all().order_by("project").distinct('project')
 
-        searchManObj.setPaginator(all_projects)
+        searchManObj.setPaginator( all_projects_images)
         searchManObj.setSearch(False)
     if request.method == "POST" and request.POST.get('clear') == 'clear':
-        all_projects = Project.objects.all().order_by("id")
-        searchManObj.setPaginator(all_projects)
+        all_projects_images = ProjectImages.objects.all().order_by("project").distinct('project')
+        searchManObj.setPaginator( all_projects_images)
         searchManObj.setSearch(False)
     if request.method == "POST" and request.POST.get('createExcel') == 'done':
         headers = []

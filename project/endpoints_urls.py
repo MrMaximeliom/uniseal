@@ -66,7 +66,7 @@ class ProjectImagesViewSet(viewsets.ModelViewSet):
     serializer_class = ProjectImageSerializer
     from .models import ProjectImages
     permission_classes = [UnisealPermission]
-    queryset = ProjectImages.objects.all()
+    queryset = ProjectImages.objects.all().order_by("project")
     filter_backends = [DjangoFilterBackend]
     filterset_fields = ['project']
 
