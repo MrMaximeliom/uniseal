@@ -129,6 +129,7 @@ def all_projects(request):
     all_projects = Project.objects.all().order_by("id")
     paginator = Paginator(all_projects, 5)
 
+
     if 'temp_dir' in request.session and request.method == "GET":
         # deleting temp dir in GET requests
         if request.session['temp_dir'] != '':
@@ -177,6 +178,7 @@ def all_projects(request):
             searchManObj.setSearchError(True)
     if request.method == "GET" and 'page' not in request.GET and not searchManObj.getSearch():
         all_projects = Project.objects.all().order_by("id")
+
         searchManObj.setPaginator(all_projects)
         searchManObj.setSearch(False)
     if request.method == "POST" and request.POST.get('clear') == 'clear':
@@ -674,21 +676,25 @@ def project_images(request,slug=None):
 
         project = get_object_or_404(Project, slug=slug)
         projectImages = ProjectImages.objects.filter(project__slug=slug)
-        if projectImages:
-            # pureImages.append(project.image.url)
-            pureImages.update({True: project.image.url})
-            for image in projectImages:
-                # pureImages.append(image.image.url)
-                pureImages.update({image.image.url: image.image.url})
+        default_project_image = ProjectImages.objects.get(project=project,is_default=True)
+        # if projectImages:
+        #     # pureImages.append(project.image.url)
+        #     pureImages.update({True: project.image.url})
+        #     for image in projectImages:
+        #         # pureImages.append(image.image.url)
+        #         pureImages.update({image.image.url: image.image.url})
         print(pureImages)
+        print('Images paths are')
+        for image in projectImages:
+            print(image.image.url)
         context =  {
             'title': _('Project Images'),
             'all_projects': 'active',
             'project_data': project,
             'projects': 'active',
 
-            'project_images': pureImages,
-            'project_original_image': project.image.url,
+            'project_images': projectImages,
+            'project_original_image': default_project_image,
 
             'allProjects': allProjects,
             'slug':slug
