@@ -72,6 +72,7 @@ class ProjectImagesViewSet(viewsets.ModelViewSet):
 
 
 
+
 class ProjectVideoViewSet(viewsets.ModelViewSet):
     """API endpoint to add or modify project' videos by admin
         this endpoint allows GET,PUT,PATCH,DELETE functions
