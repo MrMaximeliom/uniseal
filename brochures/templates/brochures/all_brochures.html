@@ -17,14 +17,13 @@
                 {% endblock breadcrumb_content %}
 {% block content %}
                 <h1 class="h2">All Brochures</h1>
-                <p>{% trans 'This is the Brochures' %}</p>
 <div class="row card-group">
     {% if all_brochures_data|length %}
 
 {% for brochures in all_brochures_data %}
 
  <div class="col-sm col-md-4 col-lg-4">
-                <div class="card mb-5 ml-2" >
+                <div class="card-light mb-5 ml-2" >
   <div class="card-body">
     <h5 class="card-title">{{brochures.title}}</h5>
     <a href="{{brochures.attachment.url}}" target="_blank" class="btn btn-primary">Technical Sheet</a>
@@ -44,9 +43,11 @@
              <span class="sr-only">Previous</span>
             </a>
            </li>
+                   {% if page_range|length > 1 %}
            {% for i in page_range %}
            <li class="page-item {% if i == current_page %} active {% endif %}"><a class="page-link " href="?page={{ i }}">{{ i }}</a></li>
            {% endfor %}
+              {% endif %}
 
            <li class="page-item {% if current_page == num_pages %} disabled disabled-item {% endif %}">
             <a class="page-link" href="?page={{ current_page|add:1 }}" aria-label="Next">

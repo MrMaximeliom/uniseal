@@ -124,8 +124,7 @@ background-clip: border-box;
 border: 1px solid rgba(0,0,0,.125);
 border-radius: .25rem;
 background-color:var(--card-background-color);
-max-width:16rem;
-height: 30rem;
+
 }
  label{
 color:var(--headers-colors);

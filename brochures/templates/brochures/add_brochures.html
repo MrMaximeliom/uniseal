@@ -20,7 +20,6 @@
                 {% endblock breadcrumb_content %}
 {% block content %}
                 <h1 class="h2">{% trans 'Add Brochures' %}</h1>
-                <p>{% trans 'Here you can add new brochures' %}</p>
 <div class="card-light">
   <div class="card-body">
   <form class="card-form" method="post" action="" enctype="multipart/form-data">
@@ -35,11 +34,7 @@
              {{form.attachment|as_crispy_field}}
     </div>
   </div>
-      <div class="mb-4 row">
-    <div class="col-sm-6">
-             {{form.image|as_crispy_field}}
-    </div>
-  </div>
+
 
        <div class="col-auto">
     <button type="submit" class="btn btn-primary mr-3">{% trans 'Add Brochures' %}</button>
