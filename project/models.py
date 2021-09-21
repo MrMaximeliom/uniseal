@@ -75,6 +75,10 @@ class Project(models.Model):
         verbose_name=_('Project Order'),
 
     )
+    is_top = models.BooleanField(
+        verbose_name=_('Is Top Project?'),
+        default=False
+    )
 
 
 

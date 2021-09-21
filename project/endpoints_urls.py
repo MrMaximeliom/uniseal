@@ -37,7 +37,7 @@ class ProjectViewSet(viewsets.ModelViewSet):
     permission_classes = [UnisealPermission]
     queryset = Project.objects.all().order_by('rank')
     filter_backends = [DjangoFilterBackend]
-    filterset_fields = ['project_type','main_material']
+    filterset_fields = ['project_type','main_material','is_top']
 
 
 class ProjectImagesViewSet(viewsets.ModelViewSet):
