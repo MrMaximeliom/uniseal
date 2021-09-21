@@ -96,12 +96,12 @@
     </p>
             {% if image.project.is_top %}
 <div class="form-check form-check-inline">
-  <input class="form-check-input collect-top-product-js" type="checkbox" id="inlineCheckbox2"  value="{{image.project.id}}"  name="set_default" checked>
+  <input class="form-check-input collect-top-project-js" type="checkbox" id="inlineCheckbox2"  value="{{image.project.id}}"  name="set_default" checked>
   <label class="form-check-label" for="inlineCheckbox2">{% trans 'Top Project' %}</label>
 </div>
       {% else %}
       <div class="form-check form-check-inline">
-  <input class="form-check-input selected-top-product-js" type="checkbox" id="inlineCheckbox"  value="{{image.project.id}}"  name="set_default" >
+  <input class="form-check-input selected-top-project-js" type="checkbox" id="inlineCheckbox"  value="{{image.project.id}}"  name="set_default" >
   <label class="form-check-label" for="inlineCheckbox2">{% trans 'Top Project' %}</label>
 </div>
       {% endif %}

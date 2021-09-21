@@ -907,6 +907,7 @@ def top_projects(request):
         searchManObj.setSearch(False)
         top_projects_helper.setQuery(all_projects_images)
     if request.method == 'POST' and 'updating_top_projects' in request.POST:
+        print("Oi man iam updating your top projects yo!!")
         searchManObj.setSearch(False)
         selected_top_projects = request.POST.get('selected_top_projects')
         deleted_top_projects = request.POST.get('deleted_top_projects')
