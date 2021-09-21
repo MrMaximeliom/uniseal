@@ -714,6 +714,7 @@ def project_images(request, slug=None):
         #     for image in projectImages:
         #         # pureImages.append(image.image.url)
         #         pureImages.update({image.image.url: image.image.url})
+        print("default image is: \n",default_project_image.image.url)
         print(pureImages)
         print('Images paths are')
         for image in projectImages:
@@ -725,7 +726,7 @@ def project_images(request, slug=None):
             'projects': 'active',
 
             'project_images': projectImages,
-            'project_original_image': default_project_image,
+            'project_original_image': default_project_image.image.url,
 
             'allProjects': allProjects,
             'slug': slug

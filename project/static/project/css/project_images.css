@@ -1,5 +1,5 @@
 .delete-project-img {
-color:red;
+color:var(--delete-warning-color);
 }
 /* start styling add new product image */
 @import url(https://fonts.googleapis.com/css?family=Raleway:400,700);

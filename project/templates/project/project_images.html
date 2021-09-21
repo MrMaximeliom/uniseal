@@ -57,17 +57,17 @@
 {% for obj in project_images %}
 <form class=" row" method="post" action="" enctype="multipart/form-data" autocomplete="off">
     {% csrf_token %}
- <div class="col-4">
-                <div class="card mb-5 ml-2" >
+ <div class="col-sm col-md-4 col-lg-4">
+                <div class="card-light mb-5 ml-2" >
   <img class="card-img-top card-image-project image-js" src="{{obj.image.url}}" alt="Card image cap">
   <div class="card-body">
 <div class="form-check form-check-inline">
-  <input class="form-check-input input-default-js collect-default-image-js" type="checkbox" id="inlineCheckbox2"  value="{{value}}"  name="set_default" {% if key == True %} checked {% endif %}>
+  <input class="form-check-input input-default-js collect-default-image-js" type="checkbox" id="inlineCheckbox2"  value="{{value}}"  name="set_default" {% if obj.is_default == True %} checked {% endif %}>
   <label class="form-check-label" for="inlineCheckbox2">{% trans 'Set As Default Image?' %}</label>
 </div>
 <div class="form-check form-check-inline">
-  <input class="form-check-input input-delete-js collect-deleted-images-js" type="checkbox" id="inlineCheckbox"  value="{{value}}"  name="delete_image" {% if key == True %} disabled {% endif %} >
-  <label class="form-check-label delete-project-img delete-warning" for="inlineCheckbox">{% trans 'Delete Image?' %}</label>
+  <input class="form-check-input input-delete-js collect-deleted-images-js" type="checkbox" id="inlineCheckbox"  value="{{value}}"  name="delete_image" {% if obj.is_default == True %} disabled {% endif %} >
+  <label class="form-check-label delete-project-img" for="inlineCheckbox">{% trans 'Delete Image?' %}</label>
 </div>
 
   </div>
@@ -91,7 +91,7 @@
 </div>
 <div class="form-check form-check-inline">
   <input class="form-check-input input-delete-js collect-deleted-images-js" type="checkbox"  id="inlineCheckbox1"  value="{{value}}"  name="delete_image">
-  <label class="form-check-label delete-project-img" for="inlineCheckbox1">{% trans 'Delete Image?' %}</label>
+  <label class="form-check-label delete-project-img  " for="inlineCheckbox1">{% trans 'Delete Image?' %}</label>
 </div>
 
   </div>
