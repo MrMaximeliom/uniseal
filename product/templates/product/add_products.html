@@ -64,12 +64,16 @@
   </div>
               <div class="mb-4 row">
              <div class="col-sm-6">
-<!--    <select class="form-control" id="supplierName">-->
-<!--     {% for supplier in all_suppliers %}-->
-<!--      <option>{{supplier.name}}</option>-->
-<!--        {% endfor %}-->
-<!--    </select>-->
+
                                    {{form.supplier|as_crispy_field}}
+
+             </div>
+
+  </div>
+       <div class="mb-4 row">
+             <div class="col-sm-6">
+
+                                   {{form.is_top|as_crispy_field}}
 
              </div>
 

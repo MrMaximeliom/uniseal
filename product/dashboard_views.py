@@ -847,7 +847,7 @@ def top_products(request):
             top_products_helper.setQuery(search_result)
         elif request.POST.get('search_options') == 'top_products':
             search_phrase = request.POST.get('search_phrase')
-            search_result = Product.objects.filter(is_top=True,name=search_phrase).order_by("id")
+            search_result = Product.objects.filter(is_top=True,name__icontains=search_phrase).order_by("id")
             searchManObj.setPaginator(search_result)
             searchManObj.setSearchPhrase(search_phrase)
             searchManObj.setSearchOption('Top Products')
