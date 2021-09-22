@@ -529,7 +529,7 @@ def delete_projects(request):
 
 @staff_member_required(login_url='login')
 def edit_projects(request):
-    from project.models import ProjectImages
+    from project.models import Project
     from django.core.paginator import Paginator, PageNotAnInteger, EmptyPage
     from Util.search_form_strings import (
         EMPTY_SEARCH_PHRASE,
@@ -545,15 +545,14 @@ def edit_projects(request):
 
     )
     search_result = ''
-    all_projects_images = ProjectImages.objects.all().order_by("project").distinct("project")
-    paginator = Paginator(all_projects_images, 5)
+    all_projects = Project.objects.all()
+    paginator = Paginator(all_projects, 5)
     if request.method == "POST" and 'clear' not in request.POST and 'createExcel' not in request.POST:
         searchManObj.setSearch(True)
         if request.POST.get('search_options') == 'project':
             search_message = request.POST.get('search_phrase')
             search_message = search_message.strip(' ')
-            search_result = ProjectImages.objects.filter(project__name__icontains=search_message).order_by(
-                "project").distinct("project")
+            search_result = Project.objects.filter(name__icontains=search_message)
             searchManObj.setPaginator(search_result)
             searchManObj.setSearchPhrase(search_message)
             searchManObj.setSearchOption('Project Name:')
@@ -562,8 +561,7 @@ def edit_projects(request):
             print('here now in category search')
             search_phrase = request.POST.get('search_phrase')
             search_phrase = search_phrase.strip(' ')
-            search_result = ProjectImages.objects.filter(project__beneficiary__icontains=search_phrase).order_by(
-                "project").distinct("project")
+            search_result = Project.objects.filter(beneficiary__icontains=search_phrase)
             searchManObj.setPaginator(search_result)
             searchManObj.setSearchPhrase(search_phrase)
             searchManObj.setSearchOption('Beneficiary Name:')
@@ -571,8 +569,7 @@ def edit_projects(request):
         elif request.POST.get('search_options') == 'main_material':
             search_phrase = request.POST.get('search_phrase')
             search_phrase = search_phrase.strip(' ')
-            search_result = ProjectImages.objects.filter(project__main_material__icontains=search_phrase).order_by(
-                "project").distinct("project")
+            search_result = Project.objects.filter(main_material__icontains=search_phrase)
             searchManObj.setPaginator(search_result)
             searchManObj.setSearchPhrase(search_phrase)
             searchManObj.setSearchOption('Main Material Used:')
@@ -580,16 +577,14 @@ def edit_projects(request):
         elif request.POST.get('search_options') == 'type':
             search_phrase = request.POST.get('search_phrase')
             search_phrase = search_phrase.strip(' ')
-            search_result = ProjectImages.objects.filter(project__project_type__name__icontains=search_phrase).order_by(
-                "project").distinct("project")
+            search_result = Project.objects.filter(project_type__name__icontains=search_phrase)
             searchManObj.setPaginator(search_result)
             searchManObj.setSearchPhrase(search_phrase)
             searchManObj.setSearchOption('Project Type:')
             searchManObj.setSearchError(False)
         elif request.POST.get('search_options') == 'execution_year':
             search_phrase = request.POST.get('search_phrase_date')
-            search_result = ProjectImages.objects.filter(project__date__contains=search_phrase).order_by(
-                "project").distinct("project")
+            search_result = Project.objects.filter(date__contains=search_phrase)
             searchManObj.setPaginator(search_result)
             searchManObj.setSearchPhrase(search_phrase)
             searchManObj.setSearchOption('Execution Year:')
@@ -599,12 +594,12 @@ def edit_projects(request):
                            "Please choose an item from list , then write search phrase to search by it!")
             searchManObj.setSearchError(True)
     if request.method == "GET" and 'page' not in request.GET and not searchManObj.getSearch():
-        all_projects_images = ProjectImages.objects.all().order_by("project").distinct("project")
-        searchManObj.setPaginator(all_projects_images)
+        all_projects = Project.objects.all()
+        searchManObj.setPaginator(all_projects)
         searchManObj.setSearch(False)
     if request.method == "POST" and request.POST.get('clear') == 'clear':
-        all_projects_images = ProjectImages.objects.all().order_by("project").distinct("project")
-        searchManObj.setPaginator(all_projects_images)
+        all_projects = Project.objects.all()
+        searchManObj.setPaginator(all_projects)
         searchManObj.setSearch(False)
     if request.GET.get('page'):
         # Grab the current page from query parameter
@@ -986,11 +981,11 @@ def edit_project(request, slug):
     from project.models import Project
     from .forms import ProjectForm, ProjectImagesForm
     obj = get_object_or_404(Project, slug=slug)
-    project_form = ProjectForm(request.POST or None, instance=obj)
+    project_form = ProjectForm(request.POST or None, request.FILES or None, instance=obj)
     project_image_form = ProjectImagesForm(request.POST or None, instance=obj)
     if project_form.is_valid():
         if request.FILES:
-            project = project_form.save()
+            project = project_form.save(commit=False)
             project.image = request.FILES['image']
             project.save()
         project_form.save()

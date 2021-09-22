@@ -28,7 +28,7 @@ SECRET_KEY = 'django-insecure-1q236oqpxw@svn0mi40y_mzt5&l((_9vwynu5vv0u)r($y_gv)
 DEBUG = True
 
 
-ALLOWED_HOSTS = ['localhost','uniseal-api.herokuapp.com','93.188.162.130']
+ALLOWED_HOSTS = ['localhost','uniseal-api.herokuapp.com','93.188.162.130','13.245.197.123']
 # Application definition
 INSTALLED_APPS = [
     'django.contrib.admin',

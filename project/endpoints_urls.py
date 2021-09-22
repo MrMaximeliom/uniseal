@@ -35,7 +35,7 @@ class ProjectViewSet(viewsets.ModelViewSet):
     serializer_class = ProjectSerializer
     from .models import Project
     permission_classes = [UnisealPermission]
-    queryset = Project.objects.all().order_by('rank')
+    queryset = Project.objects.all().order_by('id')
     filter_backends = [DjangoFilterBackend]
     filterset_fields = ['project_type','main_material','is_top']
 
@@ -68,7 +68,7 @@ class ProjectImagesViewSet(viewsets.ModelViewSet):
     permission_classes = [UnisealPermission]
     queryset = ProjectImages.objects.all()
     filter_backends = [DjangoFilterBackend]
-    filterset_fields = ['is_default','project']
+    filterset_fields = ['project']
 
 
 

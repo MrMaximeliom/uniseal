@@ -73,11 +73,17 @@ class Project(models.Model):
     )
     rank = models.IntegerField(
         verbose_name=_('Project Order'),
+        null=True,
+        blank=True
 
     )
     is_top = models.BooleanField(
         verbose_name=_('Is Top Project?'),
         default=False
+    )
+    image = models.ImageField(
+        upload_to="default_project_images",
+        verbose_name=_('Base Project Image')
     )
 
 
@@ -100,10 +106,6 @@ class ProjectImages(models.Model):
         Project,
         on_delete=models.CASCADE,
         verbose_name=_('Project')
-    )
-    is_default = models.BooleanField(
-        verbose_name=_('Default Image?'),
-        default=False
     )
 
 
