@@ -68,7 +68,7 @@ class ProjectImagesViewSet(viewsets.ModelViewSet):
     permission_classes = [UnisealPermission]
     queryset = ProjectImages.objects.all()
     filter_backends = [DjangoFilterBackend]
-    filterset_fields = ['is_default']
+    filterset_fields = ['is_default','project']
 
 
 
