@@ -817,7 +817,7 @@ class TopProjectsHelper:
 top_projects_helper = TopProjectsHelper()
 @staff_member_required(login_url='login')
 def top_projects(request):
-    from project.models import ProjectImages
+    from project.models import Project
     from Util.search_form_strings import (
         EMPTY_SEARCH_PHRASE,
         PROJECT_NAME_SYNTAX_ERROR,
@@ -831,8 +831,8 @@ def top_projects(request):
     SEARCH_PROJECTS_TIP,
 
     )
-    all_projects_images = ProjectImages.objects.filter(project__is_top=True).order_by("project").distinct("project")
-    top_projects_helper.setQuery(all_projects_images)
+    all_projects = Project.objects.filter(is_top=True)
+    top_projects_helper.setQuery(all_projects)
     search_result = ''
     displaying_type = 'Top Projects'
     if request.method == "POST" and 'clear' not in request.POST  and 'updating_top_projects' not in request.POST :
@@ -840,7 +840,7 @@ def top_projects(request):
         if request.POST.get('search_options') == 'project':
             search_message = request.POST.get('search_phrase')
             search_message = search_message.strip(' ')
-            search_result = ProjectImages.objects.filter(project__name__icontains=search_message).order_by("project").distinct("project")
+            search_result = Project.objects.filter(name__icontains=search_message)
             print("search results ", search_result)
             searchManObj.setPaginator(search_result)
             searchManObj.setSearchPhrase(search_message)
@@ -851,7 +851,7 @@ def top_projects(request):
             print('here now in category search')
             search_phrase = request.POST.get('search_phrase')
             search_phrase = search_phrase.strip(' ')
-            search_result = ProjectImages.objects.filter(project__beneficiary__icontains=search_phrase).order_by("project").distinct("project")
+            search_result = Project.objects.filter(beneficiary__icontains=search_phrase)
             print("search results ", search_result)
             searchManObj.setPaginator(search_result)
             searchManObj.setSearchPhrase(search_phrase)
@@ -862,7 +862,7 @@ def top_projects(request):
             search_phrase = request.POST.get('search_phrase')
             search_phrase = search_phrase.strip(' ')
             print('search phrase is ', search_phrase)
-            search_result = ProjectImages.objects.filter(project__main_material__icontains=search_phrase).order_by("project").distinct("project")
+            search_result = Project.objects.filter(main_material__icontains=search_phrase)
             print("search results ", search_result)
             searchManObj.setPaginator(search_result)
             searchManObj.setSearchPhrase(search_phrase)
@@ -872,7 +872,7 @@ def top_projects(request):
         elif request.POST.get('search_options') == 'type':
             search_phrase = request.POST.get('search_phrase')
             search_phrase = search_phrase.strip(' ')
-            search_result = ProjectImages.objects.filter(project__is_top=True,project__project_type__icontains=search_phrase).order_by("project").distinct("project")
+            search_result = Project.objects.filter(project__is_top=True,project_type__icontains=search_phrase)
             searchManObj.setPaginator(search_result)
             searchManObj.setSearchPhrase(search_phrase)
             searchManObj.setSearchOption('Project Type: ')
@@ -881,7 +881,7 @@ def top_projects(request):
         elif request.POST.get('search_options') == 'top_projects':
             search_phrase = request.POST.get('search_phrase')
             search_phrase = search_phrase.strip(' ')
-            search_result = ProjectImages.objects.filter(project__is_top=True, project__name__icontains=search_phrase).order_by("project").distinct("project")
+            search_result = Project.objects.filter(is_top=True,name__icontains=search_phrase)
             searchManObj.setPaginator(search_result)
             searchManObj.setSearchPhrase(search_phrase)
             searchManObj.setSearchOption('Top Projects: ')
@@ -893,15 +893,15 @@ def top_projects(request):
             searchManObj.setSearchError(True)
     if request.method == "GET" and 'page' not in request.GET and not searchManObj.getSearch():
         print("iam here now")
-        all_projects_images = ProjectImages.objects.filter(project__is_top=True).order_by("project").distinct("project")
-        searchManObj.setPaginator(all_projects_images)
+        all_projects = Project.objects.filter(is_top=True)
+        searchManObj.setPaginator(all_projects)
         searchManObj.setSearch(False)
-        top_projects_helper.setQuery(all_projects_images)
+        top_projects_helper.setQuery(all_projects)
     if request.method == "POST" and request.POST.get('clear') == 'clear':
-        all_projects_images = ProjectImages.objects.filter(project__is_top=True).order_by("project").distinct("project")
-        searchManObj.setPaginator(all_projects_images)
+        all_projects = Project.objects.filter(is_top=True)
+        searchManObj.setPaginator(all_projects)
         searchManObj.setSearch(False)
-        top_projects_helper.setQuery(all_projects_images)
+        top_projects_helper.setQuery(all_projects)
     if request.method == 'POST' and 'updating_top_projects' in request.POST:
         print("Oi man iam updating your top projects yo!!")
         searchManObj.setSearch(False)
