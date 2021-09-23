@@ -108,13 +108,23 @@ WSGI_APPLICATION = 'unisealAPI.wsgi.application'
 #         'NAME': BASE_DIR / 'db.sqlite3',
 #     }
 # }
+# DATABASES = {
+#     'default': {
+#         'ENGINE': 'django.db.backends.postgresql_psycopg2',
+#         'NAME': 'd4nnvv8lb1aedj',
+#         'USER': 'gkvvbjmricafua',
+#         'PASSWORD': '1a79a001973e92c89aa42c0c9c8a8bf3e138132bc81bad4a5e03a8b908b1e317',
+#         'HOST': 'ec2-52-23-40-80.compute-1.amazonaws.com',
+#         'PORT': '5432',
+#     }
+# }
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.postgresql_psycopg2',
-        'NAME': 'd4nnvv8lb1aedj',
-        'USER': 'gkvvbjmricafua',
+        'NAME': 'uniseal',
+        'USER': 'uniseal',
         'PASSWORD': '1a79a001973e92c89aa42c0c9c8a8bf3e138132bc81bad4a5e03a8b908b1e317',
-        'HOST': 'ec2-52-23-40-80.compute-1.amazonaws.com',
+        'HOST': '13.245.197.123',
         'PORT': '5432',
     }
 }
@@ -197,5 +207,5 @@ SIMPLE_JWT = {
 STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
 LOGIN_REDIRECT_URL = 'dashboard'
 LOGOUT_REDIRECT_URL = 'login'
-print(STATIC_ROOT)
+
 
