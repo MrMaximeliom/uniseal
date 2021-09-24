@@ -88,10 +88,12 @@
                 </div>
 <h2 class="mt-5">{% trans 'Data Charts' %}</h2>
 <div class="row">
-  <div id="container" style="width: 75%;">
+  <div id="container" >
     <canvas id="population-chart" data-url="{% url 'product-categories-chart' %}"></canvas>
   </div>
-  <div id="users-container" style="width: 75%;">
+</div>
+<div class="row" >
+  <div id="users-container">
     <canvas id="users-chart" data-url="{% url 'users-count-month-chart' %}"></canvas>
   </div>
     </div>
