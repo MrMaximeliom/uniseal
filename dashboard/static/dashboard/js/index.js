@@ -45,7 +45,7 @@ $("#btn-mode").html('<svg xmlns="http://www.w3.org/2000/svg" width="24" height="
 $("#sidebar-btn-slide").on("click",function(){
 
      document.getElementById("mySidenav").style.display = "block";
-  document.getElementById("mySidenav").style.width = "250px";
+  document.getElementById("mySidenav").style.width = "256px";
   document.getElementById("first-side-item").focus();
   myStorage.setItem('sidebar-status','opened');
 
