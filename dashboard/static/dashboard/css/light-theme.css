@@ -1,5 +1,5 @@
 
-
+/* class for making dark theme */
 .dark-theme{
   --body-background-color:#24292e;
   --headers-colors:#fff;
@@ -18,6 +18,8 @@
   --footer-links-color:#fff;
   --copyright-color:#fff;
   --copyright-link-color:yellow;
+  --delete-warning-color:#ffef00;
+  --sidebar-border-color:rgba(189, 184, 184, 0.37);
 }
 body{
 background-color:var(--body-background-color)!important;

@@ -2,8 +2,21 @@
 myStorage = window.localStorage;
      body = document.getElementById('body')
  btn_mode = document.getElementById('#btn-mode')
-// file: /static/dashboard/css/themes.css
 $( document ).ready(function() {
+console.log("Screen width is: ",screen.width)
+$(window).on("resize",function(){
+  var w = window.outerWidth;
+  var h = window.outerHeight;
+  if(w >= 1400){
+   if (document.getElementById("mySidenav").style.display === "none"){
+     document.getElementById("mySidenav").style.display = "block"
+
+
+
+   }
+
+  }
+})
 let audio;
  console.log($('#theme').attr('href'));
   console.log( "ready!" );
@@ -40,7 +53,6 @@ $("#sidebar-btn-slide").on("click",function(){
 console.log("opened");
 })
 $("#close").on("click",function(){
-//  document.getElementById("mySidenav").style.width = "0";
   document.getElementById("mySidenav").style.display = "none";
   console.log("closed");
 
