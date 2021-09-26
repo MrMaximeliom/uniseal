@@ -63,7 +63,7 @@
 
 {% for product in all_products_data %}
 
- <div class="col-sm col-md-4 col-lg-4">
+ <div class="col-sm col-md-5 col-lg-4">
                 <div class="card-light mb-5 ml-2" >
                       <img class="card-img-top card-image-product" src="{{product.product.image.url}}" alt="Card image cap">
 
@@ -75,10 +75,10 @@
       <p class="card-text">
         {% trans 'Supplier:' %} {{product.product.supplier.name}}
     </p>
-    <a href="{{product.application_video}}" target="_blank" class="btn btn-primary mr-3">{% trans 'View Video' %}</a>
+    <a href="{{product.application_video}}" target="_blank" class="btn btn-primary mr-3 mb-3">{% trans 'View Video' %}</a>
 
 
-    <a href="{% url 'editVideo' slug=product.slug %}" class="btn btn-primary mr-3">{% trans 'Update Video' %}</a>
+    <a href="{% url 'editVideo' slug=product.slug %}" class="btn btn-primary mr-3 mb-3">{% trans 'Update Video' %}</a>
   </div>
 </div>
  </div>

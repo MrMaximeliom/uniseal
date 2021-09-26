@@ -85,9 +85,9 @@ position:absolute;*/
 }
 .card-light img{
 max-width: 100%;
-/*height: auto;*/
-height: 17rem;
+height: auto;
 }
+
 /* left button in (all) pages */
 .card-update-btn{
 position: absolute;
@@ -152,7 +152,7 @@ width:13rem !important;
 }
 
 .sidenav a:hover {
-  color: var(--nav-link-color);
+  color: var(--nav-link-active);
 }
 
 #close {
