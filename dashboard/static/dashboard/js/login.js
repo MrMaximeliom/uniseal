@@ -29,7 +29,7 @@ let no_errors = true
 let phone_number_regex_no_zero = /^9\d{8}$|^1\d{8}$/g
 let phone_number_regex_with_zero = /^09\d{8}$|^01\d{8}$/g
 // check username field as the user types it down
-$("#id_username").keyup(function(){
+$("#id_username").on("change",function(){
 let current_username_error_msg = ''
 let current_password_error_msg = ''
 let username_errors = "phone number contains only numbers with 10 digits"

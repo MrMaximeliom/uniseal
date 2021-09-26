@@ -30,12 +30,12 @@
     {% csrf_token %}
   <div class="col-3">
     <label for="searchPhrase" class="visually-hidden">{% trans 'Search Phrase' %}</label>
-    <input type="text" class="form-control" name="search_phrase" id="searchPhrase" placeholder="Search ..">
+    <input type="text" class="form-control search-box" name="search_phrase" id="searchPhrase" placeholder="Search ..">
           <span class="delete-warning" id="search_phrase_error"></span>
   </div>
 
     <div class="col-3">
-    <select class="form-select search-select" id="searchBy" name="search_options" aria-label="Default select example">
+    <select class="form-select search-select search-box" id="searchBy" name="search_options" aria-label="Default select example">
   <option selected value="none">{% trans 'Search By' %}</option>
   <option value="product">{% trans 'Product Name' %}</option>
   <option value="category">{% trans 'Category Name' %}</option>

@@ -20,6 +20,9 @@
   --copyright-link-color:yellow;
   --delete-warning-color:#ffef00;
   --sidebar-border-color:rgba(189, 184, 184, 0.37);
+  --search-box-background-color:#24292e;
+  --search-box-border-color:#4a4a4a;
+  --search-box-placeholder-color:#fff;
 }
 body{
 background-color:var(--body-background-color)!important;
@@ -75,8 +78,19 @@ color:var(--headers-colors);
 .breadcrumb-light .active{
 color:var(--breadcrumb-active);
 }
+
 .modal-content{
 background-color:var(--card-background-color) !important;
+}
+.form-control , .form-select{
+background: var(--search-box-background-color) !important;
+border-color: var(--search-box-border-color) !important;
+}
+.form-control::placeholder{
+color:var( --search-box-placeholder-color) !important;
+}
+.form-select , .form-control{
+color:var( --search-box-placeholder-color) !important;
 }
 
 .card-light{

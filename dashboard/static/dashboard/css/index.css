@@ -20,9 +20,14 @@
   --copyright-link-color:#333;
   --delete-warning-color:red;
   --sidebar-border-color:rgba(0, 0, 0, .1);
+  --search-box-background-color:#fff;
+  --search-box-border-color:#e9ecef;
+  --search-box-placeholder-color:#495057;
 }
 
-
+.making-content-centralized{
+margin:0 auto;
+}
 body{
     font-family: 'Poppins', sans-serif;
 }
