@@ -103,13 +103,17 @@ if __name__ == "__main__":
     # objs[0].headline = 'This is entry 1'
     # objs[1].headline = 'This is entry 2'
     # Entry.objects.bulk_update(objs, ['headline'])
-    print("Hi")
-    phone = "0912808000"
-    if phone.startswith("0"):
-        phone_without_zero = phone[1:]
-        print(phone_without_zero)
-    else:
-        print("no")
+    # print("Hi")
+    # phone = "0912808000"
+    # if phone.startswith("0"):
+    #     phone_without_zero = phone[1:]
+    #     print(phone_without_zero)
+    # else:
+    #     print("no")
+    image_path = '/media/project_images/marcelo-cidrack-WJb_4qwOxcI-unsplash_sswCaEC.jpg'
+    splitted_image = image_path.split('/media/')
+    print(splitted_image[1])
+    # print(splitted_image[1])
 
 
 

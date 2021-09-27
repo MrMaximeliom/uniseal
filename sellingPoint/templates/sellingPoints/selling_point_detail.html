@@ -42,7 +42,7 @@
     <p>{% trans 'Phone Number: ' %}{{point_data.phone_number}}</p>
     <p>{% trans 'Second Number: ' %}{{point_data.secondary_phone}}</p>
     <p>{% trans 'Email: ' %}{{point_data.email}}</p>
- <a href="#" class="btn btn-primary mr-3 mb-5">{% trans 'Visit Location' %}</a>
+ <a href="{{point_data.location}}" class="btn btn-primary mr-3 mb-5">{% trans 'Visit Location' %}</a>
 
 </div>
     <div class="row">

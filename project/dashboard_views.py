@@ -397,9 +397,9 @@ def add_projects(request):
 
 @staff_member_required(login_url='login')
 def delete_projects(request):
-    from project.models import ProjectImages
+    from project.models import Project
     from django.core.paginator import Paginator, PageNotAnInteger, EmptyPage
-    all_projects_images = ProjectImages.objects.all().order_by("project").distinct("project")
+    all_projects_images = Project.objects.all().order_by("id")
     paginator = Paginator(all_projects_images, 5)
     from Util.search_form_strings import (
         EMPTY_SEARCH_PHRASE,
@@ -409,10 +409,8 @@ def delete_projects(request):
         MAIN_MATERIAL_SYNTAX_ERROR,
         EXECUTION_DATE_ERROR,
         PROJECT_NOT_FOUND,
-
         CLEAR_SEARCH_TIP,
         SEARCH_PROJECTS_TIP,
-
     )
     search_result = ''
     if request.method == "POST" and 'clear' not in request.POST and 'createExcel' not in request.POST:
@@ -420,8 +418,8 @@ def delete_projects(request):
         print("first")
         if request.POST.get('search_options') == 'project':
             search_message = request.POST.get('search_phrase')
-            search_result = ProjectImages.objects.filter(project__name__icontains=search_message).order_by(
-                "project").distinct("project")
+            search_result = Project.objects.filter(name__icontains=search_message).order_by(
+                "id")
             searchManObj.setPaginator(search_result)
             searchManObj.setSearchPhrase(search_message)
             searchManObj.setSearchOption('Project Name')
@@ -429,32 +427,32 @@ def delete_projects(request):
         elif request.POST.get('search_options') == 'beneficiary':
             print('here now in category search')
             search_phrase = request.POST.get('search_phrase')
-            search_result = ProjectImages.objects.filter(project__beneficiary__icontains=search_phrase).order_by(
-                "project").distinct("project")
+            search_result = Project.objects.filter(beneficiary__icontains=search_phrase).order_by(
+                "id")
             searchManObj.setPaginator(search_result)
             searchManObj.setSearchPhrase(search_phrase)
             searchManObj.setSearchOption('Beneficiary Name')
             searchManObj.setSearchError(False)
         elif request.POST.get('search_options') == 'main_material':
             search_phrase = request.POST.get('search_phrase')
-            search_result = ProjectImages.objects.filter(project__main_material__icontains=search_phrase).order_by(
-                "project").distinct("project")
+            search_result = Project.objects.filter(main_material__icontains=search_phrase).order_by(
+                "")
             searchManObj.setPaginator(search_result)
             searchManObj.setSearchPhrase(search_phrase)
             searchManObj.setSearchOption('Main Material Used:')
             searchManObj.setSearchError(False)
         elif request.POST.get('search_options') == 'type':
             search_phrase = request.POST.get('search_phrase')
-            search_result = ProjectImages.objects.filter(project__project_type__name__icontains=search_phrase).order_by(
-                "project").distinct("project")
+            search_result = Project.objects.filter(project_type__name__icontains=search_phrase).order_by(
+                "id")
             searchManObj.setPaginator(search_result)
             searchManObj.setSearchPhrase(search_phrase)
             searchManObj.setSearchOption('Project Type:')
             searchManObj.setSearchError(False)
         elif request.POST.get('search_options') == 'execution_year':
             search_phrase = request.POST.get('search_phrase_date')
-            search_result = ProjectImages.objects.filter(project__date__contains=search_phrase).order_by(
-                "project").distinct("project")
+            search_result = Project.objects.filter(date__contains=search_phrase).order_by(
+                "id")
             searchManObj.setPaginator(search_result)
             searchManObj.setSearchPhrase(search_phrase)
             searchManObj.setSearchOption('Execution Year')
@@ -465,12 +463,12 @@ def delete_projects(request):
             searchManObj.setSearchError(True)
     if request.method == "GET" and 'page' not in request.GET and not searchManObj.getSearch():
         print("second")
-        all_projects_images = ProjectImages.objects.all().order_by("project").distinct("project")
+        all_projects_images = Project.objects.all().order_by("id")
         searchManObj.setPaginator(all_projects_images)
         searchManObj.setSearch(False)
     if request.method == "POST" and request.POST.get('clear') == 'clear':
         print("third")
-        all_projects_images = ProjectImages.objects.all().order_by("project").distinct("project")
+        all_projects_images = Project.objects.all().order_by("id")
         searchManObj.setPaginator(all_projects_images)
         searchManObj.setSearch(False)
 
@@ -698,26 +696,26 @@ def project_images(request, slug=None):
 
         project = get_object_or_404(Project, slug=slug)
         projectImages = ProjectImages.objects.filter(project__slug=slug)
-        default_project_image = ProjectImages.objects.get(project=project, is_default=True)
-        # if projectImages:
-        #     # pureImages.append(project.image.url)
-        #     pureImages.update({True: project.image.url})
-        #     for image in projectImages:
-        #         # pureImages.append(image.image.url)
-        #         pureImages.update({image.image.url: image.image.url})
-        print("default image is: \n",default_project_image.image.url)
+        print("project images are: ",projectImages)
+        # default_project_image = ProjectImages.objects.get(project=project)
+        if projectImages:
+            # pureImages.append(project.image.url)
+            pureImages.update({True: project.image.url})
+            for image in projectImages:
+                # pureImages.append(image.image.url)
+                pureImages.update({image.image.url: image.image.url})
+        # print("default image is: \n",default_project_image.image.url)
         print(pureImages)
         print('Images paths are')
-        for image in projectImages:
-            print(image.image.url)
+        # for image in projectImages:
+        #     print(image.image.url)
         context = {
             'title': _('Project Images'),
             'all_projects': 'active',
             'project_data': project,
             'projects': 'active',
-
-            'project_images': projectImages,
-            'project_original_image': default_project_image.image.url,
+            'project_images': pureImages,
+            'project_original_image': project.image,
 
             'allProjects': allProjects,
             'slug': slug
@@ -749,13 +747,16 @@ def project_images(request, slug=None):
                 updated_project.image = request.FILES['image']
                 # updated_project.project = selected_project.id
                 updated_project.slug = slugify(rand_slug())
-                # updated_project.save()
+                updated_project.save()
                 project_name = project.name
                 messages.success(request, f"New image Added for: {project_name}")
 
             else:
+                projectImagesList = list()
                 for f in files:
-                    ProjectImages.objects.create(project=project, image=f)
+                    # ProjectImages.objects.create(project=project, image=f)
+                    projectImagesList.append(ProjectImages(project=project, image=f))
+                ProjectImages.objects.bulk_create(projectImagesList)
                 project_name = project.name
                 messages.success(request, f"New images Added for: {project_name}")
             return redirect('projectImages', slug=slug)
@@ -778,10 +779,21 @@ def project_images(request, slug=None):
             if current_default_image != default_image:
                 default_image_path = default_image
                 just_image_path = default_image_path.split('/media')
-                Project.objects.filter(slug=slug).update(image=just_image_path[1])
-                ProjectImages.objects.create(project=current_project, image=just_image_path[1])
+                image_path_for_previous_default_image = current_default_image
+                modified_image_path =default_image_path.split('/media/')
 
-        if deleted_images != 'none':
+                # moving previous default image to be int the place of other image
+                ProjectImages.objects.filter(project=current_project, image=modified_image_path[1]).update(
+                    image=image_path_for_previous_default_image)
+                # making selected image as default image
+                Project.objects.filter(slug=slug).update(image=just_image_path[1])
+
+                print("chosen default image path is: ",default_image_path)
+                print("other image path is: ",image_path_for_previous_default_image)
+
+
+
+        if len(deleted_images) != 0:
             # check that the selected images are not greater than all of the project's images
             print("deleted images are: ", deleted_images.split(','))
             print("now deleting images ")

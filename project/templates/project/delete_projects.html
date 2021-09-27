@@ -73,36 +73,36 @@
 {% if all_projects_data|length %}
 <div class="row card-group">
 
-{% for image in all_projects_data %}
+{% for project in all_projects_data %}
 
- <div class="col-sm col-md-4 col-lg-4">
+ <div class="col-sm col-md-5 col-lg-4">
                 <div class="card-light mb-5 ml-2" >
-  <img class="card-img-top card-image-product" src="{{image.image.url}}" alt="Card image cap">
+  <img class="card-img-top card-image-product" src="{{project.image.url}}" alt="Card image cap">
   <div class="card-body">
-    <h5 class="card-title">{{image.project.name}}</h5>
+    <h5 class="card-title">{{project.name}}</h5>
     <p class="card-text">
-        {% trans 'Project Type:' %} {{image.project.project_type}}
+        {% trans 'Project Type:' %} {{project.project_type}}
     </p>
           <p class="card-text">
-        {% trans 'Main Material Used:' %} {{image.project.main_material}}
+        {% trans 'Main Material Used:' %} {{project.main_material}}
     </p>
       <p class="card-text">
-        {% trans 'Beneficiary:' %} {{image.project.beneficiary}}
+        {% trans 'Beneficiary:' %} {{project.beneficiary}}
     </p>
 
               <p class="card-text">
    <span>  {% trans 'Execution Date:' %} </span>
 <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-clock"><circle cx="12" cy="12" r="10"></circle><polyline points="12 6 12 12 16 14"></polyline></svg>
 
-            {{image.project.date}}
+            {{project.date}}
     </p>
-    <a href="#" data-bs-toggle="modal" data-bs-target="#exampleModal{{image.project.id}}" class="btn btn-danger">delete</a>
+    <a href="#" data-bs-toggle="modal" data-bs-target="#exampleModal{{project.id}}" class="btn btn-danger">delete</a>
   </div>
 
 
 </div>
  </div>
-<div class="modal fade" id="exampleModal{{image.project.id}}" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+<div class="modal fade" id="exampleModal{{project.id}}" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
   <div class="modal-dialog">
     <div class="modal-content">
       <div class="modal-header">
@@ -114,13 +114,13 @@
       <div class="modal-body">
 
           <h3>{% trans 'Are you sure you want to delete this project?' %}</h3>
-<h4 class="delete-warning">{{image.project.name}}</h4>
+<h4 class="delete-warning">{{project.name}}</h4>
 
 <!--           <input type="number" value="{{product.id}}" hidden name="product_id">-->
       </div>
       <div class="modal-footer">
-        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-        <a type="submit" class="btn btn-danger" href="{% url 'deleteProject' id=image.project.id %}">Delete</a>
+        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">{% trans 'Close' %}</button>
+        <a type="submit" class="btn btn-danger" href="{% url 'deleteProject' id=project.id %}">{% trans 'Delete' %}</a>
 
       </div>
               </form>

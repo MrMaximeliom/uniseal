@@ -80,8 +80,8 @@
 
     <div class="row">
            <div class="col-sm-6">
-                            <a href="{% url 'allProjects'  %} " class="btn btn-primary mr-3">Back</a>
-                        <a href="{% url 'editProject' slug=project_data.slug %} " class="btn btn-primary mr-3">Update</a>
+                            <a href="{% url 'allProjects'  %} " class="btn btn-primary mr-3">{% trans 'Back' %}</a>
+                        <a href="{% url 'editProject' slug=project_data.slug %} " class="btn btn-primary mr-3">{% trans 'Update' %}</a>
 
     </div>
 

@@ -158,7 +158,7 @@
 
 {% for project in all_projects_data %}
 
- <div class="col-sm col-md-4 col-lg-4">
+ <div class="col-sm col-md-5 col-lg-4">
                 <div class="card-light mb-5 ml-2" >
   <img class="card-img-top card-image-product" src="{{project.image.url}}" alt="Card image cap">
   <div class="card-body">
@@ -177,8 +177,8 @@
 <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-clock"><circle cx="12" cy="12" r="10"></circle><polyline points="12 6 12 12 16 14"></polyline></svg>
             {{project.date}}
     </p>
-          <a href="{% url 'editProject' slug=project.slug %} " class="btn btn-primary mr-3 ">{% trans 'Update' %}</a>
-    <a href="{% url 'projectDetails' slug=project.slug %}" class="btn btn-primary ">{% trans 'More Details' %}</a>
+          <a href="{% url 'editProject' slug=project.slug %} " class="btn btn-primary mr-3 mb-3 ">{% trans 'Update' %}</a>
+    <a href="{% url 'projectDetails' slug=project.slug %}" class="btn btn-primary mb-3">{% trans 'More Details' %}</a>
   </div>
 </div>
  </div>
