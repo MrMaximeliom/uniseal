@@ -145,7 +145,6 @@ def all_projects(request):
         if request.POST.get('search_options') == 'project':
             search_message = request.POST.get('search_phrase')
             search_result = Project.objects.filter(name__icontains=search_message).order_by("id")
-
             searchManObj.setPaginator(search_result)
             searchManObj.setSearchPhrase(search_message)
             searchManObj.setSearchOption('Project Name')
@@ -646,10 +645,6 @@ def edit_projects(request):
 @staff_member_required(login_url='login')
 def project_details(request, slug):
     from project.models import Project, ProjectImages
-    # from .forms import ProductForm
-    # all_products = Product.objects.all().order_by("id")
-    # paginator = Paginator(all_products, 5)
-    # fetch the object related to passed id
     project = get_object_or_404(Project, slug=slug)
     projectImages = ProjectImages.objects.filter(project__slug=slug)
     pureImages = list()
@@ -692,12 +687,8 @@ def project_images(request, slug=None):
         'projects': 'active',
     }
     if slug != None and request.method == 'GET':
-        print("slug is not null")
-
         project = get_object_or_404(Project, slug=slug)
         projectImages = ProjectImages.objects.filter(project__slug=slug)
-        print("project images are: ",projectImages)
-        # default_project_image = ProjectImages.objects.get(project=project)
         if projectImages:
             # pureImages.append(project.image.url)
             pureImages.update({True: project.image.url})
@@ -705,10 +696,6 @@ def project_images(request, slug=None):
                 # pureImages.append(image.image.url)
                 pureImages.update({image.image.url: image.image.url})
         # print("default image is: \n",default_project_image.image.url)
-        print(pureImages)
-        print('Images paths are')
-        # for image in projectImages:
-        #     print(image.image.url)
         context = {
             'title': _('Project Images'),
             'all_projects': 'active',
@@ -733,7 +720,6 @@ def project_images(request, slug=None):
             messages.error(request, "Please choose a project from the list")
 
     if request.method == 'POST' and 'add_images' in request.POST:
-        print("adding new images")
         form = ProjectImagesForm(request.POST, request.FILES)
         project = get_object_or_404(Project, slug=slug)
         selected_project = Project.objects.filter(slug=slug)
@@ -741,13 +727,10 @@ def project_images(request, slug=None):
         form.project = selected_project
         if form.is_valid():
             if len(files) == 1:
-                print("there is more than images")
-
                 updated_project = form.save(commit=False)
                 updated_project.image = request.FILES['image']
-                # updated_project.project = selected_project.id
                 updated_project.slug = slugify(rand_slug())
-                updated_project.save()
+                # updated_project.save()
                 project_name = project.name
                 messages.success(request, f"New image Added for: {project_name}")
 
@@ -781,12 +764,19 @@ def project_images(request, slug=None):
                 just_image_path = default_image_path.split('/media')
                 image_path_for_previous_default_image = current_default_image
                 modified_image_path =default_image_path.split('/media/')
-
-                # moving previous default image to be int the place of other image
+                # moving previous default image to be in the place of other image
                 ProjectImages.objects.filter(project=current_project, image=modified_image_path[1]).update(
                     image=image_path_for_previous_default_image)
-                # making selected image as default image
+                # # check for existence of the replaced default image path and then remove it from OS
+                # replaced_default_image_path = os.path.dirname(os.path.abspath('unisealAPI')) + default_image_path
+                # if os.path.exists(replaced_default_image_path):
+                #     os.remove(replaced_default_image_path)
+                # # making selected image as default image
                 Project.objects.filter(slug=slug).update(image=just_image_path[1])
+                # check for existence of default image and the remove it form OS
+                # previous_default_image_path = os.path.dirname(os.path.abspath('unisealAPI')) + current_project.image.url
+                # if os.path.exists(previous_default_image_path):
+                #     os.remove(previous_default_image_path)
 
                 print("chosen default image path is: ",default_image_path)
                 print("other image path is: ",image_path_for_previous_default_image)
