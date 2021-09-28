@@ -28,21 +28,21 @@
                 {% endblock breadcrumb_content %}
 {% block content %}
                 <h1 class="h2">{% trans 'All Projects' %}</h1>
-<div class="col-auto">
+
 <form class="row g-2 mb-3" action="" method="post" id="searchForm" autocomplete="off">
     {% csrf_token %}
-  <div class="col-3" id="search_phrase_holder">
+  <div class="col-sm-3 col-md-3 col-lg-3" id="search_phrase_holder">
     <label for="searchPhrase" class="visually-hidden">{% trans 'Search Phrase' %}</label>
     <input type="text" class="form-control" name="search_phrase" id="searchPhrase" placeholder="Search ..">
           <span class="delete-warning" id="search_phrase_error"></span>
   </div>
-       <div class="col-2 mr-2" style="display:none;" id="search_phrase_date_holder">
+       <div class="col-sm-3 col-md-3 col-lg-3" style="display:none;" id="search_phrase_date_holder">
             <label for="searchPhrase" class="visually-hidden">{% trans 'Search Phrase' %}</label>
            <input type= "text" class="form-control" id="searchPhraseDate" name="search_phrase_date" placeholder="Select Execution Year">
           <span class="delete-warning" id="search_phrase_date_error"></span>
      </div>
 
-    <div class="col-auto">
+    <div class="col-sm-3 col-md-3 col-lg-3">
     <select class="form-select search-select" id="searchBy" name="search_options" aria-label="Default select example">
   <option selected value="none">{% trans 'Search By' %}</option>
   <option value="project">{% trans 'Project Name' %}</option>
@@ -56,7 +56,7 @@
     </div>
 
 
-  <div class="col-auto">
+  <div class="col-sm-3 col-md-3 col-lg-3">
     <button type="submit" class="btn btn-primary mb-3" id="searchButton" title="{{search_projects_tip}}"><span><i class="fas fa-search"></i></span></button>
     <button type="submit" name="clear" value="clear" class="btn btn-danger mb-3" title="{{clear_search_tip}}"><span><i class="fas fa-eraser"></i></span></button>
    <button type="button" class="btn btn-success mb-3" data-bs-toggle="modal" data-bs-target="#exportData" title="{{create_report_tip}}"><span><i class="fas fa-file-csv"></i></span></button>
@@ -148,7 +148,7 @@
     </div>
 
 
-    </div>
+
   {% if  search and not search_error %}
 <h2>{% trans 'Showing Search Results For ' %}</h2>
 <h3>{{search_option}}="{{search_phrase}}"</h3>
