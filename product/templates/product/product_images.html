@@ -23,10 +23,10 @@
                 </nav>
                 {% endblock breadcrumb_content %}
 {% block content %}
-<div class="col-auto">
+<div class="row">
 <form class="row g-2 mb-3" action="" method="post" id="searchForm" autocomplete="off">
     {% csrf_token %}
-    <div class="col-3">
+    <div class="col-md-3 col-sm-3 col-lg-2 mr-5">
 
     <select class="form-select search-select" id="searchBy" name="search_options" aria-label="Default select example">
   <option selected value="none">{% trans '-- Select Product --' %}</option>
@@ -40,7 +40,7 @@
     </div>
 
 
-  <div class="col-auto">
+  <div class="col-md-3 col-sm-3 col-lg-2">
     <button type="submit" class="btn btn-primary mb-3" id="searchButton" value="search_product" name="search_product">{% trans 'View Images' %}</button>
 
   </div>
