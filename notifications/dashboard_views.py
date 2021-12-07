@@ -9,11 +9,46 @@ from pyfcm import FCMNotification
 from Util.utils import rand_slug, SearchMan, ReportMan, delete_temp_folder
 
 # Create your views here.
+def testNotifs():
+    from pyapns_client import APNSClient, IOSPayloadAlert, IOSPayload, IOSNotification, APNSDeviceException, \
+        APNSServerException, APNSProgrammingException, UnregisteredException
+
+    client = APNSClient(mode=APNSClient.MODE_DEV, root_cert_path='apns-dev-cer.pem', auth_key_path='AuthKey_AN96P2J2W5.p8',
+                        auth_key_id='AN96P2J2W5', team_id='APN1234567')
+    # `root_cert_path` is for the AAACertificateServices root cert (https://apple.co/3mZ5rB6)
+    # with token-based auth you don't need to create / renew your APNS SSL certificates anymore
+    # you can pass `None` to `root_cert_path` if you have the cert included in your trust store
+    # httpx uses 'SSL_CERT_FILE' and 'SSL_CERT_DIR' from `os.environ` to find your trust store
+
+    try:
+        from notifications.models import TokenIDs
+
+        device_tokens = TokenIDs.objects.filter(os_type="ios")
+        alert = IOSPayloadAlert(title='Title', subtitle='Subtitle', body='Hello How are you?')
+        payload = IOSPayload(alert=alert)
+        notification = IOSNotification(payload=payload, topic='com.unigroup.uniseal')
+
+        for device_token in device_tokens:
+            try:
+                client.push(notification=notification, device_token=device_token)
+            except UnregisteredException as e:
+                print(f'device is unregistered, compare timestamp {e.timestamp_datetime} and remove from db')
+            except APNSDeviceException:
+                print('flag the device as potentially invalid and remove from db after a few tries')
+            except APNSServerException:
+                print('try again later')
+            except APNSProgrammingException:
+                print('check your code and try again later')
+            else:
+                print('everything is ok')
+    finally:
+        client.close()
 
 searchManObj = SearchMan("Notifications")
 report_man = ReportMan()
 @staff_member_required(login_url='login')
 def all_notifications(request):
+    testNotifs()
     from Util.search_form_strings import (
         EMPTY_SEARCH_PHRASE,
     NOTIFICATION_TITLE_SYNTAX_ERROR,
@@ -22,7 +57,7 @@ def all_notifications(request):
     )
     from .models import Notifications
     all_notifications = Notifications.objects.all().order_by("id")
-    paginator = Paginator(all_notifications, 5)
+    paginator = Paginator(all_notifications, 60)
 
     search_result = ''
     if 'temp_dir' in request.session and request.method == "GET":
@@ -72,10 +107,11 @@ def all_notifications(request):
         # Grab the current page from query parameter
         page = int(request.GET.get('page'))
     else:
-        page = None
+        page = 1
 
     try:
         paginator = searchManObj.getPaginator()
+        print("paginator is: ",paginator)
         notifications = paginator.page(page)
         # Create a page object for the current page.
     except PageNotAnInteger:
@@ -85,7 +121,9 @@ def all_notifications(request):
     except EmptyPage:
         # If the query parameter is greater than num_pages then grab the last page.
         notifications = paginator.page(paginator.num_pages)
-        page = paginator.num_pages
+        page = paginator.num_pagespaginator.page_range,
+    print(paginator.page_range)
+
 
     return render(request, 'notifications/all_notifications.html',
                   {
@@ -131,7 +169,7 @@ def send_notifications(request):
                 for token in android_tokens:
                     android_tokens_list.append(token.reg_id)
                 FCMNotification(api_key=server_key,proxy_dict=proxy_dict).notify_multiple_devices(registration_ids=android_tokens_list,message_title=message_title,
-                                                                                     message_body=message_body,data_message={'type':'notification'},click_action='FLUTTER_NOTIFICATION_CLICK')
+                 message_body=message_body,data_message={'type':'notification'},click_action='FLUTTER_NOTIFICATION_CLICK')
             elif os_type == 'ios':
                 ios_tokens = TokenIDs.objects.all().filter(os_type="ios")
                 ios_tokens_list = list()

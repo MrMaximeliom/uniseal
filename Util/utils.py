@@ -112,7 +112,9 @@ class SearchMan:
         if model == "Notifications":
             from notifications.models import Notifications
             notifications = Notifications.objects.all().order_by('id')
-            self.paginator = Paginator(notifications, 5)
+            self.paginator = Paginator(notifications, 60)
+            print("I am here now in Notifications")
+            print(self.paginator.per_page)
         if model == "ProductVideos":
             from application_videos.models import ProductApplicationVideos
             videos = ProductApplicationVideos.objects.all().order_by('id')
@@ -123,7 +125,7 @@ class SearchMan:
 
     def setPaginator(self,query):
         from django.core.paginator import Paginator
-        self.paginator = Paginator(query, 5)
+        self.paginator = Paginator(query, 60)
 
     def getPaginator(self):
         return self.paginator
