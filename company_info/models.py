@@ -39,6 +39,13 @@ class CompanyInfo(models.Model):
         null=False,
 
     )
+    arabic_company_name = models.CharField(
+        max_length=150,
+        verbose_name=_('Company Name(Arabic)'),
+        null=True,
+        blank=True
+
+    )
     main_address = models.CharField(
         max_length=250,
         verbose_name=_('Company Main Address'),

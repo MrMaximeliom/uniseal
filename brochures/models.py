@@ -11,6 +11,12 @@ class Brochures(models.Model):
         max_length=120,
         verbose_name=_('Document Title')
     )
+    arabic_title = models.CharField(
+        max_length=120,
+        verbose_name=_('Document Title (Arabic)'),
+        null=True,
+        blank=True
+    )
     attachment = models.FileField(
         verbose_name=_('Document Attachment'),
         upload_to='brochures_document'

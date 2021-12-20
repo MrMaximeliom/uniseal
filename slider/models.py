@@ -13,6 +13,12 @@ class Slider(models.Model):
         blank=True,
         null=True
     )
+    arabic_title = models.CharField(
+        verbose_name=_("Title(Arabic)"),
+        max_length=200,
+        blank=True,
+        null=True
+    )
     image = models.ImageField(
         verbose_name=_('Slider Image'),
         upload_to='slider_images'

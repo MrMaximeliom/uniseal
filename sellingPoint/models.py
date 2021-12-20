@@ -11,6 +11,12 @@ class SellingPoint(models.Model):
         max_length=150,
         verbose_name=_('Sale Point Name')
     )
+    arabic_name = models.CharField(
+        max_length=150,
+        verbose_name=_('Sale Point Name(Arabic)'),
+        null=True,
+        blank=True
+    )
     image = models.ImageField(
         upload_to='sale_point_image',
         verbose_name=('Sale Point Image')

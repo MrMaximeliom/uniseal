@@ -8,6 +8,12 @@ from Util.utils import rand_slug
 class Product(models.Model):
     name = models.CharField(
         max_length=100, verbose_name=_('Product Name'))
+    arabic_name = models.CharField(
+        max_length=100,
+        verbose_name=_('Product Name(Arabic)'),
+    null=True,
+        blank=True
+    )
     image = models.ImageField(
         upload_to='product_images/',
         verbose_name=_('Product Image'))
@@ -26,6 +32,11 @@ class Product(models.Model):
         null=True,
         blank=True,
         verbose_name=_('Product Description')
+    )
+    arabic_description = models.TextField(
+        null=True,
+        blank=True,
+        verbose_name=_('Product Description(Arabic)')
     )
     supplier = models.ForeignKey(
         "supplier.Supplier",

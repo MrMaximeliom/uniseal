@@ -18,6 +18,12 @@ class Application(models.Model):
         verbose_name=_('Project Type'),
         max_length=300
     )
+    arabic_name = models.CharField(
+        verbose_name=_('Project Type(Arabic)'),
+        max_length=300,
+        null=True,
+        blank=True
+    )
     slug = models.SlugField(
         default=slugify(rand_slug()),
         verbose_name=_('Project Type Slug')
@@ -32,6 +38,12 @@ class Project(models.Model):
         max_length=100,
         verbose_name=_('Project Name')
     )
+    arabic_name = models.CharField(
+        max_length=100,
+        verbose_name=_('Project Name(Arabic)'),
+        null=True,
+        blank=True
+    )
 
     beneficiary = models.CharField(
         max_length=100,
@@ -41,6 +53,11 @@ class Project(models.Model):
     )
     description = models.TextField(
         verbose_name=_('Project Description'),
+        null=True,
+        blank=True
+    )
+    arabic_description = models.TextField(
+        verbose_name=_('Project Description(Arabic)'),
         null=True,
         blank=True
     )

@@ -122,7 +122,6 @@ def all_notifications(request):
         # If the query parameter is greater than num_pages then grab the last page.
         notifications = paginator.page(paginator.num_pages)
         page = paginator.num_pagespaginator.page_range,
-    print(paginator.page_range)
 
 
     return render(request, 'notifications/all_notifications.html',

@@ -9,6 +9,11 @@ class Solution(models.Model):
         verbose_name=_('Solution Title'),
         max_length=150
     )
+    arabic_title = models.CharField(
+        verbose_name=_('Solution Title(Arabic)'),
+        max_length=150,
+        null=True
+    )
     description = models.TextField(
         verbose_name=_('Solution Description'),
         null=True,

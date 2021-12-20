@@ -113,8 +113,6 @@ class SearchMan:
             from notifications.models import Notifications
             notifications = Notifications.objects.all().order_by('id')
             self.paginator = Paginator(notifications, 60)
-            print("I am here now in Notifications")
-            print(self.paginator.per_page)
         if model == "ProductVideos":
             from application_videos.models import ProductApplicationVideos
             videos = ProductApplicationVideos.objects.all().order_by('id')

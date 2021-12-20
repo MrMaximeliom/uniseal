@@ -36,6 +36,12 @@ class Notifications(models.Model):
         verbose_name=_("Notification Title"),
         max_length=250,
     )
+    arabic_title = models.CharField(
+        verbose_name=_("Notification Title(Arabic)"),
+        max_length=250,
+        null=True,
+        blank=True
+    )
     body = models.CharField(
         verbose_name=("Notification Body"),
         max_length=400

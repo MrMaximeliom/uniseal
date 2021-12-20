@@ -13,10 +13,12 @@ class IndustryUpdates(models.Model):
         blank = True,
         null=True
     )
-    # link = models.URLField(
-    #     verbose_name=_('Link'),
-    #
-    # )
+    arabic_headline = models.CharField(
+        max_length=200,
+        verbose_name=_('Title(Arabic)'),
+        blank = True,
+        null=True
+    )
     link = models.CharField(
         verbose_name=_('Source'),
         default="Uniseal Construction Chemicals Co Ltd",
@@ -26,12 +28,13 @@ class IndustryUpdates(models.Model):
         verbose_name=_('Image Link'),
 
     )
-    # image = models.ImageField(
-    #     verbose_name=_('Image'),
-    #     upload_to="industry_updates_images"
-    # )
     details = models.TextField(
         verbose_name=_('Details')
+    )
+    arabic_details = models.TextField(
+        verbose_name=_('Details(Arabic)'),
+        null=True,
+        blank=True
     )
 
     slug = models.SlugField(

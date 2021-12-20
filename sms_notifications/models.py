@@ -10,6 +10,12 @@ class SMSGroups(models.Model):
         max_length=100,
         verbose_name=_('Group Name')
     )
+    arabic_name = models.CharField(
+        max_length=100,
+        verbose_name=_('Group Name(Arabic)'),
+        null=True,
+        blank=True
+    )
     group_created_datetime = models.DateTimeField(
         verbose_name=_('Group Created DateTime'),
         auto_now=True, blank=True, null=True

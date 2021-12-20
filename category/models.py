@@ -12,6 +12,12 @@ class Category(models.Model):
         verbose_name=_('Category Name'),
         max_length=150
     )
+    arabic_name = models.CharField(
+        max_length=120,
+        verbose_name=_('Category Name (Arabic)'),
+        null=True,
+        blank=True
+    )
     slug = models.SlugField(
         default=slugify(rand_slug()),
         verbose_name=_('Product Slug')

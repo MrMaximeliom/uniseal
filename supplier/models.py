@@ -15,6 +15,12 @@ class Supplier(models.Model):
         max_length=100,
         verbose_name=_('Supplier Name')
     )
+    arabic_name = models.CharField(
+        max_length=100,
+        verbose_name=_('Supplier Name(Arabic)'),
+        null=True,
+        blank=True
+    )
     image = models.ImageField(
         verbose_name=_('Supplier Image'),
         upload_to= 'supplier_images/',
