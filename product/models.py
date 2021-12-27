@@ -89,11 +89,6 @@ class ProductImages(models.Model):
 
 
 class ProductVideos(models.Model):
-    # video = models.FileField(
-    #     verbose_name=_("Application Video"),
-    #     upload_to="product_videos"
-    # )
-
     product = models.ForeignKey(
         Product,
         on_delete=models.SET_NULL,

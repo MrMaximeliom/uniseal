@@ -9,5 +9,4 @@ urlpatterns = [
     path('editSliders', slider_views.edit_sliders, name='editSliders'),
     path('editSlider/<str:slug>', slider_views.edit_slider, name='editSlider'),
     path('deleteSlider/<int:id>', slider_views.confirm_delete, name='deleteSlider'),
-
     ]

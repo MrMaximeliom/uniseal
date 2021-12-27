@@ -88,12 +88,27 @@
             <set />
           </value>
         </entry>
+        <entry key="$PROJECT_DIR$/brochures/serializers.py">
+          <value>
+            <set />
+          </value>
+        </entry>
+        <entry key="$PROJECT_DIR$/brochures/templates/brochures/add_brochures.html">
+          <value>
+            <set />
+          </value>
+        </entry>
         <entry key="$PROJECT_DIR$/brochures/templates/brochures/edit_brochure.html">
           <value>
             <set />
           </value>
         </entry>
         <entry key="$PROJECT_DIR$/category/models.py">
+          <value>
+            <set />
+          </value>
+        </entry>
+        <entry key="$PROJECT_DIR$/category/templates/category/add_categories.html">
           <value>
             <set />
           </value>
@@ -113,7 +128,27 @@
             <set />
           </value>
         </entry>
+        <entry key="$PROJECT_DIR$/company_info/templates/company_info/edit_info.html">
+          <value>
+            <set />
+          </value>
+        </entry>
+        <entry key="$PROJECT_DIR$/dashboard/templates/dashboard/base.html">
+          <value>
+            <set />
+          </value>
+        </entry>
+        <entry key="$PROJECT_DIR$/dashboard/templates/dashboard/index.html">
+          <value>
+            <set />
+          </value>
+        </entry>
         <entry key="$PROJECT_DIR$/industry_updates/models.py">
+          <value>
+            <set />
+          </value>
+        </entry>
+        <entry key="$PROJECT_DIR$/industry_updates/templates/industry_updates/add_updates.html">
           <value>
             <set />
           </value>
@@ -143,7 +178,17 @@
             <set />
           </value>
         </entry>
+        <entry key="$PROJECT_DIR$/product/templates/product/add_products.html">
+          <value>
+            <set />
+          </value>
+        </entry>
         <entry key="$PROJECT_DIR$/product/templates/product/edit_product.html">
+          <value>
+            <set />
+          </value>
+        </entry>
+        <entry key="$PROJECT_DIR$/product/templates/product/product_detail.html">
           <value>
             <set />
           </value>
@@ -153,7 +198,17 @@
             <set />
           </value>
         </entry>
+        <entry key="$PROJECT_DIR$/project/templates/project/add_projects.html">
+          <value>
+            <set />
+          </value>
+        </entry>
         <entry key="$PROJECT_DIR$/project/templates/project/edit_project.html">
+          <value>
+            <set />
+          </value>
+        </entry>
+        <entry key="$PROJECT_DIR$/project_application/templates/project_application/add_applications.html">
           <value>
             <set />
           </value>
@@ -173,7 +228,17 @@
             <set />
           </value>
         </entry>
+        <entry key="$PROJECT_DIR$/sellingPoint/templates/sellingPoints/add_selling_points.html">
+          <value>
+            <set />
+          </value>
+        </entry>
         <entry key="$PROJECT_DIR$/slider/models.py">
+          <value>
+            <set />
+          </value>
+        </entry>
+        <entry key="$PROJECT_DIR$/slider/templates/slider/add_sliders.html">
           <value>
             <set />
           </value>
@@ -203,12 +268,27 @@
             <set />
           </value>
         </entry>
+        <entry key="$PROJECT_DIR$/sms_notifications/templates/sms_notifications/add_group.html">
+          <value>
+            <set />
+          </value>
+        </entry>
+        <entry key="$PROJECT_DIR$/sms_notifications/templates/sms_notifications/edit_group.html">
+          <value>
+            <set />
+          </value>
+        </entry>
         <entry key="$PROJECT_DIR$/solution/models.py">
           <value>
             <set />
           </value>
         </entry>
         <entry key="$PROJECT_DIR$/supplier/models.py">
+          <value>
+            <set />
+          </value>
+        </entry>
+        <entry key="$PROJECT_DIR$/supplier/templates/supplier/add_suppliers.html">
           <value>
             <set />
           </value>
