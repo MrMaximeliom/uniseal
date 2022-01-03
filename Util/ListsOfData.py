@@ -123,11 +123,10 @@ DELIVERY_METHOD = (
     ('Regular Delivery',_('Regular Delivery')),
 )
 ORDER_STATUSES = (
-('Order Pending',_('Order Pending')),
-('Order Placed',_('Order Placed')),
-('Order Packaged',_('Order Packaged')),
-('Order Out For Delivery',_('Order Out For Delivery')),
-('Order Delivered',_('Order Delivered')),
+('Placed',_('Placed')),
+('Waiting List',_('Waiting List')),
+('Completed',_('Completed')),
+('Canceled',_('Canceled')),
 )
 PAYMENT_STATUSES = (
     ('Payed',_('Payed')),

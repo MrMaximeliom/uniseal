@@ -29,6 +29,7 @@ from slider import endpoints_urls as slider_views
 from sms_notifications import endpoints_urls as sms_notifications_views
 from solution import endoints_urls as solution_views
 from supplier import endpoints_urls as supplier_views
+from orders import  endpoints_urls as orders_views
 
 router = routers.DefaultRouter()
 admin_router = routers.DefaultRouter()
@@ -69,6 +70,8 @@ router.register(r'SMS/modifySMSContacts', sms_notifications_views.SMSContactsVie
 router.register(r'notifications/registerTokenId', notifications_views.registerTokenIds,
                 basename='RegisterNotifications')
 router.register(r'notifications/handleNotifications', notifications_views.handleNotifications, basename='HandleNotifications')
+router.register(r'orders', orders_views.OrderViewSet, basename='CreateOrder')
+router.register(r'carts', orders_views.CartViewSet, basename='CreateCart')
 admin_router.register(r'manageProducts', admin_views.ManageProductsViewSet, basename='ManageProducts')
 admin_router.register(r'manageProjects', admin_views.ManageProjectsViewSet, basename='ManageProjects')
 admin_router.register(r'manageSolution', admin_views.ManageSolutionViewSet, basename='ManageSolution')

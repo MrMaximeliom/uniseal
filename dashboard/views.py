@@ -155,9 +155,5 @@ def Login(request):
 def logout_view(request):
     user = request.user.username
     logout(request)
-    # from accounts.models import User
-    # user = User.objects.get(u=request.user)
-    # username = user.username
     messages.success(request, f" Good Bye {user} Come Back Again")
     return redirect('login')
-    # Redirect to a success page

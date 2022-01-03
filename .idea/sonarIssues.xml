@@ -103,6 +103,51 @@
             <set />
           </value>
         </entry>
+        <entry key="$PROJECT_DIR$/../Sample/Address/admin.py">
+          <value>
+            <set />
+          </value>
+        </entry>
+        <entry key="$PROJECT_DIR$/../Sample/Sample/settings.py">
+          <value>
+            <set />
+          </value>
+        </entry>
+        <entry key="$PROJECT_DIR$/../Sample/Sample/templates/admin/base_site.html">
+          <value>
+            <set />
+          </value>
+        </entry>
+        <entry key="$PROJECT_DIR$/../Sample/Sample/urls.py">
+          <value>
+            <set />
+          </value>
+        </entry>
+        <entry key="$PROJECT_DIR$/../Sample/accounts/admin.py">
+          <value>
+            <set />
+          </value>
+        </entry>
+        <entry key="$PROJECT_DIR$/../Sample/accounts/models.py">
+          <value>
+            <set />
+          </value>
+        </entry>
+        <entry key="$PROJECT_DIR$/../Sample/home.py">
+          <value>
+            <set />
+          </value>
+        </entry>
+        <entry key="$PROJECT_DIR$/../Sample/templates/admin/base_site.html">
+          <value>
+            <set />
+          </value>
+        </entry>
+        <entry key="$PROJECT_DIR$/../Sample/templates/admin/login.html">
+          <value>
+            <set />
+          </value>
+        </entry>
         <entry key="$PROJECT_DIR$/../sodatoon-api/Utils/Constants.py">
           <value>
             <set />
@@ -148,6 +193,11 @@
             <set />
           </value>
         </entry>
+        <entry key="$PROJECT_DIR$/Util/ListsOfData.py">
+          <value>
+            <set />
+          </value>
+        </entry>
         <entry key="$PROJECT_DIR$/Util/utils.py">
           <value>
             <set />
@@ -169,6 +219,26 @@
           </value>
         </entry>
         <entry key="$PROJECT_DIR$/address/migrations/0024_auto_20211220_1135.py">
+          <value>
+            <set />
+          </value>
+        </entry>
+        <entry key="$PROJECT_DIR$/address/migrations/0025_remove_city_country_alter_area_id_alter_area_slug_and_more.py">
+          <value>
+            <set />
+          </value>
+        </entry>
+        <entry key="$PROJECT_DIR$/address/migrations/0026_remove_city_country_alter_area_id_alter_area_slug_and_more.py">
+          <value>
+            <set />
+          </value>
+        </entry>
+        <entry key="$PROJECT_DIR$/address/migrations/0027_remove_city_country_alter_area_id_alter_area_slug_and_more.py">
+          <value>
+            <set />
+          </value>
+        </entry>
+        <entry key="$PROJECT_DIR$/address/migrations/0028_remove_city_country_alter_area_id_alter_area_slug_and_more.py">
           <value>
             <set />
           </value>
@@ -233,6 +303,11 @@
             <set />
           </value>
         </entry>
+        <entry key="$PROJECT_DIR$/dashboard/views.py">
+          <value>
+            <set />
+          </value>
+        </entry>
         <entry key="$PROJECT_DIR$/industry_updates/models.py">
           <value>
             <set />
@@ -263,7 +338,27 @@
             <set />
           </value>
         </entry>
+        <entry key="$PROJECT_DIR$/orders/endpoints_urls.py">
+          <value>
+            <set />
+          </value>
+        </entry>
+        <entry key="$PROJECT_DIR$/orders/models.py">
+          <value>
+            <set />
+          </value>
+        </entry>
+        <entry key="$PROJECT_DIR$/orders/serializers.py">
+          <value>
+            <set />
+          </value>
+        </entry>
         <entry key="$PROJECT_DIR$/product/models.py">
+          <value>
+            <set />
+          </value>
+        </entry>
+        <entry key="$PROJECT_DIR$/product/serializers.py">
           <value>
             <set />
           </value>
@@ -353,6 +448,26 @@
             <set />
           </value>
         </entry>
+        <entry key="$PROJECT_DIR$/sms_notifications/migrations/0016_smsnotification_status_alter_smscontacts_id_and_more.py">
+          <value>
+            <set />
+          </value>
+        </entry>
+        <entry key="$PROJECT_DIR$/sms_notifications/migrations/0017_smsnotification_status_alter_smscontacts_slug_and_more.py">
+          <value>
+            <set />
+          </value>
+        </entry>
+        <entry key="$PROJECT_DIR$/sms_notifications/migrations/0018_smsnotification_status_alter_smscontacts_slug_and_more.py">
+          <value>
+            <set />
+          </value>
+        </entry>
+        <entry key="$PROJECT_DIR$/sms_notifications/migrations/0019_smsnotification_status_alter_smscontacts_slug_and_more.py">
+          <value>
+            <set />
+          </value>
+        </entry>
         <entry key="$PROJECT_DIR$/sms_notifications/models.py">
           <value>
             <set />
@@ -389,6 +504,16 @@
           </value>
         </entry>
         <entry key="$PROJECT_DIR$/test.py">
+          <value>
+            <set />
+          </value>
+        </entry>
+        <entry key="$PROJECT_DIR$/unisealAPI/settings.py">
+          <value>
+            <set />
+          </value>
+        </entry>
+        <entry key="$PROJECT_DIR$/unisealAPI/urls.py">
           <value>
             <set />
           </value>

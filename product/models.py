@@ -62,6 +62,12 @@ class Product(models.Model):
         verbose_name=_('Is Top Product?'),
         default=False
     )
+    price = models.FloatField(
+        verbose_name=_('Price'),
+        null=False,
+        blank=False,
+        default=0.0
+    )
 
 
     def __str__(self):

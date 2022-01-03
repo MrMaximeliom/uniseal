@@ -60,6 +60,7 @@ INSTALLED_APPS = [
     'industry_updates',
     'handle_errors',
     'application_videos',
+    'orders'
 
 
 ]
@@ -151,7 +152,6 @@ REST_FRAMEWORK = {
 
     'DEFAULT_AUTHENTICATION_CLASSES': [
         'rest_framework_simplejwt.authentication.JWTAuthentication',
-        # 'rest_framework.authentication.BasicAuthentication',
         'rest_framework.authentication.SessionAuthentication',
         'unisealAPI.authentication.UnisealAuthentication',
 

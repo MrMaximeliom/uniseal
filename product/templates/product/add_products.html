@@ -51,6 +51,12 @@
 
     </div>
   </div>
+              <div class="mb-4 row">
+    <div class="col-sm-6">
+                          {{form.price|as_crispy_field}}
+
+    </div>
+  </div>
       <div class="mb-4 row">
     <div class="col-sm-6">
                           {{form.product_file|as_crispy_field}}
@@ -59,11 +65,7 @@
   </div>
         <div class="mb-4 row">
              <div class="col-sm-6">
-<!--    <select class="form-control" id="productCategory">-->
-<!--        {% for category in all_categories %}-->
-<!--      <option>{{category.name}}</option>-->
-<!--        {% endfor %}-->
-<!--    </select>-->
+
                                    {{form.description|as_crispy_field}}
 
              </div>
