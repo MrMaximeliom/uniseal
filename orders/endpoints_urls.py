@@ -29,7 +29,7 @@ class OrderViewSet(viewsets.ModelViewSet):
     permission_classes = [UnisealPermission]
     queryset = Order.objects.all().order_by('-id')
     filter_backends = [DjangoFilterBackend]
-    filterset_fields = ['status']
+    filterset_fields = ['status','user']
 
 
 class CartViewSet(viewsets.ModelViewSet):
@@ -58,5 +58,5 @@ class CartViewSet(viewsets.ModelViewSet):
     permission_classes = [UnisealPermission]
     queryset = Cart.objects.all().order_by('-id')
     filter_backends = [DjangoFilterBackend]
-    filterset_fields = ['user','product','order']
+    filterset_fields = ['product','order']
 

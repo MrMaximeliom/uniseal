@@ -2,6 +2,10 @@ from django.db import models
 from Util.ListsOfData import ORDER_STATUSES
 
 class Order(models.Model):
+    user = models.ForeignKey(
+        "accounts.User",
+        on_delete=models.CASCADE,
+        related_name='user')
     status = models.CharField(
         max_length=250,
         null=False,
@@ -14,10 +18,7 @@ class Order(models.Model):
         return str(self.pk)
 
 class Cart(models.Model):
-    user = models.ForeignKey(
-        "accounts.User",
-        on_delete=models.CASCADE,
-        related_name='user'    )
+
     product = models.ForeignKey(
         "product.Product",
         on_delete=models.CASCADE,
@@ -26,9 +27,12 @@ class Cart(models.Model):
     order = models.ForeignKey(
         Order,
         on_delete=models.CASCADE,
-        related_name='order'
+        related_name='order_details'
     )
     quantity = models.PositiveIntegerField(
         null=False,
         blank=False,
     )
+
+    def __str__(self):
+        return 'product: '+self.product.name+' quantity: '+str(self.quantity)
