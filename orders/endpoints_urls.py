@@ -1,5 +1,5 @@
 from django.utils.translation import gettext_lazy as _
-from rest_framework import viewsets
+from rest_framework import viewsets,permissions
 from Util.permissions import UnisealPermission
 from django_filters.rest_framework import DjangoFilterBackend
 
@@ -26,7 +26,7 @@ class OrderViewSet(viewsets.ModelViewSet):
     from .serializers import OrderSerializer
     serializer_class = OrderSerializer
     from .models import Order
-    permission_classes = [UnisealPermission]
+    permission_classes = [permissions.IsAuthenticated]
     queryset = Order.objects.all().order_by('-id')
     filter_backends = [DjangoFilterBackend]
     filterset_fields = ['status','user']
@@ -55,7 +55,7 @@ class CartViewSet(viewsets.ModelViewSet):
     from .serializers import CartSerializer
     serializer_class = CartSerializer
     from .models import Cart
-    permission_classes = [UnisealPermission]
+    permission_classes = [permissions.IsAuthenticated]
     queryset = Cart.objects.all().order_by('-id')
     filter_backends = [DjangoFilterBackend]
     filterset_fields = ['product','order']
