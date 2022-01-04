@@ -22,7 +22,7 @@ class Cart(models.Model):
     product = models.ForeignKey(
         "product.Product",
         on_delete=models.CASCADE,
-        related_name='product'
+        related_name='product_details'
     )
     order = models.ForeignKey(
         Order,
