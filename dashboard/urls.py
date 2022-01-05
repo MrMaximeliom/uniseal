@@ -1,5 +1,4 @@
 from django.urls import path, include
-
 from accounts.urls import urlpatterns as account_urls
 from address.urls import areas_urlpatterns as area_urls
 from address.urls import cities_urlpatterns as city_urls
@@ -20,7 +19,7 @@ from slider.urls import urlpatterns as slider_urls
 from sms_notifications.urls import urlpatterns as sms_urls
 from solution.urls import urlpatterns as solution_urls
 from supplier.urls import urlpatterns as supplier_urls
-
+from django.contrib.auth import views as auth_views
 urlpatterns = [
     path('home/', dashboard_views.dashboard, name='dashboard'),
     path('product-categories-chart/', dashboard_views.products_categories_chart, name='product-categories-chart'),
@@ -31,6 +30,7 @@ urlpatterns = [
     path('projects/', include(project_urls)),
     path('solutions/', include(solution_urls)),
     path('categories/', include(category_urls)),
+    path('accounts/password_reset/', auth_views.PasswordResetView.as_view(template_name="accounts/password_reset_form.html"),name='password_reset'),
     path('users/', include(account_urls)),
     path('suppliers/', include(supplier_urls)),
     path('countries/', include(country_urls)),
