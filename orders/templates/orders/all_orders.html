@@ -1,0 +1,171 @@
+<!DOCTYPE html>
+{% extends "dashboard/base.html" %}
+{% load static %}
+{% load static i18n %}
+{% load mathfilters %}
+{% block title %}
+{{title}}
+{% endblock title %}
+  {% block custom_css %}
+<link rel="stylesheet" href="{% static 'dashboard/css/search.css' %}">
+<link rel="stylesheet" href="{% static 'orders/css/order.css' %}">
+    {% endblock %}
+   {% block custom_js %}
+<script src="{% static 'dashboard/js/search.js' %}" defer></script>
+  {{ data_js|json_script:"my-data" }}
+    {% endblock %}
+         {% block breadcrumb_content %}
+   <nav aria-label="crumb">
+                    <ol class="crumb breadcrumb-light breadcrumb-dark">
+                        <li class="breadcrumb-item"><a href="{% url 'dashboard' %}">{% trans 'Dashboard' %}</a></li>
+                        <li class="breadcrumb-item" aria-current="page">{% trans 'Orders' %}</li>
+                        <li class="breadcrumb-item" aria-current="page">{% trans 'All Orders' %}</li>
+                    </ol>
+                </nav>
+                {% endblock breadcrumb_content %}
+{% block content %}
+                <h1 class="h2 mb-3">{% trans 'All Orders' %}</h1>
+<form class="row g-2 mb-3" action="" method="post" id="searchForm" autocomplete="off">
+    {% csrf_token %}
+<!--  <div class="col-sm-3 col-md-3 col-lg-3" id="search_phrase_holder">-->
+<!--    <label for="searchPhrase" class="visually-hidden">{% trans 'Search Phrase' %}</label>-->
+<!--    <input type="text" class="form-control" name="search_phrase" id="searchPhrase" placeholder="Search ..">-->
+<!--          <span class="delete-warning" id="search_phrase_error"></span>-->
+<!--  </div>-->
+    <div class="col-sm-3 col-md-3 col-lg-3">
+         <select class="form-select" aria-label="Default select example">
+  <option selected>--</option>
+  {% for val,name in order_statuses %}
+        <option value="{{val}}">{{name}}</option>
+             {% endfor %}
+</select>
+    </div>
+
+
+  <div class="col-sm-3 col-md-3 col-lg-3">
+    <button type="submit" class="btn btn-primary mb-3" id="searchButton" value="category"><span><i class="fas fa-search"></i></span></button>
+    <button type="submit" name="clear" value="clear" class="btn btn-danger mb-3"><span><i class="fas fa-eraser"></i></span></button>
+   <button type="button" class="btn btn-success mb-3" data-bs-toggle="modal" data-bs-target="#exportData"><span><i class="fas fa-file-csv"></i></span></button>
+
+  </div>
+</form>
+    <div>
+        <div class="modal fade" id="exportData" tabindex="-1" aria-labelledby="exampleModalData" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="exampleModalData">{% trans 'Export To Excel File' %}</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+        <form action="" method="post">
+            {% csrf_token %}
+      <div class="modal-body">
+
+             <h5 class="mt-3"> {% trans 'Export All Pages' %}</h5>
+          <i>{% trans '(By default all pages will be exported)' %}</i>
+          <div class="form-check">
+          <label for="allData-report" >{%  trans 'All Pages' %}</label>
+          <input id="allData-report" class="form-check-input" type="checkbox" value="allData" name="allData">
+          </div>
+
+
+<div>
+    <h5 class="mt-4">{% trans 'Or Export Selected Pages Only' %}</h5>
+
+<div class="pages-range">
+                 {% for i in page_range %}
+
+              <div class="form-check">
+          <label for="select{{i}}" >page{{i}}</label>
+          <input id="select{{i}}" class="form-check-input page-js" type="checkbox" value="{{i}}" name="subData">
+
+          </div>
+
+                 {% endfor %}
+    </div>
+      <input hidden type="text" name="pages_collector" id="pages_collector" value="none">
+
+
+    </div>
+
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+        <button type="submit" class="btn btn-success" name="createExcel" value="done">Save</button>
+
+      </div>
+              </form>
+    </div>
+  </div>
+</div>
+
+    </div>
+  {% if  search and not search_error %}
+<h2>{% trans 'Showing Search Results For ' %}</h2>
+<h3>{{search_option}}="{{search_phrase}}"</h3>
+{% endif %}
+{% if all_orders_data|length %}
+ <div class="row">
+                    <div class="col-12 col-xl-12 mb-4 mb-lg-0">
+                        <div class="card-light card-dark">
+                            <h5 class="card-header-light card-header-dark">{% trans 'Orders' %}</h5>
+                            <div class="card-body-light card-body-dark orders-table">
+                                <div class="table-responsive">
+                                    <table class="table">
+                                        <thead>
+                                          <tr>
+                                            <th scope="col">{% trans 'ID' %}</th>
+                                            <th scope="col">{% trans 'Created At' %}</th>
+                                            <th scope="col">{% trans 'Last Modification' %}</th>
+                                            <th scope="col">{% trans 'Status' %}</th>
+                                            <th scope="col">{% trans 'Numbers of Products Ordered' %}</th>
+                                            <th scope="col">{% trans 'View Details' %}</th>
+                                          </tr>
+                                        </thead>
+                                        <tbody>
+                                        {% for order in all_orders_data %}
+                                          <tr>
+                                            <th scope="row">{{order.id}}</th>
+                                            <th scope="row">{{order.created_at}}</th>
+                                            <th scope="row">{{order.modified_at}}</th>
+                                            <th scope="row">{{order.status}}</th>
+                                            <td>{{ order.num_products }}</td>
+                                            <td><a href="{% url 'editUser' slug=user.slug %}" class="btn btn-sm btn-primary">{% trans 'View Details' %}</a></td>
+                                          </tr>
+                                        {% endfor %}
+
+                                        </tbody>
+                                      </table>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+ <div class="container mt-3 d-flex justify-content-center">
+        <nav aria-label="Pagination Navigation">
+          <ul class="pagination">
+           <li class="page-item {% if current_page == 1 %} disabled disabled-item {% endif %}">
+            <a class="page-link" href="?page={{ current_page|sub:1 }}" aria-label="Previous">
+             <span aria-hidden="true">«</span>
+             <span class="sr-only">Previous</span>
+            </a>
+           </li>
+                  {% if page_range|length != 1 %}
+           {% for i in page_range %}
+           <li class="page-item {% if i == current_page %} active {% endif %}"><a class="page-link " href="?page={{ i }}">{{ i }}</a></li>
+           {% endfor %}
+                 {% endif %}
+
+           <li class="page-item {% if current_page == num_pages %} disabled disabled-item {% endif %}">
+            <a class="page-link" href="?page={{ current_page|add:1 }}" aria-label="Next">
+             <span aria-hidden="true">»</span>
+             <span class="sr-only">Next</span>
+            </a>
+           </li>
+          </ul>
+       </nav>
+  </div>
+{% endif %}
+
+{% endblock content %}

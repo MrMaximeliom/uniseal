@@ -19,6 +19,7 @@ from slider.urls import urlpatterns as slider_urls
 from sms_notifications.urls import urlpatterns as sms_urls
 from solution.urls import urlpatterns as solution_urls
 from supplier.urls import urlpatterns as supplier_urls
+from orders.urls import urlpatterns as orders_urls
 from django.contrib.auth import views as auth_views
 urlpatterns = [
     path('home/', dashboard_views.dashboard, name='dashboard'),
@@ -45,7 +46,8 @@ urlpatterns = [
     path('ProjectApplications/', include(application_urls)),
     path('IndustryUpdates/', include(update_urls)),
     path('Notifications/', include(notifications_urls)),
-    path('applicationVideos/',include(product_application_videos))
+    path('applicationVideos/',include(product_application_videos)),
+    path('orders/',include(orders_urls))
 
 
 ]

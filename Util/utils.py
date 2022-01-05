@@ -117,6 +117,12 @@ class SearchMan:
             from application_videos.models import ProductApplicationVideos
             videos = ProductApplicationVideos.objects.all().order_by('id')
             self.paginator = Paginator(videos, 5)
+        if model == "Order":
+            from orders.models import Order
+            orders = Order.objects.all().order_by('id')
+            self.paginator = Paginator(orders, 5)
+
+
 
 
 

@@ -273,6 +273,11 @@
             <set />
           </value>
         </entry>
+        <entry key="$PROJECT_DIR$/category/templates/category/all_categories.html">
+          <value>
+            <set />
+          </value>
+        </entry>
         <entry key="$PROJECT_DIR$/category/templates/category/edit_categories.html">
           <value>
             <set />
@@ -293,12 +298,22 @@
             <set />
           </value>
         </entry>
+        <entry key="$PROJECT_DIR$/dashboard/static/dashboard/css/index.css">
+          <value>
+            <set />
+          </value>
+        </entry>
         <entry key="$PROJECT_DIR$/dashboard/templates/dashboard/base.html">
           <value>
             <set />
           </value>
         </entry>
         <entry key="$PROJECT_DIR$/dashboard/templates/dashboard/index.html">
+          <value>
+            <set />
+          </value>
+        </entry>
+        <entry key="$PROJECT_DIR$/dashboard/urls.py">
           <value>
             <set />
           </value>
@@ -338,6 +353,11 @@
             <set />
           </value>
         </entry>
+        <entry key="$PROJECT_DIR$/orders/dashboard_views.py">
+          <value>
+            <set />
+          </value>
+        </entry>
         <entry key="$PROJECT_DIR$/orders/endpoints_urls.py">
           <value>
             <set />
@@ -349,6 +369,21 @@
           </value>
         </entry>
         <entry key="$PROJECT_DIR$/orders/serializers.py">
+          <value>
+            <set />
+          </value>
+        </entry>
+        <entry key="$PROJECT_DIR$/orders/static/orders/css/order.css">
+          <value>
+            <set />
+          </value>
+        </entry>
+        <entry key="$PROJECT_DIR$/orders/templates/orders/all_orders.html">
+          <value>
+            <set />
+          </value>
+        </entry>
+        <entry key="$PROJECT_DIR$/orders/urls.py">
           <value>
             <set />
           </value>
@@ -484,6 +519,16 @@
           </value>
         </entry>
         <entry key="$PROJECT_DIR$/solution/models.py">
+          <value>
+            <set />
+          </value>
+        </entry>
+        <entry key="$PROJECT_DIR$/staticfiles/orders/css/order.3a9a7e61d7ff.css">
+          <value>
+            <set />
+          </value>
+        </entry>
+        <entry key="$PROJECT_DIR$/staticfiles/orders/css/order.css">
           <value>
             <set />
           </value>
