@@ -171,11 +171,22 @@
             </a>
            </li>
 
-             {% if page_range|length != 1 %}
-           {% for i in page_range %}
-           <li class="page-item {% if i == current_page %} active {% endif %}"><a class="page-link " href="?page={{ i }}">{{ i }}</a></li>
-           {% endfor %}
-                 {% endif %}
+       {% for i in page_range %}
+            {% if current_page == i %}
+                <li class="page-item active" aria-current="page">
+              <span class="page-link">
+                {{ i }}
+                <span class="sr-only">(current)</span>
+              </span>
+            </li>
+            {% elif i > current_page|add:'-5' and i < current_page|add:'5' %}
+                 <li class="page-item"><a class="page-link" href="?page={{ i }}">{{ i }}</a></li>
+            {% endif %}
+        {% endfor %}
+
+        {% if num_pages > current_page|add:'4' %}
+           <li class="page-item"><a class="page-link" href="?page={{ current_page|add:'5' }}">&hellip;</a></li>
+        {% endif %}
 
 
            <li class="page-item {% if current_page == num_pages %} disabled disabled-item {% endif %}">

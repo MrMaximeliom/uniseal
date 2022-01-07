@@ -62,11 +62,26 @@ class TOTPVerification:
         return self.verified
 
 
+import random
+import string
+def random_string(letter_count, digit_count):
+    str1 = ''.join((random.choice(string.ascii_letters) for x in range(letter_count)))
+    str1 += ''.join((random.choice(string.digits) for x in range(digit_count)))
+
+    sam_list = list(str1)  # it converts the string to list.
+    random.shuffle(sam_list)  # It uses a random.shuffle() function to shuffle the string.
+    final_string = ''.join(sam_list)
+    return final_string
+
+
+# define the length of the letter is eight and digits is four
+
 if __name__ == '__main__':
     # verify token the normal way
     from django_otp.oath import totp
-    import time
-    secret_key = b'12345678901234567890'
+    secret_key = b'12345678iud$%#lks567_++!@#890'
     now = int(time.time())
     for delta in range(10, 110, 20):
         print(totp(key=secret_key, step=10, digits=6, t0=(now - delta)))
+    print(time.time())
+    print("Generated random string of first string is:", random_string(8, 4))

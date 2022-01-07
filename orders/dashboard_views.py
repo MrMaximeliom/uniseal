@@ -1,7 +1,8 @@
 from django.contrib import messages
+from django.contrib.admin.views.decorators import staff_member_required
 from django.core.paginator import Paginator, PageNotAnInteger, EmptyPage
 from django.db.models import Count
-from django.shortcuts import render, redirect
+from django.shortcuts import render, redirect, get_object_or_404
 from django.utils.translation import gettext_lazy as _
 from orders.models import Order
 from Util.utils import SearchMan, ReportMan, delete_temp_folder, createExelFile
@@ -56,6 +57,7 @@ def prepare_query(paginator_obj,headers=None):
                 products_list.append(category.num_products)
     return headers_here, categories_list, products_list
 
+@staff_member_required(login_url='login')
 def all_orders(request):
     from Util.ListsOfData import ORDER_STATUSES
     paginator = Paginator(orders, 5)
@@ -207,6 +209,35 @@ def all_orders(request):
                       'page_range': paginator.page_range,
                       'num_pages': paginator.num_pages,
                       'current_page': page,
+                      'order_statuses':ORDER_STATUSES
+                  }
+                  )
+@staff_member_required(login_url='login')
+def edit_order(request, slug):
+    from Util.ListsOfData import ORDER_STATUSES
+    from orders.models import Order, Cart
+    order = get_object_or_404(Order, slug=slug)
+    order_carts = Cart.objects.filter(order=order)
+    # calculating total price for order
+    total = 0.0
+    product_total = list()
+    if order_carts:
+        for cart in order_carts:
+            product_total.append(cart.quantity * cart.product.price)
+            total += (cart.quantity * cart.product.price)
+
+    if request.method == 'POST':
+        order_status = request.POST.get('order_status')
+        Order.objects.filter(slug=slug).update(status=order_status)
+        messages.success(request, f"Order {order.slug} was successfully updated!")
+
+    return render(request, 'orders/order_details.html',
+                  {
+                      'title': _('Order Details'),
+                      'order_details': 'active',
+                      'order': order,
+                      'carts': order_carts,
+                      'total': total,
                       'order_statuses':ORDER_STATUSES
                   }
                   )

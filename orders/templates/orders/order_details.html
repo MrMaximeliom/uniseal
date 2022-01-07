@@ -27,21 +27,8 @@
                 <h1 class="h2 mb-3">{% trans 'All Orders' %}</h1>
 <form class="row g-2 mb-3" action="" method="post" id="searchForm" autocomplete="off">
     {% csrf_token %}
-    <div class="col-sm-3 col-md-3 col-lg-3">
-         <select class="form-select" aria-label="Default select example">
-  <option selected>--</option>
-  {% for val,name in order_statuses %}
-        <option value="{{val}}">{{name}}</option>
-             {% endfor %}
-</select>
-    </div>
-
-
   <div class="col-sm-3 col-md-3 col-lg-3">
-    <button type="submit" class="btn btn-primary mb-3" id="searchButton" value="category"><span><i class="fas fa-search"></i></span></button>
-    <button type="submit" name="clear" value="clear" class="btn btn-danger mb-3"><span><i class="fas fa-eraser"></i></span></button>
    <button type="button" class="btn btn-success mb-3" data-bs-toggle="modal" data-bs-target="#exportData"><span><i class="fas fa-file-csv"></i></span></button>
-
   </div>
 </form>
     <div>
@@ -95,40 +82,83 @@
 </div>
 
     </div>
-  {% if  search and not search_error %}
-<h2>{% trans 'Showing Search Results For ' %}</h2>
-<h3>{{search_option}}="{{search_phrase}}"</h3>
-{% endif %}
-{% if all_orders_data|length %}
+<!-- creating order template -->
+<!-- ==== Order Status ==== -->
+<div>
+    <h2>{% trans 'Order Status' %}</h2>
+<div>
+<form action="" method="post">
+  {% csrf_token %}
+    <div>
+        <div>{% trans 'Order Status' %}</div>
+        <div>{{order.status}}</div>
+    </div>
+      <div class="mb-4 row">
+    <div class="col-sm-6">
+                         <div id="div_id_status" class="form-group">
+
+            <label for="order_status" class=" requiredField">
+                Order Status<span class="asteriskField">*</span>
+            </label>
+                <div class="">
+<select class="form-select" id="order_status" name="order_status" aria-label="Default select example">
+  {% for val,name in order_statuses %}
+    {% if val == order.status %}
+            <option value="{{val}}" selected>{{name}}</option>
+
+    {% else %}
+            <option value="{{val}}" >{{name}}</option>
+
+    {% endif %}
+             {% endfor %}
+</select>
+                </div>
+
+    </div>
+
+    </div>
+  </div>
+           <div class="col-auto">
+    <button type="submit" class="btn btn-primary mr-3">{% trans 'Update' %}</button>
+  </div>
+</form>
+</div>
+</div>
+<!-- ==================== -->
+<!-- ==== user details ==== -->
+<div>
+    <div>{% trans 'Full Username' %}</div>
+    <div>{{ order.user.full_name }}</div>
+    <div>{% trans 'Phone Number' %}</div>
+    <div>{{ order.user.phone_number }}</div>
+    <div>{% trans 'Email' %}</div>
+    <div>{{ order.user.email }}</div>
+</div>
+<!-- ========================= -->
+<!-- == order details === -->
+{% if carts|length %}
  <div class="row">
                     <div class="col-12 col-xl-12 mb-4 mb-lg-0">
                         <div class="card-light card-dark">
-                            <h5 class="card-header-light card-header-dark">{% trans 'Orders' %}</h5>
+                            <h5 class="card-header-light card-header-dark">{% trans 'Order Details' %}</h5>
                             <div class="card-body-light card-body-dark orders-table">
                                 <div class="table-responsive">
                                     <table class="table">
                                         <thead>
                                           <tr>
-                                            <th scope="col">{% trans 'ID' %}</th>
-                                            <th scope="col">{% trans 'Created At' %}</th>
-                                            <th scope="col">{% trans 'Last Modification' %}</th>
-                                            <th scope="col">{% trans 'Status' %}</th>
-                                            <th scope="col">{% trans 'Numbers of Products Ordered' %}</th>
-                                            <th scope="col">{% trans 'View Details' %}</th>
+                                            <th scope="col">{% trans 'Product Name' %}</th>
+                                            <th scope="col">{% trans 'Product Price' %}</th>
+                                            <th scope="col">{% trans 'Quantity' %}</th>
                                           </tr>
                                         </thead>
                                         <tbody>
-                                        {% for order in all_orders_data %}
+                                        {% for cart in carts %}
                                           <tr>
-                                            <th scope="row">{{order.id}}</th>
-                                            <th scope="row">{{order.created_at}}</th>
-                                            <th scope="row">{{order.modified_at}}</th>
-                                            <th scope="row">{{order.status}}</th>
-                                            <td>{{ order.num_products }}</td>
-                                            <td><a href="{% url 'editUser' slug=user.slug %}" class="btn btn-sm btn-primary">{% trans 'View Details' %}</a></td>
+                                            <th scope="row">{{cart.product.name}}</th>
+                                            <th scope="row">{{cart.product.price}}</th>
+                                            <th scope="row">{{cart.quantity}}</th>
                                           </tr>
                                         {% endfor %}
-
                                         </tbody>
                                       </table>
                                 </div>
@@ -137,40 +167,15 @@
                     </div>
 
                 </div>
- <div class="container mt-3 d-flex justify-content-center">
-        <nav aria-label="Pagination Navigation">
-          <ul class="pagination">
-           <li class="page-item {% if current_page == 1 %} disabled disabled-item {% endif %}">
-            <a class="page-link" href="?page={{ current_page|sub:1 }}" aria-label="Previous">
-             <span aria-hidden="true">«</span>
-             <span class="sr-only">Previous</span>
-            </a>
-           </li>
- {% for i in page_range %}
-            {% if current_page == i %}
-                <li class="page-item active" aria-current="page">
-              <span class="page-link">
-                {{ i }}
-                <span class="sr-only">(current)</span>
-              </span>
-            </li>
-            {% elif i > current_page|add:'-5' and i < current_page|add:'5' %}
-                 <li class="page-item"><a class="page-link" href="?page={{ i }}">{{ i }}</a></li>
-            {% endif %}
-        {% endfor %}
-
-        {% if num_pages > current_page|add:'4' %}
-           <li class="page-item"><a class="page-link" href="?page={{ current_page|add:'5' }}">&hellip;</a></li>
-        {% endif %}
-           <li class="page-item {% if current_page == num_pages %} disabled disabled-item {% endif %}">
-            <a class="page-link" href="?page={{ current_page|add:1 }}" aria-label="Next">
-             <span aria-hidden="true">»</span>
-             <span class="sr-only">Next</span>
-            </a>
-           </li>
-          </ul>
-       </nav>
-  </div>
+<!-- total -->
+<div>{% trans 'Total: '%}</div>
+<div>{{total}}</div>
+<!-- ==== -->
+{% else %}
+<div>
+    {% trans 'There are no products ordered' %}
+</div>
 {% endif %}
-
+<!-- ===================== -->
+<!--==========================-->
 {% endblock content %}

@@ -1,7 +1,13 @@
 from django.db import models
+from django.template.defaultfilters import slugify
+from django.utils.translation import gettext_lazy as _
 from Util.ListsOfData import ORDER_STATUSES
-
+from Util.utils import random_order_id
 class Order(models.Model):
+    slug = models.SlugField(
+        default=slugify(random_order_id(5, 4)),
+        verbose_name=_('Token Slug'),
+    )
     user = models.ForeignKey(
         "accounts.User",
         on_delete=models.CASCADE,

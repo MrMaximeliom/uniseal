@@ -127,9 +127,9 @@ class SearchMan:
 
 
 
-    def setPaginator(self,query):
+    def setPaginator(self,query,num_records=5):
         from django.core.paginator import Paginator
-        self.paginator = Paginator(query, 60)
+        self.paginator = Paginator(query, num_records)
 
     def getPaginator(self):
         return self.paginator
@@ -217,3 +217,17 @@ def delete_temp_folder():
     for root, dirs, files in os.walk(myPath):
         for file in files:
             os.remove(os.path.join(root, file))
+
+def random_order_id(letter_count, digit_count):
+    from datetime import datetime
+    now = datetime.now()
+    current_time = now.strftime("%H:%M:%S")
+    import datetime
+    today = datetime.date.today()
+    str1 = ''.join((random.choice(string.ascii_letters) for x in range(letter_count)))
+    str1 += ''.join((random.choice(string.digits) for x in range(digit_count)))
+
+    sam_list = list(str1)  # it converts the string to list.
+    random.shuffle(sam_list)  # It uses a random.shuffle() function to shuffle the string.
+    final_string = ''.join(sam_list)
+    return "order-"+final_string+"-"+current_time+"-"+str(today)

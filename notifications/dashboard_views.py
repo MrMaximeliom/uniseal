@@ -48,7 +48,6 @@ searchManObj = SearchMan("Notifications")
 report_man = ReportMan()
 @staff_member_required(login_url='login')
 def all_notifications(request):
-    testNotifs()
     from Util.search_form_strings import (
         EMPTY_SEARCH_PHRASE,
     NOTIFICATION_TITLE_SYNTAX_ERROR,
@@ -71,21 +70,21 @@ def all_notifications(request):
             print('here now')
             search_message = request.POST.get('search_phrase')
             search_result = Notifications.objects.filter(title__icontains=search_message).order_by("id")
-            searchManObj.setPaginator(search_result)
+            searchManObj.setPaginator(search_result,60)
             searchManObj.setSearchPhrase(search_message)
             searchManObj.setSearchOption('Notification Title')
             searchManObj.setSearchError(False)
         elif request.POST.get('search_options') == 'body':
             search_phrase = request.POST.get('search_phrase')
             search_result = Notifications.objects.filter(body__icontains=search_phrase).order_by("id")
-            searchManObj.setPaginator(search_result)
+            searchManObj.setPaginator(search_result,60)
             searchManObj.setSearchPhrase(search_phrase)
             searchManObj.setSearchOption('Notification Body')
             searchManObj.setSearchError(False)
         elif request.POST.get('search_options') == 'os_type':
             search_phrase = request.POST.get('search_phrase')
             search_result = Notifications.objects.filter(token_id__os_type__icontains=search_phrase).order_by("id")
-            searchManObj.setPaginator(search_result)
+            searchManObj.setPaginator(search_result,60)
             searchManObj.setSearchPhrase(search_phrase)
             searchManObj.setSearchOption('OS Type')
             searchManObj.setSearchError(False)
@@ -95,11 +94,11 @@ def all_notifications(request):
             searchManObj.setSearchError(True)
     if request.method == "GET" and 'page' not in request.GET:
         all_notifications = Notifications.objects.all().order_by("id")
-        searchManObj.setPaginator(all_notifications)
+        searchManObj.setPaginator(all_notifications,60)
         searchManObj.setSearch(False)
     if request.method == "POST" and request.POST.get('clear') == 'clear':
         all_notifications = Notifications.objects.all().order_by("id")
-        searchManObj.setPaginator(all_notifications)
+        searchManObj.setPaginator(all_notifications,60)
         searchManObj.setSearch(False)
     # create report functionality
 
@@ -242,21 +241,21 @@ def delete_notifications(request):
             print('here now')
             search_message = request.POST.get('search_phrase')
             search_result = Notifications.objects.filter(title__icontains=search_message).order_by("id")
-            searchManObj.setPaginator(search_result)
+            searchManObj.setPaginator(search_result,60)
             searchManObj.setSearchPhrase(search_message)
             searchManObj.setSearchOption('Notification Title')
             searchManObj.setSearchError(False)
         elif request.POST.get('search_options') == 'body':
             search_phrase = request.POST.get('search_phrase')
             search_result = Notifications.objects.filter(body__icontains=search_phrase).order_by("id")
-            searchManObj.setPaginator(search_result)
+            searchManObj.setPaginator(search_result,60)
             searchManObj.setSearchPhrase(search_phrase)
             searchManObj.setSearchOption('Notification Body')
             searchManObj.setSearchError(False)
         elif request.POST.get('search_options') == 'os_type':
             search_phrase = request.POST.get('search_phrase')
             search_result = Notifications.objects.filter(token_id__os_type__icontains=search_phrase).order_by("id")
-            searchManObj.setPaginator(search_result)
+            searchManObj.setPaginator(search_result,60)
             searchManObj.setSearchPhrase(search_phrase)
             searchManObj.setSearchOption('OS Type')
             searchManObj.setSearchError(False)
@@ -266,11 +265,11 @@ def delete_notifications(request):
             searchManObj.setSearchError(True)
     if request.method == "GET" and 'page' not in request.GET:
         all_notifications = Notifications.objects.all().order_by("id")
-        searchManObj.setPaginator(all_notifications)
+        searchManObj.setPaginator(all_notifications,60)
         searchManObj.setSearch(False)
     if request.method == "POST" and request.POST.get('clear') == 'clear':
         all_notifications = Notifications.objects.all().order_by("id")
-        searchManObj.setPaginator(all_notifications)
+        searchManObj.setPaginator(all_notifications,60)
         searchManObj.setSearch(False)
     # create report functionality
 
@@ -349,21 +348,21 @@ def edit_notifications(request):
             print('here now')
             search_message = request.POST.get('search_phrase')
             search_result = Notifications.objects.filter(title__icontains=search_message).order_by("id")
-            searchManObj.setPaginator(search_result)
+            searchManObj.setPaginator(search_result,60)
             searchManObj.setSearchPhrase(search_message)
             searchManObj.setSearchOption('Notification Title')
             searchManObj.setSearchError(False)
         elif request.POST.get('search_options') == 'body':
             search_phrase = request.POST.get('search_phrase')
             search_result = Notifications.objects.filter(body__icontains=search_phrase).order_by("id")
-            searchManObj.setPaginator(search_result)
+            searchManObj.setPaginator(search_result,60)
             searchManObj.setSearchPhrase(search_phrase)
             searchManObj.setSearchOption('Notification Body')
             searchManObj.setSearchError(False)
         elif request.POST.get('search_options') == 'os_type':
             search_phrase = request.POST.get('search_phrase')
             search_result = Notifications.objects.filter(token_id__os_type__icontains=search_phrase).order_by("id")
-            searchManObj.setPaginator(search_result)
+            searchManObj.setPaginator(search_result,60)
             searchManObj.setSearchPhrase(search_phrase)
             searchManObj.setSearchOption('OS Type')
             searchManObj.setSearchError(False)
@@ -373,11 +372,11 @@ def edit_notifications(request):
             searchManObj.setSearchError(True)
     if request.method == "GET" and 'page' not in request.GET:
         all_notifications = Notifications.objects.all().order_by("id")
-        searchManObj.setPaginator(all_notifications)
+        searchManObj.setPaginator(all_notifications,60)
         searchManObj.setSearch(False)
     if request.method == "POST" and request.POST.get('clear') == 'clear':
         all_notifications = Notifications.objects.all().order_by("id")
-        searchManObj.setPaginator(all_notifications)
+        searchManObj.setPaginator(all_notifications,60)
         searchManObj.setSearch(False)
     # create report functionality
 
@@ -390,6 +389,7 @@ def edit_notifications(request):
     try:
         paginator = searchManObj.getPaginator()
         notifications = paginator.page(page)
+        page_obj = paginator.get_page(page)
         # Create a page object for the current page.
     except PageNotAnInteger:
         # If the query parameter is empty then grab the first page.
@@ -406,6 +406,7 @@ def edit_notifications(request):
                       'resend_notifications': 'active',
                       'notifications': 'active',
                       'all_notifications_data': notifications,
+                      # 'page_obj':page_obj,
                       'page_range': paginator.page_range,
                       'num_pages': paginator.num_pages,
                       'current_page': page,
