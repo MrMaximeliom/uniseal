@@ -85,12 +85,11 @@
 <!-- creating order template -->
 <!-- ==== Order Status ==== -->
 <div>
-    <h2>{% trans 'Order Status' %}</h2>
 <div>
 <form action="" method="post">
   {% csrf_token %}
     <div>
-        <div>{% trans 'Order Status' %}</div>
+        <h2>{% trans 'Order Status' %}</h2>
         <div>{{order.status}}</div>
     </div>
       <div class="mb-4 row">
@@ -127,6 +126,7 @@
 <!-- ==================== -->
 <!-- ==== user details ==== -->
 <div>
+    <h2>User Details</h2>
     <div>{% trans 'Full Username' %}</div>
     <div>{{ order.user.full_name }}</div>
     <div>{% trans 'Phone Number' %}</div>
@@ -137,10 +137,10 @@
 <!-- ========================= -->
 <!-- == order details === -->
 {% if carts|length %}
+   <h2>Order Details</h2>
  <div class="row">
-                    <div class="col-12 col-xl-12 mb-4 mb-lg-0">
+                    <div class="col-12 col-xl-10 mb-4 mb-lg-0">
                         <div class="card-light card-dark">
-                            <h5 class="card-header-light card-header-dark">{% trans 'Order Details' %}</h5>
                             <div class="card-body-light card-body-dark orders-table">
                                 <div class="table-responsive">
                                     <table class="table">
@@ -149,6 +149,8 @@
                                             <th scope="col">{% trans 'Product Name' %}</th>
                                             <th scope="col">{% trans 'Product Price' %}</th>
                                             <th scope="col">{% trans 'Quantity' %}</th>
+                                            <th scope="col">{% trans 'Total' %}</th>
+
                                           </tr>
                                         </thead>
                                         <tbody>
@@ -157,6 +159,7 @@
                                             <th scope="row">{{cart.product.name}}</th>
                                             <th scope="row">{{cart.product.price}}</th>
                                             <th scope="row">{{cart.quantity}}</th>
+                                            <th scope="row">{% widthratio cart.quantity 1 cart.product.price %}</th>
                                           </tr>
                                         {% endfor %}
                                         </tbody>

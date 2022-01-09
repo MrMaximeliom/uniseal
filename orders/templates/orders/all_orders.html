@@ -125,7 +125,7 @@
                                             <th scope="row">{{order.modified_at}}</th>
                                             <th scope="row">{{order.status}}</th>
                                             <td>{{ order.num_products }}</td>
-                                            <td><a href="{% url 'editUser' slug=user.slug %}" class="btn btn-sm btn-primary">{% trans 'View Details' %}</a></td>
+                                            <td><a href="{% url 'editOrder' slug=order.slug %}" class="btn btn-sm btn-primary">{% trans 'View Details' %}</a></td>
                                           </tr>
                                         {% endfor %}
 
