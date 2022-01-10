@@ -18,6 +18,9 @@ class Order(models.Model):
         blank=False,
         choices=ORDER_STATUSES
     )
+    total = models.FloatField(
+        default=0.0
+    )
     created_at = models.DateTimeField(auto_now_add=True)
     modified_at = models.DateTimeField(auto_now=True)
     def __str__(self):

@@ -19,7 +19,6 @@ class UserAccountManager(BaseUserManager):
         if not phone_number:
             raise ValueError(_('Users must provide their phone number'))
 
-        # phone_number.setdefault('is_staff', True)
         user = self.model(
             username=username,
             full_name=full_name,

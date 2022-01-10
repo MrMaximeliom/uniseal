@@ -203,6 +203,11 @@
             <set />
           </value>
         </entry>
+        <entry key="$PROJECT_DIR$/accounts/models.py">
+          <value>
+            <set />
+          </value>
+        </entry>
         <entry key="$PROJECT_DIR$/address/migrations/0020_auto_20211220_0956.py">
           <value>
             <set />
@@ -239,6 +244,11 @@
           </value>
         </entry>
         <entry key="$PROJECT_DIR$/address/migrations/0028_remove_city_country_alter_area_id_alter_area_slug_and_more.py">
+          <value>
+            <set />
+          </value>
+        </entry>
+        <entry key="$PROJECT_DIR$/address/migrations/0035_remove_city_country_alter_area_id_alter_area_slug_and_more.py">
           <value>
             <set />
           </value>
@@ -499,6 +509,11 @@
           </value>
         </entry>
         <entry key="$PROJECT_DIR$/sms_notifications/migrations/0019_smsnotification_status_alter_smscontacts_slug_and_more.py">
+          <value>
+            <set />
+          </value>
+        </entry>
+        <entry key="$PROJECT_DIR$/sms_notifications/migrations/0026_smsnotification_status_alter_smscontacts_slug_and_more.py">
           <value>
             <set />
           </value>
