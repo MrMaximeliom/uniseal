@@ -19,12 +19,12 @@
                     <ol class="crumb breadcrumb-light breadcrumb-dark">
                         <li class="breadcrumb-item"><a href="{% url 'dashboard' %}">{% trans 'Dashboard' %}</a></li>
                         <li class="breadcrumb-item" aria-current="page">{% trans 'Orders' %}</li>
-                        <li class="breadcrumb-item" aria-current="page">{% trans 'All Orders' %}</li>
+                        <li class="breadcrumb-item" aria-current="page">{% trans 'Order Details' %}</li>
                     </ol>
                 </nav>
                 {% endblock breadcrumb_content %}
 {% block content %}
-                <h1 class="h2 mb-3">{% trans 'All Orders' %}</h1>
+                <h1 class="h2 mb-3">{% trans 'Order Details' %}</h1>
 <form class="row g-2 mb-3" action="" method="post" id="searchForm" autocomplete="off">
     {% csrf_token %}
   <div class="col-sm-3 col-md-3 col-lg-3">
@@ -86,14 +86,12 @@
 <!-- ==== Order Status ==== -->
 <div>
 <div>
-<form action="" method="post">
+<form action="" method="post" class="row g-2 mb-3">
   {% csrf_token %}
     <div>
         <h2>{% trans 'Order Status' %}</h2>
-        <div>{{order.status}}</div>
     </div>
-      <div class="mb-4 row">
-    <div class="col-sm-6">
+    <div class="col-sm-3 col-md-3 col-lg-3">
                          <div id="div_id_status" class="form-group">
 
             <label for="order_status" class=" requiredField">
@@ -116,9 +114,9 @@
     </div>
 
     </div>
-  </div>
-           <div class="col-auto">
-    <button type="submit" class="btn btn-primary mr-3">{% trans 'Update' %}</button>
+
+           <div class="col-sm-3 col-md-3 col-lg-3">
+    <button type="submit" class="btn btn-primary mr-3 order-update-button">{% trans 'Update' %}</button>
   </div>
 </form>
 </div>
@@ -127,12 +125,36 @@
 <!-- ==== user details ==== -->
 <div>
     <h2>User Details</h2>
-    <div>{% trans 'Full Username' %}</div>
-    <div>{{ order.user.full_name }}</div>
-    <div>{% trans 'Phone Number' %}</div>
-    <div>{{ order.user.phone_number }}</div>
-    <div>{% trans 'Email' %}</div>
-    <div>{{ order.user.email }}</div>
+     <div class="row mt-3 mb-5">
+                    <div class="col-12 col-xl-10 mb-4 mb-lg-0">
+                        <div class="card-light card-dark">
+                            <div class="card-body-light card-body-dark orders-table">
+                                <div class="table-responsive">
+                                    <table class="table">
+                                        <thead>
+                                          <tr>
+                                            <th scope="col">{% trans 'Full Username' %}</th>
+                                            <th scope="col">{% trans 'Phone Number' %}</th>
+                                            <th scope="col">{% trans 'Email' %}</th>
+                                            <th scope="col">{% trans 'Organization' %}</th>
+
+                                          </tr>
+                                        </thead>
+                                        <tbody>
+                                          <tr>
+                                            <th scope="row">{{ order.user.full_name }}</th>
+                                            <th scope="row">{{ order.user.phone_number }}</th>
+                                            <th scope="row">{{ order.user.email }}</th>
+                                            <th scope="row">{{ order.user.organization }}</th>
+                                          </tr>
+                                        </tbody>
+                                      </table>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
 </div>
 <!-- ========================= -->
 <!-- == order details === -->
@@ -171,8 +193,8 @@
 
                 </div>
 <!-- total -->
-<div>{% trans 'Total: '%}</div>
-<div>{{total}}</div>
+<div><strong>{% trans 'Total: '%}</strong></div>
+<div><strong>{{total}}</strong></div>
 <!-- ==== -->
 {% else %}
 <div>

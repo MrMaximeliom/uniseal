@@ -103,6 +103,11 @@
             <set />
           </value>
         </entry>
+        <entry key="$PROJECT_DIR$/../Ouloug/models.py">
+          <value>
+            <set />
+          </value>
+        </entry>
         <entry key="$PROJECT_DIR$/../Sample/Address/admin.py">
           <value>
             <set />
@@ -389,6 +394,11 @@
           </value>
         </entry>
         <entry key="$PROJECT_DIR$/orders/templates/orders/all_orders.html">
+          <value>
+            <set />
+          </value>
+        </entry>
+        <entry key="$PROJECT_DIR$/orders/templates/orders/order_details.html">
           <value>
             <set />
           </value>

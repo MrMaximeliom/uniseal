@@ -1,6 +1,0 @@
-# added in 21 aug in local - home
-pip install XlsxWriter
-# added in 22 aug in company - remote
-pip install pytz
-# added in 23 aug in company - remote
-pip install Kivy

@@ -28,8 +28,8 @@
 <form class="row g-2 mb-3" action="" method="post" id="searchForm" autocomplete="off">
     {% csrf_token %}
     <div class="col-sm-3 col-md-3 col-lg-3">
-         <select class="form-select" aria-label="Default select example">
-  <option selected>--</option>
+         <select class="form-select" aria-label="Default select example" name="search_phrase" id="searchPhrase">
+  <option selected>-- choose status --</option>
   {% for val,name in order_statuses %}
         <option value="{{val}}">{{name}}</option>
              {% endfor %}
