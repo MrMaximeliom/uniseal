@@ -88,6 +88,26 @@
             <set />
           </value>
         </entry>
+        <entry key="$PROJECT_DIR$/../MrshPay/dashboard/static/css/base.css.html">
+          <value>
+            <set />
+          </value>
+        </entry>
+        <entry key="$PROJECT_DIR$/../MrshPay/dashboard/templates/dashboard/base.html">
+          <value>
+            <set />
+          </value>
+        </entry>
+        <entry key="$PROJECT_DIR$/../MrshPay/dashboard/urls.py">
+          <value>
+            <set />
+          </value>
+        </entry>
+        <entry key="$PROJECT_DIR$/../MrshPay/dashboard/views.py">
+          <value>
+            <set />
+          </value>
+        </entry>
         <entry key="$PROJECT_DIR$/../MrshPay/notifications/endpoints_urls.py">
           <value>
             <set />
@@ -203,12 +223,32 @@
             <set />
           </value>
         </entry>
+        <entry key="$PROJECT_DIR$/Util/search_form_strings.py">
+          <value>
+            <set />
+          </value>
+        </entry>
         <entry key="$PROJECT_DIR$/Util/utils.py">
           <value>
             <set />
           </value>
         </entry>
         <entry key="$PROJECT_DIR$/accounts/models.py">
+          <value>
+            <set />
+          </value>
+        </entry>
+        <entry key="$PROJECT_DIR$/accounts/templates/accounts/all_users.html">
+          <value>
+            <set />
+          </value>
+        </entry>
+        <entry key="$PROJECT_DIR$/accounts/templates/accounts/delete_users.html">
+          <value>
+            <set />
+          </value>
+        </entry>
+        <entry key="$PROJECT_DIR$/accounts/templates/accounts/edit_users.html">
           <value>
             <set />
           </value>
@@ -254,6 +294,26 @@
           </value>
         </entry>
         <entry key="$PROJECT_DIR$/address/migrations/0035_remove_city_country_alter_area_id_alter_area_slug_and_more.py">
+          <value>
+            <set />
+          </value>
+        </entry>
+        <entry key="$PROJECT_DIR$/address/templates/address/all_areas.html">
+          <value>
+            <set />
+          </value>
+        </entry>
+        <entry key="$PROJECT_DIR$/address/templates/address/all_cities.html">
+          <value>
+            <set />
+          </value>
+        </entry>
+        <entry key="$PROJECT_DIR$/address/templates/address/all_countries.html">
+          <value>
+            <set />
+          </value>
+        </entry>
+        <entry key="$PROJECT_DIR$/address/templates/address/all_states.html">
           <value>
             <set />
           </value>
@@ -314,6 +374,11 @@
           </value>
         </entry>
         <entry key="$PROJECT_DIR$/dashboard/static/dashboard/css/index.css">
+          <value>
+            <set />
+          </value>
+        </entry>
+        <entry key="$PROJECT_DIR$/dashboard/static/dashboard/js/search.js">
           <value>
             <set />
           </value>
@@ -419,6 +484,11 @@
           </value>
         </entry>
         <entry key="$PROJECT_DIR$/product/templates/product/add_products.html">
+          <value>
+            <set />
+          </value>
+        </entry>
+        <entry key="$PROJECT_DIR$/product/templates/product/all_products.html">
           <value>
             <set />
           </value>

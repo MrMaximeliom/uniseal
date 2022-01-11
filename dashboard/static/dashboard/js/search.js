@@ -3,9 +3,6 @@ $( document ).ready(function() {
 error_messages = JSON.parse($('#my-data').html())
 console.log(new Date().getFullYear())
 })
-
-
-
 // if user chooses to select all pages , then select all pages also in export data functionality
 
 $('#allData-report').on("click",function(){

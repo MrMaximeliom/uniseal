@@ -6,7 +6,7 @@ from django.shortcuts import render, redirect, get_object_or_404
 from django.utils.translation import gettext_lazy as _
 from orders.models import Order
 from Util.utils import SearchMan, ReportMan, delete_temp_folder, createExelFile
-
+from Util.search_form_strings import NON_SELECTED_ORDER,ORDER_NOT_FOUND
 orders = Order.objects.all().order_by('-id')
 searchManObj = SearchMan("Order")
 report_man = ReportMan()
@@ -60,6 +60,7 @@ def prepare_query(paginator_obj,headers=None):
 @staff_member_required(login_url='login')
 def all_orders(request):
     from Util.ListsOfData import ORDER_STATUSES
+    from Util.search_form_strings import CREATE_REPORT_TIP,CLEAR_SEARCH_TIP,SEARCH_ORDERS_TIP
     paginator = Paginator(orders, 5)
     search_result = ''
     if 'temp_dir' in request.session and request.method == "GET":
@@ -68,18 +69,18 @@ def all_orders(request):
             delete_temp_folder()
     if request.method == "POST" and 'clear' not in request.POST and 'createExcel' not in request.POST:
         searchManObj.setSearch(True)
-        if request.POST.get('search_phrase') != '':
-            search_message = request.POST.get('search_phrase')
+        if request.POST.get('search_options') != '' and request.POST.get('search_options') != 'none':
+            search_message = request.POST.get('search_options')
             search_result = Order.objects.annotate(num_products=Count("order_details")).filter(
                 status=search_message).order_by('-id')
             searchManObj.setPaginator(search_result)
             searchManObj.setSearchPhrase(search_message)
-            searchManObj.setSearchOption('Category')
+            searchManObj.setSearchOption('Order Status')
             searchManObj.setSearchError(False)
 
         else:
             messages.error(request,
-                           "Please enter category  first!")
+                           "Please select order status first!")
             searchManObj.setSearchError(True)
     if request.method == "GET" and 'page' not in request.GET:
         all_orders = Order.objects.annotate(num_products=Count("order_details")).order_by('-id')
@@ -205,11 +206,26 @@ def all_orders(request):
                   {
                       'title': _('All Orders'),
                       'all_orders': 'active',
+                      'orders':'active',
                       'all_orders_data': orders_paginator,
                       'page_range': paginator.page_range,
                       'num_pages': paginator.num_pages,
                       'current_page': page,
-                      'order_statuses':ORDER_STATUSES
+                      'order_statuses':ORDER_STATUSES,
+                      'search': searchManObj.getSearch(),
+                      'search_result': search_result,
+                      'search_phrase': searchManObj.getSearchPhrase(),
+                      'search_option': searchManObj.getSearchOption(),
+                      'search_error': searchManObj.getSearchError(),
+                      'create_report_tip': CREATE_REPORT_TIP,
+                      'clear_search_tip': CLEAR_SEARCH_TIP,
+                      'search_orders_tip': SEARCH_ORDERS_TIP,
+                      "not_found": ORDER_NOT_FOUND,
+                      'data_js': {
+                          "empty_search_phrase": NON_SELECTED_ORDER,
+
+
+                      },
                   }
                   )
 @staff_member_required(login_url='login')

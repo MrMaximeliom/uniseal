@@ -28,19 +28,21 @@
 <form class="row g-2 mb-3" action="" method="post" id="searchForm" autocomplete="off">
     {% csrf_token %}
     <div class="col-sm-3 col-md-3 col-lg-3">
-         <select class="form-select" aria-label="Default select example" name="search_phrase" id="searchPhrase">
-  <option selected>-- choose status --</option>
+         <select class="form-select" aria-label="Default select example" id="searchBy" name="search_options" >
+  <option selected value="none">-- choose status --</option>
   {% for val,name in order_statuses %}
         <option value="{{val}}">{{name}}</option>
              {% endfor %}
 </select>
+                        <span class="delete-warning" id="selection_error"></span>
+
     </div>
 
 
   <div class="col-sm-3 col-md-3 col-lg-3">
-    <button type="submit" class="btn btn-primary mb-3" id="searchButton" value="category"><span><i class="fas fa-search"></i></span></button>
-    <button type="submit" name="clear" value="clear" class="btn btn-danger mb-3"><span><i class="fas fa-eraser"></i></span></button>
-   <button type="button" class="btn btn-success mb-3" data-bs-toggle="modal" data-bs-target="#exportData"><span><i class="fas fa-file-csv"></i></span></button>
+    <button type="submit" class="btn btn-primary mb-3 mr-1 ml-1" id="searchButton" value="category"  title="{{search_orders_tip}}"><span><i class="fas fa-search"></i></span></button>
+    <button type="submit" name="clear" value="clear" class="btn btn-danger mb-3 mr-1 ml-1" title="{{clear_search_tip}}"><span><i class="fas fa-eraser" ></i></span></button>
+   <button type="button" class="btn btn-success mb-3 mr-1 ml-1" data-bs-toggle="modal" data-bs-target="#exportData" title="{{create_report_tip}}"><span><i class="fas fa-file-csv" ></i></span></button>
 
   </div>
 </form>
@@ -146,6 +148,7 @@
              <span class="sr-only">Previous</span>
             </a>
            </li>
+              {% if num_pages > 1 %}
  {% for i in page_range %}
             {% if current_page == i %}
                 <li class="page-item active" aria-current="page">
@@ -158,6 +161,7 @@
                  <li class="page-item"><a class="page-link" href="?page={{ i }}">{{ i }}</a></li>
             {% endif %}
         {% endfor %}
+              {% endif %}
 
         {% if num_pages > current_page|add:'4' %}
            <li class="page-item"><a class="page-link" href="?page={{ current_page|add:'5' }}">&hellip;</a></li>
@@ -172,5 +176,10 @@
        </nav>
   </div>
 {% endif %}
-
+{% if all_orders_data|length == 0 and not search %}
+<h3 class="delete-warning">{% trans 'There are no orders yet .. you can add new ones from ' %} <a href="{% url 'addProducts' %}">{% trans 'Here' %}</a></h3>
+{% endif %}
+{% if search and search_result.count == 0 and search_result != "" %}
+<h3 class="delete-warning">{{not_found}}</h3>
+{% endif %}
 {% endblock content %}

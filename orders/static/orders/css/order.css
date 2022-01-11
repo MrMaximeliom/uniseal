@@ -3,4 +3,9 @@ text-align : center;
 }
 .order-update-button{
 margin-top:1.5rem;
+
+}
+.order-search-btn{
+margin-left:.4rem;
+margin-right:.4rem;
 }

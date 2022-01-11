@@ -4,8 +4,11 @@ from django.utils.translation import gettext_lazy as _
 CLEAR_SEARCH_TIP = _('Clear Search')
 CREATE_REPORT_TIP = _('Create Report')
 EMPTY_SEARCH_PHRASE = _("Please enter a search phrase and select search by!")
+# used by order search pages
+NON_SELECTED_ORDER = _("Please select order status first!")
 # used by account search pages
 SEARCH_USERS_TIP = _("Search Users")
+SEARCH_ORDERS_TIP = _("Search Orders")
 USERNAME_SYNTAX_ERROR = _("Username contains alphanumeric English letters only!")
 FULL_NAME_SYNTAX_ERROR = _("Full Name contains English letters only!")
 ORGANIZATION_NAME_SYNTAX_ERROR = _("Organization Name contains only English letters!")
@@ -42,6 +45,8 @@ POINT_NAME_SYNTAX_ERROR = _("Selling point name contains alphanumeric English le
 PRODUCT_NOT_FOUND = _("Sorry no products found that matches your search!")
 # Project Not found errors
 PROJECT_NOT_FOUND = _("Sorry no projects found that matches your search!")
+# Order Not found errors
+ORDER_NOT_FOUND = _("Sorry no orders found that matches your search!")
 # Used by notifications pages
 NOTIFICATION_TITLE_SYNTAX_ERROR = _("Notification title contains English letters only!")
 NOTIFICATION_BODY_SYNTAX_ERROR = _("Notification body contains English letters only!")
