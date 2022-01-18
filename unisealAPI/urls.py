@@ -10,26 +10,26 @@ from rest_framework_simplejwt.views import (
     TokenRefreshView,
 )
 
-from accounts import endpoints_urls as accounts_views
-from address import endpoints_urls as address_endpoints_urls
+from apps.accounts import endpoints_urls as accounts_views
+from apps.address import endpoints_urls as address_endpoints_urls
 from admin_panel import views as admin_views
-from application_videos import endpoints_urls as application_videos_views
-from brochures import endpoints_urls as brochures_views
-from category import endpoints_urls as category_views
-from company_info import views as company_views
-from dashboard import views as dashboard_views
-from dashboard.urls import urlpatterns as dashboard_urls
-from industry_updates import endpoints_urls as industry_views
-from notifications import endpoints_urls as notifications_views
-from product import endpoints_urls as product_views
-from project import endpoints_urls as project_views
-from project_application import endpoints_urls as application_views
-from sellingPoint import endpoints_urls as selling_point_views
-from slider import endpoints_urls as slider_views
-from sms_notifications import endpoints_urls as sms_notifications_views
-from solution import endoints_urls as solution_views
-from supplier import endpoints_urls as supplier_views
-from orders import  endpoints_urls as orders_views
+from apps.application_videos import endpoints_urls as application_videos_views
+from apps.brochures import endpoints_urls as brochures_views
+from apps.category import endpoints_urls as category_views
+from apps.company_info import views as company_views
+from apps.dashboard import views as dashboard_views
+from apps.dashboard.urls import urlpatterns as dashboard_urls
+from apps.industry_updates import endpoints_urls as industry_views
+from apps.notifications import endpoints_urls as notifications_views
+from apps.product import endpoints_urls as product_views
+from apps.project import endpoints_urls as project_views
+from apps.project_application import endpoints_urls as application_views
+from apps.sellingPoint import endpoints_urls as selling_point_views
+from apps.slider import endpoints_urls as slider_views
+from apps.sms_notifications import endpoints_urls as sms_notifications_views
+from apps.solution import endoints_urls as solution_views
+from apps.supplier import endpoints_urls as supplier_views
+from apps.orders import  endpoints_urls as orders_views
 
 router = routers.DefaultRouter()
 admin_router = routers.DefaultRouter()
@@ -95,8 +95,8 @@ urlpatterns = [
     path('favicon.ico', RedirectView.as_view(url=staticfiles_storage.url('dashboard/images/favicon.ico'))),
 
 ]
-handler404 = 'handle_errors.views.error_404'
-handler500 = 'handle_errors.views.error_500'
+handler404 = 'apps.handle_errors.views.error_404'
+handler500 = 'apps.handle_errors.views.error_500'
 
 if settings.DEBUG:
     urlpatterns += static(settings.MEDIA_URL,

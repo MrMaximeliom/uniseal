@@ -66,59 +66,59 @@ class SearchMan:
         from django.core.paginator import Paginator
         from django.db.models import Count
         if model == "User":
-            from accounts.models import User
+            from apps.accounts.models import User
             users = User.objects.all().order_by("id")
             self.paginator = Paginator(users, 5)
         if model == "Product":
-            from product.models import Product
+            from apps.product.models import Product
             products = Product.objects.all().order_by("id")
             self.paginator = Paginator(products, 5)
         if model == "Supplier":
-            from supplier.models import Supplier
+            from apps.supplier.models import Supplier
             suppliers = Supplier.objects.all().order_by("id")
             self.paginator = Paginator(suppliers, 5)
         if model == "Project":
-            from project.models import Project
+            from apps.project.models import Project
             projects = Project.objects.all().order_by("id")
             self.paginator = Paginator(projects, 5)
         if model == "Application":
-            from project.models import Application
+            from apps.project.models import Application
             applications = Application.objects.annotate(num_projects=Count('project')).order_by('-num_projects')
             self.paginator = Paginator(applications, 5)
         if model == "Category":
-            from category.models import Category
+            from apps.category.models import Category
             categories = Category.objects.annotate(num_products=Count('product')).order_by('-num_products')
             self.paginator = Paginator(categories, 5)
         if model == "Country":
-            from address.models import Country
+            from apps.address.models import Country
             countries = Country.objects.all().order_by('id')
             self.paginator = Paginator(countries, 5)
         if model == "State":
-            from address.models import State
+            from apps.address.models import State
             states = State.objects.annotate(num_cities=Count('city')).order_by('-num_cities')
             self.paginator = Paginator(states, 5)
         if model == "City":
-            from address.models import City
+            from apps.address.models import City
             cities = City.objects.annotate(num_areas=Count('area')).order_by('-num_areas')
             self.paginator = Paginator(cities, 5)
         if model == "Area":
-            from address.models import Area
+            from apps.address.models import Area
             areas = Area.objects.all().order_by('id')
             self.paginator = Paginator(areas, 5)
         if model == "Selling Point":
-            from sellingPoint.models import SellingPoint
+            from apps.sellingPoint.models import SellingPoint
             selling = SellingPoint.objects.all().order_by('id')
             self.paginator = Paginator(selling, 5)
         if model == "Notifications":
-            from notifications.models import Notifications
+            from apps.notifications.models import Notifications
             notifications = Notifications.objects.all().order_by('id')
             self.paginator = Paginator(notifications, 60)
         if model == "ProductVideos":
-            from application_videos.models import ProductApplicationVideos
+            from apps.application_videos.models import ProductApplicationVideos
             videos = ProductApplicationVideos.objects.all().order_by('id')
             self.paginator = Paginator(videos, 5)
         if model == "Order":
-            from orders.models import Order
+            from apps.orders.models import Order
             orders = Order.objects.all().order_by('id')
             self.paginator = Paginator(orders, 5)
 

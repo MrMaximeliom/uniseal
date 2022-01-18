@@ -13,7 +13,7 @@ https://docs.djangoproject.com/en/3.2/ref/settings/
 import os
 from datetime import timedelta
 from pathlib import Path
-
+from decouple import config
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
 
@@ -21,12 +21,12 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/3.2/howto/deployment/checklist/
 
+
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = 'django-insecure-1q236oqpxw@svn0mi40y_mzt5&l((_9vwynu5vv0u)r($y_gv)'
+SECRET_KEY = config('SECRET_KEY', default='qpxw@svn0mi40y_mzt5&l((_9vwynu5vv0u)r($y_gv)')
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
-
+DEBUG = config('DEBUG', default=True, cast=bool)
 
 ALLOWED_HOSTS = ['localhost','uniseal-api.herokuapp.com','93.188.162.130','13.245.16.122']
 # Application definition
@@ -38,29 +38,29 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'rest_framework',
-    'accounts',
-    'brochures',
-    'product',
-    'project',
-    'sellingPoint',
-    'supplier',
-    'category',
-    'solution',
+    'apps.accounts',
+    'apps.brochures',
+    'apps.product',
+    'apps.project',
+    'apps.sellingPoint',
+    'apps.supplier',
+    'apps.category',
+    'apps.solution',
     'admin_panel',
-    'slider',
-    'dashboard',
+    'apps.slider',
+    'apps.dashboard',
     'django_filters',
-    'address',
+    'apps.address',
     'mathfilters',
-    'notifications',
-    'sms_notifications',
+    'apps.notifications',
+    'apps.sms_notifications',
     'crispy_forms',
-    'company_info',
-    'project_application',
-    'industry_updates',
-    'handle_errors',
-    'application_videos',
-    'orders'
+    'apps.company_info',
+    'apps.project_application',
+    'apps.industry_updates',
+    'apps.handle_errors',
+    'apps.application_videos',
+    'apps.orders'
 
 
 ]
