@@ -318,6 +318,21 @@
             <set />
           </value>
         </entry>
+        <entry key="$PROJECT_DIR$/apps/admin_panel/apps.py">
+          <value>
+            <set />
+          </value>
+        </entry>
+        <entry key="$PROJECT_DIR$/apps/admin_panel/views.py">
+          <value>
+            <set />
+          </value>
+        </entry>
+        <entry key="$PROJECT_DIR$/apps/dashboard/templates/dashboard/base.html">
+          <value>
+            <set />
+          </value>
+        </entry>
         <entry key="$PROJECT_DIR$/brochures/models.py">
           <value>
             <set />

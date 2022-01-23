@@ -12,7 +12,7 @@ from rest_framework_simplejwt.views import (
 
 from apps.accounts import endpoints_urls as accounts_views
 from apps.address import endpoints_urls as address_endpoints_urls
-from admin_panel import views as admin_views
+from apps.admin_panel import views as admin_views
 from apps.application_videos import endpoints_urls as application_videos_views
 from apps.brochures import endpoints_urls as brochures_views
 from apps.category import endpoints_urls as category_views

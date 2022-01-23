@@ -46,7 +46,7 @@ INSTALLED_APPS = [
     'apps.supplier',
     'apps.category',
     'apps.solution',
-    'admin_panel',
+    'apps.admin_panel',
     'apps.slider',
     'apps.dashboard',
     'django_filters',
