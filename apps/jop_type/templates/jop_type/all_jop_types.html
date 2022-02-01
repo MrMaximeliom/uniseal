@@ -1,0 +1,123 @@
+<!DOCTYPE html>
+{% extends "dashboard/base.html" %}
+{% load static %}
+{% load mathfilters %}
+{% load static i18n %}
+{% block title %}
+{{title}}
+{% endblock title %}
+  {% block custom_css %}
+    <link rel="stylesheet" href="{% static 'product/css/product.css' %}">
+<link rel="stylesheet" href="{% static 'dashboard/css/search.css' %}">
+    {% endblock %}
+   {% block custom_js %}
+<script src="{% static 'dashboard/js/search.js' %}" defer></script>
+  {{ data_js|json_script:"my-data" }}
+
+    {% endblock %}
+         {% block breadcrumb_content %}
+   <nav aria-label="crumb">
+                    <ol class="crumb breadcrumb-light breadcrumb-dark">
+                        <li class="breadcrumb-item"><a href="{% url 'dashboard' %}">{% trans 'Dashboard' %}</a></li>
+                        <li class="breadcrumb-item" aria-current="page">{% trans 'Jop Types' %}</li>
+                        <li class="breadcrumb-item" aria-current="page">{% trans 'All Jop Types' %}</li>
+                    </ol>
+                </nav>
+                {% endblock breadcrumb_content %}
+{% block content %}
+                <h1 class="h2">{% trans 'Jop Types' %}</h1>
+
+<form class="row g-2 mb-3" action="" method="post" id="searchForm" autocomplete="off">
+    {% csrf_token %}
+  <div class="col-sm-3 col-md-3 col-lg-3">
+    <label for="searchPhrase" class="visually-hidden">{% trans 'Search Phrase' %}</label>
+    <input type="text" class="form-control" name="search_phrase" id="searchPhrase" placeholder="Search ..">
+          <span class="delete-warning" id="search_phrase_error"></span>
+  </div>
+
+    <div class="col-sm-3 col-md-3 col-lg-3">
+    <select class="form-select search-select" id="searchBy" name="search_options" aria-label="Default select example">
+  <option selected value="none">{% trans 'Search By' %}</option>
+  <option value="product">{% trans 'Product Name' %}</option>
+  <option value="category">{% trans 'Category Name' %}</option>
+  <option value="supplier">{% trans 'Supplier Name' %}</option>
+</select>
+                <span style="display:none;" class="delete-warning" id="selection_error"></span>
+
+    </div>
+  <div class="col-sm-3 col-md-3 col-lg-3">
+   <button type="submit" class="btn btn-primary mb-3" id="searchButton" title="{{search_products_tip}}"><span><i class="fas fa-search"></i></span></button>
+    <button type="submit" name="clear" value="clear" class="btn btn-danger mb-3" title="{{clear_search_tip}}"><span><i class="fas fa-eraser"></i></span></button>
+ </div>
+</form>
+
+  {% if  search and not search_error %}
+<h2>{% trans 'Showing Search Results For ' %}</h2>
+<h3>{{search_option}}="{{search_phrase}}"</h3>
+{% endif %}
+{% if object_list|length %}
+ <div class="row">
+                    <div class="col-12 col-xl-11 mb-4 mb-lg-0">
+                        <div class="card-light card-dark">
+                            <h5 class="card-header-light card-header-dark">{% trans 'Jop Types' %}</h5>
+                            <div class="card-body-light card-body-dark">
+                                <div class="table-responsive">
+                                    <table class="table">
+                                        <thead>
+                                          <tr>
+                                            <th scope="col">{% trans 'Type Name' %}</th>
+                                            <th scope="col">{% trans 'Number of Users in this Type' %}</th>
+<!--                                            <th scope="col"></th>-->
+                                          </tr>
+                                        </thead>
+                                        <tbody>
+                                        {% for object in object_list %}
+                                          <tr>
+                                            <th scope="row">{{object.name}}</th>
+                                            <td>{{ object.num_users }}</td>
+<!--                                            <td><a href="#" class="btn btn-sm btn-primary">View</a></td>-->
+                                          </tr>
+                                        {% endfor %}
+
+                                        </tbody>
+                                      </table>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+ <div class="container mt-3 d-flex justify-content-center">
+        <nav aria-label="Pagination Navigation">
+          <ul class="pagination">
+           <li class="page-item {% if current_page == 1 %} disabled disabled-item {% endif %}">
+            <a class="page-link" href="?page={{ current_page|sub:1 }}" aria-label="Previous">
+             <span aria-hidden="true">«</span>
+             <span class="sr-only">Previous</span>
+            </a>
+           </li>
+
+             {% if page_range|length != 1 %}
+           {% for i in page_range %}
+           <li class="page-item {% if i == current_page %} active {% endif %}"><a class="page-link " href="?page={{ i }}">{{ i }}</a></li>
+           {% endfor %}
+                 {% endif %}
+
+
+           <li class="page-item {% if current_page == num_pages %} disabled disabled-item {% endif %}">
+            <a class="page-link" href="?page={{ current_page|add:1 }}" aria-label="Next">
+             <span aria-hidden="true">»</span>
+             <span class="sr-only">Next</span>
+            </a>
+           </li>
+          </ul>
+       </nav>
+  </div>
+{% endif %}
+{% if object_list|length == 0 and not search %}
+<h3 class="delete-warning">{% trans 'There are no jop types yet .. you can add new ones from ' %} <a href="{% url 'addJopTypes' %}">{% trans 'Here' %}</a></h3>
+{% endif %}
+{% if search and search_result.count == 0 and search_result != "" %}
+<h3 class="delete-warning">{{not_found}}</h3>
+{% endif %}
+{% endblock content %}

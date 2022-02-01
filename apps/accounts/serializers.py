@@ -11,7 +11,7 @@ class UserSerializer(serializers.ModelSerializer):
         model = User
         fields = (
             'id', 'username', 'full_name','organization',
-            'email', 'phone_number', 'password')
+            'email', 'phone_number', 'password','jop_type')
 
 class ForgetPasswordSerializer(serializers.ModelSerializer):
     password = serializers.CharField( required=True, validators=[validate_password],label=_('New Password'))
@@ -96,7 +96,7 @@ class RegisterSerializer(serializers.ModelSerializer):
 
         fields = (
             'id', 'username', 'full_name','organization', 'password', 'password2', 'email',
-            'phone_number')
+            'phone_number','jop_type')
         extra_kwargs = {
 
             'username': {'required': True},

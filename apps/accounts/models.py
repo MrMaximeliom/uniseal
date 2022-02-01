@@ -4,13 +4,13 @@ from django.contrib.auth.models import (
 from django.db import models
 from django.template.defaultfilters import slugify  # new
 from django.utils.translation import gettext_lazy as _
-
+# from  apps.jop_type.models import JopType
 from Util.utils import rand_slug
 
 
 class UserAccountManager(BaseUserManager):
 
-    def create_user(self, username, full_name, phone_number, password=None, **extra_fields):
+    def create_user(self, username, full_name, phone_number, password=None):
 
         if not username:
             raise ValueError(_('Users must have a username'))
@@ -86,15 +86,19 @@ class User(AbstractBaseUser):
         blank=True,
         null=True
     )
+    job_type = models.ForeignKey(
+        "jop_type.JopType",
+        on_delete= models.SET_NULL,
+        null=True,
+        blank=False
+    )
     is_active = models.BooleanField(default=True)
     staff = models.BooleanField(default=False)
     admin = models.BooleanField(default=False)
     last_login = models.DateTimeField(auto_now=True, blank=True, null=True)
     slug = models.SlugField(
         default=slugify(rand_slug()),
-        verbose_name=_('User Slug')
-
-    )
+        verbose_name=_('User Slug'))
     registration_datetime = models.DateTimeField(auto_now_add=True, null=True, blank=True)
 
     def save(self, *args, **kwargs):
@@ -197,6 +201,3 @@ class ContactUs(models.Model):
 
     def __str__(self):
         return self.email
-
-
-

@@ -11,6 +11,8 @@ from Util.utils import SearchMan, ReportMan, delete_temp_folder
 # Create your views here.
 searchManObj = SearchMan("ProductVideos")
 report_man = ReportMan()
+
+
 @staff_member_required(login_url='login')
 def all_videos(request):
     from .models import ProductApplicationVideos
@@ -34,7 +36,8 @@ def all_videos(request):
         searchManObj.setSearch(True)
         if request.POST.get('search_options') == 'product':
             search_message = request.POST.get('search_phrase')
-            search_result = ProductApplicationVideos.objects.filter(product__name__icontains=search_message).order_by('id')
+            search_result = ProductApplicationVideos.objects.filter(product__name__icontains=search_message).order_by(
+                'id')
             print("search results ", search_result)
             searchManObj.setPaginator(search_result)
             searchManObj.setSearchPhrase(search_message)
@@ -43,7 +46,8 @@ def all_videos(request):
         elif request.POST.get('search_options') == 'category':
             print('here now in category search')
             search_phrase = request.POST.get('search_phrase')
-            search_result = ProductApplicationVideos.objects.filter(product__category__name__icontains=search_phrase).order_by("id")
+            search_result = ProductApplicationVideos.objects.filter(
+                product__category__name__icontains=search_phrase).order_by("id")
             print("search results ", search_result)
             searchManObj.setPaginator(search_result)
             searchManObj.setSearchPhrase(search_phrase)
@@ -53,7 +57,8 @@ def all_videos(request):
             print('here now in supplier search')
             search_phrase = request.POST.get('search_phrase')
             print('search phrase is ', search_phrase)
-            search_result = ProductApplicationVideos.objects.filter(product__supplier__name__icontains=search_phrase).order_by("id")
+            search_result = ProductApplicationVideos.objects.filter(
+                product__supplier__name__icontains=search_phrase).order_by("id")
             print("search results ", search_result)
             searchManObj.setPaginator(search_result)
             searchManObj.setSearchPhrase(search_phrase)
@@ -93,7 +98,7 @@ def all_videos(request):
     return render(request, 'application_videos/all_videos.html',
                   {
                       'title': _('Products Application Videos'),
-                      'videos':'active',
+                      'videos': 'active',
                       'all_videos': 'active',
                       'all_products_data': videos,
                       'page_range': paginator.page_range,
@@ -115,6 +120,8 @@ def all_videos(request):
                       'not_found': PRODUCT_NOT_FOUND,
                   }
                   )
+
+
 @staff_member_required(login_url='login')
 def product_videos(request, slug=None):
     from .models import ProductApplicationVideos
@@ -128,22 +135,20 @@ def product_videos(request, slug=None):
     }
     if slug != None and request.method == 'GET':
         try:
-            selected_product = get_object_or_404(Product,slug=slug)
+            selected_product = get_object_or_404(Product, slug=slug)
         except Product.DoesNotExist:
             raise Http404("Given query not found....")
         product_videos = ProductApplicationVideos.objects.filter(product__slug=slug)
-        print("product videos is: ",product_videos)
+        print("product videos is: ", product_videos)
         context.update({
             'product_videos': product_videos,
             'slug': slug,
-            'selected_product':selected_product.name,
+            'selected_product': selected_product.name,
         })
     if request.method == 'POST' and 'search_product' in request.POST:
         if request.POST.get('search_options') != 'none':
             print('searching for product videos')
             chosen_project = request.POST.get('search_options')
-            # print("chosen one is: ",chosen_project.len())
-            # print("chosen one is: ",chosen_project.len())
             return redirect('productVideos', slug=chosen_project)
         else:
             messages.error(request, "Please choose a project from the list")
@@ -155,11 +160,9 @@ def product_videos(request, slug=None):
         selected_videos = request.POST.getlist('video')
         for video in selected_videos:
             added_videos.append(
-                ProductApplicationVideos(product=selected_product,application_video=video)
+                ProductApplicationVideos(product=selected_product, application_video=video)
             )
         ProductApplicationVideos.objects.bulk_create(added_videos)
-        print("length of selected videos ",len(selected_videos))
-        print("selected videos are: \n",selected_videos)
         messages.success(request, _("Videos added successfully!"))
 
         return redirect('productVideos', slug=slug)
@@ -168,6 +171,8 @@ def product_videos(request, slug=None):
                   context
 
                   )
+
+
 @staff_member_required(login_url='login')
 def delete_products_videos(request):
     from apps.application_videos.models import ProductApplicationVideos
@@ -189,7 +194,8 @@ def delete_products_videos(request):
         if request.POST.get('search_options') == 'product':
             print('here now in product search')
             search_message = request.POST.get('search_phrase')
-            search_result = ProductApplicationVideos.objects.filter(product__name__icontains=search_message).order_by('id')
+            search_result = ProductApplicationVideos.objects.filter(product__name__icontains=search_message).order_by(
+                'id')
             print("search results ", search_result)
             searchManObj.setPaginator(search_result)
             searchManObj.setSearchPhrase(search_message)
@@ -199,7 +205,8 @@ def delete_products_videos(request):
         elif request.POST.get('search_options') == 'category':
             print('here now in category search')
             search_phrase = request.POST.get('search_phrase')
-            search_result = ProductApplicationVideos.objects.filter(product__category__name__icontains=search_phrase).order_by("id")
+            search_result = ProductApplicationVideos.objects.filter(
+                product__category__name__icontains=search_phrase).order_by("id")
             print("search results ", search_result)
             searchManObj.setPaginator(search_result)
             searchManObj.setSearchPhrase(search_phrase)
@@ -209,7 +216,8 @@ def delete_products_videos(request):
             print('here now in supplier search')
             search_phrase = request.POST.get('search_phrase')
             print('search phrase is ', search_phrase)
-            search_result = ProductApplicationVideos.objects.filter(product__supplier__name__icontains=search_phrase).order_by("id")
+            search_result = ProductApplicationVideos.objects.filter(
+                product__supplier__name__icontains=search_phrase).order_by("id")
             print("search results ", search_result)
             searchManObj.setPaginator(search_result)
             searchManObj.setSearchPhrase(search_phrase)
@@ -250,7 +258,7 @@ def delete_products_videos(request):
     context = {
         'title': _('Delete Products Videos'),
         'delete_videos': 'active',
-        'videos':'active',
+        'videos': 'active',
         'all_videos': all_videos,
         'all_videos_data': videos,
         'page_range': paginator.page_range,
@@ -272,6 +280,8 @@ def delete_products_videos(request):
         'not_found': PRODUCT_NOT_FOUND,
     }
     return render(request, 'application_videos/delete_videos.html', context)
+
+
 @staff_member_required(login_url='login')
 def confirm_delete(request, id):
     from apps.application_videos.models import ProductApplicationVideos
@@ -280,9 +290,11 @@ def confirm_delete(request, id):
         obj.delete()
         messages.success(request, f"Application video for Product << {obj.product.name} >> deleted successfully")
     except:
-        messages.error(request, f"Application video for Product << {obj.product.name} >> was not deleted , please try again!")
+        messages.error(request,
+                       f"Application video for Product << {obj.product.name} >> was not deleted , please try again!")
 
     return redirect('deleteVideos')
+
 
 @staff_member_required(login_url='login')
 def edit_video(request, slug):
@@ -314,6 +326,7 @@ def edit_video(request, slug):
     }
     return render(request, 'application_videos/edit_video.html', context)
 
+
 @staff_member_required(login_url='login')
 def edit_videos(request):
     from .models import ProductApplicationVideos
@@ -335,7 +348,8 @@ def edit_videos(request):
         if request.POST.get('search_options') == 'product':
             print('here now in product search')
             search_message = request.POST.get('search_phrase')
-            search_result = ProductApplicationVideos.objects.filter(product__name__icontains=search_message).order_by('id')
+            search_result = ProductApplicationVideos.objects.filter(product__name__icontains=search_message).order_by(
+                'id')
             print("search results ", search_result)
             searchManObj.setPaginator(search_result)
             searchManObj.setSearchPhrase(search_message)
@@ -344,7 +358,8 @@ def edit_videos(request):
         elif request.POST.get('search_options') == 'category':
             print('here now in category search')
             search_phrase = request.POST.get('search_phrase')
-            search_result = ProductApplicationVideos.objects.filter(product__category__name__icontains=search_phrase).order_by("id")
+            search_result = ProductApplicationVideos.objects.filter(
+                product__category__name__icontains=search_phrase).order_by("id")
             print("search results ", search_result)
             searchManObj.setPaginator(search_result)
             searchManObj.setSearchPhrase(search_phrase)
@@ -354,7 +369,8 @@ def edit_videos(request):
             print('here now in supplier search')
             search_phrase = request.POST.get('search_phrase')
             print('search phrase is ', search_phrase)
-            search_result = ProductApplicationVideos.objects.filter(product__supplier__name__icontains=search_phrase).order_by("id")
+            search_result = ProductApplicationVideos.objects.filter(
+                product__supplier__name__icontains=search_phrase).order_by("id")
             print("search results ", search_result)
             searchManObj.setPaginator(search_result)
             searchManObj.setSearchPhrase(search_phrase)

@@ -19,6 +19,7 @@ from apps.sms_notifications.urls import urlpatterns as sms_urls
 from apps.solution.urls import urlpatterns as solution_urls
 from apps.supplier.urls import urlpatterns as supplier_urls
 from apps.orders.urls import urlpatterns as orders_urls
+from apps.jop_type.urls import urlpatterns as job_type_urls
 from django.contrib.auth import views as auth_views
 urlpatterns = [
     path('home/', dashboard_views.dashboard, name='dashboard'),
@@ -46,7 +47,8 @@ urlpatterns = [
     path('IndustryUpdates/', include(update_urls)),
     path('Notifications/', include(notifications_urls)),
     path('applicationVideos/',include(product_application_videos)),
-    path('orders/',include(orders_urls))
+    path('orders/',include(orders_urls)),
+    path('jobTypes/', include(job_type_urls))
 
 
 ]

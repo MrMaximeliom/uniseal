@@ -10,7 +10,7 @@ class UserForm(forms.ModelForm):
         # fields='__all__'
         fields=[
             'id', 'username', 'full_name','organization', 'email',
-            'phone_number','admin']
+            'phone_number','admin','job_type']
         exclude = ('slug',)
     def create(self, validated_data):
         from apps.accounts.models import User
@@ -67,7 +67,7 @@ class UserRegistrationForm(forms.ModelForm):
         # fields='__all__'
         fields=[
             'id', 'username', 'full_name','organization', 'email',
-            'phone_number','staff','password']
+            'phone_number','staff','password','job_type']
         exclude = ('slug',)
     def create(self, validated_data):
         from apps.accounts.models import User

@@ -110,7 +110,7 @@
   </div>
 {% endif %}
 {% if all_products_data|length == 0 and not search %}
-<h3 class="delete-warning">{% trans 'There is no products yet .. you can add new ones from ' %} <a href="{% url 'addProducts' %}">{% trans 'Here' %}</a></h3>
+<h3 class="delete-warning">{% trans 'There are no products videos yet .. you can add new ones from ' %} <a href="{% url 'productVideos' %}">{% trans 'Here' %}</a></h3>
 {% endif %}
 {% if search and search_result.count == 0 and search_result != "" %}
 <h3 class="delete-warning">{{not_found}}</h3>

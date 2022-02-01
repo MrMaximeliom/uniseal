@@ -30,6 +30,7 @@ from apps.sms_notifications import endpoints_urls as sms_notifications_views
 from apps.solution import endoints_urls as solution_views
 from apps.supplier import endpoints_urls as supplier_views
 from apps.orders import  endpoints_urls as orders_views
+from apps.jop_type import  endpoints_urls as jop_type_views
 
 router = routers.DefaultRouter()
 admin_router = routers.DefaultRouter()
@@ -72,6 +73,7 @@ router.register(r'notifications/registerTokenId', notifications_views.registerTo
 router.register(r'notifications/handleNotifications', notifications_views.handleNotifications, basename='HandleNotifications')
 router.register(r'order', orders_views.OrderViewSet, basename='CreateOrder')
 router.register(r'cart', orders_views.CartViewSet, basename='CreateCart')
+router.register(r'jopType', jop_type_views.JobTypeViewSet, basename='CreateJopTypes')
 admin_router.register(r'manageProducts', admin_views.ManageProductsViewSet, basename='ManageProducts')
 admin_router.register(r'manageProjects', admin_views.ManageProjectsViewSet, basename='ManageProjects')
 admin_router.register(r'manageSolution', admin_views.ManageSolutionViewSet, basename='ManageSolution')

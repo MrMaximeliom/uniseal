@@ -5,7 +5,6 @@ from django.db.models import Count
 from django.shortcuts import redirect
 from django.shortcuts import render, get_object_or_404
 from django.utils.translation import gettext_lazy as _
-
 from Util.utils import SearchMan, createExelFile, ReportMan, delete_temp_folder
 from apps.project.models import Application
 

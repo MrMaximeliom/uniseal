@@ -11,7 +11,8 @@
 
     <link rel="stylesheet" href="{% static 'dashboard/css/index.css' %}">
     <link rel="stylesheet" id="theme" href="{% static 'dashboard/css/light-theme.css' %}">
-<script src="https://kit.fontawesome.com/dced961655.js" crossorigin="anonymous" defer></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
+<!--<script src="https://kit.fontawesome.com/dced961655.js" crossorigin="anonymous" defer></script>-->
 
             <script src="https://code.jquery.com/jquery-3.6.0.slim.min.js" integrity="sha256-u7e5khyithlIdTpu22PHhENmPcRdFiHRjhAuHcs05RI=" crossorigin="anonymous" defer></script>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.1/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-+0n0xVW2eSR5OomGNYDnhzAbDsOXxcvSN1TPprVMTNDbiYZCxYbOOl7+AMvyTG2x" crossorigin="anonymous">
@@ -409,6 +410,42 @@ $("#btn-mode").html('<svg xmlns="http://www.w3.org/2000/svg" width="24" height="
                  <span class="ml-2 span-term">{% trans 'Edit Solutions' %}</span>
             </a>
             </li>
+          </ul>
+        </div>
+      </li>
+                           <li class="nav-item">
+        <a class=" nav-link-light nav-link-dark collapsed dropdown-toggle {{job}}" data-bs-toggle="collapse" data-bs-target="#dashboard-collapse-job-types" aria-expanded="false">
+<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-grid"><rect x="3" y="3" width="7" height="7"></rect><rect x="14" y="3" width="7" height="7"></rect><rect x="14" y="14" width="7" height="7"></rect><rect x="3" y="14" width="7" height="7"></rect></svg>
+                            <span class="ml-2 span-term">{% trans 'Job Types'%}</span>
+        </a>
+        <div class="collapse" id="dashboard-collapse-job-types">
+          <ul class="btn-toggle-nav list-unstyled fw-normal pb-1">
+              <li class="nav-item">
+                <a href="{% url 'jobTypesList' %}" class="nav-link-light nav-link-dark {{all_job_types}}">
+                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-hash"><line x1="4" y1="9" x2="20" y2="9"></line><line x1="4" y1="15" x2="20" y2="15"></line><line x1="10" y1="3" x2="8" y2="21"></line><line x1="16" y1="3" x2="14" y2="21"></line></svg>
+                 <span class="ml-2 span-term">{% trans 'All Job Types' %} </span>
+            </a>
+            </li>
+            <li class="nav-item"><a href="{% url 'addJobTypes' %}" class="nav-link-light nav-link-dark {{add_job_types}}">
+            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-plus"><line x1="12" y1="5" x2="12" y2="19"></line><line x1="5" y1="12" x2="19" y2="12"></line></svg>
+            <span class="ml-2 span-term">{% trans 'Add Job Types' %}</span>
+            </a>
+            </li>
+                  <li class="nav-item"><a href="{% url 'editJobTypes' %}" class="nav-link-light nav-link-dark {{edit_job_types}}">
+            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-edit"><path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"></path><path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"></path></svg>
+            <span class="ml-2 span-term">{% trans 'Edit Job Types' %}</span>
+            </a>
+            </li>
+<!--            <li class="nav-item"><a href="{% url 'deleteSolutions' %}" class="nav-link-light nav-link-dark {{delete_solutions}}">-->
+<!--                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-minus"><line x1="5" y1="12" x2="19" y2="12"></line></svg>-->
+<!--                 <span class="ml-2 span-term">{% trans 'Delete Solutions' %}</span>-->
+<!--            </a>-->
+<!--            </li>-->
+<!--            <li class="nav-item" ><a href="{% url 'editSolutions' %}" class="nav-link-light nav-link-dark {{edit_solutions}}">-->
+<!--            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-edit"><path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"></path><path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"></path></svg>-->
+<!--                 <span class="ml-2 span-term">{% trans 'Edit Solutions' %}</span>-->
+<!--            </a>-->
+<!--            </li>-->
           </ul>
         </div>
       </li>
