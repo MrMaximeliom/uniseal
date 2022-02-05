@@ -81,6 +81,10 @@
            <input id="organization_header" class="form-check-input" type="checkbox" value="organization" name="organization_header">
         </div>
            <div class="form-check">
+          <label for="job_type_header">Job Type</label>
+           <input id="job_type_header" class="form-check-input" type="checkbox" value="job_type" name="job_type_header">
+        </div>
+           <div class="form-check">
           <label for="phone_number_header" >Phone Number</label>
            <input id="phone_number_header" class="form-check-input" type="checkbox" value="phone_number" name="phone_number_header">
         </div>
@@ -157,6 +161,7 @@
                                             <th scope="col">{% trans 'Full Name' %}</th>
                                             <th scope="col">{% trans 'Username' %}</th>
                                             <th scope="col">{% trans 'Organization' %}</th>
+                                              <th scope="col">{% trans 'Job Type' %}</th>
                                             <th scope="col">{% trans 'Phone Number' %}</th>
                                             <th scope="col">{% trans 'Last Login' %}</th>
                                             <th scope="col">{% trans 'Update' %}</th>
@@ -171,6 +176,7 @@
                                             <th scope="row">{{user.full_name}}</th>
                                             <td>{{user.username}}</td>
                                             <td>{{user.organization}}</td>
+                                            <td>{{user.job_type.name}}</td>
                                             <td>0{{user.phone_number}}</td>
                                             <td>{{user.last_login}}</td>
                                             <td><a href="{% url 'editUser' slug=user.slug %}" class="btn btn-sm btn-primary">Update</a></td>

@@ -153,6 +153,11 @@
             <set />
           </value>
         </entry>
+        <entry key="$PROJECT_DIR$/../Ouloug/core/settings.py">
+          <value>
+            <set />
+          </value>
+        </entry>
         <entry key="$PROJECT_DIR$/../Ouloug/models.py">
           <value>
             <set />
@@ -348,6 +353,11 @@
             <set />
           </value>
         </entry>
+        <entry key="$PROJECT_DIR$/apps/accounts/dashboard_views.py">
+          <value>
+            <set />
+          </value>
+        </entry>
         <entry key="$PROJECT_DIR$/apps/accounts/forms.py">
           <value>
             <set />
@@ -368,7 +378,22 @@
             <set />
           </value>
         </entry>
+        <entry key="$PROJECT_DIR$/apps/accounts/templates/accounts/all_users.html">
+          <value>
+            <set />
+          </value>
+        </entry>
+        <entry key="$PROJECT_DIR$/apps/accounts/templates/accounts/delete_users.html">
+          <value>
+            <set />
+          </value>
+        </entry>
         <entry key="$PROJECT_DIR$/apps/accounts/templates/accounts/edit_user.html">
+          <value>
+            <set />
+          </value>
+        </entry>
+        <entry key="$PROJECT_DIR$/apps/accounts/templates/accounts/edit_users.html">
           <value>
             <set />
           </value>
@@ -403,7 +428,57 @@
             <set />
           </value>
         </entry>
+        <entry key="$PROJECT_DIR$/apps/address/migrations/0042_remove_city_country_alter_area_id_alter_area_slug_and_more.py">
+          <value>
+            <set />
+          </value>
+        </entry>
+        <entry key="$PROJECT_DIR$/apps/address/migrations/0043_remove_city_country_alter_area_id_alter_area_slug_and_more.py">
+          <value>
+            <set />
+          </value>
+        </entry>
+        <entry key="$PROJECT_DIR$/apps/address/migrations/0044_remove_city_country_alter_area_id_alter_area_slug_and_more.py">
+          <value>
+            <set />
+          </value>
+        </entry>
+        <entry key="$PROJECT_DIR$/apps/address/migrations/0045_remove_city_country_alter_area_id_alter_area_slug_and_more.py">
+          <value>
+            <set />
+          </value>
+        </entry>
+        <entry key="$PROJECT_DIR$/apps/address/migrations/0046_remove_city_country_alter_area_id_alter_area_slug_and_more.py">
+          <value>
+            <set />
+          </value>
+        </entry>
+        <entry key="$PROJECT_DIR$/apps/address/migrations/0047_remove_city_country_alter_area_id_alter_area_slug_and_more.py">
+          <value>
+            <set />
+          </value>
+        </entry>
+        <entry key="$PROJECT_DIR$/apps/address/migrations/0048_remove_city_country_alter_area_id_alter_area_slug_and_more.py">
+          <value>
+            <set />
+          </value>
+        </entry>
         <entry key="$PROJECT_DIR$/apps/admin_panel/apps.py">
+          <value>
+            <set />
+          </value>
+        </entry>
+        <entry key="$PROJECT_DIR$/apps/admin_panel/endpoints_urls.py">
+          <value>
+            <set />
+          </value>
+        </entry>
+        <entry key="$PROJECT_DIR$/apps/admin_panel/models.py">
+          <value>
+            <set />
+          </value>
+        </entry>
+        <entry key="$PROJECT_DIR$/apps/admin_panel/serializers.py">
           <value>
             <set />
           </value>
@@ -493,6 +568,46 @@
             <set />
           </value>
         </entry>
+        <entry key="$PROJECT_DIR$/apps/offer/apps.py">
+          <value>
+            <set />
+          </value>
+        </entry>
+        <entry key="$PROJECT_DIR$/apps/offer/models.py">
+          <value>
+            <set />
+          </value>
+        </entry>
+        <entry key="$PROJECT_DIR$/apps/product/migrations/0052_product_discount_percentage_alter_product_price_and_more.py">
+          <value>
+            <set />
+          </value>
+        </entry>
+        <entry key="$PROJECT_DIR$/apps/product/migrations/0053_alter_product_discount_percentage_and_more.py">
+          <value>
+            <set />
+          </value>
+        </entry>
+        <entry key="$PROJECT_DIR$/apps/product/migrations/0055_alter_product_discount_percentage_and_more.py">
+          <value>
+            <set />
+          </value>
+        </entry>
+        <entry key="$PROJECT_DIR$/apps/product/migrations/0056_alter_product_discount_percentage_and_more.py">
+          <value>
+            <set />
+          </value>
+        </entry>
+        <entry key="$PROJECT_DIR$/apps/product/migrations/0057_alter_product_discount_percentage_and_more.py">
+          <value>
+            <set />
+          </value>
+        </entry>
+        <entry key="$PROJECT_DIR$/apps/product/models.py">
+          <value>
+            <set />
+          </value>
+        </entry>
         <entry key="$PROJECT_DIR$/apps/product/templates/product/all_products.html">
           <value>
             <set />
@@ -529,6 +644,41 @@
           </value>
         </entry>
         <entry key="$PROJECT_DIR$/apps/sms_notifications/migrations/0032_smsnotification_status_alter_smscontacts_slug_and_more.py">
+          <value>
+            <set />
+          </value>
+        </entry>
+        <entry key="$PROJECT_DIR$/apps/sms_notifications/migrations/0033_smsnotification_status_alter_smscontacts_slug_and_more.py">
+          <value>
+            <set />
+          </value>
+        </entry>
+        <entry key="$PROJECT_DIR$/apps/sms_notifications/migrations/0034_smsnotification_status_alter_smscontacts_slug_and_more.py">
+          <value>
+            <set />
+          </value>
+        </entry>
+        <entry key="$PROJECT_DIR$/apps/sms_notifications/migrations/0035_smsnotification_status_alter_smscontacts_slug_and_more.py">
+          <value>
+            <set />
+          </value>
+        </entry>
+        <entry key="$PROJECT_DIR$/apps/sms_notifications/migrations/0036_smsnotification_status_alter_smscontacts_slug_and_more.py">
+          <value>
+            <set />
+          </value>
+        </entry>
+        <entry key="$PROJECT_DIR$/apps/sms_notifications/migrations/0037_smsnotification_status_alter_smscontacts_slug_and_more.py">
+          <value>
+            <set />
+          </value>
+        </entry>
+        <entry key="$PROJECT_DIR$/apps/sms_notifications/migrations/0038_smsnotification_status_alter_smscontacts_slug_and_more.py">
+          <value>
+            <set />
+          </value>
+        </entry>
+        <entry key="$PROJECT_DIR$/apps/sms_notifications/migrations/0039_smsnotification_status_alter_smscontacts_slug_and_more.py">
           <value>
             <set />
           </value>
@@ -754,6 +904,11 @@
           </value>
         </entry>
         <entry key="$PROJECT_DIR$/sellingPoint/templates/sellingPoints/add_selling_points.html">
+          <value>
+            <set />
+          </value>
+        </entry>
+        <entry key="$PROJECT_DIR$/signals.py">
           <value>
             <set />
           </value>

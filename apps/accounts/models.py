@@ -4,7 +4,6 @@ from django.contrib.auth.models import (
 from django.db import models
 from django.template.defaultfilters import slugify  # new
 from django.utils.translation import gettext_lazy as _
-# from  apps.jop_type.models import JopType
 from Util.utils import rand_slug
 
 

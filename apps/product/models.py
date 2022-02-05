@@ -62,11 +62,20 @@ class Product(models.Model):
         verbose_name=_('Is Top Product?'),
         default=False
     )
-    price = models.FloatField(
+    price = models.DecimalField(
         verbose_name=_('Price'),
-        null=False,
+        max_digits=19,
+        decimal_places=10,
+        null=True,
         blank=False,
-        default=0.0
+
+    )
+    discount_percentage = models.DecimalField(
+        verbose_name=_('Discount Percentage'),
+        max_digits=19,
+        decimal_places=10,
+        null=True,
+        blank=False,
     )
 
 

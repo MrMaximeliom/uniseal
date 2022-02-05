@@ -72,6 +72,7 @@
                                             <th scope="col">{% trans 'Full Name' %}</th>
                                             <th scope="col">{% trans 'Username' %}</th>
                                             <th scope="col">{% trans 'Organization' %}</th>
+                                            <th scope="col">{% trans 'Job Type' %}</th>
                                             <th scope="col">{% trans 'Phone Number' %}</th>
                                             <th scope="col">{% trans 'Last Login' %}</th>
                                             <th scope="col">{% trans 'Delete' %}</th>
@@ -85,6 +86,7 @@
                                             <th scope="row">{{user.full_name}}</th>
                                             <td>{{user.username}}</td>
                                             <td>{{user.organization}}</td>
+                                            <td>{{user.job_type.name}}</td>
                                             <td>0{{user.phone_number}}</td>
                                             <td>{{user.last_login}}</td>
                                               <td><a href="#" class="btn btn-sm btn-danger" data-bs-toggle="modal" data-bs-target="#exampleModal{{user.id}}">Delete</a></td>

@@ -22,7 +22,7 @@ class  ManageProductsViewSet(viewsets.ModelViewSet):
         "product_sheet_downloads": product_sheet_downloads_count,
     }
     Use PUT function by accessing this url:
-    /admin_panel/manageProducts/<record's_id>
+    api/admin_panel/manageProducts/<record's_id>
     Format of data will be as the previous data format for GET function
 
       """
@@ -34,6 +34,34 @@ class  ManageProductsViewSet(viewsets.ModelViewSet):
     from apps.admin_panel.models import ManageProducts
     queryset = ManageProducts.objects.all()
     serializer_class = ManageProductsSerializer
+    permission_classes = [UnisealPermission]
+
+class  ManageProductsPageViewSet(viewsets.ModelViewSet):
+    """
+        API endpoint that allows to get reports about the products page by
+        the admin
+        this endpoint allows  GET,POST,PUT,PATCH,DELETE function
+        permissions to this view is restricted as the following:
+        - only admin users can access this api
+         Data will be retrieved in the following format using GET function:
+       {
+        "id": 26,
+        "user": user_id,
+        "product_page_views": product_page_views_count,
+    }
+    Use PUT function by accessing this url:
+    api/admin_panel/manageProductsPage/<record's_id>
+    Format of data will be as the previous data format for GET function
+
+      """
+    from apps.admin_panel.serializers import ManageProductsPageSerializer
+
+    def get_view_name(self):
+        return _("Manage Products Page's data")
+
+    from apps.admin_panel.models import ManageProductsPage
+    queryset = ManageProductsPage.objects.all()
+    serializer_class = ManageProductsPageSerializer
     permission_classes = [UnisealPermission]
 
 class  ManageProjectsViewSet(viewsets.ModelViewSet):
@@ -51,7 +79,7 @@ class  ManageProjectsViewSet(viewsets.ModelViewSet):
         "project_views": project_views_count,
     }
     Use PUT function by accessing this url:
-    /admin_panel/manageProjects/<record's_id>
+    api/admin_panel/manageProjects/<record's_id>
     Format of data will be as the previous data format for GET function
 
       """
@@ -80,7 +108,7 @@ class  ManageSolutionViewSet(viewsets.ModelViewSet):
         "solution_views": solution_views_count,
     }
     Use PUT function by accessing this url:
-    /admin_panel/manageSolution/<record's_id>
+    api/admin_panel/manageSolution/<record's_id>
     Format of data will be as the previous data format for GET function
 
       """
@@ -110,7 +138,7 @@ class  ManageSellingPointsViewSet(viewsets.ModelViewSet):
         "secondary_phone_number": secondary_phone_number_count,
     }
     Use PUT function by accessing this url:
-    /admin_panel/manageSellingPoints/<record's_id>
+    api/admin_panel/manageSellingPoints/<record's_id>
     Format of data will be as the previous data format for GET function
 
       """
@@ -141,7 +169,7 @@ class  ManageBrochuresViewSet(viewsets.ModelViewSet):
         "brochures_sheet_downloads": brochures_sheet_downloads_count,
     }
     Use PUT function by accessing this url:
-    /admin_panel/manageBrochures/<record's_id>
+    api/admin_panel/manageBrochures/<record's_id>
     Format of data will be as the previous data format for GET function
 
       """
@@ -153,4 +181,32 @@ class  ManageBrochuresViewSet(viewsets.ModelViewSet):
     from apps.admin_panel.models import ManageBrochures
     queryset = ManageBrochures.objects.all()
     serializer_class = ManageBrochuresSerializer
+    permission_classes = [UnisealPermission]
+
+class  ManageCartsViewSet(viewsets.ModelViewSet):
+    """
+        API endpoint that allows to get reports about the carts by
+        the admin
+        this endpoint allows  GET,POST,PUT,PATCH,DELETE function
+        permissions to this view is restricted as the following:
+        - only admin users can access this api
+         Data will be retrieved in the following format using GET function:
+       {
+        "id": 26,
+        "cart": cart_id,
+        "user": user_id,
+        "add_to_cart_views": cart_views_count,
+    }
+    Use PUT function by accessing this url:
+    api/admin_panel/manageCarts/<record's_id>
+    Format of data will be as the previous data format for GET function
+      """
+    from apps.admin_panel.serializers import ManageCartsSerializer
+
+    def get_view_name(self):
+        return _("Manage Carts' data")
+
+    from apps.admin_panel.models import ManageCarts
+    queryset = ManageCarts.objects.all()
+    serializer_class = ManageCartsSerializer
     permission_classes = [UnisealPermission]

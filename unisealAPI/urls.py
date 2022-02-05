@@ -12,7 +12,7 @@ from rest_framework_simplejwt.views import (
 
 from apps.accounts import endpoints_urls as accounts_views
 from apps.address import endpoints_urls as address_endpoints_urls
-from apps.admin_panel import views as admin_views
+from apps.admin_panel import endpoints_urls as admin_views
 from apps.application_videos import endpoints_urls as application_videos_views
 from apps.brochures import endpoints_urls as brochures_views
 from apps.category import endpoints_urls as category_views
@@ -78,14 +78,16 @@ admin_router.register(r'manageProducts', admin_views.ManageProductsViewSet, base
 admin_router.register(r'manageProjects', admin_views.ManageProjectsViewSet, basename='ManageProjects')
 admin_router.register(r'manageSolution', admin_views.ManageSolutionViewSet, basename='ManageSolution')
 admin_router.register(r'manageSellingPoints', admin_views.ManageSellingPointsViewSet, basename='ManageSellingPoints')
-admin_router.register(r'manageBrochures', admin_views.ManageBrochuresViewSet, basename='MManageBrochures')
+admin_router.register(r'manageBrochures', admin_views.ManageBrochuresViewSet, basename='ManageBrochures')
+admin_router.register(r'manageCarts', admin_views.ManageCartsViewSet, basename='ManageCarts')
+admin_router.register(r'manageProductsPage', admin_views.ManageProductsPageViewSet, basename='ManageProductsPage')
 
 
 
 urlpatterns = [
 
     path('api/', include(router.urls)),
-    path('admin_panel/', include(admin_router.urls)),
+    path('api/admin_panel/', include(admin_router.urls)),
     path('admin/', admin.site.urls),
     path('api/accounts/forgetPassword/<int:pk>/', accounts_views.ForgetPasswordView.as_view(),name='ForgetPassword'),
     path('', dashboard_views.dashboard, name='dashboard'),

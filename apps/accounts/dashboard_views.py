@@ -17,6 +17,7 @@ def prepare_selected_query(selected_pages, paginator_obj, headers=None):
     full_name = []
     username = []
     organization = []
+    job_type = []
     phone_number = []
     last_login = []
     if headers is not None:
@@ -35,6 +36,10 @@ def prepare_selected_query(selected_pages, paginator_obj, headers=None):
                 for page in selected_pages:
                     for user in paginator_obj.page(page):
                         organization.append(user.organization)
+            elif header == "JobType":
+                for page in selected_pages:
+                    for user in paginator_obj.page(page):
+                        job_type.append(user.job_type.name)
             elif header == "Phone Number":
                 for page in selected_pages:
                     for user in paginator_obj.page(page):
@@ -44,24 +49,24 @@ def prepare_selected_query(selected_pages, paginator_obj, headers=None):
                     for user in paginator_obj.page(page):
                         last_login.append(user.last_login.strftime('%d-%m-%y %a %H:%M %p'))
     else:
-        headers_here = ["Full Name", "Username", "Organization", "Phone Number", "Last Login"]
+        headers_here = ["Full Name", "Username", "Organization","JobType", "Phone Number", "Last Login"]
         print("headers are none")
         for page in range(1, paginator_obj.num_pages):
             for user in paginator_obj.page(page):
-                print("adding user data")
-                print("user names: ", user.full_name)
                 full_name.append(user.full_name)
                 username.append(user.username)
                 organization.append(user.organization)
+                job_type.append(user.job_type)
                 phone_number.append("0" + user.phone_number)
                 last_login.append(user.last_login.strftime('%d-%m-%y %a %H:%M %p'))
-    return headers_here, full_name, username, organization, phone_number, last_login
+    return headers_here, full_name, username, organization,job_type, phone_number, last_login
 
 
 def prepare_query(paginator_obj, headers=None):
     full_name = []
     username = []
     organization = []
+    job_type = []
     phone_number = []
     last_login = []
     if headers is not None:
@@ -79,6 +84,10 @@ def prepare_query(paginator_obj, headers=None):
                 for page in range(1, paginator_obj.num_pages + 1):
                     for user in paginator_obj.page(page):
                         organization.append(user.organization)
+            elif header == "JobType":
+                for page in range(1, paginator_obj.num_pages + 1):
+                    for user in paginator_obj.page(page):
+                        job_type.append(user.job_type.name)
             elif header == "Phone Number":
                 for page in range(1, paginator_obj.num_pages + 1):
                     for user in paginator_obj.page(page):
@@ -88,18 +97,19 @@ def prepare_query(paginator_obj, headers=None):
                     for user in paginator_obj.page(page):
                         last_login.append(user.last_login.strftime('%d-%m-%y %a %H:%M %p'))
     else:
-        headers_here = ["Full Name", "Username", "Organization", "Phone Number", "Last Login"]
+        headers_here = ["Full Name", "Username", "Organization","JobType", "Phone Number", "Last Login"]
         for page in range(1, paginator_obj.num_pages + 1):
             for user in paginator_obj.page(page):
                 full_name.append(user.full_name)
                 username.append(user.username)
                 organization.append(user.organization)
+                job_type.append(user.job_type.name)
                 phone_number.append("0" + user.phone_number)
                 last_login.append(user.last_login.strftime('%d-%m-%y %a %H:%M %p'))
 
     # later for extracting actual data
 
-    return headers_here, full_name, username, organization, phone_number, last_login
+    return headers_here, full_name, username, organization,job_type, phone_number, last_login
 
 
 searchManObj = SearchMan("User")
@@ -180,6 +190,7 @@ def all_users(request):
         headers.append("Full Name") if request.POST.get('full_name_header') is not None else ''
         headers.append("Username") if request.POST.get('username_header') is not None else ''
         headers.append("Organization") if request.POST.get('organization_header') is not None else ''
+        headers.append("JobType") if request.POST.get('job_type_header') is not None else ''
         headers.append("Phone Number") if request.POST.get('phone_number_header') is not None else ''
         headers.append("Last Login") if request.POST.get('last_login_header') is not None else ''
         if request.POST.get('pages_collector') != 'none' and len(request.POST.get('pages_collector')) > 0:
@@ -192,7 +203,7 @@ def all_users(request):
                     selected_pages.append(item)
             if len(headers) > 0:
                 constructor = {}
-                headers, full_name, username, organization, phone_number, last_login = prepare_selected_query(
+                headers, full_name, username, organization,job_type, phone_number, last_login = prepare_selected_query(
                     selected_pages=selected_pages, paginator_obj=query,
                     headers=headers)
 
@@ -203,6 +214,8 @@ def all_users(request):
                     constructor.update({"username": username})
                 if len(organization) > 0:
                     constructor.update({"organization": organization})
+                if len(job_type) > 0:
+                    constructor.update({"job_type": job_type})
                 if len(phone_number) > 0:
                     constructor.update({"phone_number": phone_number})
                 if len(last_login) > 0:
@@ -219,19 +232,19 @@ def all_users(request):
 
 
             else:
-                headers = ["Full Name", "Username", "Organization", "Phone Number", "Last Login"]
-                headers, full_name, username, organization, phone_number, last_login = prepare_selected_query(
+                headers = ["Full Name", "Username", "Organization","JobType", "Phone Number", "Last Login"]
+                headers, full_name, username, organization,job_type, phone_number, last_login = prepare_selected_query(
                     selected_pages, query, headers)
                 status, report_man.filePath, report_man.fileName = createExelFile('Report_For_Users', headers,
                                                                                   full_name=full_name,
                                                                                   username=username,
                                                                                   organization=organization,
+                                                                                  job_type = job_type,
                                                                                   phone_number=phone_number,
                                                                                   last_login=last_login)
                 if status:
                     request.session['temp_dir'] = 'delete man!'
                     messages.success(request, f"Report Successfully Created ")
-                    # return redirect('download_file',filepath=filepath,filename=filename)
 
                     return redirect('downloadReport', str(report_man.filePath), str(report_man.fileName))
 
@@ -244,7 +257,7 @@ def all_users(request):
 
             if len(headers) > 0:
                 constructor = {}
-                headers, full_name, username, organization, phone_number, last_login = prepare_query(query,
+                headers, full_name, username, organization,job_type, phone_number, last_login = prepare_query(query,
                                                                                                      headers=headers)
                 if len(full_name) > 0:
                     print("full names are: ", full_name)
@@ -253,6 +266,8 @@ def all_users(request):
                     constructor.update({"username": username})
                 if len(organization) > 0:
                     constructor.update({"organization": organization})
+                if len(job_type) > 0:
+                    constructor.update({"job_type": job_type})
                 if len(phone_number) > 0:
                     constructor.update({"phone_number": phone_number})
                 if len(last_login) > 0:
@@ -270,11 +285,12 @@ def all_users(request):
                     messages.error(request, "Sorry Report Failed To Create , Please Try Again!")
 
             else:
-                headers, full_name, username, organization, phone_number, last_login = prepare_query(query)
+                headers, full_name, username, organization,job_type, phone_number, last_login = prepare_query(query)
                 status, report_man.filePath, report_man.fileName = createExelFile('Report_For_Users', headers,
                                                                                   full_name=full_name,
                                                                                   username=username,
                                                                                   organization=organization,
+                                                                                  job_type = job_type,
                                                                                   phone_number=phone_number,
                                                                                   last_login=last_login)
                 if status:

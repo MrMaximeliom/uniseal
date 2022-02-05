@@ -7,6 +7,12 @@ class  ManageProductsSerializer(serializers.ModelSerializer):
         model =  ManageProducts
         fields = "__all__"
 
+class  ManageProductsPageSerializer(serializers.ModelSerializer):
+    class Meta:
+        from .models import  ManageProductsPage
+        model =  ManageProductsPage
+        fields = "__all__"
+
 class  ManageProjectsSerializer(serializers.ModelSerializer):
     class Meta:
         from .models import  ManageProjects
@@ -30,4 +36,10 @@ class  ManageBrochuresSerializer(serializers.ModelSerializer):
     class Meta:
         from .models import  ManageBrochures
         model =  ManageBrochures
+        fields = "__all__"
+
+class  ManageCartsSerializer(serializers.ModelSerializer):
+    class Meta:
+        from .models import  ManageCarts
+        model =  ManageCarts
         fields = "__all__"
