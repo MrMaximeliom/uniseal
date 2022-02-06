@@ -9,6 +9,7 @@ NON_SELECTED_ORDER = _("Please select order status first!")
 # used by account search pages
 SEARCH_USERS_TIP = _("Search Users")
 SEARCH_ORDERS_TIP = _("Search Orders")
+SEARCH_JOB_TYPE_TIP = _("Search JobTypes")
 USERNAME_SYNTAX_ERROR = _("Username contains alphanumeric English letters only!")
 FULL_NAME_SYNTAX_ERROR = _("Full Name contains English letters only!")
 ORGANIZATION_NAME_SYNTAX_ERROR = _("Organization Name contains only English letters!")
@@ -47,8 +48,25 @@ PRODUCT_NOT_FOUND = _("Sorry no products found that matches your search!")
 PROJECT_NOT_FOUND = _("Sorry no projects found that matches your search!")
 # Order Not found errors
 ORDER_NOT_FOUND = _("Sorry no orders found that matches your search!")
+# Job Type Not found errors
+JOB_TYPE_NOT_FOUND = _("Sorry no job types found that matches your search!")
+# Offer Not found errors
+OFFER_NOT_FOUND = _("Sorry no offers found that matches your search!")
 # Used by notifications pages
 NOTIFICATION_TITLE_SYNTAX_ERROR = _("Notification title contains English letters only!")
 NOTIFICATION_BODY_SYNTAX_ERROR = _("Notification body contains English letters only!")
 # Notification Not found errors
 NOTIFICATION_NOT_FOUND = _("Sorry no notifications found that matches your search!")
+# Pages Titles
+# Job Types titles
+ALL_JOB_TYPES_TITLE = _("Uniseal Dashboard - All Job Types")
+ADD_JOB_TYPES_TITLE = _("Uniseal Dashboard - Add Job Types")
+EDIT_JOB_TYPES_TITLE = _("Uniseal Dashboard - Edit Job Types")
+EDIT_JOB_TYPE_TITLE = _("Uniseal Dashboard - Edit Job Type")
+DELETE_JOB_TYPES_TITLE = _("Uniseal Dashboard - Delete Job Types")
+# Offers titles
+ALL_OFFERS_TITLE = _("Uniseal Dashboard - All Offers")
+ADD_OFFERS_TITLE = _("Uniseal Dashboard - Add Offers")
+EDIT_OFFERS_TITLE = _("Uniseal Dashboard - Edit Offers")
+EDIT_OFFER_TITLE = _("Uniseal Dashboard - Edit Offer")
+DELETE_OFFERS_TITLE = _("Uniseal Dashboard - Delete Offers")

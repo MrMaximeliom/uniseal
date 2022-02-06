@@ -20,33 +20,23 @@
                     <ol class="crumb breadcrumb-light breadcrumb-dark">
                         <li class="breadcrumb-item"><a href="{% url 'dashboard' %}">{% trans 'Dashboard' %}</a></li>
                         <li class="breadcrumb-item" aria-current="page">{% trans 'Jop Types' %}</li>
-                        <li class="breadcrumb-item" aria-current="page">{% trans 'All Jop Types' %}</li>
+                        <li class="breadcrumb-item" aria-current="page">{% trans 'Delete Jop Types' %}</li>
                     </ol>
                 </nav>
                 {% endblock breadcrumb_content %}
 {% block content %}
-                <h1 class="h2">{% trans 'Jop Types' %}</h1>
+                <h1 class="h2">{% trans 'Delete Jop Types' %}</h1>
 
 <form class="row g-2 mb-3" action="" method="post" id="searchForm" autocomplete="off">
     {% csrf_token %}
   <div class="col-sm-3 col-md-3 col-lg-3">
     <label for="searchPhrase" class="visually-hidden">{% trans 'Search Phrase' %}</label>
-    <input type="text" class="form-control" name="search_phrase" id="searchPhrase" placeholder="Search ..">
+    <input type="text" class="form-control" name="search_phrase" id="searchPhrase" placeholder="Search .." required>
           <span class="delete-warning" id="search_phrase_error"></span>
   </div>
 
-    <div class="col-sm-3 col-md-3 col-lg-3">
-    <select class="form-select search-select" id="searchBy" name="search_options" aria-label="Default select example">
-  <option selected value="none">{% trans 'Search By' %}</option>
-  <option value="product">{% trans 'Product Name' %}</option>
-  <option value="category">{% trans 'Category Name' %}</option>
-  <option value="supplier">{% trans 'Supplier Name' %}</option>
-</select>
-                <span style="display:none;" class="delete-warning" id="selection_error"></span>
-
-    </div>
   <div class="col-sm-3 col-md-3 col-lg-3">
-   <button type="submit" class="btn btn-primary mb-3" id="searchButton" title="{{search_products_tip}}"><span><i class="fas fa-search"></i></span></button>
+   <button type="submit" class="btn btn-primary mb-3" id="searchButton" title="{{search_job_types_tip}}"><span><i class="fas fa-search"></i></span></button>
     <button type="submit" name="clear" value="clear" class="btn btn-danger mb-3" title="{{clear_search_tip}}"><span><i class="fas fa-eraser"></i></span></button>
  </div>
 </form>
@@ -67,7 +57,7 @@
                                           <tr>
                                             <th scope="col">{% trans 'Type Name' %}</th>
                                             <th scope="col">{% trans 'Number of Users in this Type' %}</th>
-<!--                                            <th scope="col"></th>-->
+                                            <th scope="col">{% trans 'Delete' %}</th>
                                           </tr>
                                         </thead>
                                         <tbody>
@@ -75,8 +65,34 @@
                                           <tr>
                                             <th scope="row">{{object.name}}</th>
                                             <td>{{ object.num_users }}</td>
-<!--                                            <td><a href="#" class="btn btn-sm btn-primary">View</a></td>-->
+                                            <td><a href="#" class="btn btn-sm btn-danger"  data-bs-toggle="modal" data-bs-target="#exampleModal{{object.id}}">{% trans 'Delete' %}</a></td>
+
                                           </tr>
+  <div class="modal fade" id="exampleModal{{object.id}}" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="exampleModalLabel">{% trans 'Delete Conformation' %}</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+        <form action="" method="post">
+            {% csrf_token %}
+      <div class="modal-body">
+
+          <h3>{% trans 'Are you sure you want to delete this job type?' %}</h3>
+<h4 style="color:red;">{{object.name}}</h4>
+
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+        <a type="submit" class="btn btn-danger" href="{% url 'deleteJobType' slug=object.slug%}">Delete</a>
+
+      </div>
+              </form>
+    </div>
+  </div>
+</div>
+
                                         {% endfor %}
 
                                         </tbody>
@@ -115,7 +131,7 @@
   </div>
 {% endif %}
 {% if object_list|length == 0 and not search %}
-<h3 class="delete-warning">{% trans 'There are no jop types yet .. you can add new ones from ' %} <a href="{% url 'addJopTypes' %}">{% trans 'Here' %}</a></h3>
+<h3 class="delete-warning">{% trans 'There are no job types yet .. you can add new ones from ' %} <a href="{% url 'addJobTypes' %}">{% trans 'Here' %}</a></h3>
 {% endif %}
 {% if search and search_result.count == 0 and search_result != "" %}
 <h3 class="delete-warning">{{not_found}}</h3>

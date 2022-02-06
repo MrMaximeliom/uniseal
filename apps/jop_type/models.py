@@ -2,7 +2,6 @@ from django.db import models
 from django.utils.translation import gettext_lazy as _
 from django.template.defaultfilters import slugify
 from Util.utils import rand_slug
-# create job type model
 
 class JopType(models.Model):
     name = models.CharField(
@@ -16,5 +15,7 @@ class JopType(models.Model):
         default=slugify(rand_slug()),
         verbose_name=_('Job Type Slug')
     )
+
+
     def __str__(self):
         return self.name

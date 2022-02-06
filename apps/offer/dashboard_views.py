@@ -4,11 +4,11 @@ from django.views.generic import ListView
 
 from Util.search_form_strings import CLEAR_SEARCH_TIP,\
     SEARCH_JOB_TYPE_TIP ,\
-    JOB_TYPE_NOT_FOUND, ALL_JOB_TYPES_TITLE,\
-    EDIT_JOB_TYPE_TITLE , ADD_JOB_TYPES_TITLE
+    OFFER_NOT_FOUND, ALL_OFFERS_TITLE,\
+    EDIT_OFFERS_TITLE , ADD_OFFERS_TITLE
 from Util.utils import delete_temp_folder, SearchMan, ReportMan
-from .models import JopType
-from .forms import JobTypeForm
+from .models import Offer
+from .forms import OfferForm
 from django.views.generic.edit import FormView
 from django.contrib import messages
 from django.db.models import Count
@@ -16,48 +16,48 @@ from django.core.paginator import Paginator, PageNotAnInteger, EmptyPage
 from django.views.generic.edit import UpdateView
 
 
-class JopTypeFormView(FormView):
-    template_name = 'job_type/add_job_types.html'
-    form_class = JobTypeForm
-    success_url = 'addJobTypes'
+class OfferFormView(FormView):
+    template_name = 'offer/add_offers.html'
+    form_class = OfferForm
+    success_url = 'addOffers'
 
     def form_valid(self, form):
         form.save()
-        messages.success(self.request, "Job Type Added Successfully")
+        messages.success(self.request, "Offer Added Successfully")
         return super().form_valid(form)
 
     extra_context = {
-        'job': 'active',
-        'add_job_types': 'active',
-        'title':ADD_JOB_TYPES_TITLE
+        'offer': 'active',
+        'add_offers': 'active',
+        'title':ADD_OFFERS_TITLE
     }
 
 
-class JopTypesListView(ListView):
-    model = JopType
-    template_name = "job_type/all_job_types.html"
-    active_flag = 'all_job_types'
-    searchManObj = SearchMan("JobType")
+class OffersListView(ListView):
+    model = Offer
+    template_name = "offer/all_offers.html"
+    active_flag = 'all_offers'
+    searchManObj = SearchMan("Offer")
     search_result = None
     report_man = ReportMan()
-    title = ALL_JOB_TYPES_TITLE
+    title = ALL_OFFERS_TITLE
 
 
 
 
     def get_queryset(self):
-        return JopType.objects.annotate(num_users=Count('user')).order_by('-num_users')
+        return Offer.objects.all().order_by('-id')
 
     def post(self, request, *args, **kwargs):
         queryset = self.get_queryset()
         paginator = Paginator(queryset, 5)
         if request.POST.get('search_phrase') != '':
             search_message = request.POST.get('search_phrase')
-            self.search_result = JopType.objects.annotate(num_users=Count('user')).filter(
+            self.search_result = Offer.objects.all().filter(
                 name=search_message).order_by('-num_users')
             self.searchManObj.setPaginator(self.search_result)
             self.searchManObj.setSearchPhrase(search_message)
-            self.searchManObj.setSearchOption('JopType')
+            self.searchManObj.setSearchOption('Offer Start Date')
             self.searchManObj.setSearchError(False)
         if 'clear' not in request.POST:
             self.searchManObj.setSearch(True)
@@ -109,7 +109,7 @@ class JopTypesListView(ListView):
             if request.session['temp_dir'] != '':
                 delete_temp_folder()
         if 'page' not in request.GET:
-            job_types = JopType.objects.annotate(num_users=Count('user')).order_by('-num_users')
+            job_types = Offer.objects.all().order_by('-id')
             self.searchManObj.setPaginator(job_types)
             self.searchManObj.setSearch(False)
         if request.GET.get('page'):

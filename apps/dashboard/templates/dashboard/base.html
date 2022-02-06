@@ -431,21 +431,62 @@ $("#btn-mode").html('<svg xmlns="http://www.w3.org/2000/svg" width="24" height="
             <span class="ml-2 span-term">{% trans 'Add Job Types' %}</span>
             </a>
             </li>
+                          <li class="nav-item"><a href="{% url 'deleteJobTypes' %}" class="nav-link-light nav-link-dark {{delete_job_types}}">
+                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-minus"><line x1="5" y1="12" x2="19" y2="12"></line></svg>
+                 <span class="ml-2 span-term">{% trans 'Delete Job Types' %}</span>
+            </a>
+            </li>
                   <li class="nav-item"><a href="{% url 'editJobTypes' %}" class="nav-link-light nav-link-dark {{edit_job_types}}">
             <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-edit"><path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"></path><path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"></path></svg>
             <span class="ml-2 span-term">{% trans 'Edit Job Types' %}</span>
             </a>
             </li>
-<!--            <li class="nav-item"><a href="{% url 'deleteSolutions' %}" class="nav-link-light nav-link-dark {{delete_solutions}}">-->
-<!--                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-minus"><line x1="5" y1="12" x2="19" y2="12"></line></svg>-->
-<!--                 <span class="ml-2 span-term">{% trans 'Delete Solutions' %}</span>-->
-<!--            </a>-->
-<!--            </li>-->
-<!--            <li class="nav-item" ><a href="{% url 'editSolutions' %}" class="nav-link-light nav-link-dark {{edit_solutions}}">-->
-<!--            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-edit"><path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"></path><path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"></path></svg>-->
-<!--                 <span class="ml-2 span-term">{% trans 'Edit Solutions' %}</span>-->
-<!--            </a>-->
-<!--            </li>-->
+
+          </ul>
+        </div>
+      </li>
+                        <li class="nav-item">
+        <a class=" nav-link-light nav-link-dark collapsed dropdown-toggle {{offers}}" data-bs-toggle="collapse" data-bs-target="#dashboard-collapse-offers" aria-expanded="false">
+<svg xmlns="http://www.w3.org/2000/svg" width="30.748" height="31.988" viewBox="0 0 30.748 31.988">
+  <g id="Group_213" data-name="Group 213" transform="translate(1.915 2.218)">
+    <g id="Group_134" data-name="Group 134" transform="translate(3.921 -0.031) rotate(9)">
+      <g id="Path_17" data-name="Path 17" transform="translate(0.179 -0.002)" fill="none" stroke-linecap="round" stroke-linejoin="round">
+        <path d="M11.332.066C17.592.1,22.7,5.543,22.737,12.215c-1.9,2.237-3.724,4.112-5.829,6.282-2.013,2.319-3.725,3.935-5.437,5.732C5.211,24.192.1,18.753.066,12.08S5.072.029,11.332.066Z" stroke="none"/>
+        <path d="M 11.26764392852783 0.06610679626464844 C 5.037754058837891 0.06610679626464844 0.02831268310546875 5.431171417236328 0.06649017333984375 12.0802583694458 C 0.1048107147216797 18.75254821777344 5.210729598999023 24.1916389465332 11.47087955474854 24.22880744934082 C 13.18280029296875 22.43198776245117 14.89486980438232 20.81617736816406 16.90780067443848 18.49678802490234 C 19.01202964782715 16.32718849182129 20.84037017822266 14.45185852050781 22.73652076721191 12.21484851837158 C 22.69820976257324 5.542558670043945 17.59228897094727 0.1034679412841797 11.33213043212891 0.06629753112792969 C 11.31035041809082 0.06616973876953125 11.28939342498779 0.06610679626464844 11.26764392852783 0.06610679626464844 M 11.26764011383057 -1.933891296386719 L 11.34407043457031 -1.933662414550781 C 14.92539024353027 -1.91240119934082 18.29272079467773 -0.4147014617919922 20.8256893157959 2.283557891845703 C 23.32616996765137 4.947198867797852 24.71504974365234 8.470118522644043 24.73649024963379 12.20336818695068 C 24.73922920227051 12.68093776702881 24.57098960876465 13.14372825622559 24.26218032836914 13.50803852081299 C 22.38458061218262 15.72316837310791 20.60697937011719 17.55572891235352 18.54867935180664 19.67764854431152 L 18.38166046142578 19.84984397888184 C 16.97270965576172 21.47038841247559 15.72238159179688 22.74132919311523 14.51298999786377 23.97065734863281 C 13.96302032470703 24.52968788146973 13.44355010986328 25.05771827697754 12.91888999938965 25.6083984375 C 12.53857040405273 26.00757789611816 12.01035785675049 26.23205184936523 11.45901012420654 26.22876739501953 C 7.877619743347168 26.2075080871582 4.510299682617188 24.70980834960938 1.977329254150391 22.01154899597168 C -0.5231494903564453 19.34790802001953 -1.912040710449219 15.82498836517334 -1.933479309082031 12.09174823760986 C -1.944719314575195 10.13445854187012 -1.582090377807617 8.240718841552734 -0.8556709289550781 6.46314811706543 C -0.1503200531005859 4.73710823059082 0.8624496459960938 3.203048706054688 2.154499053955078 1.903558731079102 C 4.614950180053711 -0.5710620880126953 7.85138988494873 -1.933891296386719 11.26764011383057 -1.933891296386719 Z" stroke="none" fill="#000"/>
+      </g>
+      <path id="Path_18" data-name="Path 18" d="M13.4.459S8.961-1.534,3.778,3.408.353,13.536.353,13.536" transform="translate(10.156 10.792)" fill="none" stroke="#000" stroke-linecap="round" stroke-width="2"/>
+    </g>
+    <rect id="Rectangle_204" data-name="Rectangle 204" width="26.729" height="27.737" transform="translate(0.022 0.022)" fill="none"/>
+  </g>
+</svg>
+
+
+                            <span class="ml-2 span-term">{% trans 'Offers'%}</span>
+        </a>
+        <div class="collapse" id="dashboard-collapse-offers">
+          <ul class="btn-toggle-nav list-unstyled fw-normal pb-1">
+              <li class="nav-item">
+                <a href="{% url 'jobTypesList' %}" class="nav-link-light nav-link-dark {{all_offers}}">
+                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-hash"><line x1="4" y1="9" x2="20" y2="9"></line><line x1="4" y1="15" x2="20" y2="15"></line><line x1="10" y1="3" x2="8" y2="21"></line><line x1="16" y1="3" x2="14" y2="21"></line></svg>
+                 <span class="ml-2 span-term">{% trans 'All Offers' %} </span>
+            </a>
+            </li>
+            <li class="nav-item"><a href="{% url 'addJobTypes' %}" class="nav-link-light nav-link-dark {{add_offers}}">
+            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-plus"><line x1="12" y1="5" x2="12" y2="19"></line><line x1="5" y1="12" x2="19" y2="12"></line></svg>
+            <span class="ml-2 span-term">{% trans 'Add Offers' %}</span>
+            </a>
+            </li>
+                          <li class="nav-item"><a href="{% url 'deleteJobTypes' %}" class="nav-link-light nav-link-dark {{delete_offers}}">
+                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-minus"><line x1="5" y1="12" x2="19" y2="12"></line></svg>
+                 <span class="ml-2 span-term">{% trans 'Delete Offers' %}</span>
+            </a>
+            </li>
+                  <li class="nav-item"><a href="{% url 'editJobTypes' %}" class="nav-link-light nav-link-dark {{edit_offers}}">
+            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-edit"><path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"></path><path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"></path></svg>
+            <span class="ml-2 span-term">{% trans 'Edit Offers' %}</span>
+            </a>
+            </li>
+
           </ul>
         </div>
       </li>

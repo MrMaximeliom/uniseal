@@ -253,6 +253,11 @@
             <set />
           </value>
         </entry>
+        <entry key="$PROJECT_DIR$/OffersIcon.svg">
+          <value>
+            <set />
+          </value>
+        </entry>
         <entry key="$PROJECT_DIR$/Util/ListsOfData.py">
           <value>
             <set />
@@ -463,6 +468,11 @@
             <set />
           </value>
         </entry>
+        <entry key="$PROJECT_DIR$/apps/address/migrations/0049_remove_city_country_alter_area_id_alter_area_slug_and_more.py">
+          <value>
+            <set />
+          </value>
+        </entry>
         <entry key="$PROJECT_DIR$/apps/admin_panel/apps.py">
           <value>
             <set />
@@ -548,7 +558,32 @@
             <set />
           </value>
         </entry>
+        <entry key="$PROJECT_DIR$/apps/jop_type/templates/job_type/all_job_types.html">
+          <value>
+            <set />
+          </value>
+        </entry>
+        <entry key="$PROJECT_DIR$/apps/jop_type/templates/job_type/delete_job_types.html">
+          <value>
+            <set />
+          </value>
+        </entry>
+        <entry key="$PROJECT_DIR$/apps/jop_type/templates/job_type/edit_job_type.html">
+          <value>
+            <set />
+          </value>
+        </entry>
+        <entry key="$PROJECT_DIR$/apps/jop_type/templates/job_type/edit_job_types.html">
+          <value>
+            <set />
+          </value>
+        </entry>
         <entry key="$PROJECT_DIR$/apps/jop_type/templates/jop_type/add_jop_types.html">
+          <value>
+            <set />
+          </value>
+        </entry>
+        <entry key="$PROJECT_DIR$/apps/jop_type/templates/jop_type/all_job_types.html">
           <value>
             <set />
           </value>
@@ -563,6 +598,11 @@
             <set />
           </value>
         </entry>
+        <entry key="$PROJECT_DIR$/apps/jop_type/templates/jop_type/edit_jop_type.html">
+          <value>
+            <set />
+          </value>
+        </entry>
         <entry key="$PROJECT_DIR$/apps/jop_type/urls.py">
           <value>
             <set />
@@ -573,7 +613,37 @@
             <set />
           </value>
         </entry>
+        <entry key="$PROJECT_DIR$/apps/offer/dashboard_views.py">
+          <value>
+            <set />
+          </value>
+        </entry>
+        <entry key="$PROJECT_DIR$/apps/offer/endpoints_urls.py">
+          <value>
+            <set />
+          </value>
+        </entry>
+        <entry key="$PROJECT_DIR$/apps/offer/forms.py">
+          <value>
+            <set />
+          </value>
+        </entry>
         <entry key="$PROJECT_DIR$/apps/offer/models.py">
+          <value>
+            <set />
+          </value>
+        </entry>
+        <entry key="$PROJECT_DIR$/apps/offer/serializers.py">
+          <value>
+            <set />
+          </value>
+        </entry>
+        <entry key="$PROJECT_DIR$/apps/orders/dashboard_views.py">
+          <value>
+            <set />
+          </value>
+        </entry>
+        <entry key="$PROJECT_DIR$/apps/orders/templates/orders/all_orders.html">
           <value>
             <set />
           </value>
@@ -679,6 +749,11 @@
           </value>
         </entry>
         <entry key="$PROJECT_DIR$/apps/sms_notifications/migrations/0039_smsnotification_status_alter_smscontacts_slug_and_more.py">
+          <value>
+            <set />
+          </value>
+        </entry>
+        <entry key="$PROJECT_DIR$/apps/sms_notifications/migrations/0040_smsnotification_status_alter_smscontacts_slug_and_more.py">
           <value>
             <set />
           </value>
