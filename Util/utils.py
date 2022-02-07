@@ -125,6 +125,10 @@ class SearchMan:
             from apps.jop_type.models import JopType
             job_types = JopType.objects.all().order_by('id')
             self.paginator = Paginator(job_types, 5)
+        if model == "Offer":
+            from apps.offer.models import Offer
+            offers = Offer.objects.all().order_by('id')
+            self.paginator = Paginator(offers, 5)
 
 
 

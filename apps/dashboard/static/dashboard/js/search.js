@@ -42,6 +42,9 @@ selected_pages.splice(removed_item, 1);
 $('#pages_collector').prop("value",selected_pages)
 console.log("selected pages are: ",selected_pages)
 });
+$('#searchPhrase').on('input',() =>{
+console.log($(this).prop("value"))
+})
 
 $('#searchBy').on('change',function(){
 // get selected option text
@@ -114,9 +117,15 @@ $('#searchPhrase').prop("placeholder","search by OS type..")
 else if(selected_value == 'top_products'){
 $('#searchPhrase').prop("placeholder","search by product name in top products")
 }
+else if(selected_value == 'start_date'){
+$('#searchPhrase').prop("placeholder","search by offer's start date")
+}
+else if(selected_value == 'end_date'){
+$('#searchPhrase').prop("placeholder","search by offer's end date")
+}
 
 
-if(selected_value == "execution_year"){
+if(selected_value == "execution_year" || selected_value == "start_date" || selected_value == "end_date" ){
 $('#search_phrase_holder').css('display','none')
 $('#search_phrase_date_holder').css('display','block')
 }

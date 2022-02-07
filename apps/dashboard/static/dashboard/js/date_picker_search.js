@@ -1,7 +1,8 @@
 
 $( document ).ready(function() {
-error_messages = JSON.parse($('#my-data').html())
-console.log(new Date().getFullYear())
+error_messages = JSON.parse($('#my-data').html());
+
+// for projects pages
 $("#searchPhraseDate").datepicker({
   format: "yyyy",
     viewMode: "years",
@@ -13,7 +14,23 @@ $("#searchPhraseDate").datepicker({
 });
 
 
-})
+// for offers pages
+let currentDate = new Date();
+var date = new Date();
+var today = new Date(date.getFullYear(), date.getMonth(), date.getDate());
+$("#searchPhraseDateOffer").datepicker({
+    format: "d-m-yyyy",
+    autoclose:true,
+    clearBtn:true,
+    startDate:today
+});
+
 $('searchPhraseDate').on('input',function(){
 $(this).prop('value',$(this).datepicker ('getDate'))
+});
+$('searchPhraseDateOffer').on('input',function(){
+$(this).prop('value',$(this).datepicker ('getDate'))
+});
+
+
 })

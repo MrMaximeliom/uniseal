@@ -17,26 +17,36 @@
    <nav aria-label="crumb">
                     <ol class="crumb breadcrumb-light breadcrumb-dark">
                         <li class="breadcrumb-item"><a href="{% url 'dashboard' %}">{% trans 'Dashboard' %}</a></li>
-                        <li class="breadcrumb-item" aria-current="page">{% trans 'Jop Types' %}</li>
-                        <li class="breadcrumb-item" aria-current="page">{% trans 'Add Jop Types' %}</li>
+                        <li class="breadcrumb-item" aria-current="page">{% trans 'Offers' %}</li>
+                        <li class="breadcrumb-item" aria-current="page">{% trans 'Add Offers' %}</li>
                     </ol>
                 </nav>
                 {% endblock breadcrumb_content %}
 {% block content %}
-                <h1 class="h2">{% trans 'Add Jop Types' %}</h1>
+                <h1 class="h2">{% trans 'Add Offers' %}</h1>
 <div class="card-light">
   <div class="card-body">
-      <span hidden id="page-id-js">Jop Types</span>
+      <span hidden id="page-id-js">Offer</span>
   <form class="card-form" action="" method="post" enctype="multipart/form-data">
       {% csrf_token %}
   <div class="mb-4 row">
     <div class="col-sm-6">
-             {{form.name|as_crispy_field}}
+             {{form.image|as_crispy_field}}
+    </div>
+  </div>
+      <div class="mb-4 row">
+      <div class="col-sm-6">
+             {{form.offer_start_date|as_crispy_field}}
+    </div>
+      </div>
+      <div class="mb-4 row">
+      <div class="col-sm-6">
+             {{form.offer_end_date|as_crispy_field}}
     </div>
   </div>
 
        <div class="col-auto">
-    <button type="submit" class="btn btn-primary mr-3 ">{% trans 'Add Jop Type' %}</button>
+    <button type="submit" class="btn btn-primary mr-3 ">{% trans 'Add Offer' %}</button>
     <button type="button" class="btn btn-danger" id="clear">{% trans 'Clear' %}</button>
 
   </div>

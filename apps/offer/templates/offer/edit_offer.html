@@ -17,16 +17,16 @@
    <nav aria-label="crumb">
                     <ol class="crumb breadcrumb-light breadcrumb-dark">
                         <li class="breadcrumb-item"><a href="{% url 'dashboard' %}">{% trans 'Dashboard' %}</a></li>
-                        <li class="breadcrumb-item" aria-current="page">{% trans 'Jop Types' %}</li>
-                        <li class="breadcrumb-item" aria-current="page">{% trans 'Edit Jop Type' %}</li>
+                        <li class="breadcrumb-item" aria-current="page">{% trans 'Offers' %}</li>
+                        <li class="breadcrumb-item" aria-current="page">{% trans 'Edit Offer' %}</li>
                     </ol>
                 </nav>
                 {% endblock breadcrumb_content %}
 {% block content %}
-                <h1 class="h2">{% trans 'Edit Jop Types' %}</h1>
+                <h1 class="h2">{% trans 'Edit Offers' %}</h1>
 <div class="card-light">
   <div class="card-body">
-      <span hidden id="page-id-js">Jop Types</span>
+      <span hidden id="page-id-js">Offers</span>
   <form class="card-form" action="" method="post" enctype="multipart/form-data">
       {% csrf_token %}
   <div class="mb-4 row">
