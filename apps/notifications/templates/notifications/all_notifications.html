@@ -145,7 +145,7 @@
   </div>
 {% endif %}
 {% if all_notifications_data|length == 0 and not search %}
-<h3 class="delete-warning">{% trans 'There is no notifications yet .. you can send new ones from ' %} <a href="{% url 'sendNotifications' %}">{% trans 'Here' %}</a></h3>
+<h3 class="delete-warning">{% trans 'There are no notifications yet .. you can send new ones from ' %} <a href="{% url 'sendNotifications' %}">{% trans 'Here' %}</a></h3>
 {% endif %}
 
 {% if search and search_result.count == 0 and search_result != "" %}

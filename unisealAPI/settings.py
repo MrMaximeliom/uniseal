@@ -62,7 +62,8 @@ INSTALLED_APPS = [
     'apps.application_videos',
     'apps.orders',
     'apps.jop_type',
-    'apps.offer'
+    'apps.offer',
+    'apps.request_permissions'
 ]
 CRISPY_TEMPLATE_PACK = 'bootstrap4'
 AUTH_USER_MODEL = 'accounts.User'

@@ -53,6 +53,8 @@ ORDER_NOT_FOUND = _("Sorry no orders found that matches your search!")
 JOB_TYPE_NOT_FOUND = _("Sorry no job types found that matches your search!")
 # Offer Not found errors
 OFFER_NOT_FOUND = _("Sorry no offers found that matches your search!")
+# User Not found errors
+USER_NOT_FOUND = _("Sorry no users found that matches your search!")
 # Used by notifications pages
 NOTIFICATION_TITLE_SYNTAX_ERROR = _("Notification title contains English letters only!")
 NOTIFICATION_BODY_SYNTAX_ERROR = _("Notification body contains English letters only!")
@@ -71,3 +73,5 @@ ADD_OFFERS_TITLE = _("Uniseal Dashboard - Add Offers")
 EDIT_OFFERS_TITLE = _("Uniseal Dashboard - Edit Offers")
 EDIT_OFFER_TITLE = _("Uniseal Dashboard - Edit Offer")
 DELETE_OFFERS_TITLE = _("Uniseal Dashboard - Delete Offers")
+# Request Access
+REQUEST_ACCESS_TITLE = _("Uniseal Dashboard - Request Access")

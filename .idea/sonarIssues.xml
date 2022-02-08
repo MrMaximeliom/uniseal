@@ -253,7 +253,17 @@
             <set />
           </value>
         </entry>
+        <entry key="$PROJECT_DIR$/Group 213.svg">
+          <value>
+            <set />
+          </value>
+        </entry>
         <entry key="$PROJECT_DIR$/OffersIcon.svg">
+          <value>
+            <set />
+          </value>
+        </entry>
+        <entry key="$PROJECT_DIR$/Path 17.svg">
           <value>
             <set />
           </value>
@@ -513,6 +523,11 @@
             <set />
           </value>
         </entry>
+        <entry key="$PROJECT_DIR$/apps/dashboard/templates/dashboard/global_includes/pagination_code.html">
+          <value>
+            <set />
+          </value>
+        </entry>
         <entry key="$PROJECT_DIR$/apps/dashboard/urls.py">
           <value>
             <set />
@@ -608,6 +623,11 @@
             <set />
           </value>
         </entry>
+        <entry key="$PROJECT_DIR$/apps/notifications/templates/notifications/all_notifications.html">
+          <value>
+            <set />
+          </value>
+        </entry>
         <entry key="$PROJECT_DIR$/apps/offer/apps.py">
           <value>
             <set />
@@ -634,6 +654,11 @@
           </value>
         </entry>
         <entry key="$PROJECT_DIR$/apps/offer/serializers.py">
+          <value>
+            <set />
+          </value>
+        </entry>
+        <entry key="$PROJECT_DIR$/apps/offer/templates/offer/all_offers.html">
           <value>
             <set />
           </value>
@@ -684,6 +709,41 @@
           </value>
         </entry>
         <entry key="$PROJECT_DIR$/apps/project_application/dashboard_views.py">
+          <value>
+            <set />
+          </value>
+        </entry>
+        <entry key="$PROJECT_DIR$/apps/request_permissions/apps.py">
+          <value>
+            <set />
+          </value>
+        </entry>
+        <entry key="$PROJECT_DIR$/apps/request_permissions/dashboard_views.py">
+          <value>
+            <set />
+          </value>
+        </entry>
+        <entry key="$PROJECT_DIR$/apps/request_permissions/endpoints_urls.py">
+          <value>
+            <set />
+          </value>
+        </entry>
+        <entry key="$PROJECT_DIR$/apps/request_permissions/forms.py">
+          <value>
+            <set />
+          </value>
+        </entry>
+        <entry key="$PROJECT_DIR$/apps/request_permissions/models.py">
+          <value>
+            <set />
+          </value>
+        </entry>
+        <entry key="$PROJECT_DIR$/apps/request_permissions/serializers.py">
+          <value>
+            <set />
+          </value>
+        </entry>
+        <entry key="$PROJECT_DIR$/apps/request_permissions/templates/request_permissions/all_requests.html">
           <value>
             <set />
           </value>
@@ -854,6 +914,11 @@
           </value>
         </entry>
         <entry key="$PROJECT_DIR$/industry_updates/templates/industry_updates/edit_update.html">
+          <value>
+            <set />
+          </value>
+        </entry>
+        <entry key="$PROJECT_DIR$/lock.svg">
           <value>
             <set />
           </value>
