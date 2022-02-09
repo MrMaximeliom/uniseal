@@ -42,21 +42,44 @@ $("#btn-mode").html('<svg xmlns="http://www.w3.org/2000/svg" width="24" height="
 
 }
 });
+function closeSideBar(){
+  document.getElementById("mySidenav").style.display = "none";
+  myStorage.setItem('sidebar-status','closed');
+}
 $("#sidebar-btn-slide").on("click",function(){
+ if (myStorage.getItem('sidebar-status') !== null){
+ if(myStorage.getItem('sidebar-status') === 'opened')
+ {
+ closeSideBar();
 
+
+ }
+ else {
      document.getElementById("mySidenav").style.display = "block";
   document.getElementById("mySidenav").style.width = "256px";
   document.getElementById("first-side-item").focus();
   myStorage.setItem('sidebar-status','opened');
 
+ }
 
-console.log("opened");
+ }
+ else{
+      document.getElementById("mySidenav").style.display = "block";
+  document.getElementById("mySidenav").style.width = "256px";
+  document.getElementById("first-side-item").focus();
+  myStorage.setItem('sidebar-status','opened');
+ }
+
+
+
+
+
 })
 $("#close").on("click",function(){
-  document.getElementById("mySidenav").style.display = "none";
-  console.log("closed");
+closeSideBar();
 
-})
+});
+
 
 });
 

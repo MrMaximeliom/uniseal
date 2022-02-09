@@ -20,6 +20,8 @@ SEARCH_PRODUCTS_TIP = _("Search Products")
 PRODUCT_NAME_SYNTAX_ERROR = _("Product name contains alphanumeric English letters with dashes only!")
 # used by suppliers pages
 SEARCH_SUPPLIERS_TIP = _("Search Suppliers")
+# used by request access pages
+SEARCH_REQUESTS_TIP = _("Search Request Permissions")
 # used also by category pages
 CATEGORY_NAME_SYNTAX_ERROR = _("Category name contains alphanumeric English letters only!")
 SUPPLIER_NAME_SYNTAX_ERROR = _("Supplier name contains alphanumeric English letters only!")
@@ -55,6 +57,8 @@ JOB_TYPE_NOT_FOUND = _("Sorry no job types found that matches your search!")
 OFFER_NOT_FOUND = _("Sorry no offers found that matches your search!")
 # User Not found errors
 USER_NOT_FOUND = _("Sorry no users found that matches your search!")
+# Request Permission Not found errors
+PERMISSION_NOT_FOUND = _("Sorry no request permissions found that matches your search!")
 # Used by notifications pages
 NOTIFICATION_TITLE_SYNTAX_ERROR = _("Notification title contains English letters only!")
 NOTIFICATION_BODY_SYNTAX_ERROR = _("Notification body contains English letters only!")
@@ -75,3 +79,10 @@ EDIT_OFFER_TITLE = _("Uniseal Dashboard - Edit Offer")
 DELETE_OFFERS_TITLE = _("Uniseal Dashboard - Delete Offers")
 # Request Access
 REQUEST_ACCESS_TITLE = _("Uniseal Dashboard - Request Access")
+# Users Activities
+USERS_PRODUCTS_TITLE = _("Uniseal Dashboard - Users Activities in Products")
+USERS_PROJECTS_TITLE = _("Uniseal Dashboard - Users Activities in Projects")
+USERS_SOLUTIONS_TITLE = _("Uniseal Dashboard - Users Activities in Solutions")
+USERS_SELLING_POINTS_TITLE = _("Uniseal Dashboard - Users Activities in Selling Points")
+USERS_BROCHURES_TITLE = _("Uniseal Dashboard - Users Activities in Brochures")
+USERS_CARTS_TITLE = _("Uniseal Dashboard - Users Activities in Carts")

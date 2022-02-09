@@ -35,7 +35,9 @@
   <div class="col-sm-3 col-md-3 col-lg-3">
     <button type="submit" class="btn btn-primary mb-3" id="searchButton" value="category"><span><i class="fas fa-search"></i></span></button>
     <button type="submit" name="clear" value="clear" class="btn btn-danger mb-3"><span><i class="fas fa-eraser"></i></span></button>
-   <button type="button" class="btn btn-success mb-3" data-bs-toggle="modal" data-bs-target="#exportData"><span><i class="fas fa-file-csv"></i></span></button>
+   {% if all_categories_data|length > 0 %}
+      <button type="button" class="btn btn-success mb-3" data-bs-toggle="modal" data-bs-target="#exportData"><span><i class="fas fa-file-csv"></i></span></button>
+ {% endif %}
   </div>
 </form>
     <div>

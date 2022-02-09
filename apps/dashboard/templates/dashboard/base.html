@@ -145,7 +145,7 @@ $("#btn-mode").html('<svg xmlns="http://www.w3.org/2000/svg" width="24" height="
                           </a>
                         </li>
                         <li class="nav-item">
-        <a class=" nav-link-light nav-link-dark  {{request}}" >
+        <a class=" nav-link-light nav-link-dark  {{request}}" href="{% url 'requestAccessList' %}">
 <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-lock"><rect x="3" y="11" width="18" height="11" rx="2" ry="2"></rect><path d="M7 11V7a5 5 0 0 1 10 0v4"></path></svg>
     <span class="ml-2 span-term">{% trans 'Request Access'%}</span>
         </a>
@@ -454,8 +454,19 @@ $("#btn-mode").html('<svg xmlns="http://www.w3.org/2000/svg" width="24" height="
 
                            <li class="nav-item">
         <a class=" nav-link-light nav-link-dark collapsed dropdown-toggle {{offers}}" data-bs-toggle="collapse" data-bs-target="#dashboard-collapse-offers" aria-expanded="false">
-<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-target"><circle cx="12" cy="12" r="10"></circle><circle cx="12" cy="12" r="6"></circle><circle cx="12" cy="12" r="2"></circle></svg>
-                            <span class="ml-2 span-term">{% trans 'Offers'%}</span>
+<!--<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-target"><circle cx="12" cy="12" r="10"></circle><circle cx="12" cy="12" r="6"></circle><circle cx="12" cy="12" r="2"></circle></svg>-->
+                   <svg xmlns="http://www.w3.org/2000/svg" width="32.34" height="32.367" viewBox="0 0 32.34 32.367">
+  <g id="Group_731" data-name="Group 731" transform="translate(2.277 2.291)">
+    <g id="Path_17" data-name="Path 17" transform="translate(3.755 -0.082) rotate(9)" fill="none" stroke-linecap="round" stroke-linejoin="round">
+      <path d="M12.2.07A12.145,12.145,0,0,1,24.33,12.22c-2.043,2.26-4.011,4.156-6.275,6.35-2.168,2.344-4.01,3.978-5.853,5.795A12.147,12.147,0,0,1,12.2.07Z" stroke="none"/>
+      <path d="M 12.19337940216064 0.07009315490722656 C 5.495370864868164 0.07009315490722656 0.06635856628417969 5.507112503051758 0.06779861450195312 12.21449375152588 C 0.06924819946289062 18.9231128692627 5.501609802246094 24.36269378662109 12.20130920410156 24.36414337158203 C 14.04412937164307 22.54764366149902 15.88605880737305 20.91317367553711 18.05413818359375 18.56952285766602 C 20.31904983520508 16.37597274780273 22.28694915771484 14.47988319396973 24.32955932617188 12.2197437286377 C 24.32810974121094 5.511123657226562 18.89575958251953 0.07154273986816406 12.19605922698975 0.07009315490722656 C 12.19483184814453 0.07009315490722656 12.19460582733154 0.07009315490722656 12.19337940216064 0.07009315490722656 M 12.19337940216064 -1.929906845092773 L 12.19605922698975 -1.929906845092773 C 15.97132873535156 -1.929086685180664 19.52034950256348 -0.4565467834472656 22.1898078918457 2.216453552246094 C 24.85854911804199 4.888753890991211 26.32873916625977 8.441163063049316 26.32955932617188 12.219313621521 C 26.32966995239258 12.71497344970703 26.14571952819824 13.19301319122314 25.81337928771973 13.56074333190918 C 23.79281806945801 15.79648303985596 21.88059997558594 17.64818382263184 19.66643905639648 19.79226303100586 L 19.48470878601074 19.9682502746582 C 17.96846008300781 21.60452461242676 16.62356185913086 22.88882827758789 15.3225793838501 24.13120269775391 C 14.73024940490723 24.69683265686035 14.17077922821045 25.23110389709473 13.60531902313232 25.78849411010742 C 13.23099899291992 26.15746307373047 12.72662925720215 26.36385154724121 12.20087909698486 26.36414337158203 C 8.42603874206543 26.36332321166992 4.877008438110352 24.89078330993652 2.207559585571289 22.21778297424316 C -0.4611911773681641 19.54548263549805 -1.931381225585938 15.99307346343994 -1.932201385498047 12.21492385864258 C -1.933010101318359 8.437173843383789 -0.4644317626953125 4.885402679443359 2.202999114990234 2.213893890380859 C 4.871088027954102 -0.4582767486572266 8.419078826904297 -1.929906845092773 12.19337940216064 -1.929906845092773 Z" stroke="none" fill="#fff"/>
+    </g>
+    <path id="Path_18" data-name="Path 18" d="M13.938.4S9.335-1.646,3.913,3.516.284,14.054.284,14.054" transform="translate(12.644 11.724) rotate(9)" fill="none" stroke="#fff" stroke-linecap="round" stroke-width="2"/>
+    <rect id="Rectangle_204" data-name="Rectangle 204" width="27.74" height="27.742" transform="translate(0.022 0.022)" fill="none"/>
+  </g>
+</svg>
+
+            <span class="ml-2 span-term">{% trans 'Offers'%}</span>
         </a>
         <div class="collapse" id="dashboard-collapse-offers">
           <ul class="btn-toggle-nav list-unstyled fw-normal pb-1">

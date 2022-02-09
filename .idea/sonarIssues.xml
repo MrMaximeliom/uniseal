@@ -258,12 +258,22 @@
             <set />
           </value>
         </entry>
+        <entry key="$PROJECT_DIR$/Group 731.svg">
+          <value>
+            <set />
+          </value>
+        </entry>
         <entry key="$PROJECT_DIR$/OffersIcon.svg">
           <value>
             <set />
           </value>
         </entry>
         <entry key="$PROJECT_DIR$/Path 17.svg">
+          <value>
+            <set />
+          </value>
+        </entry>
+        <entry key="$PROJECT_DIR$/README.md">
           <value>
             <set />
           </value>
@@ -493,7 +503,27 @@
             <set />
           </value>
         </entry>
+        <entry key="$PROJECT_DIR$/apps/address/templates/address/all_cities.html">
+          <value>
+            <set />
+          </value>
+        </entry>
+        <entry key="$PROJECT_DIR$/apps/address/templates/address/all_countries.html">
+          <value>
+            <set />
+          </value>
+        </entry>
+        <entry key="$PROJECT_DIR$/apps/address/templates/address/all_states.html">
+          <value>
+            <set />
+          </value>
+        </entry>
         <entry key="$PROJECT_DIR$/apps/admin_panel/apps.py">
+          <value>
+            <set />
+          </value>
+        </entry>
+        <entry key="$PROJECT_DIR$/apps/admin_panel/dashboard_views.py">
           <value>
             <set />
           </value>
@@ -529,6 +559,16 @@
           </value>
         </entry>
         <entry key="$PROJECT_DIR$/apps/category/endpoints_urls.py">
+          <value>
+            <set />
+          </value>
+        </entry>
+        <entry key="$PROJECT_DIR$/apps/category/templates/category/all_categories.html">
+          <value>
+            <set />
+          </value>
+        </entry>
+        <entry key="$PROJECT_DIR$/apps/dashboard/static/dashboard/js/index.js">
           <value>
             <set />
           </value>
@@ -673,6 +713,11 @@
             <set />
           </value>
         </entry>
+        <entry key="$PROJECT_DIR$/apps/offer/templates/includes/search_code.html">
+          <value>
+            <set />
+          </value>
+        </entry>
         <entry key="$PROJECT_DIR$/apps/offer/templates/offer/all_offers.html">
           <value>
             <set />
@@ -723,7 +768,17 @@
             <set />
           </value>
         </entry>
+        <entry key="$PROJECT_DIR$/apps/project/templates/project/all_projects.html">
+          <value>
+            <set />
+          </value>
+        </entry>
         <entry key="$PROJECT_DIR$/apps/project_application/dashboard_views.py">
+          <value>
+            <set />
+          </value>
+        </entry>
+        <entry key="$PROJECT_DIR$/apps/project_application/templates/project_application/all_applications.html">
           <value>
             <set />
           </value>
@@ -759,6 +814,16 @@
           </value>
         </entry>
         <entry key="$PROJECT_DIR$/apps/request_permissions/templates/request_permissions/all_requests.html">
+          <value>
+            <set />
+          </value>
+        </entry>
+        <entry key="$PROJECT_DIR$/apps/request_permissions/urls.py">
+          <value>
+            <set />
+          </value>
+        </entry>
+        <entry key="$PROJECT_DIR$/apps/sellingPoint/templates/sellingPoints/all_selling_points.html">
           <value>
             <set />
           </value>
@@ -829,6 +894,11 @@
           </value>
         </entry>
         <entry key="$PROJECT_DIR$/apps/sms_notifications/migrations/0040_smsnotification_status_alter_smscontacts_slug_and_more.py">
+          <value>
+            <set />
+          </value>
+        </entry>
+        <entry key="$PROJECT_DIR$/apps/supplier/templates/supplier/all_suppliers.html">
           <value>
             <set />
           </value>

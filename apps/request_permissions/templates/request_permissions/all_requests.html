@@ -17,13 +17,13 @@
    <nav aria-label="crumb">
                     <ol class="crumb breadcrumb-light breadcrumb-dark">
                         <li class="breadcrumb-item"><a href="{% url 'dashboard' %}">{% trans 'Dashboard' %}</a></li>
-                        <li class="breadcrumb-item" aria-current="page">{% trans 'Users' %}</li>
-                        <li class="breadcrumb-item" aria-current="page">{% trans 'All Users' %}</li>
+                        <li class="breadcrumb-item" aria-current="page">{% trans 'Permissions' %}</li>
+                        <li class="breadcrumb-item" aria-current="page">{% trans 'All Permissions' %}</li>
                     </ol>
                 </nav>
                 {% endblock breadcrumb_content %}
 {% block content %}
-                <h1 class="h2">{% trans 'All Users' %}</h1>
+                <h1 class="h2">{% trans 'All Permissions' %}</h1>
 <form class="row g-2 mb-3" action="" method="post" id="searchForm" autocomplete="off">
     {% csrf_token %}
   <div class="col-sm-3 col-md-3 col-lg-3">
@@ -37,17 +37,16 @@
   <option selected value="none">{% trans 'Search By' %}</option>
   <option value="full_name">{% trans 'Full Name' %}</option>
   <option value="username">{% trans 'Username' %}</option>
-  <option value="organization">{% trans 'Organization' %}</option>
-  <option value="phone_number">{% trans 'Phone Number' %}</option>
 </select>
         <span class="delete-warning" id="selection_error"></span>
     </div>
 
   <div class="col-sm-3 col-md-3 col-lg-3">
-      <button type="submit" class="btn btn-primary mb-3 mr-1 ml-1" id="searchButton" title="{{search_users_tip}}"><span><i class="fas fa-search"></i></span></button>
+      <button type="submit" class="btn btn-primary mb-3 mr-1 ml-1" id="searchButton" title="{{search_requests_tip}}"><span><i class="fas fa-search"></i></span></button>
     <button type="submit" name="clear" value="clear" class="btn btn-danger mb-3 mr-1 ml-1" title="{{clear_search_tip}}"><span><i class="fas fa-eraser"></i></span></button>
+      {% if requests_list|length > 0  %}
    <button type="button" class="btn btn-success mb-3 mr-1 ml-1" data-bs-toggle="modal" data-bs-target="#exportData" title="{{create_report_tip}}"><span><i class="fas fa-file-csv"></i></span></button>
-
+{% endif %}
   </div>
 
 </form>
@@ -148,11 +147,11 @@
 <h3>{{search_option}}="{{search_phrase}}"</h3>
 {% endif %}
 
-{% if all_users_data|length > 0 %}
+{% if requests_list|length > 0 %}
   <div class="row">
                     <div class="col-12 col-xl-11 mb-4 mb-lg-0">
                         <div class="card-light card-dark">
-                            <h5 class="card-header-light card-header-dark">{% trans 'Users' %}</h5>
+                            <h5 class="card-header-light card-header-dark">{% trans 'Request Permissions' %}</h5>
                             <div class="card-body-light card-body-dark">
                                 <div class="table-responsive">
                                     <table class="table">
@@ -162,53 +161,20 @@
                                             <th scope="col">{% trans 'Username' %}</th>
                                             <th scope="col">{% trans 'Organization' %}</th>
                                               <th scope="col">{% trans 'Job Type' %}</th>
-                                            <th scope="col">{% trans 'Phone Number' %}</th>
-                                            <th scope="col">{% trans 'Last Login' %}</th>
-                                            <th scope="col">{% trans 'Update' %}</th>
-                                            <th scope="col">{% trans 'Delete' %}</th>
+                                            <th scope="col">{% trans 'Permissions Status' %}</th>
 
                                           </tr>
                                         </thead>
                                         <tbody>
-                                        {% for user in all_users_data %}
+                                        {% for request in requests_list %}
 
                                           <tr>
-                                            <th scope="row">{{user.full_name}}</th>
-                                            <td>{{user.username}}</td>
-                                            <td>{{user.organization}}</td>
-                                            <td>{{user.job_type.name}}</td>
-                                            <td>0{{user.phone_number}}</td>
-                                            <td>{{user.last_login}}</td>
+                                            <th scope="row">{{request.user.full_name}}</th>
+                                            <td>{{request.user.username}}</td>
+                                            <td>{{request.user.organization}}</td>
+                                            <td>{{request.user.job_type.name}}</td>
+                                            <td>{{request.status}}</td>
                                             <td><a href="{% url 'editUser' slug=user.slug %}" class="btn btn-sm btn-primary">Update</a></td>
-                                              {% if user != request.user %}
-                                            <td><a href="#" class="btn btn-sm btn-danger" data-bs-toggle="modal" data-bs-target="#exampleModal{{user.id}}">Delete</a></td>
-<div class="modal fade" id="exampleModal{{user.id}}" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
-  <div class="modal-dialog">
-    <div class="modal-content">
-      <div class="modal-header">
-        <h5 class="modal-title" id="exampleModalLabel">{% trans 'Delete Conformation' %}</h5>
-        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-      </div>
-        <form action="" method="post">
-            {% csrf_token %}
-      <div class="modal-body">
-
-          <h3>{% trans 'Are you sure you want to delete this user?' %}</h3>
-<h4 style="color:red;">{{user.username}}</h4>
-
-<!--           <input type="number" value="{{product.id}}" hidden name="product_id">-->
-      </div>
-      <div class="modal-footer">
-        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-        <a type="submit" class="btn btn-danger" href="{% url 'deleteUser' id=user.id url='allUsers' %}">Delete</a>
-
-      </div>
-              </form>
-    </div>
-  </div>
-</div>
-                                              {% endif %}
-
                                           </tr>
 
                                         {% endfor %}
@@ -246,11 +212,11 @@
        </nav>
   </div>
 {% endif %}
-{% if all_users_data|length == 0 and not search %}
-<h3 class="delete-warning">{% trans 'There are no users yet .. you can add new ones from ' %} <a href="{% url 'addUsers' %}">{% trans 'Here' %}</a></h3>
+{% if requests_list|length == 0 and not search %}
+<h3 class="delete-warning">{% trans 'There are no requests yet' %}</h3>
 {% endif %}
 
 {% if search and search_result.count == 0 and search_result != "" %}
-<h3 class="delete-warning">{% trans 'Sorry no users found that matches your search!' %}</h3>
+<h3 class="delete-warning">{% trans 'Sorry no request found that matches your search!' %}</h3>
 {% endif %}
 {% endblock content %}

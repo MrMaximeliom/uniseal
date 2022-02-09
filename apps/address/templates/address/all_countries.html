@@ -40,7 +40,9 @@
 <!--   <button type="button" class="btn btn-success mb-3" data-bs-toggle="modal" data-bs-target="#exportData">{% trans 'Export Execl' %}</button>-->
       <button type="submit" class="btn btn-primary mb-3 mr-1 ml-1" id="searchButton" title="{{search_users_tip}}"><span><i class="fas fa-search"></i></span></button>
     <button type="submit" name="clear" value="clear" class="btn btn-danger mb-3 mr-1 ml-1" title="{{clear_search_tip}}"><span><i class="fas fa-eraser"></i></span></button>
+ {% if all_countries_data|length > 0 %}
    <button type="button" class="btn btn-success mb-3 mr-1 ml-1" data-bs-toggle="modal" data-bs-target="#exportData" title="{{create_report_tip}}"><span><i class="fas fa-file-csv"></i></span></button>
+ {% endif %}
   </div>
 </form>
     <div>

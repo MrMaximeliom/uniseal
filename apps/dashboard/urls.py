@@ -21,6 +21,7 @@ from apps.supplier.urls import urlpatterns as supplier_urls
 from apps.orders.urls import urlpatterns as orders_urls
 from apps.jop_type.urls import urlpatterns as job_type_urls
 from apps.offer.urls import urlpatterns as offers_urls
+from apps.request_permissions.urls import urlpatterns as request_urls
 from django.contrib.auth import views as auth_views
 urlpatterns = [
     path('home/', dashboard_views.dashboard, name='dashboard'),
@@ -47,10 +48,11 @@ urlpatterns = [
     path('ProjectApplications/', include(application_urls)),
     path('IndustryUpdates/', include(update_urls)),
     path('Notifications/', include(notifications_urls)),
-    path('applicationVideos/',include(product_application_videos)),
-    path('orders/',include(orders_urls)),
-    path('jobTypes/', include(job_type_urls)),
-    path('offers/', include(offers_urls))
+    path('ApplicationVideos/',include(product_application_videos)),
+    path('Orders/',include(orders_urls)),
+    path('JobTypes/', include(job_type_urls)),
+    path('Offers/', include(offers_urls)),
+    path('RequestAccess/', include(request_urls))
 
 
 ]

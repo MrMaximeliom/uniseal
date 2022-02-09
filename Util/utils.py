@@ -129,6 +129,10 @@ class SearchMan:
             from apps.offer.models import Offer
             offers = Offer.objects.all().order_by('id')
             self.paginator = Paginator(offers, 5)
+        if model == "Request":
+            from apps.request_permissions.models import RequestAccess
+            requests = RequestAccess.objects.all().order_by('id')
+            self.paginator = Paginator(requests, 5)
 
 
 
