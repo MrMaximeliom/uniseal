@@ -1,3 +1,0 @@
-psql -h hostname -d databasename -U username
-
-psql -h ec2-52-23-40-80.compute-1.amazonaws.com -d d4nnvv8lb1aedj -U gkvvbjmricafua
