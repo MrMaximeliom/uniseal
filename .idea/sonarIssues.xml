@@ -483,6 +483,11 @@
             <set />
           </value>
         </entry>
+        <entry key="$PROJECT_DIR$/apps/address/templates/address/all_areas.html">
+          <value>
+            <set />
+          </value>
+        </entry>
         <entry key="$PROJECT_DIR$/apps/admin_panel/apps.py">
           <value>
             <set />
