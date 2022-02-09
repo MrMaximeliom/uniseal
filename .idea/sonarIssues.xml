@@ -373,6 +373,11 @@
             <set />
           </value>
         </entry>
+        <entry key="$PROJECT_DIR$/apps/accounts/endpoints_urls.py">
+          <value>
+            <set />
+          </value>
+        </entry>
         <entry key="$PROJECT_DIR$/apps/accounts/forms.py">
           <value>
             <set />
@@ -519,6 +524,11 @@
           </value>
         </entry>
         <entry key="$PROJECT_DIR$/apps/application_videos/templates/application_videos/all_videos.html">
+          <value>
+            <set />
+          </value>
+        </entry>
+        <entry key="$PROJECT_DIR$/apps/category/endpoints_urls.py">
           <value>
             <set />
           </value>

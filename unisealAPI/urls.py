@@ -32,6 +32,7 @@ from apps.supplier import endpoints_urls as supplier_views
 from apps.orders import  endpoints_urls as orders_views
 from apps.jop_type import  endpoints_urls as jop_type_views
 from apps.offer import  endpoints_urls as offers_views
+from apps.request_permissions import  endpoints_urls as request_views
 
 router = routers.DefaultRouter()
 admin_router = routers.DefaultRouter()
@@ -76,6 +77,7 @@ router.register(r'order', orders_views.OrderViewSet, basename='CreateOrder')
 router.register(r'cart', orders_views.CartViewSet, basename='CreateCart')
 router.register(r'jopType', jop_type_views.JobTypeViewSet, basename='CreateJopTypes')
 router.register(r'offers', offers_views.OfferViewSet, basename='CreateOffers')
+router.register(r'requestAccess', request_views.RequestAccessViewSet, basename='CreateRequestAccess')
 admin_router.register(r'manageProducts', admin_views.ManageProductsViewSet, basename='ManageProducts')
 admin_router.register(r'manageProjects', admin_views.ManageProjectsViewSet, basename='ManageProjects')
 admin_router.register(r'manageSolution', admin_views.ManageSolutionViewSet, basename='ManageSolution')

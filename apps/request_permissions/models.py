@@ -5,6 +5,9 @@ from django.utils.translation import gettext_lazy as _
 class RequestAccess(models.Model):
     status = models.BooleanField(
         verbose_name=_("Access Status"),
+        null=False,
+        blank=True,
+        default=False
 
     )
     user = models.ForeignKey(
