@@ -64,8 +64,8 @@ class Product(models.Model):
     )
     price = models.DecimalField(
         verbose_name=_('Price'),
-        max_digits=19,
-        decimal_places=10,
+        max_digits=7,
+        decimal_places=2,
         null=True,
         blank=False,
 

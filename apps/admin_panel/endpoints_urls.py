@@ -1,7 +1,7 @@
 
 from django.utils.translation import gettext_lazy as _
 from rest_framework import viewsets
-
+from rest_framework.permissions import IsAuthenticated
 from Util.permissions import UnisealPermission
 
 
@@ -34,7 +34,7 @@ class  ManageProductsViewSet(viewsets.ModelViewSet):
     from apps.admin_panel.models import ManageProducts
     queryset = ManageProducts.objects.all()
     serializer_class = ManageProductsSerializer
-    permission_classes = [UnisealPermission]
+    permission_classes = [IsAuthenticated]
 
 class  ManageProductsPageViewSet(viewsets.ModelViewSet):
     """
@@ -62,7 +62,7 @@ class  ManageProductsPageViewSet(viewsets.ModelViewSet):
     from apps.admin_panel.models import ManageProductsPage
     queryset = ManageProductsPage.objects.all()
     serializer_class = ManageProductsPageSerializer
-    permission_classes = [UnisealPermission]
+    permission_classes = [IsAuthenticated]
 
 class  ManageProjectsViewSet(viewsets.ModelViewSet):
     """
@@ -91,7 +91,7 @@ class  ManageProjectsViewSet(viewsets.ModelViewSet):
     from apps.admin_panel.models import ManageProjects
     queryset = ManageProjects.objects.all()
     serializer_class = ManageProjectsSerializer
-    permission_classes = [UnisealPermission]
+    permission_classes = [IsAuthenticated]
 
 class  ManageSolutionViewSet(viewsets.ModelViewSet):
     """
@@ -120,7 +120,7 @@ class  ManageSolutionViewSet(viewsets.ModelViewSet):
     from apps.admin_panel.models import ManageSolution
     queryset = ManageSolution.objects.all()
     serializer_class = ManageSolutionSerializer
-    permission_classes = [UnisealPermission]
+    permission_classes = [IsAuthenticated]
 
 class  ManageSellingPointsViewSet(viewsets.ModelViewSet):
     """
@@ -150,7 +150,7 @@ class  ManageSellingPointsViewSet(viewsets.ModelViewSet):
     from apps.admin_panel.models import ManageSellingPoints
     queryset = ManageSellingPoints.objects.all()
     serializer_class = ManageSellingPointsSerializer
-    permission_classes = [UnisealPermission]
+    permission_classes = [IsAuthenticated]
 
 
 class  ManageBrochuresViewSet(viewsets.ModelViewSet):
@@ -181,7 +181,7 @@ class  ManageBrochuresViewSet(viewsets.ModelViewSet):
     from apps.admin_panel.models import ManageBrochures
     queryset = ManageBrochures.objects.all()
     serializer_class = ManageBrochuresSerializer
-    permission_classes = [UnisealPermission]
+    permission_classes = [IsAuthenticated]
 
 class  ManageCartsViewSet(viewsets.ModelViewSet):
     """
@@ -209,4 +209,4 @@ class  ManageCartsViewSet(viewsets.ModelViewSet):
     from apps.admin_panel.models import ManageCarts
     queryset = ManageCarts.objects.all()
     serializer_class = ManageCartsSerializer
-    permission_classes = [UnisealPermission]
+    permission_classes = [IsAuthenticated]
