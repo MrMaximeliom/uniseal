@@ -27,6 +27,22 @@ class IsSystemBackEndUser(permissions.BasePermission):
             else:
                 return False
 
+class IsConsultantUser(permissions.BasePermission):
+    """
+    Object-level permission to only allow owners of an object to edit it.
+    Assumes the model instance has an `owner` attribute.
+    """
+    def has_permission(self, request, view):
+
+        # if request.method in permissions.SAFE_METHODS:
+        #     return False
+        # else:
+        if not request.user.is_anonymous:
+            if request.user.job_type.name == "Consultant":
+                return True
+            else:
+                return False
+
 class IsAnonymousUser(permissions.BasePermission):
     """
     Object-level permission to only allow owners of an object to edit it.

@@ -1,6 +1,6 @@
 from django.utils.translation import gettext_lazy as _
 from rest_framework import viewsets
-from Util.permissions import UnisealPermission
+from Util.permissions import UnisealPermission,IsConsultantUser
 from django_filters.rest_framework import DjangoFilterBackend
 
 
@@ -29,7 +29,7 @@ class  RequestAccessViewSet(viewsets.ModelViewSet):
     from .models import RequestAccess
     queryset = RequestAccess.objects.all()
     serializer_class = RequestAccessSerializer
-    permission_classes = [UnisealPermission]
+    permission_classes = [IsConsultantUser,UnisealPermission]
     filter_backends = [DjangoFilterBackend]
     filterset_fields = ['user']
 
