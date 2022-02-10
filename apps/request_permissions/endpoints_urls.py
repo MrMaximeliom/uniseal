@@ -29,7 +29,7 @@ class  RequestAccessViewSet(viewsets.ModelViewSet):
     from .models import RequestAccess
     queryset = RequestAccess.objects.all()
     serializer_class = RequestAccessSerializer
-    permission_classes = [IsConsultantUser,UnisealPermission]
+    permission_classes = [IsConsultantUser]
     filter_backends = [DjangoFilterBackend]
     filterset_fields = ['user']
 
