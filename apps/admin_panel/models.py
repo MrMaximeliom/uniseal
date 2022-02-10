@@ -11,6 +11,8 @@ class ManageProductsPage(models.Model):
     )
     product_page_views = models.PositiveIntegerField(
         verbose_name=_('Product Page Views'),
+
+
     )
 
 
@@ -32,9 +34,14 @@ class ManageProducts(models.Model):
     )
     product_views = models.PositiveIntegerField(
         verbose_name=_('Product Views'),
+        blank=True,
+        null=True,
     )
     product_sheet_downloads = models.PositiveIntegerField(
-        verbose_name=('Product Sheet Downloads')
+        verbose_name=('Product Sheet Downloads'),
+        blank=True,
+        null=True,
+
     )
 
 class ManageProjects(models.Model):
