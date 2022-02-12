@@ -194,9 +194,9 @@ class  ManageBrochuresViewSet(viewsets.ModelViewSet):
     filter_backends = [DjangoFilterBackend]
     filterset_fields = ['brochures','user']
 
-class  ManageCartsViewSet(viewsets.ModelViewSet):
+class  ManageOrdersViewSet(viewsets.ModelViewSet):
     """
-        API endpoint that allows to get reports about the carts by
+        API endpoint that allows to get reports about the orders by
         the admin
         this endpoint allows  GET,POST,PUT,PATCH,DELETE function
         permissions to this view is restricted as the following:
@@ -204,22 +204,22 @@ class  ManageCartsViewSet(viewsets.ModelViewSet):
          Data will be retrieved in the following format using GET function:
        {
         "id": 26,
-        "cart": cart_id,
+        "order": order_id,
         "user": user_id,
         "add_to_cart_views": cart_views_count,
     }
     Use PUT function by accessing this url:
-    api/admin_panel/manageCarts/<record's_id>
+    api/admin_panel/manageOrders/<record's_id>
     Format of data will be as the previous data format for GET function
       """
-    from apps.admin_panel.serializers import ManageCartsSerializer
+    from apps.admin_panel.serializers import ManageOrdersSerializer
 
     def get_view_name(self):
-        return _("Manage Carts' data")
+        return _("Manage Orders' data")
 
     from apps.admin_panel.models import ManageCarts
     queryset = ManageCarts.objects.all()
-    serializer_class = ManageCartsSerializer
+    serializer_class = ManageOrdersSerializer
     permission_classes = [IsAuthenticated]
     filter_backends = [DjangoFilterBackend]
-    filterset_fields = ['cart','user']
+    filterset_fields = ['order','user']

@@ -64,7 +64,6 @@ class UserLoginForm(AuthenticationForm):
 class UserRegistrationForm(forms.ModelForm):
     class Meta:
         model=User
-        # fields='__all__'
         fields=[
             'id', 'username', 'full_name','organization', 'email',
             'phone_number','staff','password','job_type']

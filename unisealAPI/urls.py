@@ -83,7 +83,7 @@ admin_router.register(r'manageProjects', admin_views.ManageProjectsViewSet, base
 admin_router.register(r'manageSolution', admin_views.ManageSolutionViewSet, basename='ManageSolution')
 admin_router.register(r'manageSellingPoints', admin_views.ManageSellingPointsViewSet, basename='ManageSellingPoints')
 admin_router.register(r'manageBrochures', admin_views.ManageBrochuresViewSet, basename='ManageBrochures')
-admin_router.register(r'manageCarts', admin_views.ManageCartsViewSet, basename='ManageCarts')
+admin_router.register(r'manageOrders', admin_views.ManageOrdersViewSet, basename='ManageOrders')
 admin_router.register(r'manageProductsPage', admin_views.ManageProductsPageViewSet, basename='ManageProductsPage')
 
 

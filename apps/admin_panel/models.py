@@ -122,11 +122,13 @@ class ManageBrochures(models.Model):
         default=0
     )
 
+
+
 class ManageCarts(models.Model):
-    cart = models.ForeignKey(
-        "orders.Cart",
+    order = models.ForeignKey(
+        "orders.Order",
         on_delete=models.DO_NOTHING,
-        verbose_name=_('Carts'),
+        verbose_name=_('Order'),
 
     )
     user = models.ForeignKey(

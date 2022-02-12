@@ -1,0 +1,163 @@
+<!DOCTYPE html>
+{% extends "dashboard/base.html" %}
+{% load static %}
+{% load mathfilters %}
+{% load static i18n %}
+{% block title %}
+{{title}}
+{% endblock title %}
+ {% block custom_js %}
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/3.7.0/chart.js" integrity="sha512-uLlukEfSLB7gWRBvzpDnLGvzNUluF19IDEdUoyGAtaO0MVSBsQ+g3qhLRL3GTVoEzKpc24rVT6X1Pr5fmsShBg==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+<script defer>
+document.addEventListener("DOMContentLoaded", function(event) {
+const ctx = document.getElementById('myChart');
+console.log(ctx);
+const myChart = new Chart(ctx, {
+    type: 'bar',
+    data: {
+        labels: ['Red', 'Blue', 'Yellow', 'Green', 'Purple', 'Orange'],
+        datasets: [{
+            label: '# of Votes',
+            data: [12, 19, 3, 5, 2, 3],
+            backgroundColor: [
+                'rgba(255, 99, 132, 0.2)',
+                'rgba(54, 162, 235, 0.2)',
+                'rgba(255, 206, 86, 0.2)',
+                'rgba(75, 192, 192, 0.2)',
+                'rgba(153, 102, 255, 0.2)',
+                'rgba(255, 159, 64, 0.2)'
+            ],
+            borderColor: [
+                'rgba(255, 99, 132, 1)',
+                'rgba(54, 162, 235, 1)',
+                'rgba(255, 206, 86, 1)',
+                'rgba(75, 192, 192, 1)',
+                'rgba(153, 102, 255, 1)',
+                'rgba(255, 159, 64, 1)'
+            ],
+            borderWidth: 1
+        }]
+    },
+    options: {
+        scales: {
+            y: {
+                beginAtZero: true
+            }
+        }
+    }
+});
+});
+</script>
+{% endblock %}
+
+         {% block breadcrumb_content %}
+   <nav aria-label="crumb">
+                    <ol class="crumb breadcrumb-light breadcrumb-dark">
+                        <li class="breadcrumb-item"><a href="{% url 'dashboard' %}">{% trans 'Dashboard' %}</a></li>
+                        <li class="breadcrumb-item" aria-current="page">{% trans 'Views Reports' %}</li>
+                        <li class="breadcrumb-item" aria-current="page">{% trans 'Products Views' %}</li>
+                    </ol>
+                </nav>
+                {% endblock breadcrumb_content %}
+{% block content %}
+                <h1 class="h2">{% trans 'Products Views' %}</h1>
+{% include 'includes/search_code.html' %}
+    <div>
+        <div class="modal fade" id="exportData" tabindex="-1" aria-labelledby="exampleModalData" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="exampleModalData">{% trans 'Export To Excel File' %}</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+        <form action="" method="post">
+            {% csrf_token %}
+      <div class="modal-body">
+             <h5 class="mt-3"> {% trans 'Export All Pages' %}</h5>
+          <i>{% trans '(By default all pages will be exported)' %}</i>
+          <div class="form-check">
+          <label for="allData-report" >{%  trans 'All Pages' %}</label>
+          <input id="allData-report" class="form-check-input" type="checkbox" value="allData" name="allData">
+          </div>
+
+
+<div>
+    <h5 class="mt-4">{% trans 'Or Export Selected Pages Only' %}</h5>
+
+<div class="pages-range">
+                 {% for i in page_range %}
+
+              <div class="form-check">
+          <label for="select{{i}}" >page{{i}}</label>
+          <input id="select{{i}}" class="form-check-input page-js" type="checkbox" value="{{i}}" name="subData">
+
+          </div>
+
+                 {% endfor %}
+    </div>
+      <input hidden type="text" name="pages_collector" id="pages_collector" value="none">
+
+
+    </div>
+
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+        <button type="submit" class="btn btn-success" name="createExcel" value="done">Save</button>
+
+      </div>
+              </form>
+    </div>
+  </div>
+</div>
+
+    </div>
+
+  {% if  search and not search_error %}
+<h2>{% trans 'Showing Search Results For ' %}</h2>
+<h3>{{search_option}}="{{search_phrase}}"</h3>
+{% endif %}
+{% if products_views_list|length %}
+<div class="row card-group">
+
+ <div class="row">
+                    <div class="col-12 col-xl-11 mb-4 mb-lg-0">
+                        <div class="card-light card-dark">
+                            <h5 class="card-header-light card-header-dark">{% trans 'Product Categories' %}</h5>
+                            <div class="card-body-light card-body-dark">
+                                <div class="table-responsive">
+                                    <table class="table">
+                                        <thead>
+                                          <tr>
+                                            <th scope="col">{% trans 'Product Name' %}</th>
+                                            <th scope="col">{% trans 'User' %}</th>
+                                          </tr>
+                                        </thead>
+                                        <tbody>
+                                        {% for view  in products_views_list %}
+                                          <tr>
+                                            <th scope="row">{{view.product.name}}</th>
+                                            <td>{{ view.user.username }}</td>
+                                          </tr>
+                                        {% endfor %}
+
+                                        </tbody>
+                                      </table>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+    <canvas id="myChart" width="400" height="400"></canvas>
+</div>
+{% include 'dashboard/global_includes/pagination_code.html' %}
+{% endif %}
+{% if products_views_list|length == 0 and not search %}
+<h3 class="delete-warning">{% trans 'There are no views yet ... you can add new ones from ' %} <a href="{% url 'addOffers' %}">{% trans 'Here' %}</a></h3>
+{% endif %}
+{% if search and search_result.count == 0 and search_result != "" %}
+<h3 class="delete-warning">{% trans 'Sorry no offers found that matches your search!' %}</h3>
+{% endif %}
+
+{% endblock content %}

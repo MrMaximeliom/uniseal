@@ -38,7 +38,7 @@ class  ManageBrochuresSerializer(serializers.ModelSerializer):
         model =  ManageBrochures
         fields = "__all__"
 
-class  ManageCartsSerializer(serializers.ModelSerializer):
+class  ManageOrdersSerializer(serializers.ModelSerializer):
     class Meta:
         from .models import  ManageCarts
         model =  ManageCarts

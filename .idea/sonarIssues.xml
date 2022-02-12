@@ -533,12 +533,27 @@
             <set />
           </value>
         </entry>
+        <entry key="$PROJECT_DIR$/apps/admin_panel/forms.py">
+          <value>
+            <set />
+          </value>
+        </entry>
         <entry key="$PROJECT_DIR$/apps/admin_panel/models.py">
           <value>
             <set />
           </value>
         </entry>
         <entry key="$PROJECT_DIR$/apps/admin_panel/serializers.py">
+          <value>
+            <set />
+          </value>
+        </entry>
+        <entry key="$PROJECT_DIR$/apps/admin_panel/templates/admin_panel/products_views.html">
+          <value>
+            <set />
+          </value>
+        </entry>
+        <entry key="$PROJECT_DIR$/apps/admin_panel/urls.py">
           <value>
             <set />
           </value>
@@ -564,6 +579,11 @@
           </value>
         </entry>
         <entry key="$PROJECT_DIR$/apps/category/templates/category/all_categories.html">
+          <value>
+            <set />
+          </value>
+        </entry>
+        <entry key="$PROJECT_DIR$/apps/dashboard/static/dashboard/js/chart.js">
           <value>
             <set />
           </value>
@@ -724,6 +744,11 @@
           </value>
         </entry>
         <entry key="$PROJECT_DIR$/apps/orders/dashboard_views.py">
+          <value>
+            <set />
+          </value>
+        </entry>
+        <entry key="$PROJECT_DIR$/apps/orders/endpoints_urls.py">
           <value>
             <set />
           </value>

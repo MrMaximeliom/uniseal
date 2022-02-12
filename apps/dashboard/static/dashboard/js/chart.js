@@ -1,7 +1,6 @@
 $( document ).ready(function() {
 console.log("Hi chart")
 $(function () {
-
       var $populationChart = $("#population-chart");
       $.ajax({
         url: $populationChart.data("url"),
@@ -36,7 +35,6 @@ $(function () {
 
     });
 $(function () {
-
       var $populationChart = $("#users-chart");
       $.ajax({
         url: $populationChart.data("url"),

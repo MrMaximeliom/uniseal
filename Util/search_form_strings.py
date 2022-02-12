@@ -17,6 +17,8 @@ ORGANIZATION_NAME_SYNTAX_ERROR = _("Organization Name contains only English lett
 PHONE_NUMBER_SYNTAX_ERROR = _("Phone Number contains only numbers! , in the format of 09###### or 01######")
 # used by product search pages
 SEARCH_PRODUCTS_TIP = _("Search Products")
+# used by products views report
+SEARCH_PRODUCTS_VIEWS_TIP = _("Search Products Views")
 PRODUCT_NAME_SYNTAX_ERROR = _("Product name contains alphanumeric English letters with dashes only!")
 # used by suppliers pages
 SEARCH_SUPPLIERS_TIP = _("Search Suppliers")
@@ -86,3 +88,9 @@ USERS_SOLUTIONS_TITLE = _("Uniseal Dashboard - Users Activities in Solutions")
 USERS_SELLING_POINTS_TITLE = _("Uniseal Dashboard - Users Activities in Selling Points")
 USERS_BROCHURES_TITLE = _("Uniseal Dashboard - Users Activities in Brochures")
 USERS_CARTS_TITLE = _("Uniseal Dashboard - Users Activities in Carts")
+# Reports Views
+PRODUCTS_VIEWS_TITLE = _("Uniseal Dashboard - Products Reports Views ")
+PROJECTS_VIEWS_TITLE = _("Uniseal Dashboard - Projects Reports Views ")
+SOLUTION_VIEWS_TITLE = _("Uniseal Dashboard - Solution Reports Views ")
+BROCHURES_VIEWS_TITLE = _("Uniseal Dashboard - Brochures Reports Views ")
+SELLING_POINTS_VIEWS_TITLE = _("Uniseal Dashboard - Selling Points Reports Views ")
