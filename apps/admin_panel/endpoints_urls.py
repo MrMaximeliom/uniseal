@@ -1,8 +1,7 @@
-
 from django.utils.translation import gettext_lazy as _
 from rest_framework import viewsets
 from rest_framework.permissions import IsAuthenticated
-from Util.permissions import UnisealPermission
+from django_filters.rest_framework import DjangoFilterBackend
 
 
 # Create your views here.
@@ -35,6 +34,8 @@ class  ManageProductsViewSet(viewsets.ModelViewSet):
     queryset = ManageProducts.objects.all()
     serializer_class = ManageProductsSerializer
     permission_classes = [IsAuthenticated]
+    filter_backends = [DjangoFilterBackend]
+    filterset_fields = ['product','user']
 
 class  ManageProductsPageViewSet(viewsets.ModelViewSet):
     """
@@ -63,6 +64,8 @@ class  ManageProductsPageViewSet(viewsets.ModelViewSet):
     queryset = ManageProductsPage.objects.all()
     serializer_class = ManageProductsPageSerializer
     permission_classes = [IsAuthenticated]
+    filter_backends = [DjangoFilterBackend]
+    filterset_fields = ['user']
 
 class  ManageProjectsViewSet(viewsets.ModelViewSet):
     """
@@ -92,6 +95,8 @@ class  ManageProjectsViewSet(viewsets.ModelViewSet):
     queryset = ManageProjects.objects.all()
     serializer_class = ManageProjectsSerializer
     permission_classes = [IsAuthenticated]
+    filter_backends = [DjangoFilterBackend]
+    filterset_fields = ['project','user']
 
 class  ManageSolutionViewSet(viewsets.ModelViewSet):
     """
@@ -121,6 +126,8 @@ class  ManageSolutionViewSet(viewsets.ModelViewSet):
     queryset = ManageSolution.objects.all()
     serializer_class = ManageSolutionSerializer
     permission_classes = [IsAuthenticated]
+    filter_backends = [DjangoFilterBackend]
+    filterset_fields = ['solution','user']
 
 class  ManageSellingPointsViewSet(viewsets.ModelViewSet):
     """
@@ -151,6 +158,8 @@ class  ManageSellingPointsViewSet(viewsets.ModelViewSet):
     queryset = ManageSellingPoints.objects.all()
     serializer_class = ManageSellingPointsSerializer
     permission_classes = [IsAuthenticated]
+    filter_backends = [DjangoFilterBackend]
+    filterset_fields = ['user','selling_point']
 
 
 class  ManageBrochuresViewSet(viewsets.ModelViewSet):
@@ -182,6 +191,8 @@ class  ManageBrochuresViewSet(viewsets.ModelViewSet):
     queryset = ManageBrochures.objects.all()
     serializer_class = ManageBrochuresSerializer
     permission_classes = [IsAuthenticated]
+    filter_backends = [DjangoFilterBackend]
+    filterset_fields = ['brochures','user']
 
 class  ManageCartsViewSet(viewsets.ModelViewSet):
     """
@@ -210,3 +221,5 @@ class  ManageCartsViewSet(viewsets.ModelViewSet):
     queryset = ManageCarts.objects.all()
     serializer_class = ManageCartsSerializer
     permission_classes = [IsAuthenticated]
+    filter_backends = [DjangoFilterBackend]
+    filterset_fields = ['cart','user']

@@ -9,7 +9,7 @@ from Util.utils import delete_temp_folder, SearchMan, ReportMan
 from .models import Offer
 from .forms import OfferForm
 from django.views.generic.edit import FormView
-from django.contrib import messages
+from django.contrib import messagescbaa
 from django.core.paginator import Paginator, PageNotAnInteger, EmptyPage
 from django.views.generic.edit import UpdateView
 #
