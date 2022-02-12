@@ -22,12 +22,14 @@ class ManageProducts(models.Model):
         "product.Product",
         on_delete=models.DO_NOTHING,
         verbose_name=_('Product'),
+        related_name='manage_product'
 
     )
     user = models.ForeignKey(
         "accounts.User",
         on_delete=models.DO_NOTHING,
         verbose_name=_('User'),
+        related_name="manage_user_products"
 
     )
     product_views = models.PositiveIntegerField(

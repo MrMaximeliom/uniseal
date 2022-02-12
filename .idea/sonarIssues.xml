@@ -758,6 +758,11 @@
             <set />
           </value>
         </entry>
+        <entry key="$PROJECT_DIR$/apps/product/endpoints_urls.py">
+          <value>
+            <set />
+          </value>
+        </entry>
         <entry key="$PROJECT_DIR$/apps/product/migrations/0052_product_discount_percentage_alter_product_price_and_more.py">
           <value>
             <set />

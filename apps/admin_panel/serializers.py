@@ -1,7 +1,12 @@
 from rest_framework import serializers
-
+from apps.product.serializers import ProductSerializer
 
 class  ManageProductsSerializer(serializers.ModelSerializer):
+    manage_product = serializers.SlugRelatedField(
+        many=True,
+        read_only=True,
+        slug_field='name'
+    )
     class Meta:
         from .models import  ManageProducts
         model =  ManageProducts

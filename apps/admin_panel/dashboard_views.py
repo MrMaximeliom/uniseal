@@ -40,7 +40,7 @@ class ViewsReportsListView(ListView):
 
 
     def get_queryset(self):
-        return ManageProducts.objects.all().order_by('-id')
+        return ManageProducts.objects.values('product').annotate(users_count=Count('user')).order_by("-users_count")
 
     def post(self, request, *args, **kwargs):
         queryset = self.get_queryset()
@@ -95,7 +95,7 @@ class ViewsReportsListView(ListView):
             if request.session['temp_dir'] != '':
                 delete_temp_folder()
         if 'page' not in request.GET:
-            manageProducts = ManageProducts.objects.all().order_by('-id')
+            manageProducts = ManageProducts.objects.values('product').annotate(users_count=Count('user')).order_by("-users_count")
             self.searchManObj.setPaginator(manageProducts)
             self.searchManObj.setSearch(False)
         if request.GET.get('page'):

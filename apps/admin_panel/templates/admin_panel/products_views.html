@@ -130,14 +130,14 @@ const myChart = new Chart(ctx, {
                                         <thead>
                                           <tr>
                                             <th scope="col">{% trans 'Product Name' %}</th>
-                                            <th scope="col">{% trans 'User' %}</th>
+                                            <th scope="col">{% trans 'Number of Users' %}</th>
                                           </tr>
                                         </thead>
                                         <tbody>
                                         {% for view  in products_views_list %}
                                           <tr>
-                                            <th scope="row">{{view.product.name}}</th>
-                                            <td>{{ view.user.username }}</td>
+                                            <th scope="row">{{view.product}}</th>
+                                            <td>{{ view.users_count }}</td>
                                           </tr>
                                         {% endfor %}
 
