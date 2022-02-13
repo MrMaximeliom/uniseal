@@ -43,6 +43,11 @@ class ManageProducts(models.Model):
         default=0
 
     )
+    add_to_cart_views = models.PositiveIntegerField(
+        verbose_name=_('Count of add to cart'),
+        blank=True,
+        default=0
+    )
 
 class ManageProjects(models.Model):
     project = models.ForeignKey(
@@ -139,8 +144,5 @@ class ManageCarts(models.Model):
         verbose_name=_('User'),
 
     )
-    add_to_cart_views = models.PositiveIntegerField(
-        verbose_name=_('Add To Cart Views'),
-        default=0
-    )
+
 
