@@ -33,18 +33,22 @@
                 <div class="card mb-5 ml-2" >
   <img class="card-img-top card-image-product" src="{{offer.image.url}}" alt="Card image cap">
   <div class="card-body">
+      {% if offer.start_date %}
     <h5 class="card-title">{% trans 'Offer Start Date' %}</h5>
             <p class="card-text">
    <span>  {% trans 'Offer Start Date:' %} </span>
 <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-clock"><circle cx="12" cy="12" r="10"></circle><polyline points="12 6 12 12 16 14"></polyline></svg>
             {{offer.offer_start_date}}
     </p>
+      {% endif %}
+       {% if offer.end_date %}
             <p class="card-text">
    <span>  {% trans 'Offer End Date:' %} </span>
 <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-clock"><circle cx="12" cy="12" r="10"></circle><polyline points="12 6 12 12 16 14"></polyline></svg>
             {{offer.offer_end_date}}
     </p>
-          <a href="{% url 'editOffer' slug=offer.slug %}" class="btn btn-primary">{% trans 'Offer' %}</a>
+      {% endif %}
+          <a href="{% url 'editOffer' slug=offer.slug %}" class="btn btn-primary">{% trans 'Update' %}</a>
 
   </div>
 

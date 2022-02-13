@@ -13,6 +13,11 @@ class Offer(models.Model):
         blank=False,
         null=False
     )
+    is_active = models.BooleanField(
+        verbose_name=_('Is Active Offer?'),
+        blank=False,
+        default=False,
+    )
     offer_created_date = models.DateTimeField(auto_now=True, blank=True, null=True)
     offer_start_date = models.DateField(blank=True, null=True)
     offer_end_date = models.DateField(blank=True, null=True)

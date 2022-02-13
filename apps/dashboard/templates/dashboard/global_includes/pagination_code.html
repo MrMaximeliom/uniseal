@@ -19,6 +19,7 @@
         {% endif %}
 
         {% for i in page_range %}
+              {% if current_page != num_pages %}
             {% if current_page == i %}
                 <li class="page-item active" aria-current="page">
               <span class="page-link">
@@ -29,6 +30,7 @@
             {% elif i > current_page|add:'-5' and i < current_page|add:'5' %}
                  <li class="page-item"><a class="page-link" href="?page={{ i }}">{{ i }}</a></li>
             {% endif %}
+              {% endif %}
         {% endfor %}
 
         {% if num_pages > current_page|add:'4' %}

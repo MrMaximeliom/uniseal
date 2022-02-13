@@ -588,6 +588,11 @@
             <set />
           </value>
         </entry>
+        <entry key="$PROJECT_DIR$/apps/dashboard/static/dashboard/js/general.js">
+          <value>
+            <set />
+          </value>
+        </entry>
         <entry key="$PROJECT_DIR$/apps/dashboard/static/dashboard/js/index.js">
           <value>
             <set />
@@ -738,7 +743,22 @@
             <set />
           </value>
         </entry>
+        <entry key="$PROJECT_DIR$/apps/offer/templates/offer/add_offers.html">
+          <value>
+            <set />
+          </value>
+        </entry>
         <entry key="$PROJECT_DIR$/apps/offer/templates/offer/all_offers.html">
+          <value>
+            <set />
+          </value>
+        </entry>
+        <entry key="$PROJECT_DIR$/apps/offer/templates/offer/edit_offer.html">
+          <value>
+            <set />
+          </value>
+        </entry>
+        <entry key="$PROJECT_DIR$/apps/offer/templates/offer/edit_offers.html">
           <value>
             <set />
           </value>
@@ -793,7 +813,22 @@
             <set />
           </value>
         </entry>
+        <entry key="$PROJECT_DIR$/apps/product/templates/product/add_products.html">
+          <value>
+            <set />
+          </value>
+        </entry>
         <entry key="$PROJECT_DIR$/apps/product/templates/product/all_products.html">
+          <value>
+            <set />
+          </value>
+        </entry>
+        <entry key="$PROJECT_DIR$/apps/product/templates/product/edit_product.html">
+          <value>
+            <set />
+          </value>
+        </entry>
+        <entry key="$PROJECT_DIR$/apps/product/templates/product/product_detail.html">
           <value>
             <set />
           </value>

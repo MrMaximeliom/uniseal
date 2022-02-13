@@ -72,7 +72,24 @@
         <a class="btn btn-primary" href="{{product_data.product_file.url}}" target="_blank">{% trans 'View Sheet' %}</a>
 
     </div>
+<!--    discount_percentage-->
+    {% if product_data.discount_percentage %}
 <div class="mb-3 mt-5 product-description">
+    <h4>{% trans 'Original Product Price' %}</h4>
+    <p class="description-paragraph">{{product_data.price}}</p>
+    <h4>{% trans 'Discount Percentage' %}</h4>
+    <p class="description-paragraph">{{product_data.discount_percentage}}</p>
+    <h4>{% trans 'After Discount Product Price' %}</h4>
+    <p class="description-paragraph">{{product_data.discount_percentage}}</p>
+</div>
+    {% else %}
+    <div class="mb-3 mt-5 product-description">
+    <h4>{% trans 'Product Price' %}</h4>
+    <p class="description-paragraph">{{product_data.price}}</p>
+</div>
+    {% endif%}
+
+    <div class="mb-3 mt-5 product-description">
     <h4>{% trans 'Product Description' %}</h4>
     <p class="description-paragraph">{{product_data.description}}</p>
 </div>

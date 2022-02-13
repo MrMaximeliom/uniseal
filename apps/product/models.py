@@ -11,7 +11,7 @@ class Product(models.Model):
     arabic_name = models.CharField(
         max_length=100,
         verbose_name=_('Product Name(Arabic)'),
-    null=True,
+        null=True,
         blank=True
     )
     image = models.ImageField(
@@ -69,12 +69,11 @@ class Product(models.Model):
         default="0.0"
 
     )
-    discount_percentage = models.DecimalField(
+    discount_percentage = models.FloatField(
         verbose_name=_('Discount Percentage'),
-        max_digits=19,
-        decimal_places=10,
         null=True,
-        blank=False,
+        blank=True,
+        default=0.0
     )
 
 

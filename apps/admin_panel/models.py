@@ -49,6 +49,9 @@ class ManageProducts(models.Model):
         default=0
     )
 
+    class Meta:
+        unique_together = ['product', 'user']
+
 class ManageProjects(models.Model):
     project = models.ForeignKey(
         "project.Project",
@@ -67,6 +70,9 @@ class ManageProjects(models.Model):
         default=0
     )
 
+    class Meta:
+        unique_together = ['project', 'user']
+
 class ManageSolution(models.Model):
     solution = models.ForeignKey(
         "solution.Solution",
@@ -84,6 +90,9 @@ class ManageSolution(models.Model):
         verbose_name=_('Solution Views'),
         default=0
     )
+
+    class Meta:
+        unique_together = ['solution', 'user']
 
 class ManageSellingPoints(models.Model):
     selling_point = models.ForeignKey(
@@ -107,6 +116,9 @@ class ManageSellingPoints(models.Model):
         default=0
     )
 
+    class Meta:
+        unique_together = ['user', 'selling_point']
+
 class ManageBrochures(models.Model):
     brochures = models.ForeignKey(
         "brochures.Brochures",
@@ -129,6 +141,9 @@ class ManageBrochures(models.Model):
         default=0
     )
 
+    class Meta:
+        unique_together = ['user', 'brochures']
+
 
 
 class ManageCarts(models.Model):
@@ -144,5 +159,8 @@ class ManageCarts(models.Model):
         verbose_name=_('User'),
 
     )
+
+    class Meta:
+        unique_together = ['order', 'user']
 
 

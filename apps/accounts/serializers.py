@@ -1,4 +1,3 @@
-
 from django.contrib.auth.password_validation import validate_password
 from django.utils.translation import gettext_lazy as _
 from rest_framework import serializers
@@ -86,7 +85,6 @@ class RegisterSerializer(serializers.ModelSerializer):
     )
     password = serializers.CharField(write_only=True, required=True, validators=[validate_password])
     password2 = serializers.CharField(write_only=True, required=True, label=_('Confirm Password'))
-    # is_artist = serializers.ChoiceField(choices=User_TYPES,required=True,label='What are you?')
 
 
 

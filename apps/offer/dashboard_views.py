@@ -150,13 +150,13 @@ class OffersListView(ListView):
 class OfferUpdateView(UpdateView):
     model = Offer
     success_url = reverse_lazy('editOffer')
-    template_name = "offers/edit_offer.html"
+    template_name = "offer/edit_offer.html"
 
     def form_valid(self, form):
         form.save()
         messages.success(self.request, "Offer Updated Successfully")
         return super().form_valid(form)
-    fields = ['name']
+    fields = "__all__"
     extra_context = {
         'job': 'active',
         'edit_offers': 'active',
