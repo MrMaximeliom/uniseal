@@ -3,8 +3,11 @@ from apps.product.serializers import ProductSerializer
 
 
 class ManageProductsSerializer(serializers.ModelSerializer):
+    from .models import ManageProducts
+    product = ManageProducts.objects.prefetch_related("product")
     class Meta:
         from .models import ManageProducts
+
         model = ManageProducts
         fields = "__all__"
 
