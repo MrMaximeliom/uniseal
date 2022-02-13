@@ -2,9 +2,10 @@ from rest_framework import serializers
 from apps.product.serializers import ProductSerializer
 
 
+
 class ManageProductsSerializer(serializers.ModelSerializer):
-    from .models import ManageProducts
-    product = ManageProducts.objects.prefetch_related("product")
+    # product = ProductSerializer(many=False, read_only=True)
+    # product_id = serializers.IntegerField(write_only=True)
     class Meta:
         from .models import ManageProducts
 
