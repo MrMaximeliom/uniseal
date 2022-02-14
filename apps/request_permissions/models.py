@@ -13,8 +13,9 @@ class RequestAccess(models.Model):
     user = models.ForeignKey(
           "accounts.User",
         verbose_name=_("User"),
-        on_delete=models.SET_NULL,
-        null=True,
+        on_delete=models.DO_NOTHING,
+        null=False,
         blank=False
 
     )
+

@@ -10,7 +10,7 @@ class ManageProductsPage(models.Model):
     )
     product_page_views = models.PositiveIntegerField(
         verbose_name=_('Product Page Views'),
-        default=0
+        default=1
 
 
     )
@@ -35,7 +35,7 @@ class ManageProducts(models.Model):
     product_views = models.PositiveIntegerField(
         verbose_name=_('Product Views'),
         blank=True,
-        default=0
+        default=1
     )
     product_sheet_downloads = models.PositiveIntegerField(
         verbose_name=('Product Sheet Downloads'),
@@ -67,7 +67,7 @@ class ManageProjects(models.Model):
     )
     project_views = models.PositiveIntegerField(
         verbose_name=_('Project Views'),
-        default=0
+        default=1
     )
 
     class Meta:
@@ -88,7 +88,7 @@ class ManageSolution(models.Model):
     )
     solution_views = models.PositiveIntegerField(
         verbose_name=_('Solution Views'),
-        default=0
+        default=1
     )
 
     class Meta:
@@ -134,7 +134,7 @@ class ManageBrochures(models.Model):
     )
     brochures_views = models.PositiveIntegerField(
         verbose_name=_('Brochures_views'),
-        default=0
+        default=1
     )
     brochures_sheet_downloads = models.PositiveIntegerField(
         verbose_name=('Brochures Sheet Downloads'),

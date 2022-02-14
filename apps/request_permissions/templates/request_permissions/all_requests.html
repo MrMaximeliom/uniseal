@@ -162,6 +162,7 @@
                                             <th scope="col">{% trans 'Organization' %}</th>
                                               <th scope="col">{% trans 'Job Type' %}</th>
                                             <th scope="col">{% trans 'Permissions Status' %}</th>
+                                            <th scope="col">{% trans 'Action' %}</th>
 
                                           </tr>
                                         </thead>
@@ -174,7 +175,11 @@
                                             <td>{{request.user.organization}}</td>
                                             <td>{{request.user.job_type.name}}</td>
                                             <td>{{request.status}}</td>
-                                            <td><a href="{% url 'editUser' slug=user.slug %}" class="btn btn-sm btn-primary">Update</a></td>
+                                              {% if not request.status %}
+                                            <td><a href="{% url 'updateRequest' pk=request.pk %}" class="btn btn-sm btn-success">{% trans 'Allow' %}</a></td>
+                                           {% else %}
+                                            <td><a href="{% url 'updateRequest' pk=request.pk %}" class="btn btn-sm btn-danger">{% trans 'Deny' %}</a></td>
+                                          {% endif %}
                                           </tr>
 
                                         {% endfor %}

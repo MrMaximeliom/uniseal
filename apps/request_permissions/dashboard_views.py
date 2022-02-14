@@ -12,6 +12,24 @@ from django.core.paginator import Paginator, PageNotAnInteger, EmptyPage
 from django.views.generic.edit import UpdateView
 
 
+def GiveOrDenyAccess(request,pk):
+    from apps.request_permissions.models import RequestAccess
+    request_access = get_object_or_404(RequestAccess,pk=pk)
+    if request_access:
+        if not request_access.status:
+            request_access.status=True
+            request_access.save()
+            messages.success(request,f"User {request_access.user.full_name} has a permission to view Approvals Page")
+        else:
+            request_access.status=False
+            request_access.save()
+            messages.success(request, f"User {request_access.user.full_name} has no permission to view Approvals Page")
+
+
+    else:
+        messages.error(request,f"Sorry Try Again Later")
+    return redirect('requestAccessList')
+
 
 
 class RequestAccessListView(ListView):
