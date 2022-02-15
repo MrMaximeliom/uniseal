@@ -136,8 +136,8 @@ const myChart = new Chart(ctx, {
                                         <tbody>
                                         {% for view  in products_views_list %}
                                           <tr>
-                                            <th scope="row">{{view.product}}</th>
-                                            <td>{{ view.users_count }}</td>
+                                            <th scope="row">{{view.product__name}}</th>
+                                            <td>{{ view.num_users }}</td>
                                           </tr>
                                         {% endfor %}
 

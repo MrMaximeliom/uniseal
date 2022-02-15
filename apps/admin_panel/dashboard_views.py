@@ -36,21 +36,22 @@ class ViewsReportsListView(ListView):
     search_result = None
     report_man = ReportMan()
     title = PRODUCTS_VIEWS_TITLE
-    # products = ManageProducts.objects.values('product').annotate(users_count=Count('user')).order_by("-users_count")
-    product_details = []
+
 
 
     def get_queryset(self):
-        # retrieve all viewed products with user counts
-        products_viewed = ManageProducts.objects.values('product').annotate(users_count=Count('user')).order_by("-users_count")
 
-        return ManageProducts.objects.values('product').annotate(users_count=Count('user')).order_by("-users_count")
+        return ManageProducts.objects.values('product__name').annotate(num_users=Count('product__name'))
+
 
     def post(self, request, *args, **kwargs):
         queryset = self.get_queryset()
         paginator = Paginator(queryset, 5)
         if 'clear' not in request.POST:
             self.searchManObj.setSearch(True)
+        # search by username
+        # ManageProducts.objects.values_list('product__name', 'user').annotate(num_users=Count('product__name')).filter(
+        #     user__username='waleed')
         if request.POST.get('clear') == 'clear':
             manageProducts = self.get_queryset()
             self.searchManObj.setPaginator(manageProducts)
@@ -99,7 +100,7 @@ class ViewsReportsListView(ListView):
             if request.session['temp_dir'] != '':
                 delete_temp_folder()
         if 'page' not in request.GET:
-            manageProducts = ManageProducts.objects.values('product').annotate(users_count=Count('user')).order_by("-users_count")
+            manageProducts = ManageProducts.objects.values('product__name').annotate(num_users=Count('product__name'))
             self.searchManObj.setPaginator(manageProducts)
             self.searchManObj.setSearch(False)
         if request.GET.get('page'):
@@ -123,7 +124,6 @@ class ViewsReportsListView(ListView):
         self.extra_context = {
             'reports': 'active',
             self.active_flag: 'active',
-
             'page_range': paginator.page_range,
             'num_pages': paginator.num_pages,
             'products_views_list': manageProducts,
