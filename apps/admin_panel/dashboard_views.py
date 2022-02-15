@@ -37,9 +37,13 @@ class ViewsReportsListView(ListView):
     report_man = ReportMan()
     title = PRODUCTS_VIEWS_TITLE
     # products = ManageProducts.objects.values('product').annotate(users_count=Count('user')).order_by("-users_count")
+    product_details = []
 
 
     def get_queryset(self):
+        # retrieve all viewed products with user counts
+        products_viewed = ManageProducts.objects.values('product').annotate(users_count=Count('user')).order_by("-users_count")
+
         return ManageProducts.objects.values('product').annotate(users_count=Count('user')).order_by("-users_count")
 
     def post(self, request, *args, **kwargs):
