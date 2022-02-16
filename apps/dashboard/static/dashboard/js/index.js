@@ -32,7 +32,6 @@ $("#btn-mode").html('<svg xmlns="http://www.w3.org/2000/svg" width="24" height="
 
 }
 else{
-console.log("its night");
 myStorage.setItem('mode','day');
 body.classList.remove("dark-theme");
 audio = document.querySelector('.theme-audio--light-off');
@@ -45,16 +44,19 @@ $("#btn-mode").html('<svg xmlns="http://www.w3.org/2000/svg" width="24" height="
 function closeSideBar(){
   document.getElementById("mySidenav").style.display = "none";
   myStorage.setItem('sidebar-status','closed');
+
 }
 $("#sidebar-btn-slide").on("click",function(){
  if (myStorage.getItem('sidebar-status') !== null){
  if(myStorage.getItem('sidebar-status') === 'opened')
  {
+
  closeSideBar();
 
 
  }
  else {
+
      document.getElementById("mySidenav").style.display = "block";
   document.getElementById("mySidenav").style.width = "256px";
   document.getElementById("first-side-item").focus();
@@ -64,9 +66,9 @@ $("#sidebar-btn-slide").on("click",function(){
 
  }
  else{
-      document.getElementById("mySidenav").style.display = "block";
-  document.getElementById("mySidenav").style.width = "256px";
-  document.getElementById("first-side-item").focus();
+document.getElementById("mySidenav").style.display = "block";
+document.getElementById("mySidenav").style.width = "256px";
+document.getElementById("first-side-item").focus();
   myStorage.setItem('sidebar-status','opened');
  }
 

@@ -548,6 +548,21 @@
             <set />
           </value>
         </entry>
+        <entry key="$PROJECT_DIR$/apps/admin_panel/static/admin_panel/js/handle_charts.js">
+          <value>
+            <set />
+          </value>
+        </entry>
+        <entry key="$PROJECT_DIR$/apps/admin_panel/static/admin_panel/js/handle_products_charts.js">
+          <value>
+            <set />
+          </value>
+        </entry>
+        <entry key="$PROJECT_DIR$/apps/admin_panel/static/js/handle_products_charts.js">
+          <value>
+            <set />
+          </value>
+        </entry>
         <entry key="$PROJECT_DIR$/apps/admin_panel/templates/admin_panel/products_views.html">
           <value>
             <set />

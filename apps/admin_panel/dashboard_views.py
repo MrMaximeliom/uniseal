@@ -37,11 +37,20 @@ class ViewsReportsListView(ListView):
     report_man = ReportMan()
     title = PRODUCTS_VIEWS_TITLE
 
+    def get_count(self,flag_count):
+        query =  self.get_queryset()
+        list_count = []
+        for record in query:
+            list_count.append(record[flag_count])
+        return list_count
+
+
+
 
 
     def get_queryset(self):
 
-        return ManageProducts.objects.values('product__name').annotate(num_users=Count('product__name'))
+        return ManageProducts.objects.values('product__name').annotate(num_users=Count('product__name')).order_by('-num_users')
 
 
     def post(self, request, *args, **kwargs):
@@ -88,7 +97,14 @@ class ViewsReportsListView(ListView):
             'clear_search_tip': CLEAR_SEARCH_TIP,
             'search_products_views_tip': SEARCH_PRODUCTS_VIEWS_TIP,
             'current_page': page,
-            'title':self.title
+            'title':self.title,
+            'data_js': {
+                "num_users": self.get_count('num_users'),
+                'products_names': self.get_count('product__name'),
+            }
+            # 'num_users':self.get_count('num_users'),
+            # 'products_names': self.get_count('product__name'),
+
         }
         return super().get(request)
 
@@ -135,7 +151,13 @@ class ViewsReportsListView(ListView):
             'clear_search_tip': CLEAR_SEARCH_TIP,
             'search_products_views_tip': SEARCH_PRODUCTS_VIEWS_TIP,
             'current_page': page,
-            'title': self.title
+            'title': self.title,
+            # 'num_users':self.get_count('num_users'),
+
+            'data_js': {
+                "num_users": self.get_count('num_users'),
+                'products_names': self.get_count('product__name'),
+            }
         }
         return super().get(request)
 
