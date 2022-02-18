@@ -133,6 +133,10 @@ class SearchMan:
             from apps.request_permissions.models import RequestAccess
             requests = RequestAccess.objects.all().order_by('id')
             self.paginator = Paginator(requests, 5)
+        if model == "ManageProducts":
+            from apps.admin_panel.models import ManageProducts
+            manage_products = ManageProducts.objects.all().order_by('id')
+            self.paginator = Paginator(manage_products, 5)
 
 
 

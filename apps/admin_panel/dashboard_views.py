@@ -32,7 +32,7 @@ class ViewsReportsListView(ListView):
     model = ManageProducts
     template_name = "admin_panel/products_views.html"
     active_flag = 'products_views'
-    searchManObj = SearchMan("Products")
+    searchManObj = SearchMan("ManageProducts")
     search_result = None
     report_man = ReportMan()
     title = PRODUCTS_VIEWS_TITLE
