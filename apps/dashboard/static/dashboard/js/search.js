@@ -331,8 +331,8 @@ return false
 }
 if($('#searchPhraseDateProductsPage').prop("value") == ''){
 console.log(error_messages.empty_search_phrase)
-$('#search_phrase_error').html(error_messages.empty_search_phrase)
-$('#search_phrase_error').css('display','block')
+$('#search_phrase_date_error').html(error_messages.empty_search_phrase)
+$('#search_phrase_date_error').css('display','block')
 return false
 }
 
