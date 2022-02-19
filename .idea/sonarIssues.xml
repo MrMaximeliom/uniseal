@@ -548,6 +548,11 @@
             <set />
           </value>
         </entry>
+        <entry key="$PROJECT_DIR$/apps/admin_panel/static/admin_panel/js/clear_form.js">
+          <value>
+            <set />
+          </value>
+        </entry>
         <entry key="$PROJECT_DIR$/apps/admin_panel/static/admin_panel/js/handle_charts.js">
           <value>
             <set />
@@ -559,6 +564,21 @@
           </value>
         </entry>
         <entry key="$PROJECT_DIR$/apps/admin_panel/static/js/handle_products_charts.js">
+          <value>
+            <set />
+          </value>
+        </entry>
+        <entry key="$PROJECT_DIR$/apps/admin_panel/templates/admin_panel/product_page_views.html">
+          <value>
+            <set />
+          </value>
+        </entry>
+        <entry key="$PROJECT_DIR$/apps/admin_panel/templates/admin_panel/products_page.html">
+          <value>
+            <set />
+          </value>
+        </entry>
+        <entry key="$PROJECT_DIR$/apps/admin_panel/templates/admin_panel/products_page_views.html">
           <value>
             <set />
           </value>
@@ -603,12 +623,22 @@
             <set />
           </value>
         </entry>
+        <entry key="$PROJECT_DIR$/apps/dashboard/static/dashboard/js/date_picker_search.js">
+          <value>
+            <set />
+          </value>
+        </entry>
         <entry key="$PROJECT_DIR$/apps/dashboard/static/dashboard/js/general.js">
           <value>
             <set />
           </value>
         </entry>
         <entry key="$PROJECT_DIR$/apps/dashboard/static/dashboard/js/index.js">
+          <value>
+            <set />
+          </value>
+        </entry>
+        <entry key="$PROJECT_DIR$/apps/dashboard/static/dashboard/js/search.js">
           <value>
             <set />
           </value>

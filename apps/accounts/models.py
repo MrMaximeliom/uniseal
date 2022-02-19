@@ -5,6 +5,7 @@ from django.db import models
 from django.template.defaultfilters import slugify  # new
 from django.utils.translation import gettext_lazy as _
 from Util.utils import rand_slug
+import uuid
 
 
 class UserAccountManager(BaseUserManager):
@@ -95,6 +96,12 @@ class User(AbstractBaseUser):
     staff = models.BooleanField(default=False)
     admin = models.BooleanField(default=False)
     last_login = models.DateTimeField(auto_now=True, blank=True, null=True)
+    uuid = models.UUIDField(
+        default=uuid.uuid4,
+        unique=True,
+        null=False,
+        editable=False
+    )
     slug = models.SlugField(
         default=slugify(rand_slug()),
         verbose_name=_('User Slug'))

@@ -96,7 +96,7 @@ urlpatterns = [
     path('api/accounts/forgetPassword/<int:pk>/', accounts_views.ForgetPasswordView.as_view(),name='ForgetPassword'),
     path('', dashboard_views.dashboard, name='dashboard'),
     path('dashboard/', include(dashboard_urls)),
-    path('api/login/', TokenObtainPairView.as_view(), name='token_obtain_pair'),
+    path('api/login/', accounts_views.MyTokenObtainPairView.as_view(), name='token_obtain_pair'),
     path('api/login/refresh/', TokenRefreshView.as_view(), name='token_refresh'),
     path('api/api-auth/', include('rest_framework.urls', namespace='rest_framework')),
     path('api/logout/', accounts_views.Logout.as_view(), name='logout'),

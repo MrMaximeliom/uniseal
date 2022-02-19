@@ -4,9 +4,17 @@ from rest_framework import mixins
 from rest_framework import viewsets
 from rest_framework.permissions import IsAuthenticated
 from rest_framework.views import APIView
-
+from rest_framework_simplejwt.views import TokenObtainPairView
 from Util.permissions import IsAnonymousUser, UnisealPermission
 from Util.utils import EnablePartialUpdateMixin
+from .serializers import MyTokenObtainPairSerializer
+
+class MyTokenObtainPairView(TokenObtainPairView):
+    """
+    Takes a set of user credentials and returns an access and refresh JSON web
+    token pair to prove the authentication of those credentials.
+    """
+    serializer_class = MyTokenObtainPairSerializer
 
 
 class Logout(APIView):
@@ -48,8 +56,7 @@ class ModifyUserDataViewSet(viewsets.GenericViewSet, mixins.ListModelMixin,
     Use PUT function by accessing this url:
     /accounts/modifyUsersData/<user's_id>
     Format of data will be as the previous data format for GET function
-
-        """
+    """
     from apps.accounts.serializers import RegisterSerializer
     from .models import User
     queryset = User.objects.all()

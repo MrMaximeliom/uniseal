@@ -81,6 +81,9 @@ $("#close").on("click",function(){
 closeSideBar();
 
 });
+$('#clear').on("click",function(){
+$('#searchPhrase').val("");
+});
 
 
 });

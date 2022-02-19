@@ -1,45 +1,68 @@
 <!DOCTYPE html>
 {% extends "dashboard/base.html" %}
 {% load static %}
-{% load static i18n %}
 {% load mathfilters %}
+{% load static i18n %}
 {% block title %}
 {{title}}
 {% endblock title %}
-  {% block custom_css %}
+{% block custom_css %}
+<link rel= "stylesheet" href= "https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.4.1/css/bootstrap-datepicker3.css"/>
 <link rel="stylesheet" href="{% static 'dashboard/css/search.css' %}">
     {% endblock %}
-   {% block custom_js %}
+ {% block custom_js %}
 <script src="{% static 'dashboard/js/search.js' %}" defer></script>
-  {{ data_js|json_script:"my-data" }}
-    {% endblock %}
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/3.7.0/chart.js" integrity="sha512-uLlukEfSLB7gWRBvzpDnLGvzNUluF19IDEdUoyGAtaO0MVSBsQ+g3qhLRL3GTVoEzKpc24rVT6X1Pr5fmsShBg==" crossorigin="anonymous" referrerpolicy="no-referrer" type="module"></script>
+{{ data_js|json_script:"my-data" }}
+<script src="{% static 'admin_panel/js/handle_products_charts.js' %}" defer type="module"></script>
+<script src="{% static 'admin_panel/js/clear_form.js' %}" defer type="module"></script>
+<script type= "text/javascript" src= "https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.4.1/js/bootstrap-datepicker.min.js" defer></script>
+<script src="{% static 'dashboard/js/date_picker_search.js' %}" defer></script>
+{% endblock %}
+
          {% block breadcrumb_content %}
    <nav aria-label="crumb">
                     <ol class="crumb breadcrumb-light breadcrumb-dark">
                         <li class="breadcrumb-item"><a href="{% url 'dashboard' %}">{% trans 'Dashboard' %}</a></li>
-                        <li class="breadcrumb-item" aria-current="page">{% trans 'Product Categories' %}</li>
-                        <li class="breadcrumb-item" aria-current="page">{% trans 'All Product Categories' %}</li>
+                        <li class="breadcrumb-item" aria-current="page">{% trans 'Views Reports' %}</li>
+                        <li class="breadcrumb-item" aria-current="page">{% trans "Products' Page Views" %}</li>
                     </ol>
                 </nav>
                 {% endblock breadcrumb_content %}
 {% block content %}
-                <h1 class="h2 mb-3">{% trans 'All Product Categories' %}</h1>
+                <h1 class="h2">{% trans 'Products Page Views' %}</h1>
+
 <form class="row g-2 mb-3" action="" method="post" id="searchForm" autocomplete="off">
     {% csrf_token %}
-  <div class="col-sm-3 col-md-3 col-lg-3" id="search_phrase_holder">
-    <label for="searchPhrase" class="visually-hidden">{% trans 'Search Phrase' %}</label>
-    <input type="text" class="form-control" name="search_phrase" id="searchPhrase" placeholder="Search ..">
-          <span class="delete-warning" id="search_phrase_error"></span>
-  </div>
+
+
+           <div class="col-sm-3 col-md-3 col-lg-3"  id="search_phrase_date_holder">
+            <label for="searchPhraseDateProductsPage" class="visually-hidden">{% trans 'Search Phrase' %}</label>
+           <input type= "text" class="form-control" id="searchPhraseDateProductsPage" name="search_phrase_date" placeholder="Search By Visiting Date">
+          <span class="delete-warning" id="search_phrase_date_error"></span>
+     </div>
+
+
 
   <div class="col-sm-3 col-md-3 col-lg-3">
-    <button type="submit" class="btn btn-primary mb-3" id="searchButton" value="category"><span><i class="fas fa-search"></i></span></button>
-    <button type="button" name="clear" id="clear" value="clear" class="btn btn-danger mb-3"><span><i class="fas fa-eraser"></i></span></button>
-   {% if all_categories_data|length > 0 %}
-      <button type="button" class="btn btn-success mb-3" data-bs-toggle="modal" data-bs-target="#exportData"><span><i class="fas fa-file-csv"></i></span></button>
- {% endif %}
+     <button type="submit" class="btn btn-primary mb-3" id="searchButton" title="{{search_offers_tip}}"><span><i class="fas fa-search"></i></span></button>
+    <button type="button" name="clear" value="clear" class="btn btn-danger mb-3" title="{{clear_search_tip}}"><span><i class="fas fa-eraser"></i></span></button>
+  {% if object_list|length > 0  %}
+   <button type="button" class="btn btn-success mb-3" data-bs-toggle="modal" data-bs-target="#exportData" title="{{create_report_tip}}"><span><i class="fas fa-file-csv"></i></span></button>
+{% endif %}
   </div>
 </form>
+
+<div>
+    <h2>{% trans 'View Mode' %}</h2>
+    <div class="col-3 mb-3">
+         <select class="form-select form-control dropdown-toggle" id="selectView">
+        <option selected value="default">Tabular Mode</option>
+        <option  value="charts">Charts Mode</option>
+    </select>
+    </div>
+
+</div>
     <div>
         <div class="modal fade" id="exportData" tabindex="-1" aria-labelledby="exampleModalData" aria-hidden="true">
   <div class="modal-dialog">
@@ -51,7 +74,6 @@
         <form action="" method="post">
             {% csrf_token %}
       <div class="modal-body">
-
              <h5 class="mt-3"> {% trans 'Export All Pages' %}</h5>
           <i>{% trans '(By default all pages will be exported)' %}</i>
           <div class="form-check">
@@ -91,29 +113,32 @@
 </div>
 
     </div>
+
   {% if  search and not search_error %}
 <h2>{% trans 'Showing Search Results For ' %}</h2>
 <h3>{{search_option}}="{{search_phrase}}"</h3>
 {% endif %}
-{% if all_categories_data|length %}
- <div class="row">
+{% if products_views_list|length %}
+<div class="row card-group">
+
+ <div class="row" id="defaultView">
                     <div class="col-12 col-xl-11 mb-4 mb-lg-0">
                         <div class="card-light card-dark">
-                            <h5 class="card-header-light card-header-dark">{% trans 'Product Categories' %}</h5>
+                            <h5 class="card-header-light card-header-dark">{% trans 'Products Page Views' %}</h5>
                             <div class="card-body-light card-body-dark">
                                 <div class="table-responsive">
                                     <table class="table">
                                         <thead>
                                           <tr>
-                                            <th scope="col">{% trans 'Name' %}</th>
-                                            <th scope="col">{% trans 'Numbers of Products' %}</th>
+                                            <th scope="col">{% trans 'Visiting Date' %}</th>
+                                            <th scope="col">{% trans 'Number of Users' %}</th>
                                           </tr>
                                         </thead>
                                         <tbody>
-                                        {% for category in all_categories_data %}
+                                        {% for view  in products_views_list %}
                                           <tr>
-                                            <th scope="row">{{category.name}}</th>
-                                            <td>{{ category.num_products }}</td>
+                                            <th scope="row">{{view.visit_date_time}}</th>
+                                            <td>{{ view.product_page_views }}</td>
                                           </tr>
                                         {% endfor %}
 
@@ -125,35 +150,19 @@
                     </div>
 
                 </div>
- <div class="container mt-3 d-flex justify-content-center">
-        <nav aria-label="Pagination Navigation">
-          <ul class="pagination">
-           <li class="page-item {% if current_page == 1 %} disabled disabled-item {% endif %}">
-            <a class="page-link" href="?page={{ current_page|sub:1 }}" aria-label="Previous">
-             <span aria-hidden="true">«</span>
-             <span class="sr-only">Previous</span>
-            </a>
-           </li>
-                  {% if page_range|length != 1 %}
-           {% for i in page_range %}
-           <li class="page-item {% if i == current_page %} active {% endif %}"><a class="page-link " href="?page={{ i }}">{{ i }}</a></li>
-           {% endfor %}
-                 {% endif %}
-
-           <li class="page-item {% if current_page == num_pages %} disabled disabled-item {% endif %}">
-            <a class="page-link" href="?page={{ current_page|add:1 }}" aria-label="Next">
-             <span aria-hidden="true">»</span>
-             <span class="sr-only">Next</span>
-            </a>
-           </li>
-          </ul>
-       </nav>
-  </div>
+    <canvas id="chartsView" hidden ></canvas>
+</div>
+{% include 'dashboard/global_includes/pagination_code.html' %}
 {% endif %}
-{% if all_categories_data|length == 0 and not search %}
-<h3 class="delete-warning">{% trans 'There are no categories yet .. you can add new ones from ' %} <a href="{% url 'addCategories' %}">{% trans 'Here' %}</a></h3>
+{% if products_views_list|length == 0 and not search %}
+<h3 class="delete-warning">{% trans 'There are no views yet ... you can add new ones from ' %} <a href="{% url 'addOffers' %}">{% trans 'Here' %}</a></h3>
 {% endif %}
 {% if search and search_result.count == 0 and search_result != "" %}
-<h3 class="delete-warning">{% trans 'Sorry no categories found that matches your search!' %}</h3>
+<h3 class="delete-warning">{% trans 'Sorry no views found that matches your search!' %}</h3>
 {% endif %}
+{{ search }}
+{{ search_result }}
+{{search_result.count }}
+
+
 {% endblock content %}

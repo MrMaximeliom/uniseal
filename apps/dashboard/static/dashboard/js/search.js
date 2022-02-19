@@ -1,6 +1,8 @@
 let error_messages
 $( document ).ready(function() {
 error_messages = JSON.parse($('#my-data').html())
+console.log("error messages")
+console.log(error_messages)
 console.log(new Date().getFullYear())
 })
 // if user chooses to select all pages , then select all pages also in export data functionality
@@ -306,6 +308,7 @@ else{
 if($('#searchBy').find(":selected").prop("value")  == null){
 
 if($('#searchPhrase').prop("value") == ''){
+console.log("hihi");
 $('#search_phrase_error').html(error_messages.empty_search_phrase)
 $('#search_phrase_error').css('display','block')
 return false
@@ -319,6 +322,20 @@ return validate_string_search_phrase($('#searchPhrase').prop("value"),$('#search
 }}
 else{
 console.log($('#searchPhraseDate').prop("value") )
+
+if($('#searchPhrase').prop("value") == ''){
+console.log(error_messages.empty_search_phrase)
+$('#search_phrase_error').html(error_messages.empty_search_phrase)
+$('#search_phrase_error').css('display','block')
+return false
+}
+if($('#searchPhraseDateProductsPage').prop("value") == ''){
+console.log(error_messages.empty_search_phrase)
+$('#search_phrase_error').html(error_messages.empty_search_phrase)
+$('#search_phrase_error').css('display','block')
+return false
+}
+
 if($('#searchBy').find(":selected").prop("value") == "none"){
 $('#selection_error').html(error_messages.empty_search_phrase)
 $('#selection_error').css('display','block')
@@ -329,6 +346,7 @@ else{
 if($('#searchPhraseDate').prop("value") != "" ){
 return true
 }
+
 else{
 console.log("please enter execution date first")
 $('#search_phrase_date_error').html(error_messages.execution_date_error)

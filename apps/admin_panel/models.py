@@ -14,6 +14,10 @@ class ManageProductsPage(models.Model):
 
 
     )
+    visit_date_time = models.DateField(
+        auto_now_add= True,
+        null=True
+    )
 
 
 

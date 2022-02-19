@@ -1,7 +1,17 @@
 from django.contrib.auth.password_validation import validate_password
 from django.utils.translation import gettext_lazy as _
 from rest_framework import serializers
+from rest_framework_simplejwt.serializers import TokenObtainPairSerializer
 
+
+class MyTokenObtainPairSerializer(TokenObtainPairSerializer):
+    def validate(self, attrs):
+        data = super(MyTokenObtainPairSerializer, self).validate(attrs)
+
+        data.update({'user': self.user.username})
+        data.update({'id': self.user.id})
+
+        return data
 
 class UserSerializer(serializers.ModelSerializer):
 

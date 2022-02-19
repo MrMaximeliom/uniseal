@@ -12,7 +12,13 @@ $("#searchPhraseDate").datepicker({
     endDate:new Date().getFullYear().toString(),
     startDate:'2000'
 });
-
+// for products' page
+$("#searchPhraseDateProductsPage").datepicker({
+    format: "yyyy-mm-dd",
+    autoclose:true,
+    clearBtn:true,
+    startDate:'2020-1-1'
+});
 
 // for offers pages
 let currentDate = new Date();
