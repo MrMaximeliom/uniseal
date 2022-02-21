@@ -2,22 +2,18 @@
 {% extends "dashboard/base.html" %}
 {% load static %}
 {% load mathfilters %}
-{% load getMonthName %}
 {% load static i18n %}
 {% block title %}
 {{title}}
 {% endblock title %}
-{% block custom_css %}
-<link rel= "stylesheet" href= "https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.4.1/css/bootstrap-datepicker3.css"/>
-<link rel="stylesheet" href="{% static 'dashboard/css/search.css' %}">
-    {% endblock %}
+
  {% block custom_js %}
 <script src="{% static 'dashboard/js/search.js' %}" defer></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/3.7.0/chart.js" integrity="sha512-uLlukEfSLB7gWRBvzpDnLGvzNUluF19IDEdUoyGAtaO0MVSBsQ+g3qhLRL3GTVoEzKpc24rVT6X1Pr5fmsShBg==" crossorigin="anonymous" referrerpolicy="no-referrer" type="module"></script>
 {{ data_js|json_script:"my-data" }}
-<script src="{% static 'admin_panel/js/handle_products_charts.js' %}" async type="module"></script>
-<script type= "text/javascript" src= "https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.4.1/js/bootstrap-datepicker.min.js" defer></script>
-<script src="{% static 'dashboard/js/date_picker_search.js' %}" defer></script>
+<script src="{% static 'admin_panel/js/handle_products_charts.js' %}" defer type="module"></script>
+<script src="{% static 'admin_panel/js/clear_form.js' %}" defer type="module"></script>
+
 {% endblock %}
 
          {% block breadcrumb_content %}
@@ -25,41 +21,28 @@
                     <ol class="crumb breadcrumb-light breadcrumb-dark">
                         <li class="breadcrumb-item"><a href="{% url 'dashboard' %}">{% trans 'Dashboard' %}</a></li>
                         <li class="breadcrumb-item" aria-current="page">{% trans 'Views Reports' %}</li>
-                        <li class="breadcrumb-item" aria-current="page">{% trans "Products' Page Views" %}</li>
+                        <li class="breadcrumb-item" aria-current="page">{% trans 'Solutions Views' %}</li>
                     </ol>
                 </nav>
                 {% endblock breadcrumb_content %}
 {% block content %}
-                <h1 class="h2">{% trans 'Products Page Views' %}</h1>
+                <h1 class="h2">{% trans 'Solutions Views' %}</h1>
 
 <form class="row g-2 mb-3" action="" method="post" id="searchForm" autocomplete="off">
     {% csrf_token %}
 
 
-           <div class="col-sm-3 col-md-3 col-lg-3"  >
-            <label for="searchPhraseDateProductsPage" class="visually-hidden">{% trans 'Search Phrase' %}</label>
-           <input type= "text" class="form-control" id="searchPhraseDateProductsPage" name="search_phrase_date" placeholder="Search By Visiting Date">
-           <input type= "text" class="form-control" id="searchPhraseDateProductsPageYear" name="search_phrase_year" placeholder="Search By Visiting Date" hidden>
-           <input type= "text" class="form-control" id="searchPhraseDateProductsPageMonth" name="search_phrase_month" placeholder="Search By Visiting Date" hidden>
-          <span class="delete-warning" id="search_phrase_date_error"></span>
+           <div class="col-sm-3 col-md-3 col-lg-3"  id="search_phrase_date_holder">
+            <label for="searchPhrase" class="visually-hidden">{% trans 'Search Phrase' %}</label>
+           <input type= "text" class="form-control" id="searchPhrase" name="search_phrase" placeholder="Search By Product Name">
+          <span class="delete-warning" id="search_phrase_error"></span>
      </div>
-        <div class="col-sm-3 col-md-3 col-lg-3">
-    <select class="form-select search-select search-box" id="searchBy" name="search_options" aria-label="Default select example">
-  <option selected value="none">{% trans 'Search By' %}</option>
-  <option value="date">{% trans 'Date' %}</option>
-  <option value="month">{% trans 'Month' %}</option>
-  <option value="year">{% trans 'Year' %}</option>
-</select>
-                <span class="delete-warning" id="selection_error"></span>
-
-    </div>
 
 
 
   <div class="col-sm-3 col-md-3 col-lg-3">
-     <button type="submit" class="btn btn-primary mb-3" id="searchButton" title="{{search_offers_tip}}"><span><i class="fas fa-search"></i></span></button>
-    <button type="button" name="clear" value="clear" id="clear" class="btn btn-danger mb-3" title="{{clear_search_tip}}"><span><i class="fas fa-eraser"></i></span></button>
-
+     <button type="submit" class="btn btn-primary mb-3" id="searchButton" title="{{search_solutions_views_tip}}"><span><i class="fas fa-search"></i></span></button>
+    <button type="button" name="clear" value="clear" class="btn btn-danger mb-3" id="clear" title="{{clear_search_tip}}"><span><i class="fas fa-eraser"></i></span></button>
   {% if object_list|length > 0  %}
    <button type="button" class="btn btn-success mb-3" data-bs-toggle="modal" data-bs-target="#exportData" title="{{create_report_tip}}"><span><i class="fas fa-file-csv"></i></span></button>
 {% endif %}
@@ -120,35 +103,29 @@
     </div>
 
   {% if  search and not search_error %}
-{% if search_option == 'Visiting Month' %}
-<h2>{% trans 'Showing Search Results For ' %}</h2>
-<h3>{{search_option}}="{{search_phrase|month_name}}"</h3>
-{% else %}
 <h2>{% trans 'Showing Search Results For ' %}</h2>
 <h3>{{search_option}}="{{search_phrase}}"</h3>
 {% endif %}
-
-{% endif %}
-{% if products_views_list|length %}
+{% if solutions_views_list|length %}
 <div class="row card-group">
 
  <div class="row" id="defaultView">
                     <div class="col-12 col-xl-11 mb-4 mb-lg-0">
                         <div class="card-light card-dark">
-                            <h5 class="card-header-light card-header-dark">{% trans 'Products Page Views' %}</h5>
+                            <h5 class="card-header-light card-header-dark">{% trans 'Solutions Views' %}</h5>
                             <div class="card-body-light card-body-dark">
                                 <div class="table-responsive">
                                     <table class="table">
                                         <thead>
                                           <tr>
-                                            <th scope="col">{% trans 'Visiting Date' %}</th>
+                                            <th scope="col">{% trans 'Solution Title' %}</th>
                                             <th scope="col">{% trans 'Number of Users' %}</th>
                                           </tr>
                                         </thead>
                                         <tbody>
-                                        {% for view  in products_views_list %}
+                                        {% for view  in solutions_views_list %}
                                           <tr>
-                                            <th scope="row">{{view.visit_date}}</th>
+                                            <th scope="row">{{view.solution__title}}</th>
                                             <td>{{ view.num_users }}</td>
                                           </tr>
                                         {% endfor %}
@@ -165,13 +142,11 @@
 </div>
 {% include 'dashboard/global_includes/pagination_code.html' %}
 {% endif %}
-{% if products_views_list|length == 0 and not search %}
+{% if solutions_views_list|length == 0 and not search %}
 <h3 class="delete-warning">{% trans 'There are no views yet' %}</h3>
 {% endif %}
 {% if search and search_result.count == 0 and search_result != "" %}
 <h3 class="delete-warning">{% trans 'Sorry no views found that matches your search!' %}</h3>
 {% endif %}
-
-
 
 {% endblock content %}

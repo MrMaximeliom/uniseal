@@ -1,6 +1,6 @@
 function drawChart (XAxis,YAxis,labelString,canvasId){
 const ctx = document.getElementById(canvasId);
-console.log(ctx);
+
 const myChart = new Chart(ctx, {
     type: 'bar',
     data: {

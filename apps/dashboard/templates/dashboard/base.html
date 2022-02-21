@@ -15,6 +15,46 @@
 <!--<script src="https://kit.fontawesome.com/dced961655.js" crossorigin="anonymous" defer></script>-->
 
             <script src="https://code.jquery.com/jquery-3.6.0.slim.min.js" integrity="sha256-u7e5khyithlIdTpu22PHhENmPcRdFiHRjhAuHcs05RI=" crossorigin="anonymous" defer></script>
+      <script async>
+let body = document.getElementById('body')
+let btn_mode = document.getElementById('#btn-mode')
+let myStorage = window.localStorage;
+const f = document;
+
+
+f.addEventListener("DOMContentLoaded", function(event) {
+
+
+      if ( myStorage.getItem("mode") === null) {
+      myStorage.setItem('mode', 'day');
+    }
+
+
+
+    if(myStorage.getItem('mode') === "day"){
+   body.classList.remove("dark-theme");
+
+
+
+
+$("#btn-mode").html('<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-moon"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path></svg>');
+
+
+       }
+       else{
+
+
+
+    document.documentElement.setAttribute('theme', 'dark');
+
+   body.classList.add("dark-theme");
+$("#btn-mode").html('<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-sun"><circle cx="12" cy="12" r="5"></circle><line x1="12" y1="1" x2="12" y2="3"></line><line x1="12" y1="21" x2="12" y2="23"></line><line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line><line x1="1" y1="12" x2="3" y2="12"></line><line x1="21" y1="12" x2="23" y2="12"></line><line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line><line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line></svg>');
+
+
+       }
+});
+</script>
+
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.1/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-+0n0xVW2eSR5OomGNYDnhzAbDsOXxcvSN1TPprVMTNDbiYZCxYbOOl7+AMvyTG2x" crossorigin="anonymous">
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.1/dist/js/bootstrap.bundle.min.js" integrity="sha384-gtEjrD/SeCtmISkJkNUaaKMoLD0//ElJ19smozuHV6z3Iehds+3Ulb9Bn9Plx0x4" crossorigin="anonymous" defer></script>
 
@@ -23,56 +63,6 @@
     {% endblock %}
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/5.0.0-alpha1/css/bootstrap.min.css" integrity="sha384-r4NyP46KrjDleawBgD5tp8Y7UzmLA05oM1iAEQ17CSuDqnUK2+k9luXQOfXJCJ4I" crossorigin="anonymous">
 
-    <script async>
-    let body = document.getElementById('body')
-let btn_mode = document.getElementById('#btn-mode')
-myStorage = window.localStorage;
-const f = document;
-
-
-f.addEventListener("DOMContentLoaded", function(event) {
-  console.log('page is fully loaded');
-
-
-      if ( myStorage.getItem("mode") === null) {
-      myStorage.setItem('mode', 'day');
-    }
-
-
-    console.log(myStorage.getItem('mode'))
-
-    if(myStorage.getItem('mode') === "day"){
-//    $('body').removeClass("dark-theme");
-   body.classList.remove("dark-theme");
-console.log("its day removing theme")
-
-
-//    document.documentElement.removeAttribute('theme');
-
-
-$("#btn-mode").html('<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-moon"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path></svg>');
-//btn-mode.innerHTML = '<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-moon"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path></svg>';
-
-
-//  ActivateLightMode();
-       }
-       else{
-       console.log("its night adding theme")
-
-
-
-    document.documentElement.setAttribute('theme', 'dark');
-
-//       $('body').addClass("dark-theme");
-   body.classList.add("dark-theme");
-$("#btn-mode").html('<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-sun"><circle cx="12" cy="12" r="5"></circle><line x1="12" y1="1" x2="12" y2="3"></line><line x1="12" y1="21" x2="12" y2="23"></line><line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line><line x1="1" y1="12" x2="3" y2="12"></line><line x1="21" y1="12" x2="23" y2="12"></line><line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line><line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line></svg>');
-//btn-mode.innerHTML = '<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-sun"><circle cx="12" cy="12" r="5"></circle><line x1="12" y1="1" x2="12" y2="3"></line><line x1="12" y1="21" x2="12" y2="23"></line><line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line><line x1="1" y1="12" x2="3" y2="12"></line><line x1="21" y1="12" x2="23" y2="12"></line><line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line><line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line></svg>';
-
-//  ActivateDarkMode();
-
-       }
-});
-</script>
 
     <script src="{% static 'dashboard/js/index.js' %}" defer></script>
 
@@ -83,6 +73,17 @@ $("#btn-mode").html('<svg xmlns="http://www.w3.org/2000/svg" width="24" height="
 </head>
 
 <body id="body">
+<script>
+    const theme = localStorage.getItem('mode') || 'day';
+    if(theme == 'day'){
+    document.body.classList.remove("dark-theme");
+
+    }
+    else{
+     document.body.classList.add("dark-theme");
+    }
+
+  </script>
 <audio src="{% static 'dashboard/audio/light-on.mp3' %}" class="theme-audio--light-on" data-attribute="adapted from user 160033 file on freesound.org https://freesound.org/people/160033/sounds/366184/ under CC BY-NC 3.0"></audio>
           <audio src="{% static 'dashboard/audio/light-off.mp3' %}" class="theme-audio--light-off" data-attribute="adapted from user 160033 file on freesound.org https://freesound.org/people/160033/sounds/366184/ under CC BY-NC 3.0"></audio>
 
@@ -167,24 +168,29 @@ $("#btn-mode").html('<svg xmlns="http://www.w3.org/2000/svg" width="24" height="
                  <span class="ml-2 span-term">{% trans 'Products Page Views' %} </span>
             </a>
             </li>
-            <li class="nav-item"><a href="{% url 'addApplications' %}" class="nav-link-light nav-link-dark {{projects_views}}">
+            <li class="nav-item"><a href="{% url 'projectsViews' %}" class="nav-link-light nav-link-dark {{projects_views}}">
             <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-plus"><line x1="12" y1="5" x2="12" y2="19"></line><line x1="5" y1="12" x2="19" y2="12"></line></svg>
             <span class="ml-2 span-term">{% trans 'Projects Views' %}</span>
             </a>
             </li>
-            <li class="nav-item"><a href="{% url 'deleteApplications' %}" class="nav-link-light nav-link-dark {{points_views}}">
+                   <li class="nav-item"><a href="{% url 'solutionsViews' %}" class="nav-link-light nav-link-dark {{solutions_views}}">
+            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-plus"><line x1="12" y1="5" x2="12" y2="19"></line><line x1="5" y1="12" x2="19" y2="12"></line></svg>
+            <span class="ml-2 span-term">{% trans 'Solutions Views' %}</span>
+            </a>
+            </li>
+            <li class="nav-item"><a href="{% url 'sellingPointsViews' %}" class="nav-link-light nav-link-dark {{points_views}}">
                 <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-minus"><line x1="5" y1="12" x2="19" y2="12"></line></svg>
                  <span class="ml-2 span-term">{% trans 'Selling Points Views' %}</span>
             </a>
             </li>
             <li class="nav-item" >
-                <a href="{% url 'editApplications' %}" class="nav-link-light nav-link-dark {{brochures_views}}">
+                <a href="{% url 'brochuresViews' %}" class="nav-link-light nav-link-dark {{brochures_views}}">
             <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-edit"><path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"></path><path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"></path></svg>
                  <span class="ml-2 span-term">{% trans 'Brochures Views' %}</span>
             </a>
             </li>
              <li class="nav-item" >
-                <a href="{% url 'editApplications' %}" class="nav-link-light nav-link-dark {{orders_views}}">
+                <a href="{% url 'ordersViews' %}" class="nav-link-light nav-link-dark {{orders_views}}">
             <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-edit"><path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"></path><path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"></path></svg>
                  <span class="ml-2 span-term">{% trans 'Orders Views' %}</span>
             </a>

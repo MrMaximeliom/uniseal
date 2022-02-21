@@ -161,6 +161,22 @@ class SearchMan:
             from apps.admin_panel.models import ManageProductsPage
             manage_products_page = ManageProductsPage.objects.all().order_by('id')
             self.paginator = Paginator(manage_products_page, 5)
+        if model == "ManageProjects":
+            from apps.admin_panel.models import ManageProjects
+            manage_projects_page = ManageProjects.objects.all().order_by('id')
+            self.paginator = Paginator(manage_projects_page, 5)
+        if model == "ManageSolutions":
+            from apps.admin_panel.models import ManageSolution
+            manage_solutions_page = ManageSolution.objects.all().order_by('id')
+            self.paginator = Paginator(manage_solutions_page, 5)
+        if model == "ManageBrochures":
+            from apps.admin_panel.models import ManageBrochures
+            manage_brochures_page = ManageBrochures.objects.all().order_by('id')
+            self.paginator = Paginator(manage_brochures_page, 5)
+        if model == "ManageOrders":
+            from apps.admin_panel.models import ManageCarts
+            manage_orders_page = ManageCarts.objects.all().order_by('id')
+            self.paginator = Paginator(manage_orders_page, 5)
 
 
     def setPaginator(self, query, num_records=5):

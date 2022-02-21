@@ -2,6 +2,7 @@ from django.db import models
 from django.utils.translation import gettext_lazy as _
 
 class ManageProductsPage(models.Model):
+    objects = None
     user = models.ForeignKey(
         "accounts.User",
         on_delete=models.DO_NOTHING,
@@ -12,9 +13,8 @@ class ManageProductsPage(models.Model):
         verbose_name=_('Product Page Views'),
         default=1
 
-
     )
-    visit_date_time = models.DateField(
+    visit_date = models.DateField(
         auto_now_add= True,
         null=True
     )
@@ -161,6 +161,10 @@ class ManageCarts(models.Model):
         "accounts.User",
         on_delete=models.DO_NOTHING,
         verbose_name=_('User'),
+
+    )
+    is_order_placed = models.BooleanField(
+        default=False,
 
     )
 

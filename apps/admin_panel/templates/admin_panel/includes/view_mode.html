@@ -1,0 +1,11 @@
+{% load static i18n %}
+<div>
+    <h2>{% trans 'View Mode' %}</h2>
+    <div class="col-3 mb-3">
+         <select class="form-select form-control dropdown-toggle" id="selectView">
+        <option selected value="default">{% trans 'Tabular Mode' %}</option>
+        <option  value="charts">{% trans 'Charts Mode' %}</option>
+    </select>
+    </div>
+
+</div>

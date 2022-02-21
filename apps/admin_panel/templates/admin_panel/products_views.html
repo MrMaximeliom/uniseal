@@ -41,8 +41,8 @@
 
 
   <div class="col-sm-3 col-md-3 col-lg-3">
-     <button type="submit" class="btn btn-primary mb-3" id="searchButton" title="{{search_offers_tip}}"><span><i class="fas fa-search"></i></span></button>
-    <button type="button" name="clear" value="clear" class="btn btn-danger mb-3" title="{{clear_search_tip}}"><span><i class="fas fa-eraser"></i></span></button>
+     <button type="submit" class="btn btn-primary mb-3" id="searchButton" title="{{search_products_views_tip}}"><span><i class="fas fa-search"></i></span></button>
+    <button type="button" name="clear" value="clear" class="btn btn-danger mb-3" id="clear" title="{{clear_search_tip}}"><span><i class="fas fa-eraser"></i></span></button>
   {% if object_list|length > 0  %}
    <button type="button" class="btn btn-success mb-3" data-bs-toggle="modal" data-bs-target="#exportData" title="{{create_report_tip}}"><span><i class="fas fa-file-csv"></i></span></button>
 {% endif %}
@@ -151,7 +151,7 @@
 {% include 'dashboard/global_includes/pagination_code.html' %}
 {% endif %}
 {% if products_views_list|length == 0 and not search %}
-<h3 class="delete-warning">{% trans 'There are no views yet ... you can add new ones from ' %} <a href="{% url 'addOffers' %}">{% trans 'Here' %}</a></h3>
+<h3 class="delete-warning">{% trans 'There are no views yet' %}</h3>
 {% endif %}
 {% if search and search_result.count == 0 and search_result != "" %}
 <h3 class="delete-warning">{% trans 'Sorry no views found that matches your search!' %}</h3>

@@ -1,10 +1,7 @@
 let error_messages
 $( document ).ready(function() {
 error_messages = JSON.parse($('#my-data').html())
-console.log("error messages")
-console.log(error_messages)
-console.log(new Date().getFullYear())
-})
+
 // if user chooses to select all pages , then select all pages also in export data functionality
 
 $('#allData-report').on("click",function(){
@@ -125,6 +122,16 @@ $('#searchPhrase').prop("placeholder","search by offer's start date")
 else if(selected_value == 'end_date'){
 $('#searchPhrase').prop("placeholder","search by offer's end date")
 }
+else if(selected_value == 'month'){
+$('#searchPhraseDateProductsPage').prop("placeholder","search by month")
+}
+else if(selected_value == 'year'){
+$('#searchPhraseDateProductsPage').prop("placeholder","search by year")
+}
+else if(selected_value == 'year'){
+$('#searchPhraseDateProductsPage').prop("placeholder","search by date")
+}
+
 
 
 if(selected_value == "execution_year" || selected_value == "start_date" || selected_value == "end_date" ){
@@ -329,7 +336,8 @@ $('#search_phrase_error').html(error_messages.empty_search_phrase)
 $('#search_phrase_error').css('display','block')
 return false
 }
-if($('#searchPhraseDateProductsPage').prop("value") == ''){
+
+if($('#searchPhraseDateProductsPage').prop("value") == '' && !$('#searchPhraseDateProductsPage').is(':hidden')){
 console.log(error_messages.empty_search_phrase)
 $('#search_phrase_date_error').html(error_messages.empty_search_phrase)
 $('#search_phrase_date_error').css('display','block')
@@ -356,3 +364,12 @@ return false
 }
 }
 })
+
+$("#clear").on('click',()=>{
+$('#searchPhrase').html('')
+$('#searchPhraseDateProductsPage').val('')
+
+});
+
+
+});

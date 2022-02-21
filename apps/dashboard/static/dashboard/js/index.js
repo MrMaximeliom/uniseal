@@ -1,9 +1,7 @@
-
 myStorage = window.localStorage;
-     body = document.getElementById('body')
- btn_mode = document.getElementById('#btn-mode')
+body = document.getElementById('body')
+btn_mode = document.getElementById('#btn-mode')
 $( document ).ready(function() {
-console.log("Screen width is: ",screen.width)
 $(window).on("resize",function(){
   var w = window.outerWidth;
   var h = window.outerHeight;
@@ -18,11 +16,8 @@ $(window).on("resize",function(){
   }
 })
 let audio;
- console.log($('#theme').attr('href'));
-  console.log( "ready!" );
 $( "#btn-mode" ).on( "click", function() {
 if(myStorage.getItem('mode') === "day"){
-console.log("its day");
 myStorage.setItem('mode','night');
 body.classList.add("dark-theme");
 audio = document.querySelector('.theme-audio--light-on');

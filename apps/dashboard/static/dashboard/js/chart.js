@@ -1,5 +1,4 @@
 $( document ).ready(function() {
-console.log("Hi chart")
 $(function () {
       var $populationChart = $("#population-chart");
       $.ajax({
