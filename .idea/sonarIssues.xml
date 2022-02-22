@@ -403,6 +403,11 @@
             <set />
           </value>
         </entry>
+        <entry key="$PROJECT_DIR$/apps/accounts/signals.py">
+          <value>
+            <set />
+          </value>
+        </entry>
         <entry key="$PROJECT_DIR$/apps/accounts/templates/accounts/add_users.html">
           <value>
             <set />
@@ -808,12 +813,32 @@
             <set />
           </value>
         </entry>
+        <entry key="$PROJECT_DIR$/apps/orders/apps.py">
+          <value>
+            <set />
+          </value>
+        </entry>
         <entry key="$PROJECT_DIR$/apps/orders/dashboard_views.py">
           <value>
             <set />
           </value>
         </entry>
         <entry key="$PROJECT_DIR$/apps/orders/endpoints_urls.py">
+          <value>
+            <set />
+          </value>
+        </entry>
+        <entry key="$PROJECT_DIR$/apps/orders/models.py">
+          <value>
+            <set />
+          </value>
+        </entry>
+        <entry key="$PROJECT_DIR$/apps/orders/serializers.py">
+          <value>
+            <set />
+          </value>
+        </entry>
+        <entry key="$PROJECT_DIR$/apps/orders/signals.py">
           <value>
             <set />
           </value>

@@ -13,6 +13,13 @@ class MyTokenObtainPairSerializer(TokenObtainPairSerializer):
 
         return data
 
+class UserOrderSerializer(serializers.ModelSerializer):
+
+    class Meta:
+        from apps.accounts.models import User
+        model = User
+        fields = (
+            'id', 'username', 'full_name')
 class UserSerializer(serializers.ModelSerializer):
 
     class Meta:
