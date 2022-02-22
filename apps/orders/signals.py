@@ -20,6 +20,7 @@ def create_sms_contact(sender, instance, created, **kwargs):
             total_cart_price = cart.product.price * cart.quantity
             total = total_cart_price+ total
         instance.total = total
+        instance.save()
 
 
 
