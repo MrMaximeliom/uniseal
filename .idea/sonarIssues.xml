@@ -153,6 +153,16 @@
             <set />
           </value>
         </entry>
+        <entry key="$PROJECT_DIR$/../Ouloug/apps/customers/forms.py">
+          <value>
+            <set />
+          </value>
+        </entry>
+        <entry key="$PROJECT_DIR$/../Ouloug/apps/templates/home/kl.html">
+          <value>
+            <set />
+          </value>
+        </entry>
         <entry key="$PROJECT_DIR$/../Ouloug/core/settings.py">
           <value>
             <set />
