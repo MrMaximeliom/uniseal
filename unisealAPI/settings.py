@@ -54,6 +54,7 @@ INSTALLED_APPS = [
     'mathfilters',
     'apps.notifications',
     'apps.sms_notifications',
+    'apps.approvals',
     'crispy_forms',
     'apps.company_info',
     'apps.project_application',

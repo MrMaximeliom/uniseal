@@ -23,6 +23,7 @@ from apps.jop_type.urls import urlpatterns as job_type_urls
 from apps.offer.urls import urlpatterns as offers_urls
 from apps.request_permissions.urls import urlpatterns as request_urls
 from apps.admin_panel.urls import urlpatterns as admin_urls
+from apps.approvals.urls import urlpatterns as approvals_urls
 from django.contrib.auth import views as auth_views
 urlpatterns = [
     path('home/', dashboard_views.dashboard, name='dashboard'),
@@ -54,5 +55,6 @@ urlpatterns = [
     path('JobTypes/', include(job_type_urls)),
     path('Offers/', include(offers_urls)),
     path('RequestAccess/', include(request_urls)),
-    path('AdminPanel/', include(admin_urls))
+    path('AdminPanel/', include(admin_urls)),
+    path('Approvals/', include(approvals_urls))
 ]
