@@ -20,12 +20,6 @@ class Approval(models.Model):
         verbose_name=_("Name"),
         max_length=300
     )
-    image = models.ImageField(
-        verbose_name=_("Image"),
-        null=True,
-        blank=True,
-        upload_to="approvals_images",
-    )
     file = models.FileField(
         upload_to='brochures_document',
         verbose_name=_("File"),
@@ -33,3 +27,32 @@ class Approval(models.Model):
         blank=True
 
     )
+
+"""
+Approval Image Model:
+this model is used to save approvals' images
+details
+"""
+class ApprovalImage(models.Model):
+    slug = models.SlugField(
+        default=slugify(rand_slug()),
+        verbose_name=_('Approval Slug'),
+        unique=True
+
+    )
+    image = models.ImageField(
+        verbose_name=_("Image"),
+        null=True,
+        blank=True,
+        upload_to="approvals_images",
+    )
+    approval = models.ForeignKey(
+        Approval,
+        verbose_name=_("Approval"),
+        null=True,
+        blank=True,
+        on_delete=models.CASCADE,
+    )
+
+
+

@@ -80,6 +80,7 @@ router.register(r'jopType', jop_type_views.JobTypeViewSet, basename='CreateJopTy
 router.register(r'offers', offers_views.OfferViewSet, basename='CreateOffers')
 router.register(r'requestAccess', request_views.RequestAccessViewSet, basename='CreateRequestAccess')
 router.register(r'approvals', approvals_views.ApprovalViewSet, basename='CreateApproval')
+router.register(r'approvalsImages',  approvals_views.ApprovalImagesViewSet, basename='CreateApprovalsImages')
 admin_router.register(r'manageProducts', admin_views.ManageProductsViewSet, basename='ManageProducts')
 admin_router.register(r'manageProjects', admin_views.ManageProjectsViewSet, basename='ManageProjects')
 admin_router.register(r'manageSolution', admin_views.ManageSolutionViewSet, basename='ManageSolution')

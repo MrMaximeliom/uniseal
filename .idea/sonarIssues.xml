@@ -13,6 +13,21 @@
             <set />
           </value>
         </entry>
+        <entry key="$PROJECT_DIR$/../Logistic-App-Backend/LogisticApp/settings.py">
+          <value>
+            <set />
+          </value>
+        </entry>
+        <entry key="$PROJECT_DIR$/../Logistic-App-Backend/Util/utils.py">
+          <value>
+            <set />
+          </value>
+        </entry>
+        <entry key="$PROJECT_DIR$/../Logistic-App-Backend/apps/accounts/models.py">
+          <value>
+            <set />
+          </value>
+        </entry>
         <entry key="$PROJECT_DIR$/../MrshPay/MrshPay/settings.py">
           <value>
             <set />
@@ -619,6 +634,26 @@
           </value>
         </entry>
         <entry key="$PROJECT_DIR$/apps/application_videos/templates/application_videos/all_videos.html">
+          <value>
+            <set />
+          </value>
+        </entry>
+        <entry key="$PROJECT_DIR$/apps/approvals/endpoints_urls.py">
+          <value>
+            <set />
+          </value>
+        </entry>
+        <entry key="$PROJECT_DIR$/apps/approvals/forms.py">
+          <value>
+            <set />
+          </value>
+        </entry>
+        <entry key="$PROJECT_DIR$/apps/approvals/models.py">
+          <value>
+            <set />
+          </value>
+        </entry>
+        <entry key="$PROJECT_DIR$/apps/approvals/serializers.py">
           <value>
             <set />
           </value>
