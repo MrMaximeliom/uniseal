@@ -11,6 +11,7 @@ SEARCH_USERS_TIP = _("Search Users")
 SEARCH_ORDERS_TIP = _("Search Orders")
 SEARCH_JOB_TYPE_TIP = _("Search JobTypes")
 SEARCH_OFFERS_TIP = _("Search Offers")
+SEARCH_APPROVALS_TIP = _("Search Approvals")
 USERNAME_SYNTAX_ERROR = _("Username contains alphanumeric English letters only!")
 FULL_NAME_SYNTAX_ERROR = _("Full Name contains English letters only!")
 ORGANIZATION_NAME_SYNTAX_ERROR = _("Organization Name contains only English letters!")
@@ -62,6 +63,8 @@ ORDER_NOT_FOUND = _("Sorry no orders found that matches your search!")
 JOB_TYPE_NOT_FOUND = _("Sorry no job types found that matches your search!")
 # Offer Not found errors
 OFFER_NOT_FOUND = _("Sorry no offers found that matches your search!")
+# Approval Not found errors
+APPROVAL_NOT_FOUND = _("Sorry no approvals found that matches your search!")
 # User Not found errors
 USER_NOT_FOUND = _("Sorry no users found that matches your search!")
 # Request Permission Not found errors
@@ -84,6 +87,12 @@ ADD_OFFERS_TITLE = _("Uniseal Dashboard - Add Offers")
 EDIT_OFFERS_TITLE = _("Uniseal Dashboard - Edit Offers")
 EDIT_OFFER_TITLE = _("Uniseal Dashboard - Edit Offer")
 DELETE_OFFERS_TITLE = _("Uniseal Dashboard - Delete Offers")
+# Approvals titles
+ALL_APPROVALS_TITLE = _("Uniseal Dashboard - All Approvals")
+ADD_APPROVALS_TITLE = _("Uniseal Dashboard - Add Approvals")
+EDIT_APPROVALS_TITLE = _("Uniseal Dashboard - Edit Approvals")
+EDIT_APPROVAL_TITLE = _("Uniseal Dashboard - Edit Approval")
+DELETE_APPROVALS_TITLE = _("Uniseal Dashboard - Delete Approvals")
 # Request Access
 REQUEST_ACCESS_TITLE = _("Uniseal Dashboard - Request Access")
 # Users Activities

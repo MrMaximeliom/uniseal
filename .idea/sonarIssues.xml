@@ -638,6 +638,11 @@
             <set />
           </value>
         </entry>
+        <entry key="$PROJECT_DIR$/apps/approvals/dashboard_views.py">
+          <value>
+            <set />
+          </value>
+        </entry>
         <entry key="$PROJECT_DIR$/apps/approvals/endpoints_urls.py">
           <value>
             <set />
@@ -654,6 +659,46 @@
           </value>
         </entry>
         <entry key="$PROJECT_DIR$/apps/approvals/serializers.py">
+          <value>
+            <set />
+          </value>
+        </entry>
+        <entry key="$PROJECT_DIR$/apps/approvals/templates/approvals/add_approvals.html">
+          <value>
+            <set />
+          </value>
+        </entry>
+        <entry key="$PROJECT_DIR$/apps/approvals/templates/approvals/all_approvals.html">
+          <value>
+            <set />
+          </value>
+        </entry>
+        <entry key="$PROJECT_DIR$/apps/approvals/templates/approvals/approval_details.html">
+          <value>
+            <set />
+          </value>
+        </entry>
+        <entry key="$PROJECT_DIR$/apps/approvals/templates/approvals/approval_images.html">
+          <value>
+            <set />
+          </value>
+        </entry>
+        <entry key="$PROJECT_DIR$/apps/approvals/templates/approvals/delete_approvals.html">
+          <value>
+            <set />
+          </value>
+        </entry>
+        <entry key="$PROJECT_DIR$/apps/approvals/templates/approvals/edit_approval.html">
+          <value>
+            <set />
+          </value>
+        </entry>
+        <entry key="$PROJECT_DIR$/apps/approvals/templates/approvals/edit_approvals.html">
+          <value>
+            <set />
+          </value>
+        </entry>
+        <entry key="$PROJECT_DIR$/apps/approvals/urls.py">
           <value>
             <set />
           </value>
@@ -889,6 +934,11 @@
           </value>
         </entry>
         <entry key="$PROJECT_DIR$/apps/orders/templates/orders/all_orders.html">
+          <value>
+            <set />
+          </value>
+        </entry>
+        <entry key="$PROJECT_DIR$/apps/product/dashboard_views.py">
           <value>
             <set />
           </value>

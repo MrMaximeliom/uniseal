@@ -177,6 +177,10 @@ class SearchMan:
             from apps.admin_panel.models import ManageCarts
             manage_orders_page = ManageCarts.objects.all().order_by('id')
             self.paginator = Paginator(manage_orders_page, 5)
+        if model == "Approval":
+            from apps.approvals.models import Approval
+            approvals = Approval.objects.all().order_by('id')
+            self.paginator = Paginator(approvals, 5)
 
 
     def setPaginator(self, query, num_records=5):
