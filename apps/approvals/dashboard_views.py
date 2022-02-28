@@ -24,8 +24,9 @@ class ApprovalFormView(FormView):
     success_url = 'addApprovals'
 
     def form_valid(self, form):
+        name = form.cleaned_data.get('name')
         form.save()
-        messages.success(self.request, "Approval Added Successfully")
+        messages.success(self.request, f"Approval {name} Added Successfully")
         return super().form_valid(form)
 
     extra_context = {
@@ -131,7 +132,7 @@ class ApprovalsListView(ListView):
             approvals = paginator.page(paginator.num_pages)
             page = paginator.num_pages
         self.extra_context = {
-            'offers': 'active',
+            'approvals': 'active',
             self.active_flag: 'active',
 
             'page_range': paginator.page_range,
@@ -152,27 +153,33 @@ class ApprovalsListView(ListView):
 
 class ApprovalDetailView(DetailView):
     model = Approval
+    template_name = "approvals/approval_details.html"
     pureImages = list()
     def get(self, request, *args, **kwargs):
-        approvalImages = ApprovalImage.objects.filter(approval=self.object)
+        self.pureImages = list()
+        approvalImages = ApprovalImage.objects.filter(approval=self.get_object())
         for image in approvalImages:
-            self.pureImages.append(image.image.url)
+                self.pureImages.append(image.image.url)
+        self.extra_context.update({
+          'object_images':self.pureImages
+        })
         return super().get(request)
     extra_context = {
-        'object_images':pureImages
+        'object_images':pureImages,
+        'approvals':'active',
+        'all_approvals':'active'
     }
 
 @staff_member_required(login_url='login')
 def approval_images(request, slug=None):
     from apps.approvals.models import Approval, ApprovalImage
     import os
-    from django.db.models import Count
     from .forms import ApprovalImagesForm
     allApprovals = Approval.objects.all()
     pureImages = {}
     context = {
         'title': _('Approval Images'),
-        'approval_images': 'active',
+        'approval_images_base': 'active',
         'allApprovals': allApprovals,
         'approvals': 'active',
     }
@@ -180,17 +187,13 @@ def approval_images(request, slug=None):
         approval = get_object_or_404(Approval, slug=slug)
         productImages = ApprovalImage.objects.filter(approval__slug=slug)
         if productImages:
-            # pureImages.append(project.image.url)
-            pureImages.update({True: approval.image.url})
             for image in productImages:
-                # pureImages.append(image.image.url)
                 pureImages.update({image.image.url: image.image.url})
         context = {
             'title': _('Approval Images'),
-            'product_images_base': 'active',
+            'approval_images_base': 'active',
             'approval_data': approval,
             'approval_images': pureImages,
-            'approval_original_image': approval.image.url,
             'allApprovals': allApprovals,
             'slug': slug
         }
@@ -200,11 +203,9 @@ def approval_images(request, slug=None):
     if request.method == 'POST' and 'search_product' in request.POST:
         if request.POST.get('search_options') != 'none':
             chosen_project = request.POST.get('search_options')
-            # project = get_object_or_404(Project,slug=chosen_project)
-            # projectImages = ProjectImages.objects.filter(project__slug=chosen_project)
             return redirect('approvalImages', slug=chosen_project)
         else:
-            messages.error(request, "Please choose a project from the list")
+            messages.error(request, "Please choose approval from the list")
 
     if request.method == 'POST' and 'add_images' in request.POST:
         form = ApprovalImagesForm(request.POST, request.FILES)
@@ -234,27 +235,14 @@ def approval_images(request, slug=None):
                     messages.error(request, '{}: {}'.format(field, item))
 
     if request.method == 'POST' and 'confirm_changes' in request.POST:
-        approval_instances = ApprovalImage.objects.annotate(num_products=Count('product')).filter(approval__slug=slug)
-        all_product_images_count = approval_instances.count() + 1
-        default_image = request.POST.get('posted_default_image')
+        approval_instances = ApprovalImage.objects.filter(approval__slug=slug)
         deleted_images = request.POST.get('posted_deleted_images')
-        print("default image is: ", default_image)
-        # handling default image first
+
         current_approval = Approval.objects.get(slug=slug)
-        current_default_image = current_approval.image
-        if default_image != 'none':
-            if current_default_image != default_image:
-                default_image_path = default_image
-                just_image_path = default_image_path.split('/media')
-                Approval.objects.filter(slug=slug).update(image=just_image_path[1])
-                ApprovalImage.objects.create(approval=current_approval, image=just_image_path[1])
 
         if deleted_images != 'none':
-            # check that the selected images are not greater than all of the project's images
             for instance in approval_instances:
                 for image in deleted_images.split(','):
-                    # print("first image: ",instance.image.url)
-                    # print("second image: ",image)
                     if instance.image.url == image:
                         deleted_image_path = os.path.dirname(os.path.abspath('unisealAPI')) + image
                         deleted_record = ApprovalImage.objects.get(id=instance.id)
@@ -265,7 +253,7 @@ def approval_images(request, slug=None):
         messages.success(request, f"Approval {current_approval.name} was successfully updated!")
         return redirect('approvalImages', slug=slug)
 
-    return render(request, 'approval/approval_images.html',
+    return render(request, 'approvals/approval_images.html',
                   context
 
                   )
@@ -274,8 +262,10 @@ def approval_images(request, slug=None):
 
 class ApprovalUpdateView(UpdateView):
     model = Approval
-    success_url = reverse_lazy('editApproval')
-    template_name = "approval/edit_approval.html"
+    success_url = reverse_lazy('editApprovals')
+    template_name = "approvals/edit_approval.html"
+
+
 
     def form_valid(self, form):
         form.save()
@@ -283,8 +273,8 @@ class ApprovalUpdateView(UpdateView):
         return super().form_valid(form)
     fields = "__all__"
     extra_context = {
-        'job': 'active',
-        'edit_offers': 'active',
+        'approvals': 'active',
+        'edit_approvals': 'active',
         'title':EDIT_APPROVALS_TITLE,
         'clear_search_tip': CLEAR_SEARCH_TIP,
         'search_approvals_tip': SEARCH_APPROVALS_TIP,

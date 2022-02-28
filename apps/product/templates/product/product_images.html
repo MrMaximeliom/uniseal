@@ -59,7 +59,7 @@
     {% csrf_token %}
 
  <div class="col-sm col-md-5 col-lg-4">
-                <div class="card mb-5 ml-2" >
+                <div class="card-light mb-5 ml-2" >
   <img class="card-img-top card-image-product" src="{{value}}" alt="Card image cap">
   <div class="card-body">
 <div class="form-check form-check-inline">
@@ -81,7 +81,7 @@
     <h1 class="h2">{% trans 'Image for ' %}{{product_data.name}}</h1>
 
    <div class="col-4">
-                <div class="card mb-5 ml-2" >
+                <div class="card-light mb-5 ml-2" >
   <img class="card-img-top card-image-product" src="{{product_original_image}}" alt="Card image cap">
   <div class="card-body">
 
@@ -100,7 +100,7 @@
   {% endif %}
 
  <div class="col-4">
-                     <div class="card mb-5 ml-2" >
+                     <div class="card-light mb-5 ml-2" >
                          <figure class="snip1572">
   <img src="{% static 'product/img/addImage.png' %}" class="card-img-top" alt="sample102" />
   <figcaption>

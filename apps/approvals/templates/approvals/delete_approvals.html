@@ -33,16 +33,7 @@
           <span class="delete-warning" id="search_phrase_error"></span>
   </div>
 
-    <div class="col-sm-3 col-md-3 col-lg-3">
-    <select class="form-select search-select search-box" id="searchBy" name="search_options" aria-label="Default select example">
-  <option selected value="none">{% trans 'Search By' %}</option>
-  <option value="product">{% trans 'Product Name' %}</option>
-  <option value="category">{% trans 'Category Name' %}</option>
-  <option value="supplier">{% trans 'Supplier Name' %}</option>
-</select>
-                <span class="delete-warning" id="selection_error"></span>
 
-    </div>
   <div class="col-sm-3 col-md-3 col-lg-3">
    <button type="submit" class="btn btn-primary mb-3" id="searchButton" title="{{search_products_tip}}"><span><i class="fas fa-search"></i></span></button>
     <button type="submit" name="clear" value="clear" class="btn btn-danger mb-3" title="{{clear_search_tip}}"><span><i class="fas fa-eraser"></i></span></button>
@@ -148,11 +139,13 @@
                 <div class="card-light mb-5 ml-2" >
   <div class="card-body">
     <h5 class="card-title">{{approval.name}}</h5>
+      {% if approval.file %}
       <p class="card-text">
         {% trans 'Approval File' %}
      <a href="{{approval.file.url}}" target="_blank" class="btn btn-primary">{% trans 'Approval Sheet' %}</a>
 
     </p>
+      {% endif %}
           <a href="#" class="btn btn-danger mr-3"  data-bs-toggle="modal" data-bs-target="#exampleModal{{approval.id}}" >{% trans 'Delete Approval' %}</a>
 
   </div>
@@ -176,7 +169,7 @@
       </div>
       <div class="modal-footer">
         <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">{% trans 'Close' %}</button>
-        <a type="submit" class="btn btn-danger" href="{% url 'approvalDelete' id=approval.id %}">{% trans 'Delete' %}</a>
+        <a type="submit" class="btn btn-danger" href="{% url 'deleteApproval' slug=approval.slug %}">{% trans 'Delete' %}</a>
 
       </div>
               </form>

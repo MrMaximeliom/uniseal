@@ -29,9 +29,9 @@
     <div class="col-md-3 col-sm-3 col-lg-2 mr-5">
 
     <select class="form-select search-select" id="searchBy" name="search_options" aria-label="Default select example">
-  <option selected value="none">{% trans '-- Select Product --' %}</option>
+  <option selected value="none">{% trans '-- Select Approval --' %}</option>
         {% for approval in allApprovals %}
-          <option value="{{product.slug}}">{{approval.name}}</option>
+          <option value="{{approval.slug}}">{{approval.name}}</option>
         {% endfor %}
 
 </select>
@@ -59,13 +59,9 @@
     {% csrf_token %}
 
  <div class="col-sm col-md-5 col-lg-4">
-                <div class="card mb-5 ml-2" >
+                <div class="card-light mb-5 ml-2" >
   <img class="card-img-top card-image-product" src="{{value}}" alt="Card image cap">
   <div class="card-body">
-<div class="form-check form-check-inline">
-  <input class="form-check-input input-default-js collect-default-image-js" type="checkbox" id="inlineCheckbox2"  value="{{value}}"  name="set_default" {% if key == True %} checked {% endif %}>
-  <label class="form-check-label" for="inlineCheckbox2">{% trans 'Set As Default Image?' %}</label>
-</div>
 <div class="form-check form-check-inline">
   <input class="form-check-input input-delete-js collect-deleted-images-js" type="checkbox" id="inlineCheckbox" value="{{value}}"  name="delete_image" {% if key == True %} disabled {% endif %}>
   <label class="form-check-label delete-product-img" for="inlineCheckbox">{% trans 'Delete Image?' %}</label>
@@ -78,17 +74,13 @@
 
 
   {% else %}
+      {% if approval_images|length == 1 %}
     <h1 class="h2">{% trans 'Image for ' %}{{approval_data.name}}</h1>
-
+{% for key,value in approval_images.items %}
    <div class="col-4">
-                <div class="card mb-5 ml-2" >
-  <img class="card-img-top card-image-product" src="{{approval_original_image}}" alt="Card image cap">
+                <div class="card-light mb-5 ml-2" >
+  <img class="card-img-top card-image-product" src="{{value}}" alt="Card image cap">
   <div class="card-body">
-
-<div class="form-check form-check-inline">
-  <input class="form-check-input input-default-js collect-default-image-js" type="checkbox" id="inlineCheckbox3" value="{{value}}" name="set_default" checked>
-  <label class="form-check-label " for="inlineCheckbox3">{% trans 'Set As Default Image?' %}</label>
-</div>
 <div class="form-check form-check-inline">
   <input class="form-check-input input-delete-js collect-deleted-images-js" type="checkbox"  id="inlineCheckbox1" value="{{value}}"  name="delete_image">
   <label class="form-check-label delete-product-img" for="inlineCheckbox1">{% trans 'Delete Image?' %}</label>
@@ -97,10 +89,15 @@
   </div>
 </div>
  </div>
+    {% endfor %}
+    {% endif %}
+    {% if approval_images|length == 0 %}
+    <h3>{% trans 'There are no images for this approval' %}</h3>
   {% endif %}
+    {% endif %}
 
  <div class="col-4">
-                     <div class="card mb-5 ml-2" >
+                     <div class="card-light mb-5 ml-2" >
                          <figure class="snip1572">
   <img src="{% static 'product/img/addImage.png' %}" class="card-img-top" alt="sample102" />
   <figcaption>
@@ -131,10 +128,6 @@
             <form class="card-form" enctype="multipart/form-data" method="post">
              {% csrf_token %}
 
-          <h3 class="delete-warning" id="default_image">{% trans 'Are You Sure You want to set this image as the default Image?' %}</h3>
-          <div id="confirm-default-image">
-
-          </div>
           <h3 class="delete-warning" id="delete_images">{% trans 'Are You Sure You want to delete these images?' %}</h3>
            <div class="confirm-deleted-images" id="confirm-delete-images">
 
@@ -213,7 +206,7 @@
 
 </div>
 {% else %}
-<h3 class="delete-warning">{% trans 'Please choose a product to view its images' %}</h3>
+<h3 class="delete-warning">{% trans 'Please choose an approval to view its images' %}</h3>
 {% endif %}
 
 {% endblock %}

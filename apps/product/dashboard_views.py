@@ -657,7 +657,6 @@ def product_images(request, slug=None):
         'products': 'active',
     }
     if slug != None and request.method == 'GET':
-        print("slug is not null")
         product = get_object_or_404(Product, slug=slug)
         productImages = ProductImages.objects.filter(product__slug=slug)
         if productImages:
@@ -686,7 +685,7 @@ def product_images(request, slug=None):
             # projectImages = ProjectImages.objects.filter(project__slug=chosen_project)
             return redirect('productImages', slug=chosen_project)
         else:
-            messages.error(request, "Please choose a project from the list")
+            messages.error(request, "Please choose a product from the list")
 
     if request.method == 'POST' and 'add_images' in request.POST:
         form = ProductImagesForm(request.POST, request.FILES)

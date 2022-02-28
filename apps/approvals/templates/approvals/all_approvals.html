@@ -33,16 +33,7 @@
           <span class="delete-warning" id="search_phrase_error"></span>
   </div>
 
-    <div class="col-sm-3 col-md-3 col-lg-3">
-    <select class="form-select search-select search-box" id="searchBy" name="search_options" aria-label="Default select example">
-  <option selected value="none">{% trans 'Search By' %}</option>
-  <option value="product">{% trans 'Product Name' %}</option>
-  <option value="category">{% trans 'Category Name' %}</option>
-  <option value="supplier">{% trans 'Supplier Name' %}</option>
-</select>
-                <span class="delete-warning" id="selection_error"></span>
 
-    </div>
   <div class="col-sm-3 col-md-3 col-lg-3">
    <button type="submit" class="btn btn-primary mb-3" id="searchButton" title="{{search_products_tip}}"><span><i class="fas fa-search"></i></span></button>
     <button type="submit" name="clear" value="clear" class="btn btn-danger mb-3" title="{{clear_search_tip}}"><span><i class="fas fa-eraser"></i></span></button>
@@ -146,16 +137,17 @@
 
  <div class="col-sm col-md-5 col-lg-4">
                 <div class="card-light mb-5 ml-2" >
-  <img class="card-img-top card-image-product" src="{{product.image.url}}" alt="Card image cap">
   <div class="card-body">
     <h5 class="card-title">{{approval.name}}</h5>
+        {% if approval.file %}
       <p class="card-text">
         {% trans 'Approval File' %}
      <a href="{{approval.file.url}}" target="_blank" class="btn btn-primary">Technical Sheet</a>
 
     </p>
+      {% endif %}
     <a href="{% url 'editApproval' slug=approval.slug %}" class="btn btn-primary mr-3 mb-3 ">{% trans 'Update' %}</a>
-       <a href="{% url 'approvalDetails' slug=approval.slug %} " class="btn btn-primary mb-3 ">{% trans 'More Details' %}</a>
+       <a href="{% url 'approvalDetails' pk=approval.id %} " class="btn btn-primary mb-3 ">{% trans 'More Details' %}</a>
   </div>
 </div>
  </div>

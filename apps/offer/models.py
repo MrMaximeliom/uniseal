@@ -23,5 +23,12 @@ class Offer(models.Model):
     offer_end_date = models.DateField(blank=True, null=True)
     slug = models.SlugField(
         default=slugify(rand_slug()),
-        verbose_name=_('Offer Slug')
+        verbose_name=_('Offer Slug'),
+        null=True,
+        blank=True
     )
+    def save(self, *args, **kwargs):
+        from datetime import datetime
+        self.slug = slugify(rand_slug() + "-" + str(self.name) + "-"+str(datetime.now().second))
+        return super().save(*args, **kwargs)
+

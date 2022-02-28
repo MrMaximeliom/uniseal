@@ -24,14 +24,13 @@
 
 <!--Images of product-->
 <div class="mb-5">
+    <h4 class="h4 mb-3">{% trans 'Approval Name' %}</h4>
 
-  <h4>{{approval_data.name}}</h4>
+  <h4>{{object.name}}</h4>
 
 </div>
 {% if object_images|length > 1 %}
 <h4>{% trans 'Approval Images' %}</h4>
-
-
 <div id="carouselExampleControls" class="carousel slide product-carousel mb-5" data-bs-ride="carousel">
   <div class="carousel-inner">
 
@@ -54,34 +53,50 @@
   </button>
 </div>
 {% else %}
+    {% if object_images|length == 1 %}
 <h4>{% trans 'Approval Image' %}</h4>
     {% for image in object_images %}
-<div class="product-carousel mb-4">
-    <img src="{{image.image.url}}" class="d-block w-100" alt="...">
+    <div class="product-carousel mb-4">
+
+    <img src="{{image}}" class="d-block w-100" alt="...">
 </div>
     {% endfor %}
+    {% else %}
+    <h4>{% trans 'There are no images for this approval' %}</h4>
+
+    {% endif %}
 {% endif %}
-        <div class="row mt-5">
+    {% if object_images|length == 0 %}
+                <div class="row mt-5">
            <div class="col-sm-6">
-               <a href="#" class="btn btn-primary mr-3">Update Product Images</a>
+               <a href="{% url 'approvalImages' slug=object.slug %}" class="btn btn-primary mr-3">{% trans 'Add Images' %}</a>
 
     </div>
 
     </div>
-    <div class="mb-2 mt-3">
+    {% else %}
+                <div class="row mt-5 mb-5">
+           <div class="col-sm-6">
+               <a href="{% url 'approvalImages' slug=object.slug%}" class="btn btn-primary mr-3">{% trans 'Update Images' %}</a>
+
+    </div>
+
+    </div>
+    {%  endif %}
+
+    <div class="mb-2 mt-3 mb-5">
         <h4>{% trans 'Approval Technical Sheet' %}</h4>
         <a class="btn btn-primary" href="{{object.file.url}}" target="_blank">{% trans 'View Sheet' %}</a>
 
     </div>
-<!--    discount_percentage-->
 
     <div class="row">
            <div class="col-sm-6">
-                            <a href="{% url 'allProducts'  %} " class="btn btn-primary mr-3">{% trans 'Back' %}</a>
+                            <a href="{% url 'approvalsList'  %} " class="btn btn-primary mr-3">{% trans 'Back' %}</a>
 
 
 
-                        <a href="{% url 'editProduct' slug=product_data.slug %} " class="btn btn-primary mr-3">{% trans 'Update' %}</a>
+                        <a href="{% url 'editApproval' slug=object.slug %}" class="btn btn-primary mr-3">{% trans 'Update' %}</a>
 
     </div>
 

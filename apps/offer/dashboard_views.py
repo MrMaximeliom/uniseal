@@ -158,7 +158,7 @@ class OfferUpdateView(UpdateView):
         return super().form_valid(form)
     fields = "__all__"
     extra_context = {
-        'job': 'active',
+        'offers': 'active',
         'edit_offers': 'active',
         'title':EDIT_OFFERS_TITLE,
         'clear_search_tip': CLEAR_SEARCH_TIP,
