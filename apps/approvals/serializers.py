@@ -8,7 +8,7 @@ class  ApprovalSerializer(serializers.ModelSerializer):
         fields = "__all__"
 
 class  ApprovalImagesSerializer(serializers.ModelSerializer):
-    approval = ApprovalSerializer(many=True, read_only=True)
+    approval = ApprovalSerializer(many=False, read_only=True)
     approval_id = serializers.IntegerField(write_only=True)
     class Meta:
         from .models import  ApprovalImage
