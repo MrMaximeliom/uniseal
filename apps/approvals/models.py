@@ -55,6 +55,7 @@ class ApprovalImage(models.Model):
         null=True,
         blank=True,
         on_delete=models.CASCADE,
+        related_name="approval_images"
     )
 
 
