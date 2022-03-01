@@ -92,7 +92,6 @@ admin_router.register(r'manageProductsPage', admin_views.ManageProductsPageViewS
 
 
 urlpatterns = [
-
     path('api/', include(router.urls)),
     path('api/admin_panel/', include(admin_router.urls)),
     path('admin/', admin.site.urls),

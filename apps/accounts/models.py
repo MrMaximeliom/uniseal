@@ -76,7 +76,8 @@ class User(AbstractBaseUser):
         blank=False,
         null=False,
         max_length=100,
-        unique=True
+        unique=True,
+
     )
 
     email = models.EmailField(

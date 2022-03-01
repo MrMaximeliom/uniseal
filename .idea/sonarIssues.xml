@@ -18,12 +18,42 @@
             <set />
           </value>
         </entry>
+        <entry key="$PROJECT_DIR$/../Logistic-App-Backend/LogisticApp/urls.py">
+          <value>
+            <set />
+          </value>
+        </entry>
+        <entry key="$PROJECT_DIR$/../Logistic-App-Backend/Util/permissions.py">
+          <value>
+            <set />
+          </value>
+        </entry>
         <entry key="$PROJECT_DIR$/../Logistic-App-Backend/Util/utils.py">
           <value>
             <set />
           </value>
         </entry>
+        <entry key="$PROJECT_DIR$/../Logistic-App-Backend/apps/accounts/apps.py">
+          <value>
+            <set />
+          </value>
+        </entry>
+        <entry key="$PROJECT_DIR$/../Logistic-App-Backend/apps/accounts/enpoints_urls.py">
+          <value>
+            <set />
+          </value>
+        </entry>
         <entry key="$PROJECT_DIR$/../Logistic-App-Backend/apps/accounts/models.py">
+          <value>
+            <set />
+          </value>
+        </entry>
+        <entry key="$PROJECT_DIR$/../Logistic-App-Backend/apps/accounts/serializers.py">
+          <value>
+            <set />
+          </value>
+        </entry>
+        <entry key="$PROJECT_DIR$/../Logistic-App-Backend/apps/accounts/signals.py">
           <value>
             <set />
           </value>
