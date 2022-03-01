@@ -52,7 +52,7 @@ class ApprovalsListView(ListView):
     def post(self, request, *args, **kwargs):
         queryset = self.get_queryset()
         paginator = Paginator(queryset, 5)
-        if request.POST.get('search_phrase') != '' and request.POST.get('search_options') == 'start_date':
+        if request.POST.get('search_phrase') != '':
             search_message = request.POST.get('search_phrase')
             self.search_result = Approval.objects.all().filter(
                 name=search_message).order_by('-id')
