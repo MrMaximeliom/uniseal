@@ -3,6 +3,7 @@ from django.template.defaultfilters import slugify
 from django.utils.translation import gettext_lazy as _
 from Util.ListsOfData import ORDER_STATUSES
 from Util.utils import random_order_id
+
 class Order(models.Model):
     slug = models.SlugField(
         default=slugify(random_order_id(5, 4)),

@@ -45,15 +45,21 @@ class UserLoginForm(AuthenticationForm):
         password = self.cleaned_data.get('password')
         # altered_username = ''
         if username is not None and password:
-            # check if phone number starts with 0 or not
-            if username.startswith("0"):
-                # remove the leading 0
-                username = username[1:]
+            # # check if phone number starts with 0 or not
+            # if username.startswith("0"):
+            #     # remove the leading 0
+            #     username = username[1:]
 
             self.user_cache = authenticate(self.request, username=username, password=password)
             if self.user_cache is None:
+                print("user is none")
+                print("username: ",username)
+                print("password: ",password)
+
                 raise self.get_invalid_login_error()
+
             else:
+                print("user is not none")
                 self.confirm_login_allowed(self.user_cache)
 
         return self.cleaned_data

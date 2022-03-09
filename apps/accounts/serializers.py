@@ -20,6 +20,7 @@ class UserOrderSerializer(serializers.ModelSerializer):
         model = User
         fields = (
             'id', 'username', 'full_name')
+
 class UserSerializer(serializers.ModelSerializer):
 
     class Meta:
