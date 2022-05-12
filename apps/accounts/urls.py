@@ -1,5 +1,4 @@
 from django.urls import path
-
 from Util.utils import download_file
 from apps.accounts import dashboard_views as accounts_views
 
