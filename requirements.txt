@@ -37,7 +37,7 @@ hyperlink==21.0.0
 idna==3.3
 incremental==21.3.0
 phonenumbers==8.12.39
-Pillow==8.4.0
+Pillow==9.0.1
 psycopg2-binary==2.9.2
 purl==1.6
 py-vapid==1.8.2
