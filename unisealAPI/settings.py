@@ -81,13 +81,25 @@ TEMPLATES = [
 ]
 
 WSGI_APPLICATION = 'unisealAPI.wsgi.application'
+# AWS DATABASE
+# DATABASES = {
+#     'default': {
+#         'ENGINE': 'django.db.backends.postgresql_psycopg2',
+#         'NAME': 'uniseal',
+#         'USER': 'root',
+#         'PASSWORD': '1a79a001973e92c89aa42c0c9c8a8bf3e138132bc81bad4a5e03a8b908b1e317',
+#         'HOST': '13.245.16.122',
+#         'PORT': '5432',
+#     }
+# }
+# Heroku DATABASE
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.postgresql_psycopg2',
-        'NAME': 'uniseal',
-        'USER': 'root',
+        'NAME': 'd4nnvv8lb1aedj',
+        'USER': 'gkvvbjmricafua',
         'PASSWORD': '1a79a001973e92c89aa42c0c9c8a8bf3e138132bc81bad4a5e03a8b908b1e317',
-        'HOST': '13.245.16.122',
+        'HOST': 'ec2-52-23-40-80.compute-1.amazonaws.com',
         'PORT': '5432',
     }
 }
