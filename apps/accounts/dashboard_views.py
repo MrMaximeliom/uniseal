@@ -103,7 +103,8 @@ def prepare_query(paginator_obj, headers=None):
                 full_name.append(user.full_name)
                 username.append(user.username)
                 organization.append(user.organization)
-                job_type.append(user.job_type.name)
+                if user.job_type:
+                    job_type.append(user.job_type.name)
                 phone_number.append("0" + user.phone_number)
                 last_login.append(user.last_login.strftime('%d-%m-%y %a %H:%M %p'))
 
@@ -253,6 +254,7 @@ def all_users(request):
         else:
             # get the original query of page and then structure the data
             query = searchManObj.getPaginator()
+            print("empty query is ",query)
             print("headers are: ", headers)
 
             if len(headers) > 0:
