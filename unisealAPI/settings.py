@@ -12,7 +12,7 @@ SECRET_KEY = config('SECRET_KEY', default='qpxw@svn0mi40y_mzt5&l((_9vwynu5vv0u)r
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = config('DEBUG', default=True, cast=bool)
 
-ALLOWED_HOSTS = ['localhost','uniseal-api.herokuapp.com','93.188.162.130','13.245.16.122']
+ALLOWED_HOSTS = ['localhost','uniseal-api.herokuapp.com','93.188.162.130','13.245.96.104']
 # Application definition
 INSTALLED_APPS = [
     'django.contrib.admin',
