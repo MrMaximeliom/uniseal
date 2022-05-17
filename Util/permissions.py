@@ -38,8 +38,12 @@ class IsConsultantUser(permissions.BasePermission):
         #     return False
         # else:
         if not request.user.is_anonymous:
-            if request.user.job_type.name == "Consultant" or request.user.is_admin :
+            if request.user.is_admin:
                 return True
+
+            if request.user.job_type:
+                if request.user.job_type.name== "Consultant":
+                    return True
             else:
                 return False
 

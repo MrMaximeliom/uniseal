@@ -12,11 +12,11 @@ class Migration(migrations.Migration):
     ]
 
     operations = [
-        migrations.AddField(
-            model_name='user',
-            name='working',
-            field=models.ForeignKey(null=True, on_delete=django.db.models.deletion.SET_NULL, to='working_field.workingfield', verbose_name='Working'),
-        ),
+        # migrations.AddField(
+        #     model_name='user',
+        #     name='working',
+        #     field=models.ForeignKey(null=True, on_delete=django.db.models.deletion.SET_NULL, to='working_field.workingfield', verbose_name='Working'),
+        # ),
         migrations.AlterField(
             model_name='user',
             name='slug',
