@@ -5,11 +5,11 @@ from django.template.defaultfilters import slugify
 from django.urls import reverse_lazy
 from django.views.generic import ListView
 from Util.search_form_strings import (CLEAR_SEARCH_TIP,SEARCH_APPROVALS_TIP ,
-    APPROVAL_NOT_FOUND, ALL_APPROVALS_TITLE,
-    EDIT_APPROVAL_TITLE , ADD_APPROVALS_TITLE,EDIT_APPROVALS_TITLE)
+    APPROVAL_NOT_FOUND, ALL_APPROVALS_TITLE,APPROVALS_DETAILS,
+    EDIT_APPROVAL_TITLE , ADD_APPROVALS_TITLE,EDIT_APPROVALS_TITLE,APPROVALS_IMAGES)
 from Util.utils import delete_temp_folder, SearchMan, ReportMan, rand_slug
 from .models import Approval,ApprovalImage
-from .forms import ApprovalForm,ApprovalImagesForm
+from .forms import ApprovalForm
 from django.utils.translation import gettext_lazy as _
 from django.views.generic.edit import FormView,UpdateView
 from django.contrib import messages
@@ -167,7 +167,8 @@ class ApprovalDetailView(DetailView):
     extra_context = {
         'object_images':pureImages,
         'approvals':'active',
-        'all_approvals':'active'
+        'all_approvals':'active',
+        'title':APPROVALS_DETAILS,
     }
 
 @staff_member_required(login_url='login')
@@ -178,7 +179,7 @@ def approval_images(request, slug=None):
     allApprovals = Approval.objects.all()
     pureImages = {}
     context = {
-        'title': _('Approval Images'),
+        'title': APPROVALS_IMAGES,
         'approval_images_base': 'active',
         'allApprovals': allApprovals,
         'approvals': 'active',

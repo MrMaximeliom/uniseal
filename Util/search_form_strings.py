@@ -92,7 +92,9 @@ ALL_APPROVALS_TITLE = _("Uniseal Dashboard - All Approvals")
 ADD_APPROVALS_TITLE = _("Uniseal Dashboard - Add Approvals")
 EDIT_APPROVALS_TITLE = _("Uniseal Dashboard - Edit Approvals")
 EDIT_APPROVAL_TITLE = _("Uniseal Dashboard - Edit Approval")
-DELETE_APPROVALS_TITLE = _("Uniseal Dashboard - Delete Approvals")
+DELETE_APPROVALS_TITLE = _("Uniseal Dashboard - Approvals Details")
+APPROVALS_IMAGES = _("Uniseal Dashboard - Approvals Images")
+APPROVALS_DETAILS = _("Uniseal Dashboard - Delete Approvals")
 # Request Access
 REQUEST_ACCESS_TITLE = _("Uniseal Dashboard - Request Access")
 # Users Activities
