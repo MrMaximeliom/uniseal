@@ -42,8 +42,9 @@ class IsConsultantUser(permissions.BasePermission):
                 return True
 
             if request.user.job_type:
-                if request.user.job_type.name== "Consultant":
+                if request.user.job_type.name== "Consultant" or request.method in permissions.SAFE_METHODS:
                     return True
+
             else:
                 return False
 
