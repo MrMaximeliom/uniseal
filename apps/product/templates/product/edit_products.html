@@ -154,6 +154,9 @@
       <p class="card-text">
         {% trans 'Supplier:' %} {{product.supplier.name}}
     </p>
+        <p class="card-text">
+        {% trans 'Price:' %} {{product.price}}
+    </p>
     <a href="{% url 'editProduct' slug=product.slug %} " class="btn btn-primary mr-3">Update</a>
     <a href="{% url 'productDetails' slug=product.slug %} " class="btn btn-primary">More Details</a>
 
