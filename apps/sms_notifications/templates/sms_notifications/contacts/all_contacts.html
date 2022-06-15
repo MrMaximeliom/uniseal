@@ -16,7 +16,7 @@
                 </nav>
                 {% endblock breadcrumb_content %}
 {% block content %}
-{% if all_contacts_data|length > 0 %}
+{% if object_list|length > 0 %}
                 <h1 class="h2">{% trans 'All SMS Contacts' %}</h1>
  <div class="row">
                     <div class="col-12 col-xl-11 mb-4 mb-lg-0">
@@ -34,7 +34,7 @@
                                           </tr>
                                         </thead>
                                         <tbody>
-                                        {% for contact in all_contacts_data %}
+                                        {% for contact in object_list %}
                                           <tr>
                                             <th scope="row">{{contact.contact_number}}</th>
                                             <td>{{ contact.group.name }}</td>

@@ -1,30 +1,32 @@
+from django.contrib.auth import views as auth_views
 from django.urls import path, include
+
 from apps.accounts.urls import urlpatterns as account_urls
-from apps.address.urls import areas_urlpatterns as area_urls ,\
-    cities_urlpatterns as city_urls ,  countries_urlpatterns as country_urls,\
+from apps.address.urls import areas_urlpatterns as area_urls, \
+    cities_urlpatterns as city_urls, countries_urlpatterns as country_urls, \
     states_urlpatterns as state_urls
+from apps.admin_panel.urls import urlpatterns as admin_urls
 from apps.application_videos.urls import urlpatterns as product_application_videos
+from apps.approvals.urls import urlpatterns as approvals_urls
 from apps.brochures.urls import urlpatterns as brochure_urls
 from apps.category.urls import urlpatterns as category_urls
 from apps.company_info.urls import urlpatterns as company_urls
 from apps.dashboard import views as dashboard_views
 from apps.industry_updates.urls import urlpatterns as update_urls
+from apps.jop_type.urls import urlpatterns as job_type_urls
 from apps.notifications.urls import urlpatterns as notifications_urls
+from apps.offer.urls import urlpatterns as offers_urls
+from apps.orders.urls import urlpatterns as orders_urls
 from apps.product.urls import urlpatterns as product_urls
 from apps.project.urls import urlpatterns as project_urls
 from apps.project_application.urls import urlpatterns as application_urls
+from apps.request_permissions.urls import urlpatterns as request_urls
 from apps.sellingPoint.urls import urlpatterns as selling_urls
 from apps.slider.urls import urlpatterns as slider_urls
 from apps.sms_notifications.urls import urlpatterns as sms_urls
 from apps.solution.urls import urlpatterns as solution_urls
 from apps.supplier.urls import urlpatterns as supplier_urls
-from apps.orders.urls import urlpatterns as orders_urls
-from apps.jop_type.urls import urlpatterns as job_type_urls
-from apps.offer.urls import urlpatterns as offers_urls
-from apps.request_permissions.urls import urlpatterns as request_urls
-from apps.admin_panel.urls import urlpatterns as admin_urls
-from apps.approvals.urls import urlpatterns as approvals_urls
-from django.contrib.auth import views as auth_views
+
 urlpatterns = [
     path('home/', dashboard_views.dashboard, name='dashboard'),
     path('product-categories-chart/', dashboard_views.products_categories_chart, name='product-categories-chart'),

@@ -36,7 +36,7 @@
   <div class="col-sm-3 col-md-3 col-lg-3">
     <button type="submit" class="btn btn-primary mb-3" id="searchButton" title="{{search_projects_types_tip}}"><span><i class="fas fa-search"></i></span></button>
     <button type="submit" name="clear" value="clear" class="btn btn-danger mb-3" title="{{clear_search_tip}}"><span><i class="fas fa-eraser"></i></span></button>
-          {% if all_applications_data|length > 0  %}
+          {% if object_list|length > 0  %}
 
       <button type="button" class="btn btn-success mb-3" data-bs-toggle="modal" data-bs-target="#exportData" title="{{create_report_tip}}"><span><i class="fas fa-file-csv"></i></span></button>
 {% endif %}
@@ -100,7 +100,7 @@
 <h2>{% trans 'Showing Search Results For ' %}</h2>
 <h3>{{search_option}}="{{search_phrase}}"</h3>
 {% endif %}
-{% if all_applications_data|length %}
+{% if object_list|length %}
       <div class="row">
                     <div class="col-12 col-xl-11 mb-4 mb-lg-0">
                         <div class="card-light card-dark">
@@ -112,16 +112,45 @@
                                           <tr>
                                             <th scope="col">{% trans 'Type Name' %}</th>
                                             <th scope="col">{% trans 'Number of Projects in this Type' %}</th>
+                                            <th scope="col">{% trans 'Update' %}</th>
+                                            <th scope="col">{% trans 'Delete' %}</th>
 <!--                                            <th scope="col"></th>-->
                                           </tr>
                                         </thead>
                                         <tbody>
-                                        {% for application in all_applications_data %}
+                                        {% for application in object_list %}
                                           <tr>
                                             <th scope="row">{{application.name}}</th>
                                             <td>{{ application.num_projects }}</td>
-<!--                                            <td><a href="#" class="btn btn-sm btn-primary">View</a></td>-->
+                                         <td><a href="#" class="btn btn-sm btn-primary" >{% trans 'update' %}</a></td>
+                                          <td><a href="#" class="btn btn-sm btn-danger" data-bs-toggle="modal" data-bs-target="#exampleModal{{application.id}}">{% trans 'delete' %}</a></td>
+
                                           </tr>
+                                      <div class="modal fade" id="exampleModal{{application.id}}" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="exampleModalLabel">{% trans 'Delete Conformation' %}</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+        <form action="{% url 'deleteApplication' slug=application.slug %}" method="post">
+            {% csrf_token %}
+      <div class="modal-body">
+
+          <h3>{% trans 'Are you sure you want to delete this project type?' %}</h3>
+
+          <h4 class="delete-warning">{{application.name}}</h4>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+        <button type="submit" class="btn btn-danger" >Delete</button>
+
+      </div>
+              </form>
+    </div>
+  </div>
+</div>
+
                                         {% endfor %}
 
                                         </tbody>
@@ -162,8 +191,8 @@
        </nav>
   </div>
 {% endif %}
-{% if all_applications_data|length == 0 and not search %}
-<h3 class="delete-warning">{% trans 'There is no project types yet .. you can add new ones from ' %} <a href="{% url 'addApplications' %}">{% trans 'Here' %}</a></h3>
+{% if object_list|length == 0 and not search %}
+<h3 class="delete-warning">{% trans 'There are no project types yet ... you can add new ones from ' %} <a href="{% url 'addApplications' %}">{% trans 'Here' %}</a></h3>
 {% endif %}
 {% if search and search_result.count == 0 %}
 <h3 class="delete-warning">{% trans 'Sorry no project types found that matches your search!' %}</h3>

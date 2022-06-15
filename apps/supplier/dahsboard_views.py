@@ -1,16 +1,148 @@
 from django.contrib import messages
 from django.contrib.admin.views.decorators import staff_member_required
-from django.shortcuts import render, get_object_or_404, redirect
-from django.template.defaultfilters import slugify
+from django.core.paginator import Paginator, PageNotAnInteger, EmptyPage
+from django.shortcuts import render, redirect
 from django.utils.translation import gettext_lazy as _
 
 from Util.utils import SearchMan, createExelFile, ReportMan, delete_temp_folder
-from .models import Supplier, rand_slug
+from .models import Supplier
 
 suppliers = Supplier.objects.all().order_by("id")
 searchManObj = SearchMan("Supplier")
 report_man = ReportMan()
-# report_man.setTempDir(tempfile.mkdtemp())
+from apps.common_code.views import BaseListView
+
+
+class SuppliersListView(BaseListView):
+    def get(self, request, *args, **kwargs):
+        from Util.search_form_strings import (
+            EMPTY_SEARCH_PHRASE,
+            CLEAR_SEARCH_TIP,
+            CREATE_REPORT_TIP
+
+        )
+        search_result = ''
+        searchManObj = SearchMan(self.model_name)
+        queryset = self.get_queryset()
+        paginator = Paginator(queryset, 5)
+        if 'temp_dir' in request.session:
+            # deleting temp dir in GET requests
+            if request.session['temp_dir'] != '':
+                delete_temp_folder()
+        if 'page' not in request.GET:
+            instances = searchManObj.get_queryset()
+            searchManObj.setPaginator(instances)
+            searchManObj.setSearch(False)
+        if request.GET.get('page'):
+            # Grab the current page from query parameter consultant
+            page = int(request.GET.get('page'))
+        else:
+            page = None
+
+        try:
+            paginator = searchManObj.getPaginator()
+            instances = paginator.page(page)
+            # Create a page object for the current page.
+        except PageNotAnInteger:
+            # If the query parameter is empty then grab the first page.
+            instances = paginator.page(1)
+            page = 1
+        except EmptyPage:
+            # If the query parameter is greater than num_pages then grab the last page.
+            instances = paginator.page(paginator.num_pages)
+            page = paginator.num_pages
+        self.extra_context = {
+            'page_range': paginator.page_range,
+            'num_pages': paginator.num_pages,
+            'object_list': instances,
+            self.main_active_flag: 'active',
+            self.active_flag: "active",
+            'current_page': page,
+            'title': self.title,
+            'search': searchManObj.getSearch(),
+            'search_result': search_result,
+            'search_phrase': searchManObj.getSearchPhrase(),
+            'search_option': searchManObj.getSearchOption(),
+            'search_error': searchManObj.getSearchError(),
+            'create_report_tip': CREATE_REPORT_TIP,
+            'clear_search_tip': CLEAR_SEARCH_TIP,
+            'data_js': {
+                "empty_search_phrase": EMPTY_SEARCH_PHRASE,
+            }
+        }
+        return super().get(request)
+
+    def post(self, request, *args, **kwargs):
+        from Util.search_form_strings import (
+            EMPTY_SEARCH_PHRASE,
+            CLEAR_SEARCH_TIP,
+            CREATE_REPORT_TIP
+
+        )
+        search_result = ''
+        searchManObj = SearchMan(self.model_name)
+        queryset = self.get_queryset()
+        paginator = Paginator(queryset, 5)
+        if 'clear' not in request.POST and 'createExcel' not in request.POST:
+            searchManObj.setSearch(True)
+        if request.POST.get('search_phrase') != '':
+            search_message = request.POST.get('search_phrase')
+            search_result = Supplier.objects.filter(name=search_message).order_by('id')
+            searchManObj.setPaginator(search_result)
+            searchManObj.setSearchPhrase(search_message)
+            searchManObj.setSearchOption('Supplier Name')
+            searchManObj.setSearchError(False)
+
+        else:
+            messages.error(request,
+                           "Please enter supplier name first!")
+            searchManObj.setSearchError(True)
+        if request.POST.get('clear') == 'clear':
+            instances = searchManObj.get_queryset()
+            searchManObj.setPaginator(instances)
+            searchManObj.setSearch(False)
+
+        if request.GET.get('page'):
+            # Grab the current page from query parameter consultant
+            page = int(request.GET.get('page'))
+
+        else:
+            page = None
+        try:
+            paginator = searchManObj.getPaginator()
+            instances = paginator.page(page)
+            # Create a page object for the current page.
+        except PageNotAnInteger:
+            # If the query parameter is empty then grab the first page.
+            instances = paginator.page(1)
+            page = 1
+
+        except EmptyPage:
+            # If the query parameter is greater than num_pages then grab the last page.
+            instances = paginator.page(paginator.num_pages)
+            page = paginator.num_pages
+        self.extra_context = {
+            'page_range': paginator.page_range,
+            'num_pages': paginator.num_pages,
+            'object_list': instances,
+            self.main_active_flag: 'active',
+            self.active_flag: "active",
+            'current_page': page,
+            'title': self.title,
+            'search': searchManObj.getSearch(),
+            'search_result': search_result,
+            'search_phrase': searchManObj.getSearchPhrase(),
+            'search_option': searchManObj.getSearchOption(),
+            'search_error': searchManObj.getSearchError(),
+            'create_report_tip': CREATE_REPORT_TIP,
+            'clear_search_tip': CLEAR_SEARCH_TIP,
+            'data_js': {
+                "empty_search_phrase": EMPTY_SEARCH_PHRASE,
+
+            }
+        }
+        return super().get(request)
+
 def prepare_selected_query(selected_pages,paginator_obj,headers=None):
     link_list = []
     supplier_list = []
@@ -236,226 +368,3 @@ def all_suppliers(request):
                       }
                   }
                   )
-@staff_member_required(login_url='login')
-def edit_suppliers(request):
-    from django.core.paginator import Paginator, PageNotAnInteger, EmptyPage
-    from Util.search_form_strings import (
-        EMPTY_SEARCH_PHRASE,
-    SUPPLIER_NAME_SYNTAX_ERROR,
-
-    CLEAR_SEARCH_TIP,
-     SEARCH_SUPPLIERS_TIP,
-
-    )
-    search_result = ''
-    paginator = Paginator(suppliers, 5)
-    if request.method == "POST" and 'clear' not in request.POST and 'createExcel' not in request.POST:
-        searchManObj.setSearch(True)
-        if request.POST.get('search_phrase') != '':
-            search_message = request.POST.get('search_phrase')
-            search_result = Supplier.objects.filter(name=search_message).order_by('id')
-            searchManObj.setPaginator(search_result)
-            searchManObj.setSearchPhrase(search_message)
-            searchManObj.setSearchOption('Supplier Name')
-            searchManObj.setSearchError(False)
-
-        else:
-            messages.error(request,
-                           "Please enter supplier name first!")
-            searchManObj.setSearchError(True)
-    if request.method == "GET" and 'page' not in request.GET  and not searchManObj.getSearch():
-        all_suppliers = Supplier.objects.all().order_by("id")
-        searchManObj.setPaginator(all_suppliers)
-        searchManObj.setSearch(False)
-    if request.method == "POST" and request.POST.get('clear') == 'clear':
-        all_suppliers = Supplier.objects.all().order_by("id")
-        searchManObj.setPaginator(all_suppliers)
-        searchManObj.setSearch(False)
-    if request.GET.get('page'):
-        # Grab the current page from query parameter
-        page = int(request.GET.get('page'))
-    else:
-        page = None
-
-    try:
-        paginator = searchManObj.getPaginator()
-        supplier_data = paginator.page(page)
-        # Create a page object for the current page.
-    except PageNotAnInteger:
-        # If the query parameter is empty then grab the first page.
-        supplier_data = paginator.page(1)
-        page = 1
-    except EmptyPage:
-        # If the query parameter is greater than num_pages then grab the last page.
-        supplier_data = paginator.page(paginator.num_pages)
-        page = paginator.num_pages
-
-    return render(request, 'supplier/edit_suppliers.html',
-                  {
-                      'title': _('Edit Suppliers'),
-                      'edit_suppliers': 'active',
-                      'suppliers': 'active',
-                      'all_suppliers_data': supplier_data,
-                      'page_range': paginator.page_range,
-                      'num_pages': paginator.num_pages,
-                      'current_page': page,
-                      'search': searchManObj.getSearch(),
-                      'search_result': search_result,
-                      'search_phrase': searchManObj.getSearchPhrase(),
-                      'search_option': searchManObj.getSearchOption(),
-                      'search_error': searchManObj.getSearchError(),
-
-                      'clear_search_tip': CLEAR_SEARCH_TIP,
-                      'search_suppliers_tip': SEARCH_SUPPLIERS_TIP,
-                      'data_js': {
-                          "empty_search_phrase": EMPTY_SEARCH_PHRASE,
-                          "supplier_error": SUPPLIER_NAME_SYNTAX_ERROR,
-                      }
-                  }
-                  )
-
-@staff_member_required(login_url='login')
-def add_suppliers(request):
-    from .forms import SupplierForm
-    if request.method == 'POST':
-        form = SupplierForm(request.POST, request.FILES)
-        if form.is_valid():
-            form = form.save()
-            form.slug = slugify(rand_slug())
-            form.save()
-            supplier_name = form.cleaned_data.get('name')
-            messages.success(request, f"New Supplier Added: {supplier_name}")
-        else:
-            for field, items in form.errors.items():
-                for item in items:
-                    messages.error(request, '{}: {}'.format(field, item))
-    else:
-        form = SupplierForm()
-
-
-    context = {
-        'title': _('Add Suppliers'),
-        'add_suppliers': 'active',
-        'form': form,
-        'suppliers': 'active',
-    }
-    return render(request, 'supplier/add_suppliers.html', context)
-@staff_member_required(login_url='login')
-def delete_suppliers(request):
-    from django.core.paginator import Paginator, PageNotAnInteger, EmptyPage
-    paginator = Paginator(suppliers, 5)
-    from Util.search_form_strings import (
-        EMPTY_SEARCH_PHRASE,
-    SUPPLIER_NAME_SYNTAX_ERROR,
-
-   CLEAR_SEARCH_TIP,
-   SEARCH_SUPPLIERS_TIP,
-
-    )
-    search_result = ''
-    if request.method == "POST" and 'clear' not in request.POST and 'createExcel' not in request.POST:
-        searchManObj.setSearch(True)
-        if request.POST.get('search_phrase') != '':
-            search_message = request.POST.get('search_phrase')
-            search_result = Supplier.objects.filter(name=search_message).order_by('id')
-            searchManObj.setPaginator(search_result)
-            searchManObj.setSearchPhrase(search_message)
-            searchManObj.setSearchOption('Supplier Name')
-            searchManObj.setSearchError(False)
-
-        else:
-            messages.error(request,
-                           "Please enter supplier name first!")
-            searchManObj.setSearchError(True)
-    if request.method == "GET" and 'page' not in request.GET  and not searchManObj.getSearch():
-        all_suppliers = Supplier.objects.all().order_by("id")
-        searchManObj.setPaginator(all_suppliers)
-        searchManObj.setSearch(False)
-    if request.method == "POST" and request.POST.get('clear') == 'clear':
-        all_suppliers = Supplier.objects.all().order_by("id")
-        searchManObj.setPaginator(all_suppliers)
-        searchManObj.setSearch(False)
-    if request.GET.get('page'):
-        # Grab the current page from query parameter
-        page = int(request.GET.get('page'))
-    else:
-        page = None
-
-    try:
-        paginator = searchManObj.getPaginator()
-        supplier_data = paginator.page(page)
-        # Create a page object for the current page.
-    except PageNotAnInteger:
-        # If the query parameter is empty then grab the first page.
-        supplier_data = paginator.page(1)
-        page = 1
-    except EmptyPage:
-        # If the query parameter is greater than num_pages then grab the last page.
-        supplier_data = paginator.page(paginator.num_pages)
-        page = paginator.num_pages
-
-    return render(request, 'supplier/delete_suppliers.html',
-                  {
-                      'title': _('Delete Suppliers'),
-                      'delete_suppliers': 'active',
-                      'suppliers': 'active',
-                      'all_suppliers_data': supplier_data,
-                      'page_range': paginator.page_range,
-                      'num_pages': paginator.num_pages,
-                      'current_page': page,
-                      'search': searchManObj.getSearch(),
-                      'search_result': search_result,
-                      'search_phrase': searchManObj.getSearchPhrase(),
-                      'search_option': searchManObj.getSearchOption(),
-                      'search_error': searchManObj.getSearchError(),
-                      'clear_search_tip': CLEAR_SEARCH_TIP,
-                      'search_suppliers_tip': SEARCH_SUPPLIERS_TIP,
-                      'data_js': {
-                          "empty_search_phrase": EMPTY_SEARCH_PHRASE,
-                          "supplier_error": SUPPLIER_NAME_SYNTAX_ERROR,
-                      }
-                  }
-                  )
-
-@staff_member_required(login_url='login')
-def edit_supplier(request,slug):
-    from apps.supplier.models import Supplier
-    from .forms import SupplierForm
-    obj = get_object_or_404(Supplier, slug=slug)
-    print(obj.name)
-    # if request.FILES['image']:
-
-    supplier_form = SupplierForm(request.POST or None, instance=obj)
-    if supplier_form.is_valid():
-        if request.FILES:
-            supplier = supplier_form.save()
-            supplier.image = request.FILES['image']
-            supplier.save()
-        supplier_form.save()
-        name = supplier_form.cleaned_data.get('name')
-        messages.success(request, f"Successfully Updated : {name} Data")
-    else:
-        for field, items in supplier_form.errors.items():
-            for item in items:
-                messages.error(request, '{}: {}'.format(field, item))
-    context = {
-        'title': _('Edit Suppliers'),
-        'edit_suppliers': 'active',
-        'all_suppliers': suppliers,
-        'form':supplier_form,
-        'supplier':obj,
-        'suppliers': 'active',
-    }
-    return render(request, 'supplier/edit_supplier.html', context)
-@staff_member_required(login_url='login')
-def confirm_delete(request,id):
-    from apps.supplier.models import Supplier
-    obj = get_object_or_404(Supplier, id=id)
-    try:
-        obj.delete()
-        messages.success(request, f"Supplier {obj.name} deleted successfully")
-    except:
-        messages.error(request, f"Supplier {obj.name} was not deleted , please try again!")
-
-
-    return redirect('deleteSuppliers')

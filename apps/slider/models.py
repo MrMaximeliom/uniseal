@@ -1,5 +1,6 @@
 from django.db import models
 from django.template.defaultfilters import slugify
+from django.urls import reverse_lazy
 from django.utils.translation import gettext_lazy as _
 
 # Create your models here.
@@ -32,5 +33,12 @@ class Slider(models.Model):
         verbose_name=_('Slider Slug')
 
     )
+    def save(self, *args, **kwargs):
+        from datetime import datetime
+        self.slug = slugify(rand_slug() + "-" + "-" + str(datetime.now().second))
+        return super().save(*args, **kwargs)
+
+    def get_absolute_url(self):
+        return reverse_lazy("allSliders")
 
 

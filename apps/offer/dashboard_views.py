@@ -1,17 +1,17 @@
-from django.shortcuts import get_object_or_404, redirect
+from django.urls import reverse_lazy
+from django.core.paginator import Paginator, PageNotAnInteger, EmptyPage
 from django.urls import reverse_lazy
 from django.views.generic import ListView
-from Util.search_form_strings import CLEAR_SEARCH_TIP,\
-    SEARCH_OFFERS_TIP ,\
-    OFFER_NOT_FOUND, ALL_OFFERS_TITLE,\
-    EDIT_OFFERS_TITLE , ADD_OFFERS_TITLE
-from Util.utils import delete_temp_folder, SearchMan, ReportMan
-from .models import Offer
-from .forms import OfferForm
 from django.views.generic.edit import FormView
-from django.contrib import messages
-from django.core.paginator import Paginator, PageNotAnInteger, EmptyPage
 from django.views.generic.edit import UpdateView
+
+from Util.search_form_strings import CLEAR_SEARCH_TIP, \
+    SEARCH_OFFERS_TIP, \
+    OFFER_NOT_FOUND, ALL_OFFERS_TITLE, \
+    EDIT_OFFERS_TITLE, ADD_OFFERS_TITLE
+from Util.utils import delete_temp_folder, SearchMan, ReportMan
+from .forms import OfferForm
+from .models import Offer
 
 
 class OfferFormView(FormView):
@@ -167,12 +167,3 @@ class OfferUpdateView(UpdateView):
     }
 
 
-def confirm_delete(request, slug):
-    from .models import Offer
-    obj = get_object_or_404(Offer, slug=slug)
-    try:
-        obj.delete()
-        messages.success(request, f"Offer {obj.name} deleted successfully")
-    except:
-        messages.error(request, f"Offer {obj.name} was not deleted , please try again!")
-    return redirect('deleteOffers')

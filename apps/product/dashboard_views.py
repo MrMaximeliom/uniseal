@@ -8,6 +8,164 @@ from django.utils.translation import gettext_lazy as _
 
 from Util.utils import SearchMan, createExelFile, ReportMan, delete_temp_folder
 from Util.utils import rand_slug
+# new code starts here
+from apps.common_code.views import BaseListView
+from apps.product.models import Product
+
+
+class ProductListView(BaseListView):
+    def get(self, request, *args, **kwargs):
+        from Util.search_form_strings import (
+            EMPTY_SEARCH_PHRASE,
+            CLEAR_SEARCH_TIP,
+            CREATE_REPORT_TIP
+
+        )
+        search_result = ''
+        searchManObj = SearchMan(self.model_name)
+        queryset = self.get_queryset()
+        paginator = Paginator(queryset, 5)
+        if 'temp_dir' in request.session:
+            # deleting temp dir in GET requests
+            if request.session['temp_dir'] != '':
+                delete_temp_folder()
+        if 'page' not in request.GET:
+            instances = searchManObj.get_queryset()
+            searchManObj.setPaginator(instances)
+            searchManObj.setSearch(False)
+        if request.GET.get('page'):
+            # Grab the current page from query parameter consultant
+            page = int(request.GET.get('page'))
+        else:
+            page = None
+
+        try:
+            paginator = searchManObj.getPaginator()
+            instances = paginator.page(page)
+            # Create a page object for the current page.
+        except PageNotAnInteger:
+            # If the query parameter is empty then grab the first page.
+            instances = paginator.page(1)
+            page = 1
+        except EmptyPage:
+            # If the query parameter is greater than num_pages then grab the last page.
+            instances = paginator.page(paginator.num_pages)
+            page = paginator.num_pages
+        self.extra_context = {
+            'page_range': paginator.page_range,
+            'num_pages': paginator.num_pages,
+            'object_list': instances,
+            self.main_active_flag: 'active',
+            self.active_flag: "active",
+            'current_page': page,
+            'title': self.title,
+            'search': searchManObj.getSearch(),
+            'search_result': search_result,
+            'search_phrase': searchManObj.getSearchPhrase(),
+            'search_option': searchManObj.getSearchOption(),
+            'search_error': searchManObj.getSearchError(),
+            'create_report_tip': CREATE_REPORT_TIP,
+            'clear_search_tip': CLEAR_SEARCH_TIP,
+            'data_js': {
+                "empty_search_phrase": EMPTY_SEARCH_PHRASE,
+            }
+        }
+        return super().get(request)
+
+    def post(self, request, *args, **kwargs):
+        from Util.search_form_strings import (
+            EMPTY_SEARCH_PHRASE,
+            CLEAR_SEARCH_TIP,
+            CREATE_REPORT_TIP
+
+        )
+        search_result = ''
+        searchManObj = SearchMan(self.model_name)
+        queryset = self.get_queryset()
+        paginator = Paginator(queryset, 5)
+        if 'clear' not in request.POST and 'createExcel' not in request.POST:
+            searchManObj.setSearch(True)
+            if request.POST.get('search_options') == 'product':
+                print('here now in product search')
+                search_message = request.POST.get('search_phrase')
+                search_result = Product.objects.filter(name__icontains=search_message).order_by('id')
+                print("search results ", search_result)
+                searchManObj.setPaginator(search_result)
+                searchManObj.setSearchPhrase(search_message)
+                searchManObj.setSearchOption('Product Name')
+                searchManObj.setSearchError(False)
+            elif request.POST.get('search_options') == 'category':
+                print('here now in category search')
+                search_phrase = request.POST.get('search_phrase')
+                search_result = Product.objects.filter(category__name__icontains=search_phrase).order_by("id")
+                print("search results ", search_result)
+                searchManObj.setPaginator(search_result)
+                searchManObj.setSearchPhrase(search_phrase)
+                searchManObj.setSearchOption('Category')
+                searchManObj.setSearchError(False)
+            elif request.POST.get('search_options') == 'supplier':
+                print('here now in supplier search')
+                search_phrase = request.POST.get('search_phrase')
+                print('search phrase is ', search_phrase)
+                search_result = Product.objects.filter(supplier__name__icontains=search_phrase).order_by("id")
+                print("search results ", search_result)
+                searchManObj.setPaginator(search_result)
+                searchManObj.setSearchPhrase(search_phrase)
+                searchManObj.setSearchOption('Supplier')
+                searchManObj.setSearchError(False)
+            else:
+                messages.error(request,
+                               "Please choose an item from list , then write search phrase to search by it!")
+                searchManObj.setSearchError(True)
+
+        if request.POST.get('clear') == 'clear':
+            instances = searchManObj.get_queryset()
+            searchManObj.setPaginator(instances)
+            searchManObj.setSearch(False)
+
+        if request.GET.get('page'):
+            # Grab the current page from query parameter consultant
+            page = int(request.GET.get('page'))
+
+        else:
+            page = None
+        try:
+            paginator = searchManObj.getPaginator()
+            instances = paginator.page(page)
+            # Create a page object for the current page.
+        except PageNotAnInteger:
+            # If the query parameter is empty then grab the first page.
+            instances = paginator.page(1)
+            page = 1
+
+        except EmptyPage:
+            # If the query parameter is greater than num_pages then grab the last page.
+            instances = paginator.page(paginator.num_pages)
+            page = paginator.num_pages
+        self.extra_context = {
+            'page_range': paginator.page_range,
+            'num_pages': paginator.num_pages,
+            'object_list': instances,
+            self.main_active_flag: 'active',
+            self.active_flag: "active",
+            'current_page': page,
+            'title': self.title,
+            'search': searchManObj.getSearch(),
+            'search_result': search_result,
+            'search_phrase': searchManObj.getSearchPhrase(),
+            'search_option': searchManObj.getSearchOption(),
+            'search_error': searchManObj.getSearchError(),
+            'create_report_tip': CREATE_REPORT_TIP,
+            'clear_search_tip': CLEAR_SEARCH_TIP,
+            'data_js': {
+                "empty_search_phrase": EMPTY_SEARCH_PHRASE,
+
+            }
+        }
+        return super().get(request)
+
+
+# ends here
 
 
 def prepare_selected_query(selected_pages, paginator_obj, headers=None):
@@ -119,9 +277,9 @@ def all_products(request):
         CATEGORY_NAME_SYNTAX_ERROR,
         SUPPLIER_NAME_SYNTAX_ERROR,
         PRODUCT_NOT_FOUND,
-    CREATE_REPORT_TIP,
-     CLEAR_SEARCH_TIP,
-     SEARCH_PRODUCTS_TIP,
+        CREATE_REPORT_TIP,
+        CLEAR_SEARCH_TIP,
+        SEARCH_PRODUCTS_TIP,
 
     )
     all_products = Product.objects.all().order_by("id")
@@ -308,7 +466,7 @@ def all_products(request):
     return render(request, 'product/all_products.html',
                   {
                       'title': _('All Products'),
-                      'products':'active',
+                      'products': 'active',
                       'all_products': 'active',
                       'all_products_data': products,
                       'page_range': paginator.page_range,
@@ -329,284 +487,6 @@ def all_products(request):
                           "supplier_error": SUPPLIER_NAME_SYNTAX_ERROR,
                       },
                       'not_found': PRODUCT_NOT_FOUND,
-                  }
-                  )
-
-
-@staff_member_required(login_url='login')
-def add_products(request):
-    from .forms import ProductForm
-    if request.method == 'POST':
-        form = ProductForm(request.POST, request.FILES)
-        if form.is_valid():
-            product = form.save()
-            product.slug = slugify(rand_slug())
-            product.save()
-            product_name = form.cleaned_data.get('name')
-            messages.success(request, f"Product << {product_name} >> added successfully!")
-
-        else:
-            for field, items in form.errors.items():
-                for item in items:
-                    messages.error(request, '{}: {}'.format(field, item))
-            # for msg in form.error_messages:
-            #     messages.error(request, f"{msg}: {form.error_messages[msg]}")
-    else:
-        form = ProductForm()
-    context = {
-        'title': _('Add Products'),
-        'add_products': 'active',
-        'all_products': all_products,
-        'form': form,
-        'products': 'active',
-
-    }
-    return render(request, 'product/add_products.html', context)
-
-
-@staff_member_required(login_url='login')
-def delete_products(request):
-    from apps.product.models import Product
-
-    all_products = Product.objects.all().order_by('id')
-    paginator = Paginator(all_products, 5)
-    from Util.search_form_strings import (
-        EMPTY_SEARCH_PHRASE,
-        PRODUCT_NAME_SYNTAX_ERROR,
-        CATEGORY_NAME_SYNTAX_ERROR,
-        SUPPLIER_NAME_SYNTAX_ERROR,
-        PRODUCT_NOT_FOUND,
-
-    CLEAR_SEARCH_TIP,
-     SEARCH_PRODUCTS_TIP,
-
-    )
-    search_result = ''
-    if request.method == "POST" and 'clear' not in request.POST and 'createExcel' not in request.POST:
-        searchManObj.setSearch(True)
-        if request.POST.get('search_options') == 'product':
-            print('here now in product search')
-            search_message = request.POST.get('search_phrase')
-            search_result = Product.objects.filter(name__icontains=search_message).order_by('id')
-            print("search results ", search_result)
-            searchManObj.setPaginator(search_result)
-            searchManObj.setSearchPhrase(search_message)
-            searchManObj.setSearchOption('Product Name')
-            searchManObj.setSearchError(False)
-        elif request.POST.get('search_options') == 'category':
-            print('here now in category search')
-            search_phrase = request.POST.get('search_phrase')
-            search_result = Product.objects.filter(category__name__icontains=search_phrase).order_by("id")
-            print("search results ", search_result)
-            searchManObj.setPaginator(search_result)
-            searchManObj.setSearchPhrase(search_phrase)
-            searchManObj.setSearchOption('Category')
-            searchManObj.setSearchError(False)
-        elif request.POST.get('search_options') == 'supplier':
-            print('here now in supplier search')
-            search_phrase = request.POST.get('search_phrase')
-            print('search phrase is ', search_phrase)
-            search_result = Product.objects.filter(supplier__name__icontains=search_phrase).order_by("id")
-            print("search results ", search_result)
-            searchManObj.setPaginator(search_result)
-            searchManObj.setSearchPhrase(search_phrase)
-            searchManObj.setSearchOption('Supplier')
-            searchManObj.setSearchError(False)
-        else:
-            messages.error(request,
-                           "Please choose an item from list , then write search phrase to search by it!")
-            searchManObj.setSearchError(True)
-    if request.method == "GET" and 'page' not in request.GET and not searchManObj.getSearch():
-        all_products = Product.objects.all().order_by("id")
-        searchManObj.setPaginator(all_products)
-        searchManObj.setSearch(False)
-    if request.method == "POST" and request.POST.get('clear') == 'clear':
-        all_products = Product.objects.all().order_by("id")
-        searchManObj.setPaginator(all_products)
-        searchManObj.setSearch(False)
-    if request.GET.get('page'):
-        # Grab the current page from query parameter
-        page = int(request.GET.get('page'))
-    else:
-        page = None
-
-    try:
-        paginator = searchManObj.getPaginator()
-        products = paginator.page(page)
-        # Create a page object for the current page.
-    except PageNotAnInteger:
-        # If the query parameter is empty then grab the first page.
-        products = paginator.page(1)
-        page = 1
-    except EmptyPage:
-        # If the query parameter is greater than num_pages then grab the last page.
-        products = paginator.page(paginator.num_pages)
-        page = paginator.num_pages
-
-    context = {
-        'title': _('Delete Products'),
-        'delete_products': 'active',
-        'all_products': all_products,
-        'all_products_data': products,
-        'page_range': paginator.page_range,
-        'num_pages': paginator.num_pages,
-        'current_page': page,
-        'search': searchManObj.getSearch(),
-        'search_result': search_result,
-        'search_phrase': searchManObj.getSearchPhrase(),
-        'search_option': searchManObj.getSearchOption(),
-        'search_error': searchManObj.getSearchError(),
-        'clear_search_tip': CLEAR_SEARCH_TIP,
-        'search_products_tip': SEARCH_PRODUCTS_TIP,
-        'products': 'active',
-        'data_js': {
-            "empty_search_phrase": EMPTY_SEARCH_PHRASE,
-            "product_error": PRODUCT_NAME_SYNTAX_ERROR,
-            "category_error": CATEGORY_NAME_SYNTAX_ERROR,
-            "supplier_error": SUPPLIER_NAME_SYNTAX_ERROR,
-        },
-        'not_found': PRODUCT_NOT_FOUND,
-    }
-    return render(request, 'product/delete_products.html', context)
-
-
-@staff_member_required(login_url='login')
-def edit_product(request, slug):
-    from apps.product.models import Product
-    from .forms import ProductForm
-    all_products = Product.objects.all()
-
-    # fetch the object related to passed id
-    obj = get_object_or_404(Product, slug=slug)
-
-    # pass the object as instance in form
-    product_form = ProductForm(request.POST or None, instance=obj)
-    # product_image_form = ProductImagesForm(request.POST or None, instance=obj)
-
-    # save the data from the form and
-    # redirect to detail_view
-    if product_form.is_valid():
-        product_form.save()
-        product_name = product_form.cleaned_data.get('name')
-        messages.success(request, f"Successfully Updated : << {product_name} >> Data")
-    else:
-        for field, items in product_form.errors.items():
-            for item in items:
-                messages.error(request, '{}: {}'.format(field, item))
-        # product_image_form.save()
-    context = {
-        'title': _('Edit Products'),
-        'edit_products': 'active',
-        'all_products': all_products,
-        'product_form': product_form,
-        'product': obj,
-        'products': 'active',
-    }
-    return render(request, 'product/edit_product.html', context)
-
-
-@staff_member_required(login_url='login')
-def edit_products(request):
-    from apps.product.models import Product
-    from Util.search_form_strings import (
-        EMPTY_SEARCH_PHRASE,
-        PRODUCT_NAME_SYNTAX_ERROR,
-        CATEGORY_NAME_SYNTAX_ERROR,
-        SUPPLIER_NAME_SYNTAX_ERROR,
-        PRODUCT_NOT_FOUND,
-
-   CLEAR_SEARCH_TIP,
-   SEARCH_PRODUCTS_TIP,
-
-    )
-    search_result = ''
-    all_products = Product.objects.all().order_by("id")
-    paginator = Paginator(all_products, 5)
-    if request.method == "POST" and 'clear' not in request.POST and 'createExcel' not in request.POST:
-        searchManObj.setSearch(True)
-        if request.POST.get('search_options') == 'product':
-            print('here now in product search')
-            search_message = request.POST.get('search_phrase')
-            search_result = Product.objects.filter(name__icontains=search_message).order_by('id')
-            print("search results ", search_result)
-            searchManObj.setPaginator(search_result)
-            searchManObj.setSearchPhrase(search_message)
-            searchManObj.setSearchOption('Product Name')
-            searchManObj.setSearchError(False)
-        elif request.POST.get('search_options') == 'category':
-            print('here now in category search')
-            search_phrase = request.POST.get('search_phrase')
-            search_result = Product.objects.filter(category__name__icontains=search_phrase).order_by("id")
-            print("search results ", search_result)
-            searchManObj.setPaginator(search_result)
-            searchManObj.setSearchPhrase(search_phrase)
-            searchManObj.setSearchOption('Category')
-            searchManObj.setSearchError(False)
-        elif request.POST.get('search_options') == 'supplier':
-            print('here now in supplier search')
-            search_phrase = request.POST.get('search_phrase')
-            print('search phrase is ', search_phrase)
-            search_result = Product.objects.filter(supplier__name__icontains=search_phrase).order_by("id")
-            print("search results ", search_result)
-            searchManObj.setPaginator(search_result)
-            searchManObj.setSearchPhrase(search_phrase)
-            searchManObj.setSearchOption('Supplier')
-            searchManObj.setSearchError(False)
-        else:
-            messages.error(request,
-                           "Please choose an item from list , then write search phrase to search by it!")
-            searchManObj.setSearchError(True)
-    if request.method == "GET" and 'page' not in request.GET and not searchManObj.getSearch():
-        all_products = Product.objects.all().order_by("id")
-        searchManObj.setPaginator(all_products)
-        searchManObj.setSearch(False)
-    if request.method == "POST" and request.POST.get('clear') == 'clear':
-        all_products = Product.objects.all().order_by("id")
-        searchManObj.setPaginator(all_products)
-        searchManObj.setSearch(False)
-    if request.GET.get('page'):
-        # Grab the current page from query parameter
-        page = int(request.GET.get('page'))
-    else:
-        page = None
-
-    try:
-        paginator = searchManObj.getPaginator()
-        products = paginator.page(page)
-        # Create a page object for the current page.
-    except PageNotAnInteger:
-        # If the query parameter is empty then grab the first page.
-        products = paginator.page(1)
-        page = 1
-    except EmptyPage:
-        # If the query parameter is greater than num_pages then grab the last page.
-        products = paginator.page(paginator.num_pages)
-        page = paginator.num_pages
-
-    return render(request, 'product/edit_products.html',
-                  {
-                      'title': _('Edit Products'),
-                      'edit_products': 'active',
-                      'products': 'active',
-                      'all_products_data': products,
-                      'page_range': paginator.page_range,
-                      'num_pages': paginator.num_pages,
-                      'current_page': page,
-                      'search': searchManObj.getSearch(),
-                      'search_result': search_result,
-                      'search_phrase': searchManObj.getSearchPhrase(),
-                      'search_option': searchManObj.getSearchOption(),
-                      'search_error': searchManObj.getSearchError(),
-
-                      'clear_search_tip': CLEAR_SEARCH_TIP,
-                      'search_products_tip': SEARCH_PRODUCTS_TIP,
-                      'data_js': {
-                          "empty_search_phrase": EMPTY_SEARCH_PHRASE,
-                          "product_error": PRODUCT_NAME_SYNTAX_ERROR,
-                          "category_error": CATEGORY_NAME_SYNTAX_ERROR,
-                          "supplier_error": SUPPLIER_NAME_SYNTAX_ERROR,
-                      },
-                      'not_found': PRODUCT_NOT_FOUND
                   }
                   )
 
@@ -755,44 +635,19 @@ def product_images(request, slug=None):
                   )
 
 
-@staff_member_required(login_url='login')
-def confirm_delete(request, id):
-    from apps.product.models import Product
-    import os
-    obj = get_object_or_404(Product, id=id)
-    try:
-        from apps.product.models import ProductImages
-        from django.db.models import Count
-        deleted_image_path = os.path.dirname(os.path.abspath('unisealAPI')) + obj.image.url
-        deleted_file_path = os.path.dirname(os.path.abspath('unisealAPI')) + obj.product_file.url
-        # get other images for this product and delete them
-        other_instances = ProductImages.objects.annotate(num_ins=Count('product')).filter(product=obj)
-        for instance in other_instances:
-            deleted_image = os.path.dirname(os.path.abspath('unisealAPI')) + instance.image.url
-            if os.path.exists(deleted_image):
-                os.remove(deleted_image)
-
-        if os.path.exists(deleted_image_path):
-            os.remove(deleted_image_path)
-        if os.path.exists(deleted_file_path):
-            os.remove(deleted_file_path)
-        obj.delete()
-
-        messages.success(request, f"Product << {obj.name} >> deleted successfully")
-    except:
-        messages.error(request, f"Product << {obj.name} >> was not deleted , please try again!")
-
-    return redirect('deleteProducts')
-
 class TopProductsHelper:
     query = ''
+
     def setQuery(self, query):
         self.query = query
 
     def getQuery(self):
         return self.query
 
+
 top_products_helper = TopProductsHelper()
+
+
 @staff_member_required(login_url='login')
 def top_products(request):
     from apps.product.models import Product
@@ -802,16 +657,16 @@ def top_products(request):
         CATEGORY_NAME_SYNTAX_ERROR,
         SUPPLIER_NAME_SYNTAX_ERROR,
         PRODUCT_NOT_FOUND,
-    CLEAR_SEARCH_TIP,
-    CREATE_REPORT_TIP,
-    SEARCH_PRODUCTS_TIP,
+        CLEAR_SEARCH_TIP,
+        CREATE_REPORT_TIP,
+        SEARCH_PRODUCTS_TIP,
 
     )
     all_products = Product.objects.filter(is_top=True).order_by("id")
     top_products_helper.setQuery(all_products)
     search_result = ''
     displaying_type = 'Top Products'
-    if request.method == "POST" and 'clear' not in request.POST and 'createExcel' not in request.POST and 'updating_top_products' not in request.POST :
+    if request.method == "POST" and 'clear' not in request.POST and 'createExcel' not in request.POST and 'updating_top_products' not in request.POST:
         searchManObj.setSearch(True)
         if request.POST.get('search_options') == 'product':
             print('here now in product search')
@@ -846,7 +701,7 @@ def top_products(request):
             top_products_helper.setQuery(search_result)
         elif request.POST.get('search_options') == 'top_products':
             search_phrase = request.POST.get('search_phrase')
-            search_result = Product.objects.filter(is_top=True,name__icontains=search_phrase).order_by("id")
+            search_result = Product.objects.filter(is_top=True, name__icontains=search_phrase).order_by("id")
             searchManObj.setPaginator(search_result)
             searchManObj.setSearchPhrase(search_phrase)
             searchManObj.setSearchOption('Top Products')
@@ -872,14 +727,14 @@ def top_products(request):
         searchManObj.setSearch(False)
         selected_top_products = request.POST.get('selected_top_products')
         deleted_top_products = request.POST.get('deleted_top_products')
-        print("selected products are: ",selected_top_products)
-        print("deleted top products are: ",deleted_top_products)
+        print("selected products are: ", selected_top_products)
+        print("deleted top products are: ", deleted_top_products)
         updated = False
         if selected_top_products != 'none':
             selected_products = list()
             # selected_products_ids = request.POST.get('selected_top_products')
-            print("top products are: ",selected_top_products)
-            print("\ntop products splited: ",selected_top_products.split(','))
+            print("top products are: ", selected_top_products)
+            print("\ntop products splited: ", selected_top_products.split(','))
             print("\n cycling throw splited products")
             for product_id in selected_top_products.split(','):
                 print(product_id)
@@ -896,8 +751,8 @@ def top_products(request):
         if deleted_top_products != 'none':
             deleted_products = list()
             # selected_products_ids = request.POST.get('selected_top_products')
-            print("deleted top products are: ",deleted_top_products)
-            print("\ndeleted top products splited: ",deleted_top_products.split(','))
+            print("deleted top products are: ", deleted_top_products)
+            print("\ndeleted top products splited: ", deleted_top_products.split(','))
             print("\n cycling throw splited products")
             for product_id in deleted_top_products.split(','):
                 print(product_id)
@@ -912,7 +767,7 @@ def top_products(request):
                 product.is_top = False
             Product.objects.bulk_update(deleted_products, ['is_top'])
         if updated:
-            messages.success(request,"Top Products Updated Successfully!")
+            messages.success(request, "Top Products Updated Successfully!")
 
     return render(request, 'product/top_products.html',
                   {
@@ -926,9 +781,9 @@ def top_products(request):
                       'search_phrase': searchManObj.getSearchPhrase(),
                       'search_option': searchManObj.getSearchOption(),
                       'search_error': searchManObj.getSearchError(),
-                      'create_report_tip':CREATE_REPORT_TIP,
-                      'clear_search_tip':CLEAR_SEARCH_TIP,
-                      'search_products_tip':SEARCH_PRODUCTS_TIP,
+                      'create_report_tip': CREATE_REPORT_TIP,
+                      'clear_search_tip': CLEAR_SEARCH_TIP,
+                      'search_products_tip': SEARCH_PRODUCTS_TIP,
                       'data_js': {
                           "empty_search_phrase": EMPTY_SEARCH_PHRASE,
                           "product_error": PRODUCT_NAME_SYNTAX_ERROR,
@@ -939,4 +794,3 @@ def top_products(request):
                       'not_found': PRODUCT_NOT_FOUND,
                   }
                   )
-

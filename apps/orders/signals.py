@@ -1,6 +1,8 @@
-from django.db.models.signals import post_save,pre_delete
+from django.db.models.signals import post_save, pre_delete
 from django.dispatch import receiver
-from apps.orders.models import Order,Cart
+
+from apps.orders.models import Order, Cart
+
 
 @receiver(post_save, sender=Cart)
 def calculate_total_amount(sender, instance, created, **kwargs):

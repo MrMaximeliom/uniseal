@@ -17,9 +17,10 @@
                 {% endblock breadcrumb_content %}
 {% block content %}
                 <h1 class="h2">{% trans 'Delete Brochures' %} </h1>
+{% if object_list|length > 0%}
 <div class="row card-group">
 
-{% for brochures in all_brochures_data %}
+{% for brochures in object_list %}
 
  <div class="col-sm col-md-5 col-lg-4">
                 <div class="card-light mb-5 ml-2" >
@@ -38,7 +39,7 @@
         <h5 class="modal-title" id="exampleModalLabel">{% trans 'Delete Conformation' %}</h5>
         <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
       </div>
-        <form action="" method="post">
+        <form action="{% url 'deleteBrochure' slug=brochures.slug %}" method="post">
             {% csrf_token %}
       <div class="modal-body">
 
@@ -49,7 +50,7 @@
       </div>
       <div class="modal-footer">
         <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-        <a type="submit" class="btn btn-danger" href="{% url 'deleteBrochure' id=brochures.id %}">Delete</a>
+        <button type="submit" class="btn btn-danger" >Delete</button>
 
       </div>
               </form>
@@ -87,5 +88,13 @@
           </ul>
        </nav>
   </div>
+{% endif %}
+
+{% if object_list|length == 0 and not search %}
+<h3 class="delete-warning">{% trans 'There are no brochures yet ... you can add new ones from ' %} <a href="{% url 'addBrochures' %}">{% trans 'Here' %}</a></h3>
+{% endif %}
+{% if search and search_result.count == 0 %}
+<h3 class="delete-warning">{% trans 'Sorry no brochures found that matches your search!' %}</h3>
+{% endif %}
 
 {% endblock content %}

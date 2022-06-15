@@ -1,16 +1,183 @@
 from django.contrib import messages
 from django.contrib.admin.views.decorators import staff_member_required
+from django.core.paginator import Paginator, PageNotAnInteger, EmptyPage
 from django.db.models import Count
 from django.shortcuts import render, get_object_or_404, redirect
 from django.template.defaultfilters import slugify
 from django.utils.translation import gettext_lazy as _
 
-from Util.utils import SearchMan, createExelFile, ReportMan, delete_temp_folder
+from Util.utils import SearchMan, ReportMan, delete_temp_folder
 from Util.utils import rand_slug
 
 searchManObj = SearchMan("Project")
 report_man = ReportMan()
 
+# new code starts here
+from apps.common_code.views import BaseListView
+from apps.project.models import Project
+
+
+class ProjectListView(BaseListView):
+    def get(self, request, *args, **kwargs):
+        from Util.search_form_strings import (
+            EMPTY_SEARCH_PHRASE,
+            CLEAR_SEARCH_TIP,
+            CREATE_REPORT_TIP
+
+        )
+        search_result = ''
+        searchManObj = SearchMan(self.model_name)
+        queryset = self.get_queryset()
+        paginator = Paginator(queryset, 5)
+        if 'temp_dir' in request.session:
+            # deleting temp dir in GET requests
+            if request.session['temp_dir'] != '':
+                delete_temp_folder()
+        if 'page' not in request.GET:
+            instances = searchManObj.get_queryset()
+            searchManObj.setPaginator(instances)
+            searchManObj.setSearch(False)
+        if request.GET.get('page'):
+            # Grab the current page from query parameter consultant
+            page = int(request.GET.get('page'))
+        else:
+            page = None
+
+        try:
+            paginator = searchManObj.getPaginator()
+            instances = paginator.page(page)
+            # Create a page object for the current page.
+        except PageNotAnInteger:
+            # If the query parameter is empty then grab the first page.
+            instances = paginator.page(1)
+            page = 1
+        except EmptyPage:
+            # If the query parameter is greater than num_pages then grab the last page.
+            instances = paginator.page(paginator.num_pages)
+            page = paginator.num_pages
+        self.extra_context = {
+            'page_range': paginator.page_range,
+            'num_pages': paginator.num_pages,
+            'object_list': instances,
+            self.main_active_flag: 'active',
+            self.active_flag: "active",
+            'current_page': page,
+            'title': self.title,
+            'search': searchManObj.getSearch(),
+            'search_result': search_result,
+            'search_phrase': searchManObj.getSearchPhrase(),
+            'search_option': searchManObj.getSearchOption(),
+            'search_error': searchManObj.getSearchError(),
+            'create_report_tip': CREATE_REPORT_TIP,
+            'clear_search_tip': CLEAR_SEARCH_TIP,
+            'data_js': {
+                "empty_search_phrase": EMPTY_SEARCH_PHRASE,
+            }
+        }
+        return super().get(request)
+
+    def post(self, request, *args, **kwargs):
+        from Util.search_form_strings import (
+            EMPTY_SEARCH_PHRASE,
+            CLEAR_SEARCH_TIP,
+            CREATE_REPORT_TIP
+
+        )
+        search_result = ''
+        searchManObj = SearchMan(self.model_name)
+        queryset = self.get_queryset()
+        paginator = Paginator(queryset, 5)
+        if 'clear' not in request.POST and 'createExcel' not in request.POST:
+            searchManObj.setSearch(True)
+            if request.POST.get('search_options') == 'project':
+                search_message = request.POST.get('search_phrase')
+                search_result = Project.objects.filter(name__icontains=search_message).order_by("id")
+                searchManObj.setPaginator(search_result)
+                searchManObj.setSearchPhrase(search_message)
+                searchManObj.setSearchOption('Project Name')
+                searchManObj.setSearchError(False)
+            elif request.POST.get('search_options') == 'beneficiary':
+                print('here now in category search')
+                search_phrase = request.POST.get('search_phrase')
+                search_result = Project.objects.filter(beneficiary__icontains=search_phrase).order_by("id")
+                searchManObj.setPaginator(search_result)
+                searchManObj.setSearchPhrase(search_phrase)
+                searchManObj.setSearchOption('Beneficiary Name')
+                searchManObj.setSearchError(False)
+            elif request.POST.get('search_options') == 'main_material':
+                search_phrase = request.POST.get('search_phrase')
+                search_result = Project.objects.filter(main_material__icontains=search_phrase).order_by("id")
+                searchManObj.setPaginator(search_result)
+                searchManObj.setSearchPhrase(search_phrase)
+                searchManObj.setSearchOption('Main Material Used:')
+                searchManObj.setSearchError(False)
+            elif request.POST.get('search_options') == 'type':
+                search_phrase = request.POST.get('search_phrase')
+                search_result = Project.objects.filter(project_type__name__icontains=search_phrase).order_by("id")
+                searchManObj.setPaginator(search_result)
+                searchManObj.setSearchPhrase(search_phrase)
+                searchManObj.setSearchOption('Project Type:')
+                searchManObj.setSearchError(False)
+            elif request.POST.get('search_options') == 'execution_year':
+                search_phrase = request.POST.get('search_phrase_date')
+                search_result = Project.objects.filter(date__contains=search_phrase).order_by("id")
+                searchManObj.setPaginator(search_result)
+                searchManObj.setSearchPhrase(search_phrase)
+                searchManObj.setSearchOption('Execution Year')
+                searchManObj.setSearchError(False)
+            else:
+                messages.error(request,
+                               "Please choose an item from list , then write search phrase to search by it!")
+                searchManObj.setSearchError(True)
+
+        if request.POST.get('clear') == 'clear':
+            instances = searchManObj.get_queryset()
+            searchManObj.setPaginator(instances)
+            searchManObj.setSearch(False)
+
+        if request.GET.get('page'):
+            # Grab the current page from query parameter consultant
+            page = int(request.GET.get('page'))
+
+        else:
+            page = None
+        try:
+            paginator = searchManObj.getPaginator()
+            instances = paginator.page(page)
+            # Create a page object for the current page.
+        except PageNotAnInteger:
+            # If the query parameter is empty then grab the first page.
+            instances = paginator.page(1)
+            page = 1
+
+        except EmptyPage:
+            # If the query parameter is greater than num_pages then grab the last page.
+            instances = paginator.page(paginator.num_pages)
+            page = paginator.num_pages
+        self.extra_context = {
+            'page_range': paginator.page_range,
+            'num_pages': paginator.num_pages,
+            'object_list': instances,
+            self.main_active_flag: 'active',
+            self.active_flag: "active",
+            'current_page': page,
+            'title': self.title,
+            'search': searchManObj.getSearch(),
+            'search_result': search_result,
+            'search_phrase': searchManObj.getSearchPhrase(),
+            'search_option': searchManObj.getSearchOption(),
+            'search_error': searchManObj.getSearchError(),
+            'create_report_tip': CREATE_REPORT_TIP,
+            'clear_search_tip': CLEAR_SEARCH_TIP,
+            'data_js': {
+                "empty_search_phrase": EMPTY_SEARCH_PHRASE,
+
+            }
+        }
+        return super().get(request)
+
+
+# ends here
 
 # report_man.setTempDir(tempfile.mkdtemp())
 def prepare_selected_query(selected_pages, paginator_obj, headers=None):
@@ -111,535 +278,6 @@ def prepare_query(paginator_obj, headers=None):
     # later for extracting actual data
 
     return headers_here, project_name, beneficiary, description, main_material, project_type, execution_date
-
-
-@staff_member_required(login_url='login')
-def all_projects(request):
-    from apps.project.models import Project
-    from django.core.paginator import Paginator, PageNotAnInteger, EmptyPage
-    from Util.search_form_strings import (
-        EMPTY_SEARCH_PHRASE,
-        PROJECT_NAME_SYNTAX_ERROR,
-        PROJECT_TYPE_SYNTAX_ERROR,
-        BENEFICIARY_NAME_SYNTAX_ERROR,
-        MAIN_MATERIAL_SYNTAX_ERROR,
-        EXECUTION_DATE_ERROR,
-        PROJECT_NOT_FOUND,
-        CREATE_REPORT_TIP,
-        CLEAR_SEARCH_TIP,
-        SEARCH_PROJECTS_TIP,
-
-    )
-
-    search_result = ''
-    all_projects = Project.objects.all().order_by("id")
-    paginator = Paginator(all_projects, 5)
-
-    if 'temp_dir' in request.session and request.method == "GET":
-        # deleting temp dir in GET requests
-        if request.session['temp_dir'] != '':
-            delete_temp_folder()
-    if request.method == "POST" and 'clear' not in request.POST and 'createExcel' not in request.POST:
-        searchManObj.setSearch(True)
-        if request.POST.get('search_options') == 'project':
-            search_message = request.POST.get('search_phrase')
-            search_result = Project.objects.filter(name__icontains=search_message).order_by("id")
-            searchManObj.setPaginator(search_result)
-            searchManObj.setSearchPhrase(search_message)
-            searchManObj.setSearchOption('Project Name')
-            searchManObj.setSearchError(False)
-        elif request.POST.get('search_options') == 'beneficiary':
-            print('here now in category search')
-            search_phrase = request.POST.get('search_phrase')
-            search_result = Project.objects.filter(beneficiary__icontains=search_phrase).order_by("id")
-            searchManObj.setPaginator(search_result)
-            searchManObj.setSearchPhrase(search_phrase)
-            searchManObj.setSearchOption('Beneficiary Name')
-            searchManObj.setSearchError(False)
-        elif request.POST.get('search_options') == 'main_material':
-            search_phrase = request.POST.get('search_phrase')
-            search_result = Project.objects.filter(main_material__icontains=search_phrase).order_by("id")
-            searchManObj.setPaginator(search_result)
-            searchManObj.setSearchPhrase(search_phrase)
-            searchManObj.setSearchOption('Main Material Used:')
-            searchManObj.setSearchError(False)
-        elif request.POST.get('search_options') == 'type':
-            search_phrase = request.POST.get('search_phrase')
-            search_result = Project.objects.filter(project_type__name__icontains=search_phrase).order_by("id")
-            searchManObj.setPaginator(search_result)
-            searchManObj.setSearchPhrase(search_phrase)
-            searchManObj.setSearchOption('Project Type:')
-            searchManObj.setSearchError(False)
-        elif request.POST.get('search_options') == 'execution_year':
-            search_phrase = request.POST.get('search_phrase_date')
-            search_result = Project.objects.filter(date__contains=search_phrase).order_by("id")
-            searchManObj.setPaginator(search_result)
-            searchManObj.setSearchPhrase(search_phrase)
-            searchManObj.setSearchOption('Execution Year')
-            searchManObj.setSearchError(False)
-        else:
-            messages.error(request,
-                           "Please choose an item from list , then write search phrase to search by it!")
-            searchManObj.setSearchError(True)
-    if request.method == "GET" and 'page' not in request.GET and not searchManObj.getSearch():
-        all_projects = Project.objects.all().order_by("id")
-
-        searchManObj.setPaginator(all_projects)
-        searchManObj.setSearch(False)
-    if request.method == "POST" and request.POST.get('clear') == 'clear':
-        all_projects = Project.objects.all().order_by("id")
-        searchManObj.setPaginator(all_projects)
-        searchManObj.setSearch(False)
-    if request.method == "POST" and request.POST.get('createExcel') == 'done':
-        headers = []
-        headers.append("Project Name") if request.POST.get('project_name_header') is not None else ''
-        headers.append("Beneficiary") if request.POST.get('beneficiary_header') is not None else ''
-        headers.append("Description") if request.POST.get('description_header') is not None else ''
-        headers.append("Main Material Used") if request.POST.get('main_material_header') is not None else ''
-        headers.append("Project Type") if request.POST.get('project_type_header') is not None else ''
-        headers.append("Execution Date") if request.POST.get('execution_date_header') is not None else ''
-        # create report functionality
-        # setting all data as default behaviour
-        if request.POST.get('pages_collector') != 'none' and len(request.POST.get('pages_collector')) > 0:
-            # get requested pages from the paginator of original page
-            selected_pages = []
-            query = searchManObj.getPaginator()
-            print("original values: ", request.POST.get('pages_collector'))
-            for item in request.POST.get('pages_collector'):
-                if item != ",":
-                    selected_pages.append(item)
-            if len(headers) > 0:
-                constructor = {}
-                headers, project_name, beneficiary, description, main_material, project_type, execution_date = prepare_selected_query(
-                    selected_pages=selected_pages, paginator_obj=query,
-                    headers=headers)
-                if len(project_name) > 0:
-                    constructor.update({"project_name": project_name})
-                if len(beneficiary) > 0:
-                    constructor.update({"beneficiary": beneficiary})
-                if len(description) > 0:
-                    constructor.update({"description": description})
-                if len(description) > 0:
-                    constructor.update({"description": description})
-                if len(main_material) > 0:
-                    constructor.update({"main_material": main_material})
-                if len(project_type) > 0:
-                    constructor.update({"project_type": project_type})
-                if len(execution_date) > 0:
-                    constructor.update({"execution_date": execution_date})
-                status, report_man.filePath, report_man.fileName = createExelFile('Report_For_Projects',
-                                                                                  headers, request=request,
-                                                                                  **constructor)
-                if status:
-                    request.session['temp_dir'] = 'delete man!'
-                    # messages.success(request, f"Report Successfully Created ")
-                    return redirect('downloadReport', str(report_man.filePath), str(report_man.fileName))
-
-                else:
-                    messages.error(request, "Sorry Report Failed To Create , Please Try Again!")
-
-
-            else:
-                headers = ["Project Name", "Beneficiary", "Description", "Main Material Used", "Project Type",
-                           "Execution Date"]
-
-                headers, project_name, beneficiary, description, main_material, project_type, execution_date = prepare_selected_query(
-                    selected_pages, query, headers)
-                status, report_man.filePath, report_man.fileName = createExelFile('Report_For_Projects',
-                                                                                  headers, request=request,
-                                                                                  project_name=project_name,
-                                                                                  beneficiary=beneficiary,
-                                                                                  description=description,
-                                                                                  main_material=main_material,
-                                                                                  project_type=project_type,
-                                                                                  execution_date=execution_date
-                                                                                  )
-                if status:
-                    request.session['temp_dir'] = 'delete man!'
-                    # messages.success(request, f"Report Successfully Created ")
-                    # return redirect('download_file',filepath=filepath,filename=filename)
-
-                    return redirect('downloadReport', str(report_man.filePath), str(report_man.fileName))
-
-                else:
-                    messages.error(request, "Sorry Report Failed To Create , Please Try Again!")
-            # get the original query of page and then structure the data
-        else:
-            query = searchManObj.getPaginator()
-            if len(headers) > 0:
-                constructor = {}
-                headers, project_name, beneficiary, description, main_material, project_type, execution_date = prepare_query(
-                    paginator_obj=query,
-                    headers=headers)
-                if len(project_name) > 0:
-                    constructor.update({"project_name": project_name})
-                if len(beneficiary) > 0:
-                    constructor.update({"beneficiary": beneficiary})
-                if len(description) > 0:
-                    constructor.update({"description": description})
-                if len(description) > 0:
-                    constructor.update({"description": description})
-                if len(main_material) > 0:
-                    constructor.update({"main_material": main_material})
-                if len(project_type) > 0:
-                    constructor.update({"project_type": project_type})
-                if len(execution_date) > 0:
-                    constructor.update({"execution_date": execution_date})
-                status, report_man.filePath, report_man.fileName = createExelFile('Report_For_Projects',
-                                                                                  headers, request=request,
-                                                                                  **constructor)
-                if status:
-                    request.session['temp_dir'] = 'delete baby!'
-
-                    # messages.success(request, f"Report Successfully Created ")
-                    # return redirect('download_file',filepath=filepath,filename=filename)
-
-                    return redirect('downloadReport', str(report_man.filePath), str(report_man.fileName))
-                else:
-                    messages.error(request, "Sorry Report Failed To Create , Please Try Again!")
-
-            else:
-                headers, project_name, beneficiary, description, main_material, project_type, execution_date = prepare_query(
-                    query)
-                status, report_man.filePath, report_man.fileName = createExelFile('Report_For_Projects',
-                                                                                  headers, request=request,
-                                                                                  project_name=project_name,
-                                                                                  beneficiary=beneficiary,
-                                                                                  description=description,
-                                                                                  main_material=main_material,
-                                                                                  project_type=project_type,
-                                                                                  execution_date=execution_date,
-
-                                                                                  )
-                if status:
-                    request.session['temp_dir'] = 'delete man!'
-                    # messages.success(request, f"Report Successfully Created")
-                    return redirect('downloadReport', str(report_man.filePath), str(report_man.fileName))
-                else:
-                    messages.error(request, "Sorry Report Failed To Create , Please Try Again!")
-
-    if request.GET.get('page'):
-        # Grab the current page from query parameter
-        page = int(request.GET.get('page'))
-    else:
-        page = None
-
-    try:
-        paginator = searchManObj.getPaginator()
-        projects = paginator.page(page)
-        # Create a page object for the current page.
-    except PageNotAnInteger:
-        # If the query parameter is empty then grab the first page.
-        projects = paginator.page(1)
-        page = 1
-    except EmptyPage:
-        # If the query parameter is greater than num_pages then grab the last page.
-        projects = paginator.page(paginator.num_pages)
-        page = paginator.num_pages
-
-    return render(request, 'project/all_projects.html',
-                  {
-                      'title': _('All Projects'),
-                      'all_projects': 'active',
-                      'projects': 'active',
-                      'all_projects_data': projects,
-                      'page_range': paginator.page_range,
-                      'num_pages': paginator.num_pages,
-                      'current_page': page,
-                      'search': searchManObj.getSearch(),
-                      'search_result': search_result,
-                      'search_phrase': searchManObj.getSearchPhrase(),
-                      'search_option': searchManObj.getSearchOption(),
-                      'search_error': searchManObj.getSearchError(),
-                      'create_report_tip': CREATE_REPORT_TIP,
-                      'clear_search_tip': CLEAR_SEARCH_TIP,
-                      'search_projects_tip': SEARCH_PROJECTS_TIP,
-                      'data_js': {
-                          "empty_search_phrase": EMPTY_SEARCH_PHRASE,
-                          "project_error": PROJECT_NAME_SYNTAX_ERROR,
-                          "beneficiary_error": BENEFICIARY_NAME_SYNTAX_ERROR,
-                          "main_material_error": MAIN_MATERIAL_SYNTAX_ERROR,
-                          "type_error": PROJECT_TYPE_SYNTAX_ERROR,
-                          "execution_date_error": EXECUTION_DATE_ERROR,
-                      },
-                      'not_found': PROJECT_NOT_FOUND,
-                  }
-                  )
-
-@staff_member_required(login_url='login')
-def add_projects(request):
-    from .forms import ProjectForm
-    if request.method == 'POST':
-        form = ProjectForm(request.POST, request.FILES)
-        if form.is_valid():
-            project = form.save(commit=False)
-            # project.execution_date = request.POST['execution_date']
-            project.save()
-            project.slug = slugify(rand_slug())
-            project.save()
-            project_name = form.cleaned_data.get('name')
-            messages.success(request, f"New Project Added: {project_name}")
-        else:
-            for field, items in form.errors.items():
-                for item in items:
-                    messages.error(request, '{}: {}'.format(field, item))
-    else:
-        form = ProjectForm()
-    context = {
-        'title': _('Add Projects'),
-        'add_projects': 'active',
-        'form': form,
-        'projects': 'active',
-    }
-    return render(request, 'project/add_projects.html', context)
-
-@staff_member_required(login_url='login')
-def delete_projects(request):
-    from apps.project.models import Project
-    from django.core.paginator import Paginator, PageNotAnInteger, EmptyPage
-    all_projects_images = Project.objects.all().order_by("id")
-    paginator = Paginator(all_projects_images, 5)
-    from Util.search_form_strings import (
-        EMPTY_SEARCH_PHRASE,
-        PROJECT_NAME_SYNTAX_ERROR,
-        PROJECT_TYPE_SYNTAX_ERROR,
-        BENEFICIARY_NAME_SYNTAX_ERROR,
-        MAIN_MATERIAL_SYNTAX_ERROR,
-        EXECUTION_DATE_ERROR,
-        PROJECT_NOT_FOUND,
-        CLEAR_SEARCH_TIP,
-        SEARCH_PROJECTS_TIP,
-    )
-    search_result = ''
-    if request.method == "POST" and 'clear' not in request.POST and 'createExcel' not in request.POST:
-        searchManObj.setSearch(True)
-        print("first")
-        if request.POST.get('search_options') == 'project':
-            search_message = request.POST.get('search_phrase')
-            search_result = Project.objects.filter(name__icontains=search_message).order_by(
-                "id")
-            searchManObj.setPaginator(search_result)
-            searchManObj.setSearchPhrase(search_message)
-            searchManObj.setSearchOption('Project Name')
-            searchManObj.setSearchError(False)
-        elif request.POST.get('search_options') == 'beneficiary':
-            print('here now in category search')
-            search_phrase = request.POST.get('search_phrase')
-            search_result = Project.objects.filter(beneficiary__icontains=search_phrase).order_by(
-                "id")
-            searchManObj.setPaginator(search_result)
-            searchManObj.setSearchPhrase(search_phrase)
-            searchManObj.setSearchOption('Beneficiary Name')
-            searchManObj.setSearchError(False)
-        elif request.POST.get('search_options') == 'main_material':
-            search_phrase = request.POST.get('search_phrase')
-            search_result = Project.objects.filter(main_material__icontains=search_phrase).order_by(
-                "")
-            searchManObj.setPaginator(search_result)
-            searchManObj.setSearchPhrase(search_phrase)
-            searchManObj.setSearchOption('Main Material Used:')
-            searchManObj.setSearchError(False)
-        elif request.POST.get('search_options') == 'type':
-            search_phrase = request.POST.get('search_phrase')
-            search_result = Project.objects.filter(project_type__name__icontains=search_phrase).order_by(
-                "id")
-            searchManObj.setPaginator(search_result)
-            searchManObj.setSearchPhrase(search_phrase)
-            searchManObj.setSearchOption('Project Type:')
-            searchManObj.setSearchError(False)
-        elif request.POST.get('search_options') == 'execution_year':
-            search_phrase = request.POST.get('search_phrase_date')
-            search_result = Project.objects.filter(date__contains=search_phrase).order_by(
-                "id")
-            searchManObj.setPaginator(search_result)
-            searchManObj.setSearchPhrase(search_phrase)
-            searchManObj.setSearchOption('Execution Year')
-            searchManObj.setSearchError(False)
-        else:
-            messages.error(request,
-                           "Please choose an item from list , then write search phrase to search by it!")
-            searchManObj.setSearchError(True)
-    if request.method == "GET" and 'page' not in request.GET and not searchManObj.getSearch():
-        print("second")
-        all_projects_images = Project.objects.all().order_by("id")
-        searchManObj.setPaginator(all_projects_images)
-        searchManObj.setSearch(False)
-    if request.method == "POST" and request.POST.get('clear') == 'clear':
-        print("third")
-        all_projects_images = Project.objects.all().order_by("id")
-        searchManObj.setPaginator(all_projects_images)
-        searchManObj.setSearch(False)
-
-    if request.GET.get('page'):
-        print("fourth")
-        # Grab the current page from query parameter
-        page = int(request.GET.get('page'))
-    else:
-        page = None
-
-    try:
-        paginator = searchManObj.getPaginator()
-        projects = paginator.page(page)
-        # Create a page object for the current page.
-    except PageNotAnInteger:
-        # If the query parameter is empty then grab the first page.
-        projects = paginator.page(1)
-        page = 1
-    except EmptyPage:
-        # If the query parameter is greater than num_pages then grab the last page.
-        projects = paginator.page(paginator.num_pages)
-        page = paginator.num_pages
-
-    return render(request, 'project/delete_projects.html',
-                  {
-                      'title': _('Delete Projects'),
-                      'delete_projects': 'active',
-                      'projects': 'active',
-                      'all_projects_data': projects,
-                      'page_range': paginator.page_range,
-                      'num_pages': paginator.num_pages,
-                      'current_page': page,
-                      'search': searchManObj.getSearch(),
-                      'search_result': search_result,
-                      'search_phrase': searchManObj.getSearchPhrase(),
-                      'search_option': searchManObj.getSearchOption(),
-                      'search_error': searchManObj.getSearchError(),
-
-                      'clear_search_tip': CLEAR_SEARCH_TIP,
-                      'search_projects_tip': SEARCH_PROJECTS_TIP,
-                      'data_js': {
-                          "empty_search_phrase": EMPTY_SEARCH_PHRASE,
-                          "project_error": PROJECT_NAME_SYNTAX_ERROR,
-                          "beneficiary_error": BENEFICIARY_NAME_SYNTAX_ERROR,
-                          "main_material_error": MAIN_MATERIAL_SYNTAX_ERROR,
-                          "type_error": PROJECT_TYPE_SYNTAX_ERROR,
-                          "execution_date_error": EXECUTION_DATE_ERROR,
-                      },
-                      'not_found': PROJECT_NOT_FOUND,
-                  }
-                  )
-
-@staff_member_required(login_url='login')
-def edit_projects(request):
-    from apps.project.models import Project
-    from django.core.paginator import Paginator, PageNotAnInteger, EmptyPage
-    from Util.search_form_strings import (
-        EMPTY_SEARCH_PHRASE,
-        PROJECT_NAME_SYNTAX_ERROR,
-        PROJECT_TYPE_SYNTAX_ERROR,
-        BENEFICIARY_NAME_SYNTAX_ERROR,
-        MAIN_MATERIAL_SYNTAX_ERROR,
-        EXECUTION_DATE_ERROR,
-        PROJECT_NOT_FOUND,
-
-        CLEAR_SEARCH_TIP,
-        SEARCH_PROJECTS_TIP,
-
-    )
-    search_result = ''
-    all_projects = Project.objects.all()
-    paginator = Paginator(all_projects, 5)
-    if request.method == "POST" and 'clear' not in request.POST and 'createExcel' not in request.POST:
-        searchManObj.setSearch(True)
-        if request.POST.get('search_options') == 'project':
-            search_message = request.POST.get('search_phrase')
-            search_message = search_message.strip(' ')
-            search_result = Project.objects.filter(name__icontains=search_message)
-            searchManObj.setPaginator(search_result)
-            searchManObj.setSearchPhrase(search_message)
-            searchManObj.setSearchOption('Project Name:')
-            searchManObj.setSearchError(False)
-        elif request.POST.get('search_options') == 'beneficiary':
-            print('here now in category search')
-            search_phrase = request.POST.get('search_phrase')
-            search_phrase = search_phrase.strip(' ')
-            search_result = Project.objects.filter(beneficiary__icontains=search_phrase)
-            searchManObj.setPaginator(search_result)
-            searchManObj.setSearchPhrase(search_phrase)
-            searchManObj.setSearchOption('Beneficiary Name:')
-            searchManObj.setSearchError(False)
-        elif request.POST.get('search_options') == 'main_material':
-            search_phrase = request.POST.get('search_phrase')
-            search_phrase = search_phrase.strip(' ')
-            search_result = Project.objects.filter(main_material__icontains=search_phrase)
-            searchManObj.setPaginator(search_result)
-            searchManObj.setSearchPhrase(search_phrase)
-            searchManObj.setSearchOption('Main Material Used:')
-            searchManObj.setSearchError(False)
-        elif request.POST.get('search_options') == 'type':
-            search_phrase = request.POST.get('search_phrase')
-            search_phrase = search_phrase.strip(' ')
-            search_result = Project.objects.filter(project_type__name__icontains=search_phrase)
-            searchManObj.setPaginator(search_result)
-            searchManObj.setSearchPhrase(search_phrase)
-            searchManObj.setSearchOption('Project Type:')
-            searchManObj.setSearchError(False)
-        elif request.POST.get('search_options') == 'execution_year':
-            search_phrase = request.POST.get('search_phrase_date')
-            search_result = Project.objects.filter(date__contains=search_phrase)
-            searchManObj.setPaginator(search_result)
-            searchManObj.setSearchPhrase(search_phrase)
-            searchManObj.setSearchOption('Execution Year:')
-            searchManObj.setSearchError(False)
-        else:
-            messages.error(request,
-                           "Please choose an item from list , then write search phrase to search by it!")
-            searchManObj.setSearchError(True)
-    if request.method == "GET" and 'page' not in request.GET and not searchManObj.getSearch():
-        all_projects = Project.objects.all()
-        searchManObj.setPaginator(all_projects)
-        searchManObj.setSearch(False)
-    if request.method == "POST" and request.POST.get('clear') == 'clear':
-        all_projects = Project.objects.all()
-        searchManObj.setPaginator(all_projects)
-        searchManObj.setSearch(False)
-    if request.GET.get('page'):
-        # Grab the current page from query parameter
-        page = int(request.GET.get('page'))
-    else:
-        page = None
-
-    try:
-        paginator = searchManObj.getPaginator()
-        projects = paginator.page(page)
-        # Create a page object for the current page.
-    except PageNotAnInteger:
-        # If the query parameter is empty then grab the first page.
-        projects = paginator.page(1)
-        page = 1
-    except EmptyPage:
-        # If the query parameter is greater than num_pages then grab the last page.
-        projects = paginator.page(paginator.num_pages)
-        page = paginator.num_pages
-
-    return render(request, 'project/edit_projects.html',
-                  {
-                      'title': _('Edit Projects'),
-                      'edit_projects': 'active',
-                      'projects': 'active',
-                      'all_projects_data': projects,
-                      'page_range': paginator.page_range,
-                      'num_pages': paginator.num_pages,
-                      'current_page': page,
-                      'search': searchManObj.getSearch(),
-                      'search_result': search_result,
-                      'search_phrase': searchManObj.getSearchPhrase(),
-                      'search_option': searchManObj.getSearchOption(),
-                      'search_error': searchManObj.getSearchError(),
-
-                      'clear_search_tip': CLEAR_SEARCH_TIP,
-                      'search_projects_tip': SEARCH_PROJECTS_TIP,
-                      'data_js': {
-                          "empty_search_phrase": EMPTY_SEARCH_PHRASE,
-                          "project_error": PROJECT_NAME_SYNTAX_ERROR,
-                          "beneficiary_error": BENEFICIARY_NAME_SYNTAX_ERROR,
-                          "main_material_error": MAIN_MATERIAL_SYNTAX_ERROR,
-                          "type_error": PROJECT_TYPE_SYNTAX_ERROR,
-                          "execution_date_error": EXECUTION_DATE_ERROR,
-                      },
-                      'not_found': PROJECT_NOT_FOUND,
-                  }
-                  )
 
 @staff_member_required(login_url='login')
 def project_details(request, slug):
@@ -973,59 +611,3 @@ def top_projects(request):
                       'not_found': PROJECT_NOT_FOUND,
                   }
                   )
-@staff_member_required(login_url='login')
-def edit_project(request, slug):
-    from apps.project.models import Project
-    from .forms import ProjectForm, ProjectImagesForm
-    obj = get_object_or_404(Project, slug=slug)
-    project_form = ProjectForm(request.POST or None, request.FILES or None, instance=obj)
-    project_image_form = ProjectImagesForm(request.POST or None, instance=obj)
-    if project_form.is_valid():
-        if request.FILES:
-            project = project_form.save(commit=False)
-            project.image = request.FILES['image']
-            project.save()
-        project_form.save()
-        project_name = project_form.cleaned_data.get('name')
-        messages.success(request, f"Successfully Updated : {project_name} Data")
-    else:
-        for field, items in project_form.errors.items():
-            for item in items:
-                messages.error(request, '{}: {}'.format(field, item))
-
-    context = {
-        'title': _('Edit Project'),
-        'edit_projects': 'active',
-        'project': obj,
-        'form': project_form,
-        'all_projects': all_projects,
-        'project_form': project_form,
-        'project_image_form': project_image_form,
-        'projects': 'active',
-    }
-    return render(request, 'project/edit_project.html', context)
-
-@staff_member_required(login_url='login')
-def confirm_delete(request, id):
-    import os
-    from apps.project.models import Project, ProjectImages
-    obj = get_object_or_404(Project, id=id)
-    try:
-        deleted_image_path = os.path.dirname(os.path.abspath('unisealAPI')) + obj.image.url
-        print("deleted image path: ", deleted_image_path)
-        if os.path.exists(deleted_image_path):
-            os.remove(deleted_image_path)
-        # get other images for this product and delete them
-        other_instances = ProjectImages.objects.annotate(num_ins=Count('project')).filter(project=obj)
-        for instance in other_instances:
-            deleted_image = os.path.dirname(os.path.abspath('unisealAPI')) + instance.image.url
-            if os.path.exists(deleted_image):
-                os.remove(deleted_image)
-
-        obj.delete()
-
-        messages.success(request, f"Project << {obj.name} >> deleted successfully")
-    except:
-        messages.error(request, f"Project << {obj.name} >> was not deleted , please try again!")
-
-    return redirect('deleteProjects')

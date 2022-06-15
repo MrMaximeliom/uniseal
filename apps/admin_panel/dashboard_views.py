@@ -1,22 +1,22 @@
+from django.core.paginator import Paginator, PageNotAnInteger, EmptyPage
+from django.db.models import Count
+from django.db.models import Q
 from django.views.generic import ListView
+
 from Util.search_form_strings import (CLEAR_SEARCH_TIP,
                                       PRODUCTS_VIEWS_TITLE, SEARCH_PRODUCTS_VIEWS_TIP, PRODUCTS_PAGE_VIEWS_TITLE,
                                       EMPTY_SEARCH_PHRASE_PRODUCTS_VIEWS, EMPTY_SEARCH_PHRASE_PRODUCTS_PAGE_VIEWS,
-                                      PROJECTS_VIEWS_TITLE,SOLUTION_VIEWS_TITLE,SELLING_POINTS_VIEWS_TITLE, SEARCH_PROJECTS_VIEWS_TIP,
-                                      EMPTY_SEARCH_PHRASE_PROJECTS_VIEWS,SEARCH_SOLUTIONS_VIEWS_TIP,SEARCH_SELLING_POINTS_VIEWS_TIP,
-                                      BROCHURES_VIEWS_TITLE,SEARCH_BROCHURES_VIEWS_TIP,EMPTY_SEARCH_PHRASE_BROCHURES_VIEWS,SEARCH_ORDERS_VIEWS_TIP,
-                                      EMPTY_SEARCH_PHRASE_SOLUTIONS_VIEWS,EMPTY_SEARCH_PHRASE_SELLING_POINTS_VIEWS,ORDERS_VIEWS_TITLE,EMPTY_SEARCH_PHRASE_ORDERS_VIEWS)
+                                      PROJECTS_VIEWS_TITLE, SOLUTION_VIEWS_TITLE, SELLING_POINTS_VIEWS_TITLE,
+                                      SEARCH_PROJECTS_VIEWS_TIP,
+                                      EMPTY_SEARCH_PHRASE_PROJECTS_VIEWS, SEARCH_SOLUTIONS_VIEWS_TIP,
+                                      SEARCH_SELLING_POINTS_VIEWS_TIP,
+                                      BROCHURES_VIEWS_TITLE, SEARCH_BROCHURES_VIEWS_TIP,
+                                      EMPTY_SEARCH_PHRASE_BROCHURES_VIEWS, SEARCH_ORDERS_VIEWS_TIP,
+                                      EMPTY_SEARCH_PHRASE_SOLUTIONS_VIEWS, EMPTY_SEARCH_PHRASE_SELLING_POINTS_VIEWS,
+                                      ORDERS_VIEWS_TITLE, EMPTY_SEARCH_PHRASE_ORDERS_VIEWS)
 from Util.utils import delete_temp_folder, SearchMan, ReportMan
-from .models import ManageProducts, ManageProductsPage, ManageProjects,\
-    ManageSolution,ManageSellingPoints,ManageBrochures,ManageCarts
-from django.db.models import Count
-from django.db.models import Q
-
-#     ,ManageBrochures,ManageSellingPoints,ManageProjects,ManageCarts,ManageSolution
-# from .forms import (ManageBrochuresForm,ManageProductsForm,
-#                     ManageCartsForm,ManageProductsPageForm
-# ,ManageProjectsForm,ManageSellingPointsForm,ManageSolutionForm)
-from django.core.paginator import Paginator, PageNotAnInteger, EmptyPage
+from .models import ManageProducts, ManageProductsPage, ManageProjects, \
+    ManageSolution, ManageSellingPoints, ManageBrochures, ManageCarts
 
 
 def get_count(query, flag_count):

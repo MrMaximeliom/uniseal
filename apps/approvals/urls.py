@@ -1,7 +1,7 @@
 from django.urls import path
 
+from Util.search_form_strings import DELETE_APPROVALS_TITLE, EDIT_APPROVALS_TITLE
 from apps.approvals import dashboard_views as approval_views
-from Util.search_form_strings import DELETE_APPROVALS_TITLE,EDIT_APPROVALS_TITLE
 
 urlpatterns = [
     path('allApprovals', approval_views.ApprovalsListView.as_view(), name='approvalsList'),

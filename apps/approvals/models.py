@@ -1,6 +1,8 @@
 from django.db import models
-from django.utils.translation import gettext_lazy as _
 from django.template.defaultfilters import slugify
+from django.urls import reverse_lazy
+from django.utils.translation import gettext_lazy as _
+
 from Util.utils import rand_slug
 
 """
@@ -32,6 +34,8 @@ class Approval(models.Model):
         from datetime import datetime
         self.slug = slugify(rand_slug() + "-" + str(self.name) + "-"+str(datetime.now().second))
         return super().save(*args, **kwargs)
+    def get_absolute_url(self):
+        return reverse_lazy("approvalsList")
     def __str__(self):
         return self.name
 
@@ -56,6 +60,8 @@ class ApprovalImage(models.Model):
         on_delete=models.CASCADE,
         related_name="approval_images"
     )
+    def get_absolute_url(self):
+        return reverse_lazy("approvalImages-dash")
 
 
 

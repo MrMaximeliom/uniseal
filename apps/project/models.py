@@ -4,6 +4,7 @@ import string
 
 from django.db import models
 from django.template.defaultfilters import slugify  # new
+from django.urls import reverse_lazy
 from django.utils.translation import gettext_lazy as _
 
 
@@ -31,6 +32,14 @@ class Application(models.Model):
     )
     def __str__(self):
         return self.name
+
+    def save(self, *args, **kwargs):
+        from datetime import datetime
+        self.slug = slugify(rand_slug() + "-" + "-" + str(datetime.now().second))
+        return super().save(*args, **kwargs)
+
+    def get_absolute_url(self):
+        return reverse_lazy("allApplications")
 
 
 class Project(models.Model):
@@ -103,12 +112,14 @@ class Project(models.Model):
         verbose_name=_('Base Project Image')
     )
 
-
-
     def save(self, *args, **kwargs):
-        if not self.slug:
-            self.slug = slugify(rand_slug() + "-" + str(self.name))
+        from datetime import datetime
+        self.slug = slugify(rand_slug() + "-" + "-" + str(datetime.now().second))
         return super().save(*args, **kwargs)
+
+    def get_absolute_url(self):
+        return reverse_lazy("allProjects")
+
 
 
     def __str__(self):
@@ -124,6 +135,14 @@ class ProjectImages(models.Model):
         on_delete=models.CASCADE,
         verbose_name=_('Project')
     )
+
+    def save(self, *args, **kwargs):
+        from datetime import datetime
+        self.slug = slugify(rand_slug() + "-" + "-" + str(datetime.now().second))
+        return super().save(*args, **kwargs)
+
+    def get_absolute_url(self):
+        return reverse_lazy("projectImages-dash")
 
 
 

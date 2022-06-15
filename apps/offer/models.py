@@ -1,9 +1,10 @@
 from django.db import models
+from django.template.defaultfilters import slugify
+from django.urls import reverse_lazy
 from django.utils.translation import gettext_lazy as _
 
 # Create your models here.
 from Util.utils import rand_slug
-from django.template.defaultfilters import slugify
 
 
 class Offer(models.Model):
@@ -29,6 +30,12 @@ class Offer(models.Model):
     )
     def save(self, *args, **kwargs):
         from datetime import datetime
-        self.slug = slugify(rand_slug() + "-" + str(self.name) + "-"+str(datetime.now().second))
+        self.slug = slugify(rand_slug() + "-"  + "-"+str(datetime.now().second))
         return super().save(*args, **kwargs)
+
+
+    def get_absolute_url(self):
+        return reverse_lazy("allOffers")
+
+
 

@@ -1,4 +1,4 @@
-from rest_framework import serializers, mixins
+from rest_framework import serializers
 
 
 class  BrochuresSerializer(serializers.ModelSerializer):

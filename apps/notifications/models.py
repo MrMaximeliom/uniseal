@@ -1,5 +1,6 @@
 from django.db import models
 from django.template.defaultfilters import slugify
+from django.urls import reverse_lazy
 from django.utils.translation import gettext_lazy as _
 
 from Util.utils import rand_slug
@@ -23,6 +24,15 @@ class TokenIDs(models.Model):
 
     def __str__(self):
         return self.reg_id
+
+    def save(self, *args, **kwargs):
+        from datetime import datetime
+        self.slug = slugify(rand_slug() + "-" + str(self.reg_id) + "-" + str(datetime.now().second))
+        return super().save(*args, **kwargs)
+
+    def get_absolute_url(self):
+        return reverse_lazy("allNotifications")
+
 
 class Notifications(models.Model):
     token_id = models.ForeignKey(
@@ -65,3 +75,11 @@ class Notifications(models.Model):
 
     def __str__(self):
         return self.token_id.reg_id
+
+    def save(self, *args, **kwargs):
+        from datetime import datetime
+        self.slug = slugify(rand_slug() + "-" + str(self.token_id.reg_id) + "-" + str(datetime.now().second))
+        return super().save(*args, **kwargs)
+
+    def get_absolute_url(self):
+        return reverse_lazy("allNotifications")

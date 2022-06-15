@@ -17,7 +17,7 @@
                 {% endblock breadcrumb_content %}
 {% block content %}
                 <h1 class="h2">{% trans 'Delete SMS Notifications' %}</h1>
-{% if all_sms_data|length > 0 %}
+{% if object_list|length > 0 %}
  <div class="row">
                     <div class="col-12 col-xl-11 mb-4 mb-lg-0">
                         <div class="card-light card-dark">
@@ -36,7 +36,7 @@
                                           </tr>
                                         </thead>
                                         <tbody>
-                                        {% for sms in all_sms_data %}
+                                        {% for sms in object_list %}
                                           <tr>
                                           <th scope="row">{% trans 'Uniseal'%}</th>
                                             <td>{{ sms.message }}</td>
@@ -56,7 +56,7 @@
         <h5 class="modal-title" id="exampleModalLabel">{% trans 'Delete Conformation' %}</h5>
         <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
       </div>
-        <form action="" method="post">
+        <form action="{% url 'deleteSMSNotification' slug=sms.slug %}" method="post">
             {% csrf_token %}
       <div class="modal-body">
 
@@ -67,7 +67,7 @@
       </div>
       <div class="modal-footer">
         <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-        <a type="submit" class="btn btn-danger" href="{% url 'deleteSMSNotification' id=sms.id %}">Delete</a>
+        <button type="submit" class="btn btn-danger" >Delete</button>
 
       </div>
               </form>

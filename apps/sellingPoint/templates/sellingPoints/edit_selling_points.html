@@ -20,10 +20,10 @@
                 {% endblock breadcrumb_content %}
 {% block content %}
                 <h1 class="h2">{% trans 'Edit Selling Points' %}</h1>
-{% if all_selling_points_data|length %}
+{% if object_list|length %}
 <div class="row card-group">
 
-{% for point in all_selling_points_data %}
+{% for point in object_list %}
 
  <div class="col-sm col-md-5 col-lg-4">
                 <div class="card-light mb-5 ml-2" >

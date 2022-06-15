@@ -10,46 +10,35 @@
    <nav aria-label="crumb">
                     <ol class="crumb breadcrumb-light breadcrumb-dark">
                         <li class="breadcrumb-item"><a href="{% url 'dashboard' %}">{% trans 'Dashboard' %}</a></li>
-                        <li class="breadcrumb-item" aria-current="page">{% trans 'SMS Notifications' %}</li>
-                        <li class="breadcrumb-item" aria-current="page">{% trans 'Update SMS Notification' %}</li>
+                        <li class="breadcrumb-item" aria-current="page">{% trans 'SMS Contacts' %}</li>
+                        <li class="breadcrumb-item" aria-current="page">{% trans 'Edit SMS Contacts' %}</li>
                     </ol>
                 </nav>
                 {% endblock breadcrumb_content %}
 {% block content %}
-{% if all_sms_data|length > 0 %}
-                <h1 class="h2">{% trans 'Update SMS Notifications' %}</h1>
+{% if object_list|length > 0 %}
+                <h1 class="h2">{% trans 'Edit SMS Contacts' %}</h1>
  <div class="row">
                     <div class="col-12 col-xl-11 mb-4 mb-lg-0">
                         <div class="card-light card-dark">
-                            <h5 class="card-header-light card-header-dark">{% trans 'Update SMS Notifications' %}</h5>
+                            <h5 class="card-header-light card-header-dark">{% trans 'Edit SMS Contacts' %}</h5>
                             <div class="card-body-light card-body-dark">
                                 <div class="table-responsive">
                                     <table class="table">
                                         <thead>
                                           <tr>
-                                            <th scope="col">{% trans 'Sender' %}</th>
-                                            <th scope="col">{% trans 'Message' %}</th>
+                                            <th scope="col">{% trans 'Contact Number' %}</th>
                                             <th scope="col">{% trans 'Group' %}</th>
-                                            <th scope="col">{% trans 'Mobile Number (Single SMS)' %}</th>
-                                            <th scope="col">{% trans 'Multiple SMS?' %}</th>
                                             <th scope="col"></th>
                                           </tr>
                                         </thead>
                                         <tbody>
-                                        {% for sms in all_sms_data %}
+                                        {% for contact in object_list %}
                                           <tr>
-                      <th scope="row">{% trans 'Uniseal'%}</th>
-                                            <td>{{ sms.message }}</td>
-                                            <td>{{ sms.group }}</td>
-                                              {% if sms.single_mobile_number%}
-                                            <td>0{{ sms.single_mobile_number }}</td>
-                                              {% else %}
-                                               <td>{{ sms.single_mobile_number }}</td>
-                                              {% endif %}
-                                            <td>{{ sms.is_multiple }}</td>
-                                            <td><a href="{% url 'editSMS' slug=sms.slug %}" class="btn btn-sm btn-primary" >{% trans 'Update' %}</a></td>
+                                            <th scope="row">{{contact.contact_number}}</th>
+                                            <td>{{ contact.group.name }}</td>
+                                            <td><a href="{% url 'editContact' slug=contact.slug %}" class="btn btn-sm btn-primary">{% trans 'Update' %}</a></td>
                                           </tr>
-
                                         {% endfor %}
 
                                         </tbody>
@@ -83,7 +72,8 @@
        </nav>
   </div>
 {% else %}
-<h3 class="delete-warning">{% trans 'There is no sms notifications yet .. you can add send single SMS from' %} <a href="{% url 'sendSMS' %}">{% trans 'Here' %}</a> {% trans ' Or to SMS Group from '%}<a href="{% url 'sendSMSToSMSGroup' %}">{% trans 'Here' %}</a></h3>
+<h3 class="delete-warning">{% trans 'There is no contacts yet .. you can add new ones from ' %} <a href="{% url 'addSMSContact' %}">{% trans 'Here' %}</a></h3>
 
 {% endif %}
+
 {% endblock content %}

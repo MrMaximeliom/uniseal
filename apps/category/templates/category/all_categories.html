@@ -35,7 +35,7 @@
   <div class="col-sm-3 col-md-3 col-lg-3">
     <button type="submit" class="btn btn-primary mb-3" id="searchButton" value="category"><span><i class="fas fa-search"></i></span></button>
     <button type="button" name="clear" id="clear" value="clear" class="btn btn-danger mb-3"><span><i class="fas fa-eraser"></i></span></button>
-   {% if all_categories_data|length > 0 %}
+   {% if object_list|length > 0 %}
       <button type="button" class="btn btn-success mb-3" data-bs-toggle="modal" data-bs-target="#exportData"><span><i class="fas fa-file-csv"></i></span></button>
  {% endif %}
   </div>
@@ -95,7 +95,7 @@
 <h2>{% trans 'Showing Search Results For ' %}</h2>
 <h3>{{search_option}}="{{search_phrase}}"</h3>
 {% endif %}
-{% if all_categories_data|length %}
+{% if object_list|length %}
  <div class="row">
                     <div class="col-12 col-xl-11 mb-4 mb-lg-0">
                         <div class="card-light card-dark">
@@ -107,14 +107,46 @@
                                           <tr>
                                             <th scope="col">{% trans 'Name' %}</th>
                                             <th scope="col">{% trans 'Numbers of Products' %}</th>
+                                            <th scope="col">{% trans 'Update' %}</th>
+                                            <th scope="col">{% trans 'Delete' %}</th>
                                           </tr>
                                         </thead>
                                         <tbody>
-                                        {% for category in all_categories_data %}
+                                        {% for category in object_list %}
                                           <tr>
                                             <th scope="row">{{category.name}}</th>
                                             <td>{{ category.num_products }}</td>
+                                            <td><a href="{% url 'editCategory' slug=category.slug %}"  class="btn btn-primary mr-4">Update</a>
+</td>
+                                              <td><a href="#"  class="btn btn-danger" data-bs-toggle="modal" data-bs-target="#exampleModal{{category.id}}">{% trans 'Delete' %}</a>
+</td>
                                           </tr>
+                                                             <div class="modal fade" id="exampleModal{{category.id}}" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="exampleModalLabel">{% trans 'Delete Conformation' %}</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+        <form action="{% url 'deleteCategory' slug=category.slug %}" method="post">
+            {% csrf_token %}
+      <div class="modal-body">
+
+          <h3>{% trans 'Are you sure you want to delete this category?' %}</h3>
+<h4 class="delete-warning">{{category.name}}</h4>
+
+<!--           <input type="number" value="{{product.id}}" hidden name="product_id">-->
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+        <button type="submit" class="btn btn-danger" >Delete</button>
+
+      </div>
+              </form>
+    </div>
+  </div>
+</div>
+
                                         {% endfor %}
 
                                         </tbody>
@@ -150,7 +182,7 @@
        </nav>
   </div>
 {% endif %}
-{% if all_categories_data|length == 0 and not search %}
+{% if object_list|length == 0 and not search %}
 <h3 class="delete-warning">{% trans 'There are no categories yet .. you can add new ones from ' %} <a href="{% url 'addCategories' %}">{% trans 'Here' %}</a></h3>
 {% endif %}
 {% if search and search_result.count == 0 and search_result != "" %}

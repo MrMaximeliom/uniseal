@@ -67,10 +67,10 @@
 <h2>{% trans 'Showing Search Results For ' %}</h2>
 <h3>{{search_option}} "{{search_phrase}}"</h3>
 {% endif %}
-{% if all_projects_data|length %}
+{% if object_list|length %}
 <div class="row card-group">
 
-{% for project in all_projects_data %}
+{% for project in object_list %}
 
  <div class="col-sm col-md-5 col-lg-4">
                 <div class="card-light mb-5 ml-2" >
@@ -129,7 +129,7 @@
        </nav>
   </div>
 {% endif %}
-{% if all_projects_data|length == 0 and not search %}
+{% if object_list|length == 0 and not search %}
 <h3 class="delete-warning">{% trans 'There is no projects yet .. you can add new ones from ' %} <a href="{% url 'addProjects' %}">{% trans 'Here' %}</a></h3>
 {% endif %}
 {% if search and search_result.count == 0 and search_result != "" %}

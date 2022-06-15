@@ -1,11 +1,14 @@
+import uuid
+
 from django.contrib.auth.models import (
     BaseUserManager, AbstractBaseUser
 )
 from django.db import models
 from django.template.defaultfilters import slugify  # new
+from django.urls import reverse_lazy
 from django.utils.translation import gettext_lazy as _
+
 from Util.utils import rand_slug
-import uuid
 
 
 class UserAccountManager(BaseUserManager):
@@ -150,6 +153,9 @@ class User(AbstractBaseUser):
         "Is the user a admin member?"
         # return self.user_role == 1
         return self.admin
+
+    def get_absolute_url(self):
+        return reverse_lazy("allUsers")
 
 
 

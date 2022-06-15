@@ -42,14 +42,15 @@
        <p class="card-text">
 
      <a href="#" class="btn btn-danger mr-3" data-bs-toggle="modal" data-bs-target="#exampleModal{{point.id}}">{% trans 'Delete' %}</a>
-    <div class="modal fade" id="exampleModal{{point.id}}" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+
+      <div class="modal fade" id="exampleModal{{point.id}}" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
   <div class="modal-dialog">
     <div class="modal-content">
       <div class="modal-header">
         <h5 class="modal-title" id="exampleModalLabel">{% trans 'Delete Conformation' %}</h5>
         <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
       </div>
-        <form action="" method="post">
+        <form action="{% url 'deleteSellingPoint' slug=point.slug %}" method="post">
             {% csrf_token %}
       <div class="modal-body">
 
@@ -60,7 +61,7 @@
       </div>
       <div class="modal-footer">
         <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-        <a type="submit" class="btn btn-danger" href="{% url 'deleteSellingPoint' id=point.id %}">Delete</a>
+        <button type="submit" class="btn btn-danger" >Delete</button>
 
       </div>
               </form>
@@ -98,6 +99,6 @@
        </nav>
   </div>
 {% else %}
-<h3 class="delete-warning">{% trans 'There is no selling points yet .. you can add new ones from ' %} <a href="{% url 'addSellingPoints' %}">{% trans 'Here' %}</a></h3>
+<h3 class="delete-warning">{% trans 'There are no selling points yet ... you can add new ones from ' %} <a href="{% url 'addSellingPoints' %}">{% trans 'Here' %}</a></h3>
 {% endif %}
 {% endblock content %}

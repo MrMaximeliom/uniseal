@@ -67,7 +67,7 @@
                                         {% for object in object_list %}
                                           <tr>
                                             <th scope="row">{{object.name}}</th>
-                                            <td>{{ object.num_users }}</td>
+                                            <td>{{ object.num_users|default:"0" }}</td>
                                             <td><a href="{% url 'editJobType' slug=object.slug %}" class="btn btn-sm btn-primary">{% trans 'Update' %}</a></td>
                                             <td><a href="#" class="btn btn-sm btn-danger"  data-bs-toggle="modal" data-bs-target="#exampleModal{{object.id}}">{% trans 'Delete' %}</a></td>
 
@@ -79,7 +79,7 @@
         <h5 class="modal-title" id="exampleModalLabel">{% trans 'Delete Conformation' %}</h5>
         <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
       </div>
-        <form action="" method="post">
+        <form action="{% url 'deleteJobType' slug=object.slug %}" method="post">
             {% csrf_token %}
       <div class="modal-body">
 
@@ -89,7 +89,7 @@
       </div>
       <div class="modal-footer">
         <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-        <a type="submit" class="btn btn-danger" href="#">Delete</a>
+        <button type="submit" class="btn btn-danger" >Delete</button>
 
       </div>
               </form>

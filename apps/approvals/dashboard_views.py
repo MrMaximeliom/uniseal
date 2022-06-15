@@ -1,34 +1,31 @@
 #TODO: add dashboard views for approvals
+from django.contrib import messages
 from django.contrib.admin.views.decorators import staff_member_required
+from django.core.paginator import Paginator, PageNotAnInteger, EmptyPage
 from django.shortcuts import get_object_or_404, redirect, render
 from django.template.defaultfilters import slugify
 from django.urls import reverse_lazy
-from django.views.generic import ListView
-from Util.search_form_strings import (CLEAR_SEARCH_TIP,SEARCH_APPROVALS_TIP ,
-    APPROVAL_NOT_FOUND, ALL_APPROVALS_TITLE,APPROVALS_DETAILS,
-    EDIT_APPROVAL_TITLE , ADD_APPROVALS_TITLE,EDIT_APPROVALS_TITLE,APPROVALS_IMAGES)
-from Util.utils import delete_temp_folder, SearchMan, ReportMan, rand_slug
-from .models import Approval,ApprovalImage
-from .forms import ApprovalForm
 from django.utils.translation import gettext_lazy as _
-from django.views.generic.edit import FormView,UpdateView
-from django.contrib import messages
-from django.core.paginator import Paginator, PageNotAnInteger, EmptyPage
 from django.views.generic import DetailView
+from django.views.generic import ListView
+from django.views.generic.edit import FormView, UpdateView
 
+from Util.search_form_strings import (CLEAR_SEARCH_TIP, SEARCH_APPROVALS_TIP,
+                                      APPROVAL_NOT_FOUND, ALL_APPROVALS_TITLE, APPROVALS_DETAILS, ADD_APPROVALS_TITLE,
+                                      EDIT_APPROVALS_TITLE, APPROVALS_IMAGES)
+from Util.utils import delete_temp_folder, SearchMan, ReportMan, rand_slug
+from .forms import ApprovalForm
+from .models import Approval, ApprovalImage
 
 
 class ApprovalFormView(FormView):
     template_name = 'approvals/add_approvals.html'
     form_class = ApprovalForm
-    success_url = 'addApprovals'
-
     def form_valid(self, form):
         name = form.cleaned_data.get('name')
         form.save()
         messages.success(self.request, f"Approval {name} Added Successfully")
-        return super().form_valid(form)
-
+        return redirect("approvalsList")
     extra_context = {
         'approvals': 'active',
         'add_approvals': 'active',
@@ -265,9 +262,6 @@ class ApprovalUpdateView(UpdateView):
     model = Approval
     success_url = reverse_lazy('editApprovals')
     template_name = "approvals/edit_approval.html"
-
-
-
     def form_valid(self, form):
         form.save()
         messages.success(self.request, "Approval Updated Successfully")

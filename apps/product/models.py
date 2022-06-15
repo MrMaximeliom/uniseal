@@ -1,5 +1,6 @@
 from django.db import models
 from django.template.defaultfilters import slugify  # new
+from django.urls import reverse_lazy
 from django.utils.translation import gettext_lazy as _
 
 from Util.utils import rand_slug
@@ -87,6 +88,11 @@ class Product(models.Model):
 
 
 
+    def get_absolute_url(self):
+        return reverse_lazy("allProducts")
+
+
+
 
 class ProductImages(models.Model):
     image = models.ImageField(
@@ -100,6 +106,14 @@ class ProductImages(models.Model):
         verbose_name=_('Product')
     )
 
+    def save(self, *args, **kwargs):
+        from datetime import datetime
+        self.slug = slugify(rand_slug() + "-" + "-" + str(datetime.now().second))
+        return super().save(*args, **kwargs)
+
+    def get_absolute_url(self):
+        return reverse_lazy("productImages-dash")
+
 
 class ProductVideos(models.Model):
     product = models.ForeignKey(
@@ -108,6 +122,14 @@ class ProductVideos(models.Model):
         null=True,
         verbose_name=_('Product')
     )
+
+    def save(self, *args, **kwargs):
+        from datetime import datetime
+        self.slug = slugify(rand_slug() + "-" + "-" + str(datetime.now().second))
+        return super().save(*args, **kwargs)
+
+    def get_absolute_url(self):
+        return reverse_lazy("productImages-dash")
 
 
 class SimilarProduct(models.Model):
@@ -127,4 +149,7 @@ class SimilarProduct(models.Model):
 
     def __str__(self):
         return self.original_product + 'similar to' + self.similar_product
+
+    def get_absolute_url(self):
+        return reverse_lazy("allProducts")
 

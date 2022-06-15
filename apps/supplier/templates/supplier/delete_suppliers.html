@@ -48,10 +48,10 @@
 <h2>{% trans 'Showing Search Results For ' %}</h2>
 <h3>{{search_option}}="{{search_phrase}}"</h3>
 {% endif %}
-{% if all_suppliers_data|length %}
+{% if object_list|length %}
 <div class="row card-group">
 
-{% for supplier in all_suppliers_data %}
+{% for supplier in object_list %}
 
  <div class="col-sm col-md-5 col-lg-4">
                 <div class="card mb-5 ml-2" >
@@ -70,7 +70,7 @@
         <h5 class="modal-title" id="exampleModalLabel">{% trans 'Delete Conformation' %}</h5>
         <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
       </div>
-        <form action="" method="post">
+        <form action="{% url 'deleteSupplier' slug=supplier.slug %}" method="post">
             {% csrf_token %}
       <div class="modal-body">
 
@@ -81,7 +81,7 @@
       </div>
       <div class="modal-footer">
         <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-        <a type="submit" class="btn btn-danger" href="{% url 'deleteSupplier' id=supplier.id %}">Delete</a>
+        <button type="submit" class="btn btn-danger" >Delete</button>
 
       </div>
               </form>
@@ -115,8 +115,8 @@
        </nav>
   </div>
 {% endif %}
-{% if all_suppliers_data|length == 0 and not search %}
-<h3 class="delete-warning">{% trans 'There is no suppliers yet .. you can add new ones from ' %} <a href="{% url 'addSuppliers' %}">{% trans 'Here' %}</a></h3>
+{% if object_list|length == 0 and not search %}
+<h3 class="delete-warning">{% trans 'There is no suppliers yet ... you can add new ones from ' %} <a href="{% url 'addSuppliers' %}">{% trans 'Here' %}</a></h3>
 {% endif %}
 {% if search and search_result.count == 0 and search_result != "" %}
 <h3 class="delete-warning">{% trans 'Sorry No Users found that matches your search!' %}</h3>

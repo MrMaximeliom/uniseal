@@ -2,15 +2,147 @@ from django.contrib import messages
 from django.contrib.admin.views.decorators import staff_member_required
 from django.core.paginator import Paginator, PageNotAnInteger, EmptyPage
 from django.db.models import Count
-from django.shortcuts import render, get_object_or_404, redirect
-from django.template.defaultfilters import slugify
+from django.shortcuts import render, redirect
 from django.utils.translation import gettext_lazy as _
 
 from Util.utils import SearchMan, createExelFile, ReportMan, delete_temp_folder
-from Util.utils import rand_slug
 # Views for dashboard
 from apps.category.models import Category
+# new code starts here
+from apps.common_code.views import BaseListView
 
+
+class CategoryListView(BaseListView):
+    def get(self, request, *args, **kwargs):
+        from Util.search_form_strings import (
+            EMPTY_SEARCH_PHRASE,
+            CLEAR_SEARCH_TIP,
+            CREATE_REPORT_TIP
+
+        )
+        search_result = ''
+        searchManObj = SearchMan(self.model_name)
+        queryset = self.get_queryset()
+        paginator = Paginator(queryset, 5)
+        if 'temp_dir' in request.session:
+            # deleting temp dir in GET requests
+            if request.session['temp_dir'] != '':
+                delete_temp_folder()
+        if 'page' not in request.GET:
+            instances = searchManObj.get_queryset()
+            searchManObj.setPaginator(instances)
+            searchManObj.setSearch(False)
+        if request.GET.get('page'):
+            # Grab the current page from query parameter consultant
+            page = int(request.GET.get('page'))
+        else:
+            page = None
+
+        try:
+            paginator = searchManObj.getPaginator()
+            instances = paginator.page(page)
+            # Create a page object for the current page.
+        except PageNotAnInteger:
+            # If the query parameter is empty then grab the first page.
+            instances = paginator.page(1)
+            page = 1
+        except EmptyPage:
+            # If the query parameter is greater than num_pages then grab the last page.
+            instances = paginator.page(paginator.num_pages)
+            page = paginator.num_pages
+        self.extra_context = {
+            'page_range': paginator.page_range,
+            'num_pages': paginator.num_pages,
+            'object_list': instances,
+            self.main_active_flag: 'active',
+            self.active_flag: "active",
+            'current_page': page,
+            'title': self.title,
+            'search': searchManObj.getSearch(),
+            'search_result': search_result,
+            'search_phrase': searchManObj.getSearchPhrase(),
+            'search_option': searchManObj.getSearchOption(),
+            'search_error': searchManObj.getSearchError(),
+            'create_report_tip': CREATE_REPORT_TIP,
+            'clear_search_tip': CLEAR_SEARCH_TIP,
+            'data_js': {
+                "empty_search_phrase": EMPTY_SEARCH_PHRASE,
+            }
+        }
+        return super().get(request)
+    def post(self,request,*args,**kwargs):
+        from Util.search_form_strings import (
+            EMPTY_SEARCH_PHRASE,
+            CLEAR_SEARCH_TIP,
+            CREATE_REPORT_TIP
+
+        )
+        search_result = ''
+        searchManObj = SearchMan(self.model_name)
+        queryset = self.get_queryset()
+        paginator = Paginator(queryset, 5)
+        if  'clear' not in request.POST and 'createExcel' not in request.POST:
+            searchManObj.setSearch(True)
+        if request.POST.get('search_phrase') != '':
+            search_message = request.POST.get('search_phrase')
+            search_result = Category.objects.annotate(num_products=Count('product')).filter(
+                name=search_message).order_by('-num_products')
+            searchManObj.setPaginator(search_result)
+            searchManObj.setSearchPhrase(search_message)
+            searchManObj.setSearchOption('Category')
+            searchManObj.setSearchError(False)
+
+        else:
+            messages.error(request,
+                           "Please enter category  first!")
+            searchManObj.setSearchError(True)
+
+        if  request.POST.get('clear') == 'clear':
+            instances = searchManObj.get_queryset()
+            searchManObj.setPaginator(instances)
+            searchManObj.setSearch(False)
+
+        if request.GET.get('page'):
+            # Grab the current page from query parameter consultant
+            page = int(request.GET.get('page'))
+
+        else:
+            page = None
+        try:
+            paginator = searchManObj.getPaginator()
+            instances = paginator.page(page)
+            # Create a page object for the current page.
+        except PageNotAnInteger:
+            # If the query parameter is empty then grab the first page.
+            instances = paginator.page(1)
+            page = 1
+
+        except EmptyPage:
+            # If the query parameter is greater than num_pages then grab the last page.
+            instances = paginator.page(paginator.num_pages)
+            page = paginator.num_pages
+        self.extra_context = {
+                'page_range': paginator.page_range,
+                'num_pages': paginator.num_pages,
+                'object_list': instances,
+                self.main_active_flag: 'active',
+                self.active_flag: "active",
+                'current_page': page,
+                'title': self.title,
+                'search': searchManObj.getSearch(),
+                'search_result': search_result,
+                'search_phrase': searchManObj.getSearchPhrase(),
+                'search_option': searchManObj.getSearchOption(),
+                'search_error': searchManObj.getSearchError(),
+                'create_report_tip': CREATE_REPORT_TIP,
+                'clear_search_tip': CLEAR_SEARCH_TIP,
+                'data_js': {
+                    "empty_search_phrase": EMPTY_SEARCH_PHRASE,
+
+                }
+            }
+        return super().get(request)
+# ends here
 categories = Category.objects.annotate(num_products=Count('product')).order_by('-num_products')
 searchManObj = SearchMan("Category")
 report_man = ReportMan()
@@ -229,216 +361,3 @@ def all_categories(request):
                   }
                   )
 
-@staff_member_required(login_url='login')
-def add_categories(request):
-    from .forms import CategoryForm
-    if request.method == 'POST':
-        form = CategoryForm(request.POST)
-        if form.is_valid():
-            form_category = form.save()
-            form_category.slug = slugify(rand_slug())
-            form_category.save()
-            name = form.cleaned_data.get('name')
-            messages.success(request, f"New Category Added: {name}")
-        else:
-            for field, items in form.errors.items():
-                for item in items:
-                    messages.error(request, '{}: {}'.format(field, item))
-    else:
-        form = CategoryForm()
-
-    context = {
-        'title': _('Add Product Categories'),
-        'add_categories': 'active',
-        'form': form,
-        'categories': 'active',
-    }
-    return render(request, 'category/add_categories.html', context)
-@staff_member_required(login_url='login')
-def delete_categories(request):
-    paginator = Paginator(categories, 5)
-    from Util.search_form_strings import (
-        EMPTY_SEARCH_PHRASE,
-        CATEGORY_NAME_SYNTAX_ERROR
-
-    )
-    search_result = ''
-    if request.method == "POST" and 'clear' not in request.POST and 'createExcel' not in request.POST:
-        searchManObj.setSearch(True)
-        if request.POST.get('search_phrase') != '':
-            search_message = request.POST.get('search_phrase')
-            search_result = Category.objects.annotate(num_products=Count('product')).filter(
-                name=search_message).order_by('-num_products')
-            searchManObj.setPaginator(search_result)
-            searchManObj.setSearchPhrase(search_message)
-            searchManObj.setSearchOption('Category')
-            searchManObj.setSearchError(False)
-
-        else:
-            messages.error(request,
-                           "Please enter category  first!")
-            searchManObj.setSearchError(True)
-    if request.method == "GET" and 'page' not in request.GET and not searchManObj.getSearch():
-        all_categories = Category.objects.annotate(num_products=Count('product')).order_by('-num_products')
-        searchManObj.setPaginator(all_categories)
-        searchManObj.setSearch(False)
-    if request.method == "POST" and request.POST.get('clear') == 'clear':
-        all_categories = Category.objects.annotate(num_products=Count('product')).order_by('-num_products')
-        searchManObj.setPaginator(all_categories)
-        searchManObj.setSearch(False)
-
-    if request.GET.get('page'):
-        # Grab the current page from query parameter
-        page = int(request.GET.get('page'))
-    else:
-        page = None
-
-    try:
-        # Create a page object for the current page.
-        paginator = searchManObj.getPaginator()
-        categories_paginator = paginator.page(page)
-    except PageNotAnInteger:
-        # If the query parameter is empty then grab the first page.
-        categories_paginator = paginator.page(1)
-        page = 1
-    except EmptyPage:
-        # If the query parameter is greater than num_pages then grab the last page.
-        categories_paginator = paginator.page(paginator.num_pages)
-        page = paginator.num_pages
-
-    return render(request, 'category/delete_categories.html',
-                  {
-                      'title': _('Delete Product Categories'),
-                      'delete_categories': 'active',
-                      'categories': 'active',
-                      'all_categories_data': categories_paginator,
-                      'page_range': paginator.page_range,
-                      'num_pages': paginator.num_pages,
-                      'current_page': page,
-                      'search': searchManObj.getSearch(),
-                      'search_result': search_result,
-                      'search_phrase': searchManObj.getSearchPhrase(),
-                      'search_option': searchManObj.getSearchOption(),
-                      'search_error': searchManObj.getSearchError(),
-                      'data_js': {
-                          "empty_search_phrase": EMPTY_SEARCH_PHRASE,
-                          "category_error": CATEGORY_NAME_SYNTAX_ERROR,
-                      }
-                  }
-                  )
-@staff_member_required(login_url='login')
-def edit_categories(request):
-    paginator = Paginator(categories, 5)
-    from Util.search_form_strings import (
-        EMPTY_SEARCH_PHRASE,
-        CATEGORY_NAME_SYNTAX_ERROR
-
-    )
-    search_result = ''
-    if request.method == "POST" and 'clear' not in request.POST and 'createExcel' not in request.POST:
-        searchManObj.setSearch(True)
-        if request.POST.get('search_phrase') != '':
-            search_message = request.POST.get('search_phrase')
-            search_result = Category.objects.annotate(num_products=Count('product')).filter(
-                name=search_message).order_by('-num_products')
-            searchManObj.setPaginator(search_result)
-            searchManObj.setSearchPhrase(search_message)
-            searchManObj.setSearchOption('Category')
-            searchManObj.setSearchError(False)
-
-        else:
-            messages.error(request,
-                           "Please enter category  first!")
-            searchManObj.setSearchError(True)
-    if request.method == "GET" and 'page' not in request.GET and not searchManObj.getSearch():
-        all_categories = Category.objects.annotate(num_products=Count('product')).order_by('-num_products')
-        searchManObj.setPaginator(all_categories)
-        searchManObj.setSearch(False)
-    if request.method == "POST" and request.POST.get('clear') == 'clear':
-        all_categories = Category.objects.annotate(num_products=Count('product')).order_by('-num_products')
-        searchManObj.setPaginator(all_categories)
-        searchManObj.setSearch(False)
-
-    if request.GET.get('page'):
-        # Grab the current page from query parameter
-        page = int(request.GET.get('page'))
-    else:
-        page = None
-
-    try:
-        # Create a page object for the current page.
-        paginator = searchManObj.getPaginator()
-        categories_paginator = paginator.page(page)
-    except PageNotAnInteger:
-        # If the query parameter is empty then grab the first page.
-        categories_paginator = paginator.page(1)
-        page = 1
-    except EmptyPage:
-        # If the query parameter is greater than num_pages then grab the last page.
-        categories_paginator = paginator.page(paginator.num_pages)
-        page = paginator.num_pages
-
-    return render(request, 'category/edit_categories.html',
-                  {
-                      'title': _('Edit Product Categories'),
-                      'edit_categories': 'active',
-                      'categories': 'active',
-                      'all_categories_data': categories_paginator,
-                      'page_range': paginator.page_range,
-                      'num_pages': paginator.num_pages,
-                      'current_page': page,
-                      'search': searchManObj.getSearch(),
-                      'search_result': search_result,
-                      'search_phrase': searchManObj.getSearchPhrase(),
-                      'search_option': searchManObj.getSearchOption(),
-                      'search_error': searchManObj.getSearchError(),
-                      'data_js': {
-                          "empty_search_phrase": EMPTY_SEARCH_PHRASE,
-                          "category_error": CATEGORY_NAME_SYNTAX_ERROR,
-                      }
-
-                  }
-                  )
-@staff_member_required(login_url='login')
-def edit_category(request,slug):
-    from .models import Category
-    from .forms import CategoryForm
-    all_products = Category.objects.all()
-    # fetch the object related to passed id
-    obj = get_object_or_404(Category, slug=slug)
-
-    # pass the object as instance in form
-    category_form = CategoryForm(request.POST or None, instance=obj)
-    # product_image_form = ProductImagesForm(request.POST or None, instance=obj)
-
-    # save the data from the form and
-    # redirect to detail_view
-    if category_form.is_valid()  :
-        category_form.save()
-        name =  category_form.cleaned_data.get('name')
-        messages.success(request, f"Category {name} Updated")
-    else:
-        for field, items in category_form.errors.items():
-            for item in items:
-                messages.error(request, '{}: {}'.format(field, item))
-
-    context = {
-        'title': _('Edit Product Category'),
-        'edit_categories': 'active',
-        'category_form':category_form,
-        'category' : obj,
-        'categories': 'active',
-    }
-    return render(request, 'category/edit_category.html', context)
-@staff_member_required(login_url='login')
-def confirm_delete(request,id):
-    from apps.category.models import Category
-    obj = get_object_or_404(Category, id=id)
-    try:
-        obj.delete()
-        messages.success(request, f"Category {obj.name} deleted successfully")
-    except:
-        messages.error(request, f"Category {obj.name} was not deleted , please try again!")
-
-
-    return redirect('deleteCategories')

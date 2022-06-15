@@ -1,7 +1,10 @@
-from rest_framework import serializers
 from django import forms
-from apps.product.serializers import ProductSerializer
+from rest_framework import serializers
+
 from apps.accounts.serializers import UserOrderSerializer
+from apps.product.serializers import ProductSerializer
+
+
 class CartSerializer(serializers.ModelSerializer):
     product = ProductSerializer(many=False, read_only=True)
     # user = UserSerializer(many=False, read_only=False)

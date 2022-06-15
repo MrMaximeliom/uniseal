@@ -57,7 +57,7 @@
         <h5 class="modal-title" id="exampleModalLabel">{% trans 'Delete Conformation' %}</h5>
         <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
       </div>
-        <form action="" method="post">
+        <form action="{% url 'deleteOffer' slug=offer.slug %}" method="post">
             {% csrf_token %}
       <div class="modal-body">
 
@@ -78,7 +78,7 @@
       </div>
       <div class="modal-footer">
         <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">{% trans 'Close' %}</button>
-        <a type="submit" class="btn btn-danger" href="{% url 'deleteOffer' id=offer.id %}">{% trans 'Delete' %}</a>
+        <button type="submit" class="btn btn-danger" >{% trans 'Delete' %}</button>
 
       </div>
               </form>

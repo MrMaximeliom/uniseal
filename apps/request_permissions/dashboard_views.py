@@ -1,15 +1,13 @@
+from django.contrib import messages
+from django.core.paginator import Paginator, PageNotAnInteger, EmptyPage
+from django.db.models import Count
 from django.shortcuts import get_object_or_404, redirect
-from django.urls import reverse_lazy
 from django.views.generic import ListView
-from Util.search_form_strings import CLEAR_SEARCH_TIP,\
-    SEARCH_JOB_TYPE_TIP ,SEARCH_REQUESTS_TIP, REQUEST_ACCESS_TITLE,PERMISSION_NOT_FOUND
+
+from Util.search_form_strings import CLEAR_SEARCH_TIP, \
+    SEARCH_JOB_TYPE_TIP, SEARCH_REQUESTS_TIP, REQUEST_ACCESS_TITLE, PERMISSION_NOT_FOUND
 from Util.utils import delete_temp_folder, SearchMan, ReportMan
 from .models import RequestAccess
-from django.contrib import messages
-
-from django.db.models import Count
-from django.core.paginator import Paginator, PageNotAnInteger, EmptyPage
-from django.views.generic.edit import UpdateView
 
 
 def GiveOrDenyAccess(request,pk):

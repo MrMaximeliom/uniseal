@@ -48,7 +48,7 @@
 <h2>{% trans 'Showing Search Results For ' %}</h2>
 <h3>{{search_option}}="{{search_phrase}}"</h3>
 {% endif %}
-{% if all_applications_data|length %}
+{% if object_list|length %}
       <div class="row">
                     <div class="col-12 col-xl-11 mb-4 mb-lg-0">
                         <div class="card-light card-dark">
@@ -64,7 +64,7 @@
                                           </tr>
                                         </thead>
                                         <tbody>
-                                        {% for application in all_applications_data %}
+                                        {% for application in object_list %}
                                           <tr>
                                             <th scope="row">{{application.name}}</th>
                                             <td>{{ application.num_projects }}</td>
@@ -111,8 +111,8 @@
        </nav>
   </div>
 {% endif %}
-{% if all_applications_data|length == 0 and not search %}
-<h3 class="delete-warning">{% trans 'There is no project types yet .. you can add new ones from ' %} <a href="{% url 'addApplications' %}">{% trans 'Here' %}</a></h3>
+{% if object_list|length == 0 and not search %}
+<h3 class="delete-warning">{% trans 'There are no project types yet ... you can add new ones from ' %} <a href="{% url 'addApplications' %}">{% trans 'Here' %}</a></h3>
 {% endif %}
 {% if search and search_result.count == 0 %}
 <h3 class="delete-warning">{% trans 'Sorry No Users found that matches your search!' %}</h3>

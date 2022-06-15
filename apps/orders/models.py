@@ -1,8 +1,11 @@
 from django.db import models
 from django.template.defaultfilters import slugify
+from django.urls import reverse_lazy
 from django.utils.translation import gettext_lazy as _
+
 from Util.ListsOfData import ORDER_STATUSES
-from Util.utils import random_order_id
+from Util.utils import random_order_id, rand_slug
+
 
 class Order(models.Model):
     slug = models.SlugField(
@@ -26,6 +29,19 @@ class Order(models.Model):
     modified_at = models.DateTimeField(auto_now=True)
     def __str__(self):
         return str(self.pk)
+
+    def save(self, *args, **kwargs):
+        from datetime import datetime
+        self.slug = slugify(rand_slug() + "-"  + "-"+str(datetime.now().second))
+        return super().save(*args, **kwargs)
+
+
+    def get_absolute_url(self):
+        return reverse_lazy("allOrders")
+
+
+
+
 
 
 

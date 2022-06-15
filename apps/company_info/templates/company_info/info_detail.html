@@ -19,7 +19,9 @@
                 </nav>
                 {% endblock breadcrumb_content %}
 {% block content %}
-<div>
+{% if company_data  %}
+<div >
+
     <h1 class="h2 mb-3">{% trans 'Company Details' %}</h1>
 
 <!--Images of product-->
@@ -65,4 +67,7 @@
 </div>
 </div>
 </div>
+{% else %}
+<h3 class="delete-warning mt-5 mb-4">{% trans 'There is no details about the company ... please add it from' %} <a href="{% url 'AddCompanyDetails' %}">{% trans 'Here' %}</a></h3>
+{% endif %}
 {% endblock content %}

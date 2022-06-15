@@ -1,5 +1,6 @@
 from django.db import models
 from django.template.defaultfilters import slugify
+from django.urls import reverse_lazy
 from django.utils.translation import gettext_lazy as _
 
 from Util.utils import rand_slug
@@ -28,6 +29,14 @@ class SMSGroups(models.Model):
     def __str__(self):
         return self.name
 
+    def save(self, *args, **kwargs):
+        from datetime import datetime
+        self.slug = slugify(rand_slug() + "-" + str(datetime.now().second))
+        return super().save(*args, **kwargs)
+
+    def get_absolute_url(self):
+        return reverse_lazy("allSMSGroups")
+
 class SMSNotification(models.Model):
     status = models.CharField(
         max_length=11,
@@ -54,6 +63,14 @@ class SMSNotification(models.Model):
     def __str__(self):
         return self.message
 
+    def save(self, *args, **kwargs):
+        from datetime import datetime
+        self.slug = slugify(rand_slug() + "-" + str(datetime.now().second))
+        return super().save(*args, **kwargs)
+
+    def get_absolute_url(self):
+        return reverse_lazy("allSMS")
+
 class SMSContacts(models.Model):
     contact_number = models.CharField(
         max_length=18,
@@ -73,6 +90,15 @@ class SMSContacts(models.Model):
 
     def __str__(self):
         return self.contact_number
+
+    def save(self, *args, **kwargs):
+        from datetime import datetime
+        self.slug = slugify(rand_slug() + "-" + str(datetime.now().second))
+        return super().save(*args, **kwargs)
+
+    def get_absolute_url(self):
+        return reverse_lazy("allSMSContacts")
+
 
 class SMSGroupMessages(models.Model):
     message = models.TextField(
@@ -100,6 +126,12 @@ class SMSGroupMessages(models.Model):
 
     def __str__(self):
         return self.message
+
+    def save(self, *args, **kwargs):
+        from datetime import datetime
+        self.slug = slugify(rand_slug() + "-" + str(datetime.now().second))
+        return super().save(*args, **kwargs)
+
 
 
 

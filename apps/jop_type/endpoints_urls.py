@@ -1,7 +1,8 @@
 from django.utils.translation import gettext_lazy as _
-from rest_framework import viewsets
-from Util.permissions import UnisealPermission
 from django_filters.rest_framework import DjangoFilterBackend
+from rest_framework import viewsets
+
+from Util.permissions import UnisealPermission
 
 
 class  JobTypeViewSet(viewsets.ModelViewSet):

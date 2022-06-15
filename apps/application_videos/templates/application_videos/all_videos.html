@@ -74,8 +74,37 @@
     </p>
     <a href="{{product.application_video}}" target="_blank" class="btn btn-primary mr-3 mb-3">{% trans 'View Video' %}</a>
 
-
+ <div class="card-title mt-3">
     <a href="{% url 'editVideo' slug=product.slug %}" class="btn btn-primary mr-3 mb-3">{% trans 'Update Video' %}</a>
+    <a href="#" class="btn btn-sm btn-danger mr-3 mb-3" data-bs-toggle="modal" data-bs-target="#exampleModal{{product.id}}">Delete</a>
+ </div>
+
+      <div class="modal fade" id="exampleModal{{product.id}}" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="exampleModalLabel">{% trans 'Delete Conformation' %}</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+        <form action="{% url 'videoDelete' slug=product.slug %}" method="post">
+            {% csrf_token %}
+      <div class="modal-body">
+
+          <h3>{% trans 'Are you sure you want to delete this video?' %}</h3>
+
+
+<!--           <input type="number" value="{{product.id}}" hidden name="product_id">-->
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+        <button type="submit" class="btn btn-danger" >Delete</button>
+
+      </div>
+              </form>
+    </div>
+  </div>
+</div>
+
   </div>
 </div>
  </div>
@@ -110,7 +139,7 @@
   </div>
 {% endif %}
 {% if all_products_data|length == 0 and not search %}
-<h3 class="delete-warning">{% trans 'There are no products videos yet .. you can add new ones from ' %} <a href="{% url 'productVideos' %}">{% trans 'Here' %}</a></h3>
+<h3 class="delete-warning">{% trans 'There are no products videos yet ... you can add new ones from ' %} <a href="{% url 'productVideos-dash' %}">{% trans 'Here' %}</a></h3>
 {% endif %}
 {% if search and search_result.count == 0 and search_result != "" %}
 <h3 class="delete-warning">{{not_found}}</h3>

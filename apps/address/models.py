@@ -1,5 +1,6 @@
 from django.db import models
 from django.template.defaultfilters import slugify
+from django.urls import reverse_lazy
 from django.utils.translation import gettext_lazy as _
 
 from Util.utils import rand_slug
@@ -20,6 +21,14 @@ class Country(models.Model):
     def __str__(self):
         return self.name
 
+    def get_absolute_url(self):
+        return reverse_lazy("allCountries")
+
+    def save(self, *args, **kwargs):
+        value = str(self.name) + '' + str(rand_slug())
+        self.slug = slugify(value)
+        super().save(*args, **kwargs)
+
 #
 class State(models.Model):
     name = models.CharField(
@@ -39,6 +48,13 @@ class State(models.Model):
     )
     def __str__(self):
         return self.name
+
+    def get_absolute_url(self):
+        return reverse_lazy("allStates")
+    def save(self, *args, **kwargs):
+        value = str(self.name) + '' + str(rand_slug())
+        self.slug = slugify(value)
+        super().save(*args, **kwargs)
 #
 class City(models.Model):
     name = models.CharField(
@@ -59,8 +75,16 @@ class City(models.Model):
         verbose_name=_('City Slug')
 
     )
+    def save(self, *args, **kwargs):
+        value = str(self.name) + '' + str(rand_slug())
+        self.slug = slugify(value)
+        super().save(*args, **kwargs)
     def __str__(self):
         return self.name
+
+    def get_absolute_url(self):
+        return reverse_lazy("allCities")
+
 class Area(models.Model):
     name = models.CharField(
         verbose_name=_('Area Name'),
@@ -77,6 +101,13 @@ class Area(models.Model):
         verbose_name=_('Area Slug')
 
     )
+    def save(self, *args, **kwargs):
+        value = str(self.name) + '' + str(rand_slug())
+        self.slug = slugify(value)
+        super().save(*args, **kwargs)
 
     def __str__(self):
         return self.name
+
+    def get_absolute_url(self):
+        return reverse_lazy("allAreas")

@@ -44,10 +44,10 @@
 <h2>{% trans 'Showing Search Results For ' %}</h2>
 <h3>{{search_option}}="{{search_phrase}}"</h3>
 {% endif %}
-{% if all_suppliers_data|length %}
+{% if object_list|length %}
 <div class="row card-group">
 
-{% for supplier in all_suppliers_data %}
+{% for supplier in object_list %}
 
  <div class="col-sm col-md-5 col-lg-4">
                 <div class="card mb-5 ml-2" >
@@ -85,7 +85,7 @@
        </nav>
   </div>
 {% endif %}
-{% if all_suppliers_data|length == 0 and not search %}
+{% if object_list|length == 0 and not search %}
 <h3 class="delete-warning">{% trans 'There is no suppliers yet .. you can add new ones from ' %} <a href="{% url 'addSuppliers' %}">{% trans 'Here' %}</a></h3>
 {% endif %}
 {% if search and search_result.count == 0 and search_result != "" %}

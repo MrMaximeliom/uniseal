@@ -17,7 +17,7 @@ $("#id_date").datepicker({
     minViewMode: "days",
     autoclose:true,
     clearBtn:true,
-    endDate:new Date().getFullYear().toString(),
+
     startDate:today
 });
 

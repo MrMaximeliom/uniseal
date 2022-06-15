@@ -1,6 +1,6 @@
 from django import forms
 
-from .models import Approval,ApprovalImage
+from .models import Approval, ApprovalImage
 
 
 class ApprovalForm(forms.ModelForm):

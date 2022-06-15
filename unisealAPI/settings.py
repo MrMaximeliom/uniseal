@@ -48,6 +48,7 @@ INSTALLED_APPS = [
     'apps.orders',
     'apps.jop_type',
     'apps.offer',
+    'apps.common_code',
     'apps.request_permissions'
 ]
 CRISPY_TEMPLATE_PACK = 'bootstrap4'
@@ -82,16 +83,17 @@ TEMPLATES = [
 
 WSGI_APPLICATION = 'unisealAPI.wsgi.application'
 # AWS DATABASE
-DATABASES = {
-    'default': {
-        'ENGINE': 'django.db.backends.postgresql_psycopg2',
-        'NAME': 'uniseal_db',
-        'USER': 'uniseal_admin',
-        'PASSWORD': '1a79a001973e92c89aa42c0c9c8a8bf3e138132bc81bad4a5e03a8b908b1e317',
-        'HOST': '13.244.177.56',
-        'PORT': '5432',
-    }
-}
+# Paused for development purposes will be back after development is completed
+# DATABASES = {
+#     'default': {
+#         'ENGINE': 'django.db.backends.postgresql_psycopg2',
+#         'NAME': 'uniseal_db',
+#         'USER': 'uniseal_admin',
+#         'PASSWORD': '1a79a001973e92c89aa42c0c9c8a8bf3e138132bc81bad4a5e03a8b908b1e317',
+#         'HOST': '13.244.177.56',
+#         'PORT': '5432',
+#     }
+# }
 # # Heroku DATABASE
 # DATABASES = {
 #     'default': {
@@ -103,6 +105,13 @@ DATABASES = {
 #         'PORT': '5432',
 #     }
 # }
+# temporary database
+DATABASES = {
+    'default': {
+        'ENGINE': 'django.db.backends.sqlite3',
+        'NAME': 'db.sqlite3',
+    }
+}
 
 # Password validation
 # https://docs.djangoproject.com/en/3.2/ref/settings/#auth-password-validators

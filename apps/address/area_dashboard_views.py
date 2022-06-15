@@ -2,14 +2,155 @@ from django.contrib import messages
 from django.contrib.admin.views.decorators import staff_member_required
 from django.core.paginator import Paginator, PageNotAnInteger, EmptyPage
 from django.db.models import Count
-from django.shortcuts import render, get_object_or_404, redirect
-from django.template.defaultfilters import slugify
+from django.shortcuts import render, redirect
 from django.utils.translation import gettext_lazy as _
 
 from Util.utils import SearchMan, createExelFile, ReportMan, delete_temp_folder
-from Util.utils import rand_slug
 from apps.address.models import Area
+# new code starts here
+from apps.common_code.views import BaseListView
 
+
+class AreaListView(BaseListView):
+    def get(self, request, *args, **kwargs):
+        from Util.search_form_strings import (
+            EMPTY_SEARCH_PHRASE,
+            CLEAR_SEARCH_TIP,
+            CREATE_REPORT_TIP
+
+        )
+        search_result = ''
+        searchManObj = SearchMan(self.model_name)
+        queryset = self.get_queryset()
+        paginator = Paginator(queryset, 5)
+        if 'temp_dir' in request.session:
+            # deleting temp dir in GET requests
+            if request.session['temp_dir'] != '':
+                delete_temp_folder()
+        if 'page' not in request.GET:
+            instances = searchManObj.get_queryset()
+            searchManObj.setPaginator(instances)
+            searchManObj.setSearch(False)
+        if request.GET.get('page'):
+            # Grab the current page from query parameter consultant
+            page = int(request.GET.get('page'))
+        else:
+            page = None
+
+        try:
+            paginator = searchManObj.getPaginator()
+            instances = paginator.page(page)
+            # Create a page object for the current page.
+        except PageNotAnInteger:
+            # If the query parameter is empty then grab the first page.
+            instances = paginator.page(1)
+            page = 1
+        except EmptyPage:
+            # If the query parameter is greater than num_pages then grab the last page.
+            instances = paginator.page(paginator.num_pages)
+            page = paginator.num_pages
+        self.extra_context = {
+            'page_range': paginator.page_range,
+            'num_pages': paginator.num_pages,
+            'object_list': instances,
+            self.main_active_flag: 'active',
+            self.active_flag: "active",
+            'current_page': page,
+            'title': self.title,
+            'search': searchManObj.getSearch(),
+            'search_result': search_result,
+            'search_phrase': searchManObj.getSearchPhrase(),
+            'search_option': searchManObj.getSearchOption(),
+            'search_error': searchManObj.getSearchError(),
+            'create_report_tip': CREATE_REPORT_TIP,
+            'clear_search_tip': CLEAR_SEARCH_TIP,
+            'data_js': {
+                "empty_search_phrase": EMPTY_SEARCH_PHRASE,
+            }
+        }
+        return super().get(request)
+    def post(self,request,*args,**kwargs):
+        from Util.search_form_strings import (
+            EMPTY_SEARCH_PHRASE,
+            CLEAR_SEARCH_TIP,
+            CREATE_REPORT_TIP
+
+        )
+        search_result = ''
+        searchManObj = SearchMan(self.model_name)
+        queryset = self.get_queryset()
+        paginator = Paginator(queryset, 5)
+        if  'clear' not in request.POST and 'createExcel' not in request.POST:
+            searchManObj.setSearch(True)
+            if request.POST.get('search_options') == 'city':
+                search_message = request.POST.get('search_phrase')
+                search_result = Area.objects.filter(
+                    city__name__icontains=search_message).order_by('id')
+                searchManObj.setPaginator(search_result)
+                searchManObj.setSearchPhrase(search_message)
+                searchManObj.setSearchOption('City')
+                searchManObj.setSearchError(False)
+
+            elif request.POST.get('search_options') == 'area':
+                search_message = request.POST.get('search_phrase')
+                search_result = Area.objects.filter(
+                    name__icontains=search_message).order_by('id')
+                searchManObj.setPaginator(search_result)
+                searchManObj.setSearchPhrase(search_message)
+                searchManObj.setSearchOption('Area')
+                searchManObj.setSearchError(False)
+
+            else:
+                messages.error(request,
+                               "Please enter city name first!")
+                searchManObj.setSearchError(True)
+
+        if  request.POST.get('clear') == 'clear':
+            instances = searchManObj.get_queryset()
+            searchManObj.setPaginator(instances)
+            searchManObj.setSearch(False)
+
+        if request.GET.get('page'):
+            # Grab the current page from query parameter consultant
+            page = int(request.GET.get('page'))
+
+        else:
+            page = None
+        try:
+            paginator = searchManObj.getPaginator()
+            instances = paginator.page(page)
+            # Create a page object for the current page.
+        except PageNotAnInteger:
+            # If the query parameter is empty then grab the first page.
+            instances = paginator.page(1)
+            page = 1
+
+        except EmptyPage:
+            # If the query parameter is greater than num_pages then grab the last page.
+            instances = paginator.page(paginator.num_pages)
+            page = paginator.num_pages
+        self.extra_context = {
+                'page_range': paginator.page_range,
+                'num_pages': paginator.num_pages,
+                'object_list': instances,
+                self.main_active_flag: 'active',
+                self.active_flag: "active",
+                'current_page': page,
+                'title': self.title,
+                'search': searchManObj.getSearch(),
+                'search_result': search_result,
+                'search_phrase': searchManObj.getSearchPhrase(),
+                'search_option': searchManObj.getSearchOption(),
+                'search_error': searchManObj.getSearchError(),
+                'create_report_tip': CREATE_REPORT_TIP,
+                'clear_search_tip': CLEAR_SEARCH_TIP,
+                'data_js': {
+                    "empty_search_phrase": EMPTY_SEARCH_PHRASE,
+
+                }
+            }
+        return super().get(request)
+# ends here
 areas = Area.objects.annotate(num=Count('city')).order_by('-num')
 
 def prepare_selected_query_city(selected_pages, paginator_obj, headers=None):
@@ -27,8 +168,6 @@ def prepare_selected_query_city(selected_pages, paginator_obj, headers=None):
                 for page in selected_pages:
                     for area in paginator_obj.page(page):
                         city_list.append(area.city.name)
-
-
     else:
         for page in range(1, paginator_obj.num_pages + 1):
             for area in paginator_obj.page(page):
@@ -248,245 +387,3 @@ def all_areas(request):
                   }
                   )
 
-
-@staff_member_required(login_url='login')
-def add_areas(request):
-    from .forms import AreaForm
-    if request.method == 'POST':
-        form = AreaForm(request.POST)
-        if form.is_valid():
-            area = form.save()
-            area.slug = slugify(rand_slug())
-            area.save()
-            form.save()
-            name = form.cleaned_data.get('name')
-            messages.success(request, f"New Area Added: {name}")
-        else:
-            for field, items in form.errors.items():
-                for item in items:
-                    messages.error(request, '{}: {}'.format(field, item))
-    else:
-        form = AreaForm()
-    context = {
-        'title': _('Add Areas'),
-        'add_areas': 'active',
-        'form': form,
-        'address': 'active',
-    }
-
-    return render(request, 'address/add_areas.html', context)
-
-
-@staff_member_required(login_url='login')
-def delete_areas(request):
-    paginator = Paginator(areas, 5)
-    from Util.search_form_strings import (
-        EMPTY_SEARCH_PHRASE,
-        CITY_NAME_SYNTAX_ERROR,
-        AREA_NAME_SYNTAX_ERROR
-
-    )
-    search_result = ''
-    if request.method == "POST" and 'clear' not in request.POST and 'createExcel' not in request.POST:
-        search_man_areas.setSearch(True)
-        if request.POST.get('search_options') == 'city':
-            search_message = request.POST.get('search_phrase')
-            search_result = Area.objects.filter(
-                city__name__icontains=search_message).order_by('id')
-            search_man_areas.setPaginator(search_result)
-            search_man_areas.setSearchPhrase(search_message)
-            search_man_areas.setSearchOption('City')
-            search_man_areas.setSearchError(False)
-
-        elif request.POST.get('search_options') == 'area':
-            search_message = request.POST.get('search_phrase')
-            search_result = Area.objects.filter(
-                name__icontains=search_message).order_by('id')
-            search_man_areas.setPaginator(search_result)
-            search_man_areas.setSearchPhrase(search_message)
-            search_man_areas.setSearchOption('Area')
-            search_man_areas.setSearchError(False)
-
-        else:
-            messages.error(request,
-                           "Please enter city name first!")
-            search_man_areas.setSearchError(True)
-
-    if request.method == "GET" and 'page' not in request.GET and not search_man_areas.getSearch():
-        all_areas = Area.objects.all().order_by('id')
-        search_man_areas.setPaginator(all_areas)
-        search_man_areas.setSearch(False)
-    if request.method == "POST" and request.POST.get('clear') == 'clear':
-        all_areas = Area.objects.filter().order_by('id')
-        search_man_areas.setPaginator(all_areas)
-        search_man_areas.setSearch(False)
-    if request.GET.get('page'):
-        # Grab the current page from query parameter
-        page = int(request.GET.get('page'))
-    else:
-        page = None
-
-    try:
-        # Create a page object for the current page.
-        paginator = search_man_areas.getPaginator()
-        areas_paginator = paginator.page(page)
-    except PageNotAnInteger:
-        # If the query parameter is empty then grab the first page.
-        areas_paginator = paginator.page(1)
-        page = 1
-    except EmptyPage:
-        # If the query parameter is greater than num_pages then grab the last page.
-        areas_paginator = paginator.page(paginator.num_pages)
-        page = paginator.num_pages
-
-    return render(request, 'address/delete_areas.html',
-                  {
-                      'title': _('Delete Areas'),
-                      'delete_areas': 'active',
-                      'address': 'active',
-                      'all_areas_data': areas_paginator,
-                      'page_range': paginator.page_range,
-                      'num_pages': paginator.num_pages,
-                      'current_page': page,
-                      'search': search_man_areas.getSearch(),
-                      'search_result': search_result,
-                      'search_phrase': search_man_areas.getSearchPhrase(),
-                      'search_option': search_man_areas.getSearchOption(),
-                      'search_error': search_man_areas.getSearchError(),
-                      'data_js': {
-                          "empty_search_phrase": EMPTY_SEARCH_PHRASE,
-                          "city_error": CITY_NAME_SYNTAX_ERROR,
-                          "area_error": AREA_NAME_SYNTAX_ERROR
-                      }
-                  }
-                  )
-
-
-@staff_member_required(login_url='login')
-def edit_areas(request):
-    paginator = Paginator(areas, 5)
-    from Util.search_form_strings import (
-        EMPTY_SEARCH_PHRASE,
-        CITY_NAME_SYNTAX_ERROR,
-        AREA_NAME_SYNTAX_ERROR
-
-    )
-    search_result = ''
-    if request.method == "POST" and 'clear' not in request.POST and 'createExcel' not in request.POST:
-        search_man_areas.setSearch(True)
-        if request.POST.get('search_options') == 'city':
-            search_message = request.POST.get('search_phrase')
-            search_result = Area.objects.filter(
-                city__name__icontains=search_message).order_by('id')
-            search_man_areas.setPaginator(search_result)
-            search_man_areas.setSearchPhrase(search_message)
-            search_man_areas.setSearchOption('City')
-            search_man_areas.setSearchError(False)
-
-        elif request.POST.get('search_options') == 'area':
-            search_message = request.POST.get('search_phrase')
-            search_result = Area.objects.filter(
-                name__icontains=search_message).order_by('id')
-            search_man_areas.setPaginator(search_result)
-            search_man_areas.setSearchPhrase(search_message)
-            search_man_areas.setSearchOption('Area')
-            search_man_areas.setSearchError(False)
-
-        else:
-            messages.error(request,
-                           "Please enter city name first!")
-            search_man_areas.setSearchError(True)
-
-    if request.method == "GET" and 'page' not in request.GET and not search_man_areas.getSearch():
-        all_areas = Area.objects.all().order_by('id')
-        search_man_areas.setPaginator(all_areas)
-        search_man_areas.setSearch(False)
-    if request.method == "POST" and request.POST.get('clear') == 'clear':
-        all_areas = Area.objects.filter().order_by('id')
-        search_man_areas.setPaginator(all_areas)
-        search_man_areas.setSearch(False)
-    if request.GET.get('page'):
-        # Grab the current page from query parameter
-        page = int(request.GET.get('page'))
-    else:
-        page = None
-
-    try:
-        # Create a page object for the current page.
-        paginator = search_man_areas.getPaginator()
-        areas_paginator = paginator.page(page)
-    except PageNotAnInteger:
-        # If the query parameter is empty then grab the first page.
-        areas_paginator = paginator.page(1)
-        page = 1
-    except EmptyPage:
-        # If the query parameter is greater than num_pages then grab the last page.
-        areas_paginator = paginator.page(paginator.num_pages)
-        page = paginator.num_pages
-
-    return render(request, 'address/edit_areas.html',
-                  {
-                      'title': _('Edit Areas'),
-                      'edit_areas': 'active',
-                      'address': 'active',
-                      'all_areas_data': areas_paginator,
-                      'page_range': paginator.page_range,
-                      'num_pages': paginator.num_pages,
-                      'current_page': page,
-                      'search': search_man_areas.getSearch(),
-                      'search_result': search_result,
-                      'search_phrase': search_man_areas.getSearchPhrase(),
-                      'search_option': search_man_areas.getSearchOption(),
-                      'search_error': search_man_areas.getSearchError(),
-                      'data_js': {
-                          "empty_search_phrase": EMPTY_SEARCH_PHRASE,
-                          "city_error": CITY_NAME_SYNTAX_ERROR,
-                          "area_error": AREA_NAME_SYNTAX_ERROR
-                      }
-                  }
-                  )
-
-@staff_member_required(login_url='login')
-
-def edit_area(request, slug):
-    from .models import Area
-    from .forms import AreaForm
-    # fetch the object related to passed id
-    obj = get_object_or_404(Area, slug=slug)
-
-    # pass the object as instance in form
-    area_form = AreaForm(request.POST or None, instance=obj)
-    # product_image_form = ProductImagesForm(request.POST or None, instance=obj)
-
-    # save the data from the form and
-    # redirect to detail_view
-    if area_form.is_valid():
-        area_form.save()
-        name = area_form.cleaned_data.get('name')
-        messages.success(request, f"Area {name} Updated")
-    else:
-        for field, items in area_form.errors.items():
-            for item in items:
-                messages.error(request, '{}: {}'.format(field, item))
-
-    context = {
-        'title': _('Edit Area'),
-        'edit_areas': 'active',
-        'form': area_form,
-        'area': obj,
-        'address': 'active',
-    }
-    return render(request, 'address/edit_area.html', context)
-
-@staff_member_required(login_url='login')
-
-def confirm_area_delete(request, id):
-    from .models import Area
-    obj = get_object_or_404(Area, id=id)
-    try:
-        obj.delete()
-        messages.success(request, f"Area {obj.name} deleted successfully")
-    except:
-        messages.error(request, f"Area {obj.name} was not deleted , please try again!")
-
-    return redirect('deleteAreas')
