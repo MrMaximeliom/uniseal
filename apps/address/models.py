@@ -29,6 +29,10 @@ class Country(models.Model):
         self.slug = slugify(value)
         super().save(*args, **kwargs)
 
+    # return not wanted fields' names in the process of creating new report file from this model
+    def get_not_wanted_fields_names_in_report_file(self=None):
+        return ["id","slug"]
+
 #
 class State(models.Model):
     name = models.CharField(
@@ -48,6 +52,10 @@ class State(models.Model):
     )
     def __str__(self):
         return self.name
+
+    # return not wanted fields' names in the process of creating new report file from this model
+    def get_not_wanted_fields_names_in_report_file(self=None):
+        return ["id",  "slug"]
 
     def get_absolute_url(self):
         return reverse_lazy("allStates")
@@ -85,6 +93,10 @@ class City(models.Model):
     def get_absolute_url(self):
         return reverse_lazy("allCities")
 
+    # return not wanted fields' names in the process of creating new report file from this model
+    def get_not_wanted_fields_names_in_report_file(self=None):
+        return ["id", "slug"]
+
 class Area(models.Model):
     name = models.CharField(
         verbose_name=_('Area Name'),
@@ -111,3 +123,7 @@ class Area(models.Model):
 
     def get_absolute_url(self):
         return reverse_lazy("allAreas")
+
+    # return not wanted fields' names in the process of creating new report file from this model
+    def get_not_wanted_fields_names_in_report_file(self=None):
+        return ["id", "slug"]

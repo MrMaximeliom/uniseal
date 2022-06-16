@@ -35,12 +35,87 @@ SMS_USERNAME = 'uniseal'
 SMS_PASSWORD = '823178'
 
 
+def prepare_selected_query(model, headers, selected_pages, paginator_object):
+    # model._meta.fields
+    # define construct object
+    constructor = {}
+    # loop through headers
+    for header in headers:
+        # loop through fields names of the model
+        # check for the existing of each column in the headers array
+        for field_name in model._meta.fields:
+            if convert_field_name_to_readable_name(header) == field_name:
+                # loop through selected pages
+                # define temporary array
+                temp_array = []
+                for page in selected_pages:
+                    # loop through objects in the page
+                    for object in paginator_object.page(page):
+                        print(object)
+                        # add field value to the temporary array
+                        temp_array.append(getattr(object, field_name.name))
+                # add the array to the constructor
+                constructor.update({field_name.name: temp_array})
+    return constructor
+
+
+def prepare_default_query(model, headers, paginator_object):
+    # model._meta.fields
+    # define construct object
+    constructor = {}
+    # loop through headers
+    for header in headers:
+        # loop through fields names of the model
+        # check for the existing of each column in the headers array
+        for field_name in model._meta.fields:
+            if convert_field_name_to_readable_name(header) == field_name.name:
+                # loop through selected pages
+                # define temporary array
+                temp_array = []
+                # loop through objects in the page
+                for page in range(1, paginator_object.num_pages + 1):
+                    # add field value to the temporary array
+                    for object in paginator_object.page(page):
+                        temp_array.append(getattr(object, field_name.name))
+                # add the array to the constructor
+                constructor.update({field_name.name: temp_array})
+    return constructor
+
+
+# return fields' names of the report file to be used in the process of creating new report files
+def get_fields_names_for_report_file(model, not_wanted_fields_names):
+    headers = []
+    # loop through all fields' names
+    for field_name in model._meta.fields:
+        # check if field name not in the list not wanted fields' names
+        if field_name.name not in not_wanted_fields_names:
+            # add the field name to the header
+            headers.append(field_name.name)
+    # return fields' names
+    return headers
+
+
+def get_selected_pages(pages_collector):
+    temp_array = []
+    for item in pages_collector:
+        if item != ",":
+            temp_array.append(item)
+    return temp_array
+
+
 def check_string_search_phrase(search_phrase):
     import re
     temp_holder = search_phrase
     special_char = re.findall(r'\W', temp_holder.replace(" ", ""))
     # returns true if search_phrase contains special chars and returns search_phrase without leading spaces
     return len(special_char) > 0, search_phrase.strip()
+
+
+def convert_field_name_to_readable_name(field_name):
+    words_in_field_name = ""
+    for word in field_name.split("_"):
+        words_in_field_name += word.capitalize() + " "
+    return words_in_field_name
 
 
 # TODO add logic to this function to use it later in the search functionality
@@ -239,10 +314,9 @@ class SearchMan:
             self.paginator = Paginator(sms_groups, 5)
         if model == "SMSGroupMessages":
             from apps.sms_notifications.models import SMSGroupMessages
-            sms_group_messages= SMSGroupMessages.objects.all().order_by('id')
+            sms_group_messages = SMSGroupMessages.objects.all().order_by('id')
             self.set_querySet(sms_group_messages)
             self.paginator = Paginator(sms_group_messages, 5)
-
 
     def setPaginator(self, query, num_records=5):
         from django.core.paginator import Paginator
@@ -279,7 +353,7 @@ class SearchMan:
     def getSearchError(self):
         return self.search_error
 
-    def set_querySet(self,queryset):
+    def set_querySet(self, queryset):
         self.queryset = queryset
 
     def get_queryset(self):

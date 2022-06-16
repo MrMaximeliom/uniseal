@@ -49,6 +49,7 @@ class UserAccountManager(BaseUserManager):
         return user
 
 
+
 class User(AbstractBaseUser):
 
     # from django.core.validators import RegexValidator
@@ -142,11 +143,18 @@ class User(AbstractBaseUser):
         # Simplest possible answer: Yes, always
         return True
 
+
+        
+
     @property
     def is_staff(self):
         "Is the user a member of staff?"
         # return self.user_role == 3
         return self.staff
+
+    # return not wanted fields' names in the process of creating new report file from this model
+    def get_not_wanted_fields_names_in_report_file(self=None):
+        return ["id","uuid","slug","registration_date","email","password"]
 
     @property
     def is_admin(self):

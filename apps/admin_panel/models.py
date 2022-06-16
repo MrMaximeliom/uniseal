@@ -19,6 +19,10 @@ class ManageProductsPage(models.Model):
         null=True
     )
 
+    # return not wanted fields' names in the process of creating new report file from this model
+    def get_not_wanted_fields_names_in_report_file(self=None):
+        return ["id", "slug"]
+
 
 
 class ManageProducts(models.Model):
