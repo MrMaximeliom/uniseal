@@ -4,7 +4,6 @@ from django.core.paginator import Paginator, PageNotAnInteger, EmptyPage
 from django.db.models import Count
 from django.shortcuts import render, get_object_or_404
 from django.utils.translation import gettext_lazy as _
-
 from Util.search_form_strings import NON_SELECTED_ORDER, ORDER_NOT_FOUND
 from Util.utils import SearchMan, ReportMan, delete_temp_folder
 from apps.orders.models import Order
@@ -12,52 +11,7 @@ from apps.orders.models import Order
 orders = Order.objects.all().order_by('-id')
 searchManObj = SearchMan("Order")
 report_man = ReportMan()
-def prepare_selected_query(selected_pages,paginator_obj,headers=None):
-    categories_list = []
-    products_list = []
-    headers_here = ["Category", "Number of Products"]
-    if headers is not None:
-        print("in selected query headers are not none")
-        headers_here = headers
-        for header in headers_here:
-            if header == "Category":
-                for page in selected_pages:
-                    for category in paginator_obj.page(page):
-                        categories_list.append(category.name)
-            elif header == "Number of Products":
-                for page in selected_pages:
-                    print("in for loop for supplier website")
-                    for category in paginator_obj.page(page):
-                        products_list.append(category.num_products)
-    else:
-        for page in range(1, paginator_obj.num_pages+1):
-            for category in paginator_obj.page(page):
-                products_list.append(category.num_products)
-                categories_list.append(category.name)
-    return headers_here, categories_list,products_list
-def prepare_query(paginator_obj,headers=None):
-    categories_list = []
-    products_list = []
-    headers_here = ["Category","Number of Products"]
-    if headers is not None:
-        headers_here = headers
-        for header in headers_here:
-            if header == "Category":
-                for page in range(1, paginator_obj.num_pages+1):
-                    for category in paginator_obj.page(page):
-                        categories_list.append(category.name)
-            elif header == "Number of Products":
-                for page in range(1, paginator_obj.num_pages+1):
 
-                    for category in paginator_obj.page(page):
-                        products_list.append(category.num_products)
-    else:
-
-        for page in range(1, paginator_obj.num_pages+1):
-            for category in paginator_obj.page(page):
-                categories_list.append(category.name)
-                products_list.append(category.num_products)
-    return headers_here, categories_list, products_list
 
 @staff_member_required(login_url='login')
 def all_orders(request):

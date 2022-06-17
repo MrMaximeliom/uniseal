@@ -143,9 +143,6 @@ class User(AbstractBaseUser):
         # Simplest possible answer: Yes, always
         return True
 
-
-        
-
     @property
     def is_staff(self):
         "Is the user a member of staff?"

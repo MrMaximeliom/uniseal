@@ -136,7 +136,7 @@
                                           <tr>
                                             <th scope="row">{{city.name}}</th>
                                             <td>{{ city.state.name }}</td>
-                                            <td>{{ city.num_areas|default:"0" }}</td>
+                                            <td>{{ city.number_of_areas|default:"0" }}</td>
                                              <td><a href="{% url 'editCity' slug=city.slug %}" class="btn btn-sm btn-primary">Update</a></td>
                                             <td><a href="#" class="btn btn-sm btn-danger" data-bs-toggle="modal" data-bs-target="#exampleModal{{city.id}}">Delete</a></td>
 <div class="modal fade" id="exampleModal{{city.id}}" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">

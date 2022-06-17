@@ -3,7 +3,10 @@ from django.contrib.auth import authenticate
 
 from apps.accounts.models import User
 
-
+"""
+UserForm class:
+this class is used to create new instances of the user model
+"""
 class UserForm(forms.ModelForm):
     class Meta:
         model=User
@@ -32,13 +35,16 @@ class UserForm(forms.ModelForm):
         instance.full_name = validated_data['full_name']
         instance.email = validated_data['email']
         instance.username = validated_data['username']
-        # instance.set_password(validated_data['password'])
         instance.organization = validated_data['organization']
 
 
         instance.save()
         return instance
 from django.contrib.auth.forms import AuthenticationForm
+"""
+UserLoginForm class:
+this class is used in the process of logging the user in
+"""
 class UserLoginForm(AuthenticationForm):
     def clean(self):
         username = self.cleaned_data.get('username')
@@ -67,15 +73,22 @@ class UserLoginForm(AuthenticationForm):
         model=User
         fields=['phone_number' , 'password']
 
+"""
+UserRegistrationForm class:
+this class is used in the process of registering new users
+"""
 class UserRegistrationForm(forms.ModelForm):
     class Meta:
         model=User
+        # list all required fields in the User model
         fields=[
             'id', 'username', 'full_name','organization', 'email',
             'phone_number','staff','password','job_type']
         exclude = ('slug',)
+    # this method is used to create new instances
     def create(self, validated_data):
         from apps.accounts.models import User
+        # create new user instance from the form's fields
         user = User.objects.create(
                 username=validated_data['username'],
                 email=validated_data['email'],
@@ -84,12 +97,15 @@ class UserRegistrationForm(forms.ModelForm):
                 organization=validated_data['organization'],
                 staff = validated_data['staff']
             )
-
+        # set user's password
         user.set_password(validated_data['password'])
+        # save the user
         user.save()
+        # return the newly created user instance
         return user
-
+    # this method id used to update the user's data
     def update(self, instance, validated_data):
+        # get the form's fields data for each user's fields
         instance.phone_number = validated_data['phone_number']
         instance.full_name = validated_data['full_name']
         instance.email = validated_data['email']
@@ -97,6 +113,7 @@ class UserRegistrationForm(forms.ModelForm):
         instance.set_password(validated_data['password'])
         instance.organization = validated_data['organization']
         instance.staff = validated_data['staff']
-
+        # save the instance
         instance.save()
+        # return the instance
         return instance

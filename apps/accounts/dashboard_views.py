@@ -130,7 +130,7 @@ class UsersListView(ListView):
                 if len(headers) > 0:
                     # create a dictionary contains columns' names and their values
                     # from the User model and the selected headers and using paginator object
-                    constructor = prepare_selected_query(User, headers, selected_pages, query)
+                    constructor = prepare_selected_query(searchManObj.get_queryset(), headers, selected_pages, query)
                     # get status of the creation process for the report file
                     # set the file path and file name for the ReportMan's object attributes
                     # by calling the function createExcelFile and pass file name , headers , and de structured constructor variable
@@ -153,7 +153,7 @@ class UsersListView(ListView):
                     headers = get_fields_names_for_report_file(User,User.get_not_wanted_fields_names_in_report_file())
                     # create a dictionary contains columns' names and their values
                     # from the User model and the default headers and using paginator object
-                    constructor = prepare_selected_query(User,
+                    constructor = prepare_selected_query(searchManObj.get_queryset(),
                         selected_pages, query, headers)
                     # get status of the creation process for the report file
                     # set the file path and file name for the ReportMan's object attributes
@@ -179,7 +179,7 @@ class UsersListView(ListView):
                 if len(headers) > 0:
 
                     constructor = prepare_default_query(
-                        User,
+                        searchManObj.get_queryset(),
                         headers,
                         query)
                     # get status of the creation process for the report file
@@ -196,7 +196,7 @@ class UsersListView(ListView):
                         messages.error(request, "Sorry Report Failed To Create , Please Try Again!")
 
                 else:
-                    constructor = prepare_default_query(User,
+                    constructor = prepare_default_query(searchManObj.get_queryset(),
                         headers,query)
                     # get status of the creation process for the report file
                     # set the file path and file name for the ReportMan's object attributes
@@ -331,20 +331,32 @@ class UsersListView(ListView):
             }
         }
         return super().get(request)
+"""
+change_password function:
+is a method used to change a user's password
+"""
 
 @staff_member_required(login_url='login')
 def change_password(request):
     if request.method == 'POST':
+        # get the user's data from the form
         form = PasswordChangeForm(request.user, request.POST)
+        # check if user's data is valid
         if form.is_valid():
+            # save data
             user = form.save()
-            update_session_auth_hash(request, user)  # Important!
+            # update session authentication hash
+            update_session_auth_hash(request, user)
+            # send a success message to the user
             messages.success(request, 'Your password was successfully updated!')
+            # return to the changePassword route after submitting the form
             return redirect('changePassword')
         else:
             messages.error(request, 'Please correct the error below.')
     else:
+        # if the request method is GET , initiate the form object
         form = PasswordChangeForm(request.user)
+    # render the change_password html page to the user , add the form object to the render method
     return render(request, 'accounts/change_password.html', {
         'form': form
     })

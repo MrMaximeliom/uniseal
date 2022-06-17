@@ -81,6 +81,11 @@ class Product(models.Model):
     def __str__(self):
         return self.name
 
+    # return not wanted fields' names in the process of creating new report file from this model
+    def get_not_wanted_fields_names_in_report_file(self=None):
+        return ["id", "slug","arabic_name","image","product_file",
+                "arabic_description","video","is_top","discount_percentage"]
+
     def save(self, *args, **kwargs): # new+
         if not self.slug:
             self.slug = slugify(rand_slug()+ "-" +self.name)

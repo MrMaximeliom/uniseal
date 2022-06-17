@@ -1,6 +1,23 @@
 from django.http import HttpResponse
 
 
+
+def convert_field_name_to_readable_name(field_name):
+    words_in_field_name = ""
+    for word in field_name.split("_"):
+        words_in_field_name += word.capitalize() + " "
+    return words_in_field_name
+
+def convert_header_names_to_readable_names(headers):
+    converted_names = []
+    for sentence in headers:
+        result_word = ""
+        for word in sentence.split("_"):
+            result_word+=word.capitalize() + " "
+        converted_names.append(result_word.strip(" "))
+    return converted_names
+
+
 class EnablePartialUpdateMixin:
     """Enable partial updates
 
@@ -34,41 +51,54 @@ def rand_slug():
 SMS_USERNAME = 'uniseal'
 SMS_PASSWORD = '823178'
 
+def get_column_names_from_queryset(queryset):
+    column_names = []
+    for column_name in queryset[0].__dict__.keys():
+        if "_id" in column_name:
+            column_names.append(column_name.strip("_id"))
+        else:
+            column_names.append(column_name)
+    return column_names
 
-def prepare_selected_query(model, headers, selected_pages, paginator_object):
+
+def prepare_selected_query(queryset, headers, selected_pages, paginator_object):
     # model._meta.fields
     # define construct object
     constructor = {}
+    # first get column names from
+    column_names = get_column_names_from_queryset(queryset)
     # loop through headers
     for header in headers:
         # loop through fields names of the model
         # check for the existing of each column in the headers array
-        for field_name in model._meta.fields:
-            if convert_field_name_to_readable_name(header) == field_name:
+        for column_name in column_names:
+            if header == column_name:
                 # loop through selected pages
                 # define temporary array
                 temp_array = []
                 for page in selected_pages:
                     # loop through objects in the page
                     for object in paginator_object.page(page):
-                        print(object)
                         # add field value to the temporary array
-                        temp_array.append(getattr(object, field_name.name))
+                        temp_array.append(getattr(object,header))
                 # add the array to the constructor
-                constructor.update({field_name.name: temp_array})
+                constructor.update({column_name: temp_array})
     return constructor
 
 
-def prepare_default_query(model, headers, paginator_object):
+def prepare_default_query(queryset, headers, paginator_object):
     # model._meta.fields
     # define construct object
     constructor = {}
+    # first get column names from
+    column_names = get_column_names_from_queryset(queryset)
     # loop through headers
     for header in headers:
         # loop through fields names of the model
         # check for the existing of each column in the headers array
-        for field_name in model._meta.fields:
-            if convert_field_name_to_readable_name(header) == field_name.name:
+        # (id,name,state,slug)
+        for column_name in column_names:
+            if header == column_name:
                 # loop through selected pages
                 # define temporary array
                 temp_array = []
@@ -76,9 +106,12 @@ def prepare_default_query(model, headers, paginator_object):
                 for page in range(1, paginator_object.num_pages + 1):
                     # add field value to the temporary array
                     for object in paginator_object.page(page):
-                        temp_array.append(getattr(object, field_name.name))
-                # add the array to the constructor
-                constructor.update({field_name.name: temp_array})
+                        field_value  = getattr(object, header)
+                        if field_value is str():
+                            temp_array.append(field_value)
+                        else:
+                            temp_array.append(str(field_value))
+                constructor.update({ convert_field_name_to_readable_name(column_name): temp_array})
     return constructor
 
 
@@ -111,11 +144,6 @@ def check_string_search_phrase(search_phrase):
     return len(special_char) > 0, search_phrase.strip()
 
 
-def convert_field_name_to_readable_name(field_name):
-    words_in_field_name = ""
-    for word in field_name.split("_"):
-        words_in_field_name += word.capitalize() + " "
-    return words_in_field_name
 
 
 # TODO add logic to this function to use it later in the search functionality
@@ -199,12 +227,12 @@ class SearchMan:
             self.paginator = Paginator(countries, 5)
         if model == "State":
             from apps.address.models import State
-            states = State.objects.annotate(num_cities=Count('country')).order_by('-num_cities')
+            states = State.objects.annotate(number_of_cities=Count('country')).order_by('-number_of_cities')
             self.set_querySet(states)
             self.paginator = Paginator(states, 5)
         if model == "City":
             from apps.address.models import City
-            cities = City.objects.annotate(num_areas=Count('area')).order_by('-num_areas')
+            cities = City.objects.annotate(number_of_areas=Count('area')).order_by('-number_of_areas')
             self.set_querySet(cities)
             self.paginator = Paginator(cities, 5)
         if model == "Area":
@@ -368,6 +396,7 @@ def createExelFile(report_name, headers, request=None, **kwargs):
     from datetime import datetime
     # get current day to link it to Excel file name
     today = date.today()
+    converted_headers = convert_header_names_to_readable_names(headers)
     # get current time to link it to Excel file name
     now = datetime.now()
     current_time = now.strftime("%H_%M_%S")
@@ -379,8 +408,8 @@ def createExelFile(report_name, headers, request=None, **kwargs):
     workBok = xlsxwriter.Workbook(complete_file_name, options={'remove_timezone': True})
     sheet = workBok.add_worksheet()
     AlphabetLetters = ''.join(c for c in ascii_uppercase)
-    for c in range(len(headers)):
-        sheet.write(f"{AlphabetLetters[c]}1", headers[c])
+    for c in range(len(converted_headers)):
+        sheet.write(f"{AlphabetLetters[c]}1", converted_headers[c])
     x_position = -1
     for key, value in kwargs.items():
         x_position = x_position + 1

@@ -31,7 +31,8 @@ class Country(models.Model):
 
     # return not wanted fields' names in the process of creating new report file from this model
     def get_not_wanted_fields_names_in_report_file(self=None):
-        return ["id","slug"]
+        return ["id", "slug"]
+
 
 #
 class State(models.Model):
@@ -50,19 +51,23 @@ class State(models.Model):
         verbose_name=_('State Slug')
 
     )
+
     def __str__(self):
-        return self.name
+        return str(self.name)
 
     # return not wanted fields' names in the process of creating new report file from this model
     def get_not_wanted_fields_names_in_report_file(self=None):
-        return ["id",  "slug"]
+        return ["id", "slug"]
 
     def get_absolute_url(self):
         return reverse_lazy("allStates")
+
     def save(self, *args, **kwargs):
         value = str(self.name) + '' + str(rand_slug())
         self.slug = slugify(value)
         super().save(*args, **kwargs)
+
+
 #
 class City(models.Model):
     name = models.CharField(
@@ -83,10 +88,12 @@ class City(models.Model):
         verbose_name=_('City Slug')
 
     )
+
     def save(self, *args, **kwargs):
         value = str(self.name) + '' + str(rand_slug())
         self.slug = slugify(value)
         super().save(*args, **kwargs)
+
     def __str__(self):
         return self.name
 
@@ -96,6 +103,7 @@ class City(models.Model):
     # return not wanted fields' names in the process of creating new report file from this model
     def get_not_wanted_fields_names_in_report_file(self=None):
         return ["id", "slug"]
+
 
 class Area(models.Model):
     name = models.CharField(
@@ -113,6 +121,7 @@ class Area(models.Model):
         verbose_name=_('Area Slug')
 
     )
+
     def save(self, *args, **kwargs):
         value = str(self.name) + '' + str(rand_slug())
         self.slug = slugify(value)

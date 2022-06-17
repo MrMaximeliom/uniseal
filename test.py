@@ -19,7 +19,9 @@ create a function that takes the following arguments as inputs:
 - header array contains columns' names in the html page
 
 """
-
+def get_column_names_from_queryset(queryset):
+    # for word in queryset:
+    pass
 def prepare_selected_query(model,headers,selected_pages,paginator_object):
     # model._meta.fields
     # define construct object
@@ -47,6 +49,17 @@ def convert_field_name_to_readable_name(field_name):
         words_in_field_name += word.capitalize()+" "
     print( words_in_field_name)
 
+def convert_header_names_to_readable_names(headers):
+    converted_names = []
+    for sentence in headers:
+        result_word = ""
+        for word in sentence.split("_"):
+            result_word+=word.capitalize() + " "
+        converted_names.append(result_word.strip(" "))
+    return converted_names
+
+
+
 
 if __name__ == "__main__":
-    convert_field_name_to_readable_name("full_name_gender")
+    print(convert_header_names_to_readable_names(["full_name","gender_name","name"]))

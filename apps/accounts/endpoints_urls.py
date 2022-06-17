@@ -5,7 +5,6 @@ from rest_framework import viewsets
 from rest_framework.permissions import IsAuthenticated
 from rest_framework.views import APIView
 from rest_framework_simplejwt.views import TokenObtainPairView
-
 from Util.permissions import IsAnonymousUser, UnisealPermission
 from Util.utils import EnablePartialUpdateMixin
 from .serializers import MyTokenObtainPairSerializer

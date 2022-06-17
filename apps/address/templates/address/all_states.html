@@ -134,7 +134,7 @@
                                           <tr>
                                             <th scope="row">{{state.name}}</th>
                                             <td>{{ state.country }}</td>
-                                            <td>{{ state.num_cities|default:"0"}}</td>
+                                            <td>{{ state.number_of_cities|default:"0"}}</td>
                                           <td><a href="{% url 'editState' slug=state.slug %}" class="btn btn-sm btn-primary">Update</a></td>
 
                                             <td><a href="#" class="btn btn-sm btn-danger" data-bs-toggle="modal" data-bs-target="#exampleModal{{state.id}}">Delete</a></td>

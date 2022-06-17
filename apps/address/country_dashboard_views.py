@@ -108,7 +108,7 @@ class CountryListView(BaseListView):
                 print("original values: ", request.POST.get('pages_collector'))
                 if len(headers) > 0:
 
-                    constructor = prepare_selected_query(Country,headers,selected_pages,query)
+                    constructor = prepare_selected_query(searchManObj.get_queryset(),headers,selected_pages,query)
                     # if len(countries_list) > 0:
                     #     constructor.update({"country": countries_list})
                     status, report_man.filePath, report_man.fileName = createExelFile(
@@ -126,7 +126,7 @@ class CountryListView(BaseListView):
 
                 else:
                     headers = ["name"]
-                    constructor = prepare_default_query(Country,
+                    constructor = prepare_default_query(searchManObj.get_queryset(),
                          query, headers)
                     status, report_man.filePath, report_man.fileName =  createExelFile('Report_For_Users', headers,
                                                                                     **constructor)
@@ -145,7 +145,7 @@ class CountryListView(BaseListView):
             else:
                 query = searchManObj.getPaginator()
                 if len(headers) > 0:
-                    constructor  = prepare_default_query(Country,headers, query)
+                    constructor  = prepare_default_query(searchManObj.get_queryset(),headers, query)
                     print(constructor)
                     # if len(countries_list) > 0:
                     #     print("application list is bigger than 0")
@@ -167,7 +167,7 @@ class CountryListView(BaseListView):
 
                 else:
 
-                    constructor  = prepare_default_query(Country,headers, query)
+                    constructor  = prepare_default_query(searchManObj.get_queryset(),headers, query)
                     status, report_man.filePath, report_man.fileName = createExelFile(
                         'Report_For_Countries',
                         headers, **constructor,
