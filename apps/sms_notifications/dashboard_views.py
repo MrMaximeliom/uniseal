@@ -448,10 +448,6 @@ def send_sms_to_group(request):
     }
     return render(request, 'sms_notifications/groups/send_group_sms.html', context)
 
-
-
-
-
 @staff_member_required(login_url='login')
 def sendSMS(request, sender, receiver, msq, single=True):
     from Util.utils import SMS_USERNAME,SMS_PASSWORD
