@@ -66,7 +66,7 @@
                                         {% for application in object_list %}
                                           <tr>
                                             <th scope="row">{{application.name}}</th>
-                                            <td>{{ application.num_projects }}</td>
+                                            <td>{{ application.number_of_projects }}</td>
                                             <td><a href="#" class="btn btn-sm btn-danger" data-bs-toggle="modal" data-bs-target="#exampleModal{{application.id}}">{% trans 'delete' %}</a></td>
                                           </tr>
                                             <div class="modal fade" id="exampleModal{{application.id}}" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">

@@ -67,7 +67,7 @@
                                         {% for application in object_list %}
                                           <tr>
                                             <th scope="row">{{application.name}}</th>
-                                            <td>{{ application.num_projects }}</td>
+                                            <td>{{ application.number_of_projects }}</td>
                                             <td><a href="{% url 'editApplication' slug=application.slug %}" class="btn btn-sm btn-primary">{% trans 'Update' %}</a></td>
                                           </tr>
                                         {% endfor %}

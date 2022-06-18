@@ -34,8 +34,9 @@
 </select>
     </div>
   <div class="col-sm-3 col-md-3 col-lg-3">
-    <button type="submit" class="btn btn-primary mb-3">{% trans 'Search' %}</button>
-    <button type="submit" class="btn btn-danger mb-3">{% trans 'Clear Search' %}</button>
+      <button type="submit" class="btn btn-primary mb-3" id="searchButton" title="{{search_products_tip}}"><span><i class="fas fa-search"></i></span></button>
+    <button type="submit" name="clear" value="clear" class="btn btn-danger mb-3" title="{{clear_search_tip}}"><span><i class="fas fa-eraser"></i></span></button>
+
   </div>
 </form>
 
@@ -163,7 +164,7 @@
        </nav>
   </div>
 {% else %}
-<h3 class="delete-warning">{% trans 'There is no sms notifications yet .. you can add send single SMS from' %} <a href="{% url 'sendSMS' %}">{% trans 'Here' %}</a> {% trans ' Or to SMS Group from '%}<a href="{% url 'sendSMSToSMSGroup' %}">{% trans 'Here' %}</a></h3>
+<h3 class="delete-warning">{% trans 'There are no sms notifications yet ... you can send new sms from' %} <a href="{% url 'sendSMS' %}">{% trans 'Here' %}</a> {% trans ' Or to SMS Group from '%}<a href="{% url 'sendSMSToSMSGroup' %}">{% trans 'Here' %}</a></h3>
 
 {% endif %}
 

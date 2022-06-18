@@ -115,7 +115,7 @@
                                         {% for category in object_list %}
                                           <tr>
                                             <th scope="row">{{category.name}}</th>
-                                            <td>{{ category.num_products }}</td>
+                                            <td>{{ category.number_of_products }}</td>
                                             <td><a href="{% url 'editCategory' slug=category.slug %}"  class="btn btn-primary mr-4">Update</a>
 </td>
                                               <td><a href="#"  class="btn btn-danger" data-bs-toggle="modal" data-bs-target="#exampleModal{{category.id}}">{% trans 'Delete' %}</a>
@@ -183,7 +183,7 @@
   </div>
 {% endif %}
 {% if object_list|length == 0 and not search %}
-<h3 class="delete-warning">{% trans 'There are no categories yet .. you can add new ones from ' %} <a href="{% url 'addCategories' %}">{% trans 'Here' %}</a></h3>
+<h3 class="delete-warning">{% trans 'There are no categories yet ... you can add new ones from ' %} <a href="{% url 'addCategories' %}">{% trans 'Here' %}</a></h3>
 {% endif %}
 {% if search and search_result.count == 0 and search_result != "" %}
 <h3 class="delete-warning">{% trans 'Sorry no categories found that matches your search!' %}</h3>

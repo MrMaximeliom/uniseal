@@ -5,7 +5,6 @@ from django.db.models import Count
 from django.shortcuts import render, get_object_or_404, redirect
 from django.template.defaultfilters import slugify
 from django.utils.translation import gettext_lazy as _
-
 from Util.utils import SearchMan, ReportMan, delete_temp_folder
 from Util.utils import rand_slug
 
@@ -179,105 +178,7 @@ class ProjectListView(BaseListView):
 
 # ends here
 
-# report_man.setTempDir(tempfile.mkdtemp())
-def prepare_selected_query(selected_pages, paginator_obj, headers=None):
-    project_name = []
-    beneficiary = []
-    description = []
-    main_material = []
-    project_type = []
-    execution_date = []
-    if headers is not None:
-        headers_here = headers
-        for header in headers_here:
-            if header == "Project Name":
-                for page in selected_pages:
-                    for project in paginator_obj.page(page):
-                        project_name.append(project.project.name)
-            elif header == "Beneficiary":
-                for page in selected_pages:
-                    for project in paginator_obj.page(page):
-                        beneficiary.append(project.project.beneficiary)
-            elif header == "Description":
-                for page in selected_pages:
-                    for project in paginator_obj.page(page):
-                        description.append(project.project.description)
-            elif header == "Main Material Used":
-                print("here in supplier selected")
-                for page in selected_pages:
-                    for project in paginator_obj.page(page):
-                        main_material.append(project.project.main_material)
-            elif header == "Project Type":
-                for page in selected_pages:
-                    for project in paginator_obj.page(page):
-                        project_type.append(project.project.project_type.name)
-            elif header == "Execution Date":
-                for page in selected_pages:
-                    for project in paginator_obj.page(page):
-                        execution_date.append(project.project.date)
-    else:
-        headers_here = ["Project Name", "Beneficiary", "Description", "Main Material Used", "Project Type",
-                        "Execution Date"]
-        for page in range(1, paginator_obj.num_pages + 1):
-            for project in paginator_obj.page(page):
-                project_name.append(project.project.name)
-                beneficiary.append(project.project.beneficiary)
-                description.append(project.project.description)
-                main_material.append(project.project.main_material)
-                project_type.append(project.project.project_type.name)
-                execution_date.append(project.project.date)
-    return headers_here, project_name, beneficiary, description, main_material, project_type, execution_date
 
-
-def prepare_query(paginator_obj, headers=None):
-    project_name = []
-    beneficiary = []
-    description = []
-    main_material = []
-    project_type = []
-    execution_date = []
-    if headers is not None:
-        headers_here = headers
-        for header in headers_here:
-            if header == "Project Name":
-                for page in range(1, paginator_obj.num_pages + 1):
-                    for project in paginator_obj.page(page):
-                        project_name.append(project.project.name)
-            elif header == "Beneficiary":
-                for page in range(1, paginator_obj.num_pages + 1):
-                    for project in paginator_obj.page(page):
-                        beneficiary.append(project.project.beneficiary)
-            elif header == "Description":
-                for page in range(1, paginator_obj.num_pages + 1):
-                    for project in paginator_obj.page(page):
-                        description.append(project.project.description)
-            elif header == "Main Material Used":
-                for page in range(1, paginator_obj.num_pages + 1):
-                    for project in paginator_obj.page(page):
-                        main_material.append(project.project.main_material)
-            elif header == "Project Type":
-                for page in range(1, paginator_obj.num_pages + 1):
-                    for project in paginator_obj.page(page):
-                        project_type.append(project.project.project_type.name)
-            elif header == "Execution Date":
-                for page in range(1, paginator_obj.num_pages + 1):
-                    for project in paginator_obj.page(page):
-                        execution_date.append(project.project.date)
-    else:
-        headers_here = ["Project Name", "Beneficiary", "Description", "Main Material Used", "Project Type",
-                        "Execution Date"]
-        for page in range(1, paginator_obj.num_pages + 1):
-            for project in paginator_obj.page(page):
-                project_name.append(project.name)
-                beneficiary.append(project.project.beneficiary)
-                description.append(project.project.description)
-                main_material.append(project.project.main_material)
-                project_type.append(project.project.project_type.name)
-                execution_date.append(project.project.date)
-
-    # later for extracting actual data
-
-    return headers_here, project_name, beneficiary, description, main_material, project_type, execution_date
 
 @staff_member_required(login_url='login')
 def project_details(request, slug):

@@ -68,7 +68,7 @@
                                         {% for category in object_list %}
                                           <tr>
                                             <th scope="row">{{category.name}}</th>
-                                            <td>{{ category.num_products }}</td>
+                                            <td>{{ category.number_of_products }}</td>
                                             <td><a href="#" class="btn btn-sm btn-danger"  data-bs-toggle="modal" data-bs-target="#exampleModal{{category.id}}">{% trans 'Delete' %}</a></td>
                                           </tr>
                                             <div class="modal fade" id="exampleModal{{category.id}}" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">

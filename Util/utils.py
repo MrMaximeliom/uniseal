@@ -79,8 +79,11 @@ def prepare_selected_query(queryset, headers, selected_pages, paginator_object):
                 for page in selected_pages:
                     # loop through objects in the page
                     for object in paginator_object.page(page):
-                        # add field value to the temporary array
-                        temp_array.append(getattr(object,header))
+                        field_value  = getattr(object, header)
+                        if field_value is str():
+                            temp_array.append(field_value)
+                        else:
+                            temp_array.append(str(field_value))
                 # add the array to the constructor
                 constructor.update({column_name: temp_array})
     return constructor
@@ -103,7 +106,10 @@ def prepare_default_query(queryset, headers, paginator_object):
                 # define temporary array
                 temp_array = []
                 # loop through objects in the page
-                for page in range(1, paginator_object.num_pages + 1):
+                total_number_of_pages = paginator_object.num_pages+1
+
+                for page in range(1, total_number_of_pages):
+                    print("number of pages is: ", paginator_object.num_pages)
                     # add field value to the temporary array
                     for object in paginator_object.page(page):
                         field_value  = getattr(object, header)
@@ -212,12 +218,12 @@ class SearchMan:
             self.paginator = Paginator(projects, 5)
         if model == "Application":
             from apps.project.models import Application
-            applications = Application.objects.annotate(num_projects=Count('project')).order_by('-num_projects')
+            applications = Application.objects.annotate(number_of_projects=Count('project')).order_by('-number_of_projects')
             self.set_querySet(applications)
             self.paginator = Paginator(applications, 5)
         if model == "Category":
             from apps.category.models import Category
-            categories = Category.objects.annotate(num_products=Count('product')).order_by('-num_products')
+            categories = Category.objects.annotate(number_of_products=Count('product')).order_by('-number_of_products')
             self.set_querySet(categories)
             self.paginator = Paginator(categories, 5)
         if model == "Country":

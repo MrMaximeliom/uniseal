@@ -138,7 +138,7 @@
 <h2>{% trans 'Showing Search Results For ' %}</h2>
 <h3>{{search_option}}="{{search_phrase}}"</h3>
 {% endif %}
-{% if all_products_data|length %}
+{% if object_list|length %}
 <div class="row card-group">
 
 {% for product in object_list %}
@@ -168,7 +168,7 @@
         <h5 class="modal-title" id="exampleModalLabel">{% trans 'Delete Conformation' %}</h5>
         <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
       </div>
-        <form action="{% url 'productDelete' slug=product.slug %}" method="post">
+        <form action="{% url 'deleteProduct' slug=product.slug %}" method="post">
             {% csrf_token %}
       <div class="modal-body">
 

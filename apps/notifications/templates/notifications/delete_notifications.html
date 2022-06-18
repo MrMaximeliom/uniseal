@@ -44,8 +44,8 @@
     </div>
 
   <div class="col-sm-3 col-md-3 col-lg-3">
-    <button type="submit" class="btn btn-primary mb-3" id="searchButton">{% trans 'Search' %}</button>
-    <button type="submit" name="clear" value="clear" class="btn btn-danger mb-3">{% trans 'Clear Search' %}</button>
+      <button type="submit" class="btn btn-primary mb-3" id="searchButton" title="{{search_products_tip}}"><span><i class="fas fa-search"></i></span></button>
+    <button type="submit" name="clear" value="clear" class="btn btn-danger mb-3" title="{{clear_search_tip}}"><span><i class="fas fa-eraser"></i></span></button>
 
   </div>
 
@@ -58,7 +58,7 @@
 <h3>{{search_option}}="{{search_phrase}}"</h3>
 {% endif %}
 
-{% if all_notifications_data|length > 0 %}
+{% if object_list|length > 0 %}
   <div class="row">
                     <div class="col-12 col-xl-11 mb-4 mb-lg-0">
                         <div class="card-light card-dark">
@@ -77,7 +77,7 @@
                                           </tr>
                                         </thead>
                                         <tbody>
-                                        {% for notification in all_notifications_data %}
+                                        {% for notification in object_list %}
 
                                           <tr>
                                             <th scope="row">{{notification.title}}</th>
@@ -93,7 +93,7 @@
         <h5 class="modal-title" id="exampleModalLabel">{% trans 'Delete Conformation' %}</h5>
         <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
       </div>
-        <form action="" method="post">
+        <form action="{% url 'deleteNotification' slug=notification.slug%}" method="post">
             {% csrf_token %}
       <div class="modal-body">
 
@@ -103,7 +103,7 @@
       </div>
       <div class="modal-footer">
         <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">{% trans 'Close' %}</button>
-        <a type="submit" class="btn btn-danger" href="{% url 'deleteNotification' id=notification.id%}">{% trans 'Delete' %}</a>
+        <button type="submit" class="btn btn-danger" >{% trans 'Delete' %}</button>
 
       </div>
               </form>
@@ -148,7 +148,7 @@
        </nav>
   </div>
 {% endif %}
-{% if all_notifications_data|length == 0 and not search %}
+{% if object_list|length == 0 and not search %}
 <h3 class="delete-warning">{% trans 'There is no notifications yet .. you can send new ones from ' %} <a href="{% url 'sendNotifications' %}">{% trans 'Here' %}</a></h3>
 {% endif %}
 

@@ -113,8 +113,9 @@ class User(AbstractBaseUser):
     registration_datetime = models.DateTimeField(auto_now_add=True, null=True, blank=True)
 
     def save(self, *args, **kwargs):
-        if not self.slug:
-            self.slug = slugify(rand_slug() + "-" + str(self.username))
+        value = str(self.username) + '' + str(rand_slug())
+        self.slug = slugify(value)
+        super().save(*args, **kwargs)
         return super().save(*args, **kwargs)
 
     USERNAME_FIELD = 'phone_number'
@@ -150,7 +151,7 @@ class User(AbstractBaseUser):
 
     # return not wanted fields' names in the process of creating new report file from this model
     def get_not_wanted_fields_names_in_report_file(self=None):
-        return ["id","uuid","slug","registration_date","email","password"]
+        return ["id","uuid","slug","registration_date","email","password","admin","staff","is_active"]
 
     @property
     def is_admin(self):

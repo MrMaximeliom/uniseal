@@ -401,7 +401,7 @@ def send_sms(request):
         'sms_notifications': 'active',
 
     }
-    return render(request, 'sms_notifications/send_sms.html', context)
+    return render(request, 'sms_notifications/sms/send_sms.html', context)
 
 def prepare_group_contacts(group):
     from .models import SMSContacts
@@ -421,7 +421,6 @@ def send_sms_to_group(request):
             print("receivers are:\n")
             receivers = prepare_group_contacts(group)
             print(receivers)
-
             if form.cleaned_data.get('message') != '':
                   status = sendSMS(request,
                               'Uniseal',
@@ -447,7 +446,7 @@ def send_sms_to_group(request):
         'sms_notifications': 'active',
 
     }
-    return render(request, 'sms_notifications/send_group_sms.html', context)
+    return render(request, 'sms_notifications/groups/send_group_sms.html', context)
 
 
 

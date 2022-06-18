@@ -82,7 +82,7 @@ class CountryListView(BaseListView):
         paginator = Paginator(queryset, 5)
         if 'clear' not in request.POST and 'createExcel' not in request.POST:
             searchManObj.setSearch(True)
-            if request.POST.get('search_phrase') != '':
+            if request.POST.get('search_phrase') is not None:
                 print("searching for countries")
                 search_message = request.POST.get('search_phrase')
                 search_result = Country.objects.filter(
@@ -105,7 +105,6 @@ class CountryListView(BaseListView):
                 # get requested pages from the paginator of original page
                 selected_pages = get_selected_pages(request.POST.get('pages_collector'))
                 query = searchManObj.getPaginator()
-                print("original values: ", request.POST.get('pages_collector'))
                 if len(headers) > 0:
 
                     constructor = prepare_selected_query(searchManObj.get_queryset(),headers,selected_pages,query)

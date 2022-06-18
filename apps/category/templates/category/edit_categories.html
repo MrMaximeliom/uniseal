@@ -66,7 +66,7 @@
                                         {% for category in object_list %}
                                           <tr>
                                             <th scope="row">{{category.name}}</th>
-                                            <td>{{ category.num_products }}</td>
+                                            <td>{{ category.number_of_products }}</td>
                                             <td>
                                                 <a href="{% url 'editCategory' slug=category.slug %}" class="btn btn-sm btn-primary">Update</a>
                                             </td>

@@ -26,43 +26,43 @@
     {% csrf_token %}
   <div class="mb-3 row">
     <div class="col-sm-6">
-                        {{product_form.name|as_crispy_field}}
+                        {{form.name|as_crispy_field}}
 
     </div>
   </div>
         <div class="mb-3 row">
     <div class="col-sm-6">
-                        {{product_form.arabic_name|as_crispy_field}}
+                        {{form.arabic_name|as_crispy_field}}
 
     </div>
   </div>
   <div class="mb-3 row">
     <div class="col-sm-6">
-                          {{product_form.image|as_crispy_field}}
+                          {{form.image|as_crispy_field}}
 
     </div>
   </div>
         <div class="mb-3 row">
     <div class="col-sm-6">
-                          {{product_form.category|as_crispy_field}}
+                          {{form.category|as_crispy_field}}
 
     </div>
   </div>
  <div class="mb-4 row">
     <div class="col-sm-6">
-                          {{product_form.price|as_crispy_field}}
+                          {{form.price|as_crispy_field}}
 
     </div>
   </div>
        <div class="mb-4 row">
     <div class="col-sm-6">
-                          {{product_form.discount_percentage|as_crispy_field}}
+                          {{form.discount_percentage|as_crispy_field}}
 
     </div>
   </div>
       <div class="mb-3 row">
     <div class="col-sm-6">
-                          {{product_form.product_file|as_crispy_field}}
+                          {{form.product_file|as_crispy_field}}
 
     </div>
   </div>
@@ -73,19 +73,19 @@
 <!--      <option>{{category.name}}</option>-->
 <!--        {% endfor %}-->
 <!--    </select>-->
-                                   {{product_form.description|as_crispy_field}}
+                                   {{form.description|as_crispy_field}}
 
              </div>
   </div>
               <div class="mb-3 row">
              <div class="col-sm-6">
-                                   {{product_form.supplier|as_crispy_field}}
+                                   {{form.supplier|as_crispy_field}}
 
              </div>
   </div>
           <div class="mb-3 row">
              <div class="col-sm-6">
-                                   {{product_form.is_top|as_crispy_field}}
+                                   {{form.is_top|as_crispy_field}}
 
              </div>
   </div>

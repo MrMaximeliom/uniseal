@@ -47,10 +47,11 @@
     </div>
 
   <div class="col-sm-3 col-md-3 col-lg-3">
-    <button type="submit" class="btn btn-primary mb-3" id="searchButton" value="category">{% trans 'Search' %}</button>
-    <button type="submit" name="clear" value="clear" class="btn btn-danger mb-3">{% trans 'Clear Search' %}</button>
-             {% if all_selling_points_data|length > 0  %}
-      <button type="button" class="btn btn-success mb-3" data-bs-toggle="modal" data-bs-target="#exportData"><i class="fa fa-file-excel-o" aria-hidden="true"></i></button>
+     <button type="submit" class="btn btn-primary mb-3" id="searchButton" title="{{search_products_tip}}"><span><i class="fas fa-search"></i></span></button>
+    <button type="submit" name="clear" value="clear" class="btn btn-danger mb-3" title="{{clear_search_tip}}"><span><i class="fas fa-eraser"></i></span></button>
+           {% if object_list|length > 0  %}
+            <button type="button" class="btn btn-success mb-3" data-bs-toggle="modal" data-bs-target="#exportData" title="{{create_report_tip}}"><span><i class="fas fa-file-csv"></i></span></button>
+
 {% endif %}
   </div>
 </form>
@@ -151,10 +152,10 @@
 <h2>{% trans 'Showing Search Results For ' %}</h2>
 <h3>{{search_option}}="{{search_phrase}}"</h3>
 {% endif %}
-{% if all_selling_points_data|length %}
+{% if object_list|length %}
 <div class="row card-group">
 
-{% for point in all_selling_points_data %}
+{% for point in object_list %}
 
  <div class="col-sm col-md-5 col-lg-4">
                 <div class="card-light mb-5 ml-2" >
@@ -177,8 +178,8 @@
 
     </p>
        <div class="card-text mt-3">
-<a href="#" class="btn btn-sm btn-primary" >{% trans 'update' %}</a>
- <a href="#" class="btn btn-sm btn-danger" data-bs-toggle="modal" data-bs-target="#exampleModal{{point.id}}">{% trans 'delete' %}</a>
+<a href="{% url 'editSellingPoint' slug=point.slug %}" class="btn btn-primary  mr-2 " >{% trans 'update' %}</a>
+ <a href="#" class="btn  btn-danger" data-bs-toggle="modal" data-bs-target="#exampleModal{{point.id}}">{% trans 'delete' %}</a>
       <div class="modal fade" id="exampleModal{{point.id}}" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
   <div class="modal-dialog">
     <div class="modal-content">
@@ -238,7 +239,7 @@
        </nav>
   </div>
 {% endif %}
-{% if all_selling_points_data|length == 0 and not search %}
+{% if object_list|length == 0 and not search %}
 <h3 class="delete-warning">{% trans 'There is no selling points yet .. you can add new ones from ' %} <a href="{% url 'addSellingPoints' %}">{% trans 'Here' %}</a></h3>
 {% endif %}
 {% if search and search_result.count == 0 and search_result != "" %}

@@ -87,8 +87,9 @@ class Product(models.Model):
                 "arabic_description","video","is_top","discount_percentage"]
 
     def save(self, *args, **kwargs): # new+
-        if not self.slug:
-            self.slug = slugify(rand_slug()+ "-" +self.name)
+        value = str(self.name) + '' + str(rand_slug())
+        self.slug = slugify(value)
+        super().save(*args, **kwargs)
         return super().save(*args, **kwargs)
 
 

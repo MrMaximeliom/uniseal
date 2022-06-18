@@ -1,6 +1,5 @@
 from django.contrib.admin.views.decorators import staff_member_required
 from django.urls import path
-
 from Util.search_form_strings import DELETE_JOB_TYPES_TITLE, EDIT_JOB_TYPES_TITLE, ALL_JOB_TYPES_TITLE, \
     ADD_JOB_TYPES_TITLE
 from apps.common_code.views import UpdateModelView, AddModelView, ModelDeleteView

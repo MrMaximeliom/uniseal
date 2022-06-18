@@ -4,7 +4,6 @@ from django.db.models import Count
 from django.shortcuts import redirect
 from Util.utils import (SearchMan, createExelFile,
                         ReportMan, delete_temp_folder,
-                        get_fields_names_for_report_file,
                         get_selected_pages,
                         prepare_default_query,
                         prepare_selected_query
@@ -137,7 +136,7 @@ class CityListView(BaseListView):
 
 
                 else:
-                    headers = get_fields_names_for_report_file(City,City.get_not_wanted_fields_names_in_report_file())
+                    headers = ["name","state","number_of_areas"]
                     constructor = prepare_selected_query(search_man_cities.get_queryset(),headers,
                         selected_pages, query)
                     status, report_man_cities.filePath, report_man_cities.fileName = createExelFile('Report_For_Cities',
@@ -172,7 +171,7 @@ class CityListView(BaseListView):
                         messages.error(request, "Sorry Report Failed To Create , Please Try Again!")
 
                 else:
-                    headers = get_fields_names_for_report_file(City,City.get_not_wanted_fields_names_in_report_file())
+                    headers = ["name","state","number_of_areas"]
                     constructor = prepare_default_query(search_man_cities.get_queryset(),headers,query)
                     status, report_man_cities.filePath, report_man_cities.fileName = createExelFile('Report_For_Cities',
                                                                                                     headers,
@@ -231,4 +230,3 @@ class CityListView(BaseListView):
                 }
             }
         return super().get(request)
-# ends here

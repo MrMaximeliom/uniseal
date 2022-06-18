@@ -83,7 +83,7 @@
        </nav>
   </div>
 {% else %}
-<h3 class="delete-warning">{% trans 'There is no sms notifications yet .. you can add send single SMS from' %} <a href="{% url 'sendSMS' %}">{% trans 'Here' %}</a> {% trans ' Or to SMS Group from '%}<a href="{% url 'sendSMSToSMSGroup' %}">{% trans 'Here' %}</a></h3>
+<h3 class="delete-warning">{% trans 'There are no sms notifications yet ... you can add send single SMS from' %} <a href="{% url 'sendSMS' %}">{% trans 'Here' %}</a> {% trans ' Or to SMS Group from '%}<a href="{% url 'sendSMSToSMSGroup' %}">{% trans 'Here' %}</a></h3>
 
 {% endif %}
 {% endblock content %}

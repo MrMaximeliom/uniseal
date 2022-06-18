@@ -70,7 +70,7 @@ class UsersListView(ListView):
                 searchManObj.setSearchPhrase(search_message)
                 # set search option
                 searchManObj.setSearchOption('Full Name')
-                # set search error to => True
+                # set search error to => False
                 searchManObj.setSearchError(False)
             elif request.POST.get('search_options') == 'username':
                 print('here now in username')
@@ -129,7 +129,7 @@ class UsersListView(ListView):
                 # check if headers length is greater than 0
                 if len(headers) > 0:
                     # create a dictionary contains columns' names and their values
-                    # from the User model and the selected headers and using paginator object
+                    # from the query and the selected headers and using paginator object
                     constructor = prepare_selected_query(searchManObj.get_queryset(), headers, selected_pages, query)
                     # get status of the creation process for the report file
                     # set the file path and file name for the ReportMan's object attributes
@@ -149,12 +149,13 @@ class UsersListView(ListView):
                         # send error message if the file creation process was broken
                         messages.error(request, "Sorry Report Failed To Create , Please Try Again!")
                 else:
+                    print("here ya dody")
                     # set default headers if the user has not selected any
                     headers = get_fields_names_for_report_file(User,User.get_not_wanted_fields_names_in_report_file())
                     # create a dictionary contains columns' names and their values
                     # from the User model and the default headers and using paginator object
-                    constructor = prepare_selected_query(searchManObj.get_queryset(),
-                        selected_pages, query, headers)
+                    constructor = prepare_selected_query(searchManObj.get_queryset(),headers,
+                        selected_pages, query)
                     # get status of the creation process for the report file
                     # set the file path and file name for the ReportMan's object attributes
                     # by calling the function createExcelFile and pass file name , headers , and de structured constructor variable
@@ -175,9 +176,9 @@ class UsersListView(ListView):
             else:
                 # get the original query of page and then structure the data
                 query = searchManObj.getPaginator()
-                print(headers)
+                # set default headers if the user has not selected any
+                # headers = get_fields_names_for_report_file(User, User.get_not_wanted_fields_names_in_report_file())
                 if len(headers) > 0:
-
                     constructor = prepare_default_query(
                         searchManObj.get_queryset(),
                         headers,
@@ -196,6 +197,8 @@ class UsersListView(ListView):
                         messages.error(request, "Sorry Report Failed To Create , Please Try Again!")
 
                 else:
+                    print("pages are not selected")
+
                     constructor = prepare_default_query(searchManObj.get_queryset(),
                         headers,query)
                     # get status of the creation process for the report file

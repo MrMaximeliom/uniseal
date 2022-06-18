@@ -121,7 +121,7 @@
                                         {% for application in object_list %}
                                           <tr>
                                             <th scope="row">{{application.name}}</th>
-                                            <td>{{ application.num_projects }}</td>
+                                            <td>{{ application.number_of_projects }}</td>
                                          <td><a href="#" class="btn btn-sm btn-primary" >{% trans 'update' %}</a></td>
                                           <td><a href="#" class="btn btn-sm btn-danger" data-bs-toggle="modal" data-bs-target="#exampleModal{{application.id}}">{% trans 'delete' %}</a></td>
 

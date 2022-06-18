@@ -7,7 +7,6 @@ from apps.project_application import dashboard_views as application_views
 from apps.project_application.dashboard_views import ProjectApplicationListView
 
 urlpatterns = [
-  path('allApplications', application_views.all_applications, name='allApplications'),
   path('allApplications', staff_member_required(ProjectApplicationListView.as_view(
     model=Application,
     template_name="project_application/all_applications.html",

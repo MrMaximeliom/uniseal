@@ -46,7 +46,7 @@
   <div class="col-sm-3 col-md-3 col-lg-3">
    <button type="submit" class="btn btn-primary mb-3" id="searchButton" title="{{search_products_tip}}"><span><i class="fas fa-search"></i></span></button>
     <button type="submit" name="clear" value="clear" class="btn btn-danger mb-3" title="{{clear_search_tip}}"><span><i class="fas fa-eraser"></i></span></button>
-       {% if all_orders_data|length > 0  %}
+       {% if object_list|length > 0  %}
       <button type="button" class="btn btn-success mb-3" data-bs-toggle="modal" data-bs-target="#exportData" title="{{create_report_tip}}"><span><i class="fas fa-file-csv"></i></span></button>
  {% endif %}
   </div>
@@ -174,7 +174,7 @@
         <h5 class="modal-title" id="exampleModalLabel">{% trans 'Delete Conformation' %}</h5>
         <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
       </div>
-        <form action="{% url 'productDelete' slug=product.slug %}" method="post">
+        <form action="{% url 'deleteProduct' slug=product.slug %}" method="post">
             {% csrf_token %}
       <div class="modal-body">
 
