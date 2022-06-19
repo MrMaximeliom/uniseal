@@ -5,11 +5,10 @@ from django.contrib.auth.forms import PasswordChangeForm
 from django.core.paginator import Paginator, PageNotAnInteger, EmptyPage
 from django.shortcuts import render, redirect
 from django.views.generic import ListView
+
 from Util.utils import SearchMan, createExelFile, ReportMan, delete_temp_folder, \
-    check_phone_number,prepare_selected_query,prepare_default_query,\
-    get_selected_pages,get_fields_names_for_report_file
-
-
+    check_phone_number, prepare_selected_query, prepare_default_query, \
+    get_selected_pages, get_fields_names_for_report_file
 
 searchManObj = SearchMan("User")
 report_man = ReportMan()

@@ -1,13 +1,12 @@
 from django.contrib import messages
 from django.contrib.admin.views.decorators import staff_member_required
 from django.core.paginator import Paginator, PageNotAnInteger, EmptyPage
-from django.shortcuts import render, get_object_or_404, redirect
+from django.shortcuts import render
 from django.template.defaultfilters import slugify
 from django.utils.translation import gettext_lazy as _
 from pyfcm import FCMNotification
 
 from Util.utils import rand_slug, SearchMan, ReportMan, delete_temp_folder
-
 # Create your views here.
 # NEW CODE
 from apps.common_code.views import BaseListView

@@ -1,6 +1,5 @@
 from django.contrib.admin.views.decorators import staff_member_required
 from django.urls import path
-
 from apps.common_code.views import ModelDeleteView, AddModelView, UpdateModelView
 from apps.sellingPoint import dashboard_views as selling_point_views
 from apps.sellingPoint.dashboard_views import SellingPointsListView

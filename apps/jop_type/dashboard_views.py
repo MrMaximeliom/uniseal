@@ -1,6 +1,7 @@
 from django.contrib import messages
 from django.core.paginator import Paginator, PageNotAnInteger, EmptyPage
 from django.db.models import Count
+
 from Util.utils import delete_temp_folder, SearchMan
 # NEW CODE STARTS HERE
 from apps.common_code.views import BaseListView

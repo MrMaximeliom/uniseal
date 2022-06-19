@@ -1,7 +1,8 @@
 from django.contrib import messages
 from django.core.paginator import Paginator, PageNotAnInteger, EmptyPage
 from django.db.models import Count
-from django.shortcuts import  redirect
+from django.shortcuts import redirect
+
 from Util.utils import (SearchMan, createExelFile,
                         ReportMan, delete_temp_folder,
                         get_fields_names_for_report_file,
@@ -10,6 +11,7 @@ from Util.utils import (SearchMan, createExelFile,
                         prepare_default_query)
 from apps.address.models import Area
 from apps.common_code.views import BaseListView
+
 search_man_areas = SearchMan("Area")
 report_man_areas = ReportMan()
 

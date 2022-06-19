@@ -11,17 +11,17 @@
                     <ol class="crumb breadcrumb-light breadcrumb-dark">
                         <li class="breadcrumb-item"><a href="{% url 'dashboard' %}">{% trans 'Dashboard' %}</a></li>
                         <li class="breadcrumb-item" aria-current="page">{% trans 'SMS Notifications' %}</li>
-                        <li class="breadcrumb-item" aria-current="page">{% trans 'Update SMS Notification' %}</li>
+                        <li class="breadcrumb-item" aria-current="page">{% trans 'Delete SMS Notification' %}</li>
                     </ol>
                 </nav>
                 {% endblock breadcrumb_content %}
 {% block content %}
+                <h1 class="h2">{% trans 'Delete SMS Notifications' %}</h1>
 {% if object_list|length > 0 %}
-                <h1 class="h2">{% trans 'Update SMS Notifications' %}</h1>
  <div class="row">
                     <div class="col-12 col-xl-11 mb-4 mb-lg-0">
                         <div class="card-light card-dark">
-                            <h5 class="card-header-light card-header-dark">{% trans 'Update SMS Notifications' %}</h5>
+                            <h5 class="card-header-light card-header-dark">{% trans 'SMS' %}</h5>
                             <div class="card-body-light card-body-dark">
                                 <div class="table-responsive">
                                     <table class="table">
@@ -30,26 +30,44 @@
                                             <th scope="col">{% trans 'Sender' %}</th>
                                             <th scope="col">{% trans 'Message' %}</th>
                                             <th scope="col">{% trans 'Group' %}</th>
-                                            <th scope="col">{% trans 'Mobile Number (Single SMS)' %}</th>
-                                            <th scope="col">{% trans 'Multiple SMS?' %}</th>
+                                            <th scope="col">{% trans 'Status' %}</th>
                                             <th scope="col"></th>
                                           </tr>
                                         </thead>
                                         <tbody>
                                         {% for sms in object_list %}
                                           <tr>
-                      <th scope="row">{% trans 'Uniseal'%}</th>
+                                          <th scope="row">{% trans 'Uniseal'%}</th>
                                             <td>{{ sms.message }}</td>
-                                            <td>{{ sms.group }}</td>
-                                              {% if sms.single_mobile_number%}
-                                            <td>0{{ sms.single_mobile_number }}</td>
-                                              {% else %}
-                                               <td>{{ sms.single_mobile_number }}</td>
-                                              {% endif %}
-                                            <td>{{ sms.is_multiple }}</td>
-                                            <td><a href="{% url 'editSMS' slug=sms.slug %}" class="btn btn-sm btn-primary" >{% trans 'Update' %}</a></td>
+                                            <td>{{ sms.group.name }}</td>
+                                               <td>{{ sms.status }}</td>
+                                            <td><a href="#" class="btn btn-sm btn-danger" data-bs-toggle="modal" data-bs-target="#exampleModal{{sms.id}}">{% trans 'Delete' %}</a></td>
                                           </tr>
+                                                                                    <div class="modal fade" id="exampleModal{{sms.id}}" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="exampleModalLabel">{% trans 'Delete Conformation' %}</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+        <form action="{% url 'deleteGroupsSMS' slug=sms.slug %}" method="post">
+            {% csrf_token %}
+      <div class="modal-body">
 
+          <h3>{% trans 'Are you sure you want to delete this sms notification?' %}</h3>
+<h4 class="delete-warning">{{sms.message}}</h4>
+
+<!--           <input type="number" value="{{product.id}}" hidden name="product_id">-->
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+        <button type="submit" class="btn btn-danger" >Delete</button>
+
+      </div>
+              </form>
+    </div>
+  </div>
+</div>
                                         {% endfor %}
 
                                         </tbody>
@@ -84,6 +102,6 @@
   </div>
 {% else %}
 <h3 class="delete-warning">{% trans 'There are no sms notifications yet ... you can add send single SMS from' %} <a href="{% url 'sendSMS' %}">{% trans 'Here' %}</a> {% trans ' Or to SMS Group from '%}<a href="{% url 'sendSMSToSMSGroup' %}">{% trans 'Here' %}</a></h3>
-
 {% endif %}
+
 {% endblock content %}

@@ -379,14 +379,27 @@ def send_sms(request):
         form = SMSNotificationForm(request.POST)
         if form.is_valid():
                if form.cleaned_data.get('single_mobile_number') != '' and form.cleaned_data.get('message') != '':
-                  status = sendSMS(request,
-                              'Uniseal',
-                                   form.cleaned_data.get('single_mobile_number'),
-                                   form.cleaned_data.get('message'))
-                  instance = form.save(commit=False)
-                  instance.status =  status
-                  instance.save()
-                  messages.success(request, "Your message has been saved successfully")
+                  #  check if send only request or send and save request
+                  if 'send'  in request.POST:
+                      status = sendSMS(request,
+                                       'Uniseal',
+                                       form.cleaned_data.get('single_mobile_number'),
+                                       form.cleaned_data.get('message'))
+
+                      instance = form.save(commit=False)
+                  # send and save
+                  else:
+                      status = sendSMS(request,
+                                       'Uniseal',
+                                       form.cleaned_data.get('single_mobile_number'),
+                                       form.cleaned_data.get('message'))
+
+                      instance = form.save(commit=False)
+                      instance.status = status
+                      instance.save()
+                      messages.success(request, "Your message has been sent and saved successfully")
+
+
 
         else:
             for field, items in form.errors.items():
@@ -418,20 +431,32 @@ def send_sms_to_group(request):
         form = SMSGroupMessagesForm(request.POST)
         if form.is_valid():
             group = form.cleaned_data.get('group')
-            print("receivers are:\n")
             receivers = prepare_group_contacts(group)
-            print(receivers)
             if form.cleaned_data.get('message') != '':
-                  status = sendSMS(request,
-                              'Uniseal',
-                              receivers,
-                              form.cleaned_data.get('message'),
-                                         False
-                                            )
-                  instance = form.save(commit=False)
-                  instance.status =  status
-                  instance.save()
-                  messages.success(request, "Your message has been saved successfully")
+                if 'send' in request.POST:
+                    print("send only")
+                    status = sendSMS(request,
+                                     'Uniseal',
+                                     receivers,
+                                     form.cleaned_data.get('message'),
+                                     False
+                                     )
+                    instance = form.save(commit=False)
+                    messages.success(request, "Your message has been sent successfully")
+
+                else:
+                    status = sendSMS(request,
+                                     'Uniseal',
+                                     receivers,
+                                     form.cleaned_data.get('message'),
+                                     False
+                                     )
+                    instance = form.save(commit=False)
+                    instance.status = status
+                    instance.save()
+                    messages.success(request, "Your message has been sent and saved successfully")
+
+
 
         else:
             for field, items in form.errors.items():

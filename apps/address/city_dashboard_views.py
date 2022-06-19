@@ -2,6 +2,7 @@ from django.contrib import messages
 from django.core.paginator import Paginator, PageNotAnInteger, EmptyPage
 from django.db.models import Count
 from django.shortcuts import redirect
+
 from Util.utils import (SearchMan, createExelFile,
                         ReportMan, delete_temp_folder,
                         get_selected_pages,
@@ -10,6 +11,7 @@ from Util.utils import (SearchMan, createExelFile,
                         )
 from apps.address.models import City
 from apps.common_code.views import BaseListView
+
 search_man_cities = SearchMan("City")
 report_man_cities = ReportMan()
 

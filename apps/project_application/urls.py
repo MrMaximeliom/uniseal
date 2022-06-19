@@ -3,7 +3,6 @@ from django.urls import path
 
 from apps.common_code.views import ModelDeleteView, AddModelView, UpdateModelView
 from apps.project.models import Application
-from apps.project_application import dashboard_views as application_views
 from apps.project_application.dashboard_views import ProjectApplicationListView
 
 urlpatterns = [

@@ -1,8 +1,10 @@
-from django.urls import path
 from django.contrib.admin.views.decorators import staff_member_required
-from apps.notifications.dashboard_views import NotificationListView,send_notifications
+from django.urls import path
+
 from apps.common_code.views import ModelDeleteView
+from apps.notifications.dashboard_views import NotificationListView, send_notifications
 from apps.notifications.models import Notifications
+
 urlpatterns = [
     path('allNotifications', staff_member_required(NotificationListView.as_view(
         model=Notifications,

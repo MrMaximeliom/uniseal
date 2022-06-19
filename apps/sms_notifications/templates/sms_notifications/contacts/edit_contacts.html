@@ -37,7 +37,7 @@
                                           <tr>
                                             <th scope="row">{{contact.contact_number}}</th>
                                             <td>{{ contact.group.name }}</td>
-                                            <td><a href="{% url 'editContact' slug=contact.slug %}" class="btn btn-sm btn-primary">{% trans 'Update' %}</a></td>
+                                            <td><a href="{% url 'editSMSContact' slug=contact.slug %}" class="btn btn-sm btn-primary">{% trans 'Update' %}</a></td>
                                           </tr>
                                         {% endfor %}
 

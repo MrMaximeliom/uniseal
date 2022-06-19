@@ -2,6 +2,7 @@ from django.contrib import messages
 from django.core.paginator import Paginator, PageNotAnInteger, EmptyPage
 from django.db.models import Count
 from django.shortcuts import redirect
+
 from Util.utils import (SearchMan,
                         createExelFile,
                         ReportMan,
@@ -11,6 +12,7 @@ from Util.utils import (SearchMan,
                         get_selected_pages,
                         )
 from apps.project.models import Application
+
 report_man = ReportMan()
 from apps.common_code.views import BaseListView
 

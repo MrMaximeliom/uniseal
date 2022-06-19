@@ -1,8 +1,9 @@
 from django.contrib import messages
 from django.core.paginator import Paginator, PageNotAnInteger, EmptyPage
 from django.shortcuts import redirect
+
 from Util.utils import SearchMan, createExelFile, ReportMan, \
-    delete_temp_folder,get_selected_pages,prepare_selected_query,prepare_default_query
+    delete_temp_folder, get_selected_pages, prepare_selected_query, prepare_default_query
 from apps.address.models import Country
 
 countries = Country.objects.all().order_by('id')

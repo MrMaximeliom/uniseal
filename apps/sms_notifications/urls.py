@@ -4,7 +4,7 @@ from django.urls import path
 from apps.common_code.views import ModelDeleteView, AddModelView, UpdateModelView, ModelListView
 from apps.sms_notifications import dashboard_views as sms_notifications_views
 from apps.sms_notifications.dashboard_views import SMSListView, SMSGroupsListView
-from apps.sms_notifications.models import SMSNotification, SMSGroups, SMSContacts
+from apps.sms_notifications.models import SMSNotification, SMSGroups, SMSContacts,SMSGroupMessages
 
 urlpatterns = [
     path('allSMS', staff_member_required(SMSListView.as_view(
@@ -15,6 +15,14 @@ urlpatterns = [
         model_name="SMSNotification",
         title="All SMS Notifications"
     ), login_url="login"), name="allSMS"),
+    path('allGroupsSMSs', staff_member_required(SMSListView.as_view(
+        model=SMSGroupMessages,
+        template_name="sms_notifications/sms/all_group_SMSs.html",
+        main_active_flag="sms_notifications",
+        active_flag="all_sms_group_notifications",
+        model_name="SMSGroupMessages",
+        title="All SMS Notifications for Groups"
+    ), login_url="login"), name="allGroupsSMSs"),
     path('sendSMS', sms_notifications_views.send_sms, name='sendSMS'),
     path('sendSMSToSMSGroup', sms_notifications_views.send_sms_to_group, name='sendSMSToSMSGroup'),
     path('addSMSGroup', staff_member_required(AddModelView.as_view(
@@ -37,25 +45,6 @@ urlpatterns = [
         title="Add SMS Contacts",
         success_url="allSMSContacts"
     ), login_url="login"), name="addSMSContact"),
-    path('editSMSNotifications', staff_member_required(SMSListView.as_view(
-        model=SMSNotification,
-        template_name="sms_notifications/edit_SMSs.html",
-        main_active_flag="sms_notifications",
-        active_flag="edit_sms",
-        model_name="SMSNotification",
-        title="Edit SMS Notifications"
-    ), login_url="login"), name="editSMSs"),
-    path('editSMSNotification/<str:slug>', staff_member_required(UpdateModelView.as_view(
-        model=SMSNotification,
-        fields=['status', 'message',
-                'single_mobile_number'],
-        main_active_flag="sms_notifications",
-        active_flag="edit_sms",
-        reference_field_name="message",
-        template_name="sms_notifications/sms/edit_sms.html",
-        title="Edit SMS Notifications",
-        success_url="allSMSNotifications"
-    ), login_url="login"), name="editSMS"),
     path('allSMSGroups', staff_member_required(SMSListView.as_view(
         model=SMSNotification,
         template_name="sms_notifications/groups/all_groups.html",
@@ -78,9 +67,9 @@ urlpatterns = [
         main_active_flag="sms_notifications",
         active_flag="edit_groups",
         reference_field_name="name",
-        template_name="sms_notification/groups/edit_group.html",
+        template_name="sms_notifications/groups/edit_group.html",
         title="Edit SMS Notifications",
-        success_url="allSMSGroupNotification"
+        success_url="allSMSGroups"
     ), login_url="login"), name="editSMSGroup"),
     path('allSMSContacts', staff_member_required(ModelListView.as_view(
         model=SMSContacts,
@@ -124,6 +113,22 @@ urlpatterns = [
         title="Delete SMS Notifications",
         success_url="deleteSMS"
     ), login_url="login"), name="deleteSMSNotification"),
+    path('deleteGroupsSMSs', staff_member_required(ModelListView.as_view(
+        model=SMSGroupMessages,
+        template_name="sms_notifications/sms/delete_group_SMSs.html",
+        main_active_flag="sms_notifications",
+        active_flag="delete_sms_group_notifications",
+        model_name="SMSGroupMessages",
+        title="Delete Group SMS Notifications"
+    ), login_url="login"), name="deleteGroupsSMSs"),
+    path('deleteGroupsSMS/<slug:slug>', staff_member_required(ModelDeleteView.as_view(
+        model=SMSGroupMessages,
+        main_active_flag="sms_notifications",
+        active_flag="delete_sms_group_notifications",
+        model_name='SMSGroupMessages',
+        title="Delete Group SMS Notifications",
+        success_url="deleteGroupsSMSs"
+    ), login_url="login"), name="deleteGroupsSMS"),
     path('deleteSMSGroups', staff_member_required(ModelListView.as_view(
         model=SMSGroups,
         template_name="sms_notifications/groups/delete_groups.html",

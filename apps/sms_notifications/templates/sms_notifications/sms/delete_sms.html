@@ -29,9 +29,7 @@
                                           <tr>
                                             <th scope="col">{% trans 'Sender' %}</th>
                                             <th scope="col">{% trans 'Message' %}</th>
-                                            <th scope="col">{% trans 'Group' %}</th>
                                             <th scope="col">{% trans 'Mobile Number (Single SMS)' %}</th>
-                                            <th scope="col">{% trans 'Multiple SMS?' %}</th>
                                             <th scope="col"></th>
                                           </tr>
                                         </thead>
@@ -40,13 +38,11 @@
                                           <tr>
                                           <th scope="row">{% trans 'Uniseal'%}</th>
                                             <td>{{ sms.message }}</td>
-                                            <td>{{ sms.group }}</td>
                                               {% if sms.single_mobile_number%}
                                             <td>0{{ sms.single_mobile_number }}</td>
                                               {% else %}
                                                <td>{{ sms.single_mobile_number }}</td>
                                               {% endif %}
-                                            <td>{{ sms.is_multiple }}</td>
                                             <td><a href="#" class="btn btn-sm btn-danger" data-bs-toggle="modal" data-bs-target="#exampleModal{{sms.id}}">{% trans 'Delete' %}</a></td>
                                           </tr>
                                                                                     <div class="modal fade" id="exampleModal{{sms.id}}" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">

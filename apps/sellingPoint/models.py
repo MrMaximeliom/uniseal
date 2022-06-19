@@ -93,6 +93,11 @@ class SellingPoint(models.Model):
 
     def get_absolute_url(self):
         return reverse_lazy("allSellingPoints")
+        # return not wanted fields' names in the process of creating new report file from this model
+
+    def get_not_wanted_fields_names_in_report_file(self=None):
+        return ["id", "slug","arabic_name",
+                "image","location","address"]
 
 
 

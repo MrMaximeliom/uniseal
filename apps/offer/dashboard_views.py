@@ -2,7 +2,8 @@ from django.contrib import messages
 from django.core.paginator import Paginator, PageNotAnInteger, EmptyPage
 from django.urls import reverse_lazy
 from django.views.generic import ListView
-from django.views.generic.edit import FormView,UpdateView
+from django.views.generic.edit import FormView, UpdateView
+
 from Util.search_form_strings import CLEAR_SEARCH_TIP, \
     SEARCH_OFFERS_TIP, \
     OFFER_NOT_FOUND, ALL_OFFERS_TITLE, \
