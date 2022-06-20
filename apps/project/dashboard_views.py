@@ -5,8 +5,12 @@ from django.db.models import Count
 from django.shortcuts import render, get_object_or_404, redirect
 from django.template.defaultfilters import slugify
 from django.utils.translation import gettext_lazy as _
-
-from Util.utils import SearchMan, ReportMan, delete_temp_folder
+from Util.utils import (SearchMan, createExelFile, ReportMan,
+                        delete_temp_folder,
+                        get_selected_pages,
+                        prepare_default_query,
+                        prepare_selected_query,
+                        get_fields_names_for_report_file)
 from Util.utils import rand_slug
 
 searchManObj = SearchMan("Project")
@@ -129,6 +133,79 @@ class ProjectListView(BaseListView):
                 messages.error(request,
                                "Please choose an item from list , then write search phrase to search by it!")
                 searchManObj.setSearchError(True)
+        if  request.POST.get('createExcel') == 'done':
+            headers = []
+            headers.append("name") if request.POST.get('project_name_header') is not None else ''
+            headers.append("beneficiary") if request.POST.get('beneficiary_header') is not None else ''
+            headers.append("description") if request.POST.get('description_header') is not None else ''
+            headers.append("main_material") if request.POST.get('main_material_header') is not None else ''
+            headers.append("project_type") if request.POST.get('project_type_header') is not None else ''
+            headers.append("execution_date") if request.POST.get('execution_date_header') is not None else ''
+            # create report functionality
+            # setting all data as default behaviour
+            if request.POST.get('pages_collector') != 'none' and len(request.POST.get('pages_collector')) > 0:
+                # get requested pages from the paginator of original page
+                selected_pages = get_selected_pages(request.POST.get('pages_collector'))
+                query = searchManObj.getPaginator()
+
+                if len(headers) > 0:
+                    constructor = prepare_selected_query(searchManObj.get_queryset(),headers,selected_pages,query)
+                    status, report_man.filePath, report_man.fileName = createExelFile('Report_For_Projects',
+                                                                                      headers, request=request,
+                                                                                      **constructor)
+                    if status:
+                        request.session['temp_dir'] = 'delete man!'
+                        # messages.success(request, f"Report Successfully Created ")
+                        return redirect('downloadReport', str(report_man.filePath), str(report_man.fileName))
+
+                    else:
+                        messages.error(request, "Sorry Report Failed To Create , Please Try Again!")
+
+
+                else:
+                    headers = get_fields_names_for_report_file(Project,Project.get_not_wanted_fields_names_in_report_file())
+
+                    constructor = prepare_selected_query(searchManObj.get_queryset(),headers,selected_pages,query)
+                    status, report_man.filePath, report_man.fileName = createExelFile('Report_For_Projects',
+                                                                                      headers, request=request,
+                                                                                      **constructor
+                                                                                      )
+                    if status:
+                        request.session['temp_dir'] = 'delete man!'
+                        # messages.success(request, f"Report Successfully Created ")
+                        # return redirect('download_file',filepath=filepath,filename=filename)
+
+                        return redirect('downloadReport', str(report_man.filePath), str(report_man.fileName))
+
+                    else:
+                        messages.error(request, "Sorry Report Failed To Create , Please Try Again!")
+                # get the original query of page and then structure the data
+            else:
+                query = searchManObj.getPaginator()
+                if len(headers) > 0:
+                    constructor = prepare_default_query(searchManObj.get_queryset(),headers,query)
+                    status, report_man.filePath, report_man.fileName = createExelFile('Report_For_Projects',
+                                                                                      headers, request=request,
+                                                                                      **constructor)
+                    if status:
+                        request.session['temp_dir'] = 'delete baby!'
+                        return redirect('downloadReport', str(report_man.filePath), str(report_man.fileName))
+                    else:
+                        messages.error(request, "Sorry Report Failed To Create , Please Try Again!")
+                else:
+                    headers = get_fields_names_for_report_file(Project,Project.get_not_wanted_fields_names_in_report_file())
+                    constructor = prepare_default_query(searchManObj.get_queryset(), headers, query)
+                    status, report_man.filePath, report_man.fileName = createExelFile('Report_For_Projects',
+                                                                              headers, request=request,
+                                                                              **constructor
+
+                                                                              )
+                    if status:
+                        request.session['temp_dir'] = 'delete man!'
+                        # messages.success(request, f"Report Successfully Created")
+                        return redirect('downloadReport', str(report_man.filePath), str(report_man.fileName))
+                    else:
+                        messages.error(request, "Sorry Report Failed To Create , Please Try Again!")
 
         if request.POST.get('clear') == 'clear':
             instances = searchManObj.get_queryset()

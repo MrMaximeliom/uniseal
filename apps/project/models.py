@@ -116,6 +116,11 @@ class Project(models.Model):
         from datetime import datetime
         self.slug = slugify(rand_slug() + "-" + "-" + str(datetime.now().second))
         return super().save(*args, **kwargs)
+        # return not wanted fields' names in the process of creating new report file from this model
+
+    def get_not_wanted_fields_names_in_report_file(self=None):
+        return ["id", "slug", "arabic_name", "arabic_description", "rank",
+            "image", "is_top"]
 
     def get_absolute_url(self):
         return reverse_lazy("allProjects")
