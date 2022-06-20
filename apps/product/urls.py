@@ -38,7 +38,7 @@ urlpatterns = [
         model_name="Product",
         title="Delete Products"
     ), login_url="login"), name="deleteProducts"),
-    path('deleteProduct/<slug:slug>', staff_member_required(ModelDeleteView.as_view(
+    path('deleteProduct/<str:slug>', staff_member_required(ModelDeleteView.as_view(
         model=Product,
         main_active_flag="products",
         active_flag="delete_products",

@@ -12,7 +12,7 @@ SECRET_KEY = config('SECRET_KEY', default='qpxw@svn0mi40y_mzt5&l((_9vwynu5vv0u)r
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = config('DEBUG', default=True, cast=bool)
 
-ALLOWED_HOSTS = ['localhost','uniseal-api.herokuapp.com','93.188.162.130','13.244.177.56']
+ALLOWED_HOSTS = [config("INTERNAL_HOST"),config("HEROKU_HOST"),config("AWS_HOST")]
 # Application definition
 INSTALLED_APPS = [
     'django.contrib.admin',
@@ -87,31 +87,42 @@ WSGI_APPLICATION = 'unisealAPI.wsgi.application'
 # DATABASES = {
 #     'default': {
 #         'ENGINE': 'django.db.backends.postgresql_psycopg2',
-#         'NAME': 'uniseal_db',
-#         'USER': 'uniseal_admin',
-#         'PASSWORD': '1a79a001973e92c89aa42c0c9c8a8bf3e138132bc81bad4a5e03a8b908b1e317',
-#         'HOST': '13.244.177.56',
-#         'PORT': '5432',
+#         'NAME': config("AWS_DB_NAME"),
+#         'USER': config("AWS_DB_USER"),
+#         'PASSWORD': config("AWS_PASSWORD"),
+#         'HOST': config("AWS_HOST"),
+#         'PORT': 'config("AWS_PORT"),
 #     }
 # }
 # # Heroku DATABASE
 # DATABASES = {
 #     'default': {
 #         'ENGINE': 'django.db.backends.postgresql_psycopg2',
-#         'NAME': 'd4nnvv8lb1aedj',
-#         'USER': 'gkvvbjmricafua',
-#         'PASSWORD': '1a79a001973e92c89aa42c0c9c8a8bf3e138132bc81bad4a5e03a8b908b1e317',
-#         'HOST': 'ec2-52-23-40-80.compute-1.amazonaws.com',
-#         'PORT': '5432',
+#         'NAME': config("HEROKU_DB_NAME"),
+#         'USER': config("HEROKU_DB_USER"),
+#         'PASSWORD': config("HEROKU_PASSWORD"),
+#         'HOST': config("HEROKU_HOST"),
+#         'PORT': config("HEROKU_PORT"),
 #     }
 # }
-# temporary database
+# RDS DATABASE
 DATABASES = {
     'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': 'db.sqlite3',
+        'ENGINE': 'django.db.backends.postgresql_psycopg2',
+        'NAME': config("RDS_DB_NAME"),
+        'USER':  config("RDS_DB_USER"),
+        'PASSWORD':  config("RDS_PASSWORD"),
+        'HOST':  config("RDS_HOST"),
+        'PORT':  config("RDS_PORT"),
     }
 }
+# # temporary database
+# DATABASES = {
+#     'default': {
+#         'ENGINE': 'django.db.backends.sqlite3',
+#         'NAME': 'db.sqlite3',
+#     }
+# }
 
 # Password validation
 # https://docs.djangoproject.com/en/3.2/ref/settings/#auth-password-validators
