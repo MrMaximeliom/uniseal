@@ -88,7 +88,6 @@ def prepare_selected_query(queryset, headers, selected_pages, paginator_object):
                 constructor.update({column_name: temp_array})
     return constructor
 
-
 def prepare_default_query(queryset, headers, paginator_object):
     # model._meta.fields
     # define construct object
