@@ -108,7 +108,6 @@ def prepare_default_query(queryset, headers, paginator_object):
                 total_number_of_pages = paginator_object.num_pages+1
 
                 for page in range(1, total_number_of_pages):
-                    print("number of pages is: ", paginator_object.num_pages)
                     # add field value to the temporary array
                     for object in paginator_object.page(page):
                         field_value  = getattr(object, header)
@@ -262,7 +261,7 @@ class SearchMan:
             self.paginator = Paginator(videos, 5)
         if model == "Order":
             from apps.orders.models import Order
-            orders = Order.objects.all().order_by('id')
+            orders = Order.objects.annotate(number_of_products=Count("order_details")).order_by('id')
             self.set_querySet(orders)
             self.paginator = Paginator(orders, 5)
         if model == "JobType":
@@ -447,9 +446,17 @@ def download_file(request, file_path, file_name):
 
 
 def delete_temp_folder():
+    print("i am deleting your reports")
+
     import os.path
+    from pathlib import Path
+    reports_folder = str(Path(__file__).resolve().parent.parent) + str("/apps")+str("/OrdersReports")
+    print(reports_folder)
     myPath = os.path.dirname(os.path.abspath(__file__)) + "/Reports"
     for root, dirs, files in os.walk(myPath):
+        for file in files:
+            os.remove(os.path.join(root, file))
+    for root, dirs, files in os.walk(reports_folder):
         for file in files:
             os.remove(os.path.join(root, file))
 

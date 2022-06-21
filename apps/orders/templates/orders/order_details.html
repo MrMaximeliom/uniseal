@@ -24,69 +24,23 @@
                 </nav>
                 {% endblock breadcrumb_content %}
 {% block content %}
-                <h1 class="h2 mb-3">{% trans 'Order Details' %}</h1>
+                <h1 class="h2 mb-3">{% trans 'Order Report' %}</h1>
 <form class="row g-2 mb-3" action="" method="post" id="searchForm" autocomplete="off">
     {% csrf_token %}
   <div class="col-sm-3 col-md-3 col-lg-3">
-   <button type="button" class="btn btn-success mb-3" data-bs-toggle="modal" data-bs-target="#exportData"><span><i class="fas fa-file-csv"></i></span></button>
+<!--            <input hidden type="text" name="create-order-report" value="{{order.slug}}" >-->
+<!--          <input type="submit" value="submit" class="btn btn-success mb-3 fas fa-file-csv">-->
+      <button type="submit" class="btn btn-success mb-3" name="create-order-report" id="searchButton" value="{{order.slug}}"  title="{{create_report_tip}}"><span><i class="fas fa-file-csv"></i></span></button>
+
   </div>
 </form>
-    <div>
-        <div class="modal fade" id="exportData" tabindex="-1" aria-labelledby="exampleModalData" aria-hidden="true">
-  <div class="modal-dialog">
-    <div class="modal-content">
-      <div class="modal-header">
-        <h5 class="modal-title" id="exampleModalData">{% trans 'Export To Excel File' %}</h5>
-        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-      </div>
-        <form action="" method="post">
-            {% csrf_token %}
-      <div class="modal-body">
 
-             <h5 class="mt-3"> {% trans 'Export All Pages' %}</h5>
-          <i>{% trans '(By default all pages will be exported)' %}</i>
-          <div class="form-check">
-          <label for="allData-report" >{%  trans 'All Pages' %}</label>
-          <input id="allData-report" class="form-check-input" type="checkbox" value="allData" name="allData">
-          </div>
-
-
-<div>
-    <h5 class="mt-4">{% trans 'Or Export Selected Pages Only' %}</h5>
-
-<div class="pages-range">
-                 {% for i in page_range %}
-
-              <div class="form-check">
-          <label for="select{{i}}" >page{{i}}</label>
-          <input id="select{{i}}" class="form-check-input page-js" type="checkbox" value="{{i}}" name="subData">
-
-          </div>
-
-                 {% endfor %}
-    </div>
-      <input hidden type="text" name="pages_collector" id="pages_collector" value="none">
-
-
-    </div>
-
-      </div>
-      <div class="modal-footer">
-        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-        <button type="submit" class="btn btn-success" name="createExcel" value="done">Save</button>
-
-      </div>
-              </form>
-    </div>
-  </div>
-</div>
-
-    </div>
 <!-- creating order template -->
 <!-- ==== Order Status ==== -->
 <div>
 <div>
-<form action="" method="post" class="row g-2 mb-3">
+    <div>
+<form action="" method="post" class="row g-2 mb-3" id="order-status">
   {% csrf_token %}
     <div>
         <h2>{% trans 'Order Status' %}</h2>
@@ -116,9 +70,10 @@
     </div>
 
            <div class="col-sm-3 col-md-3 col-lg-3">
-    <button type="submit" class="btn btn-primary mr-3 order-update-button">{% trans 'Update' %}</button>
+    <input type="submit" class="btn btn-primary mr-3 order-update-button" name="update_order" value="{% trans 'Update' %}">
   </div>
 </form>
+</div>
 </div>
 </div>
 <!-- ==================== -->

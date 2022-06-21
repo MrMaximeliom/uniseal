@@ -10,7 +10,8 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 SECRET_KEY = config('SECRET_KEY', default='qpxw@svn0mi40y_mzt5&l((_9vwynu5vv0u)r($y_gv)')
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = config('DEBUG', default=True, cast=bool)
+# DEBUG = config('DEBUG', default=True, cast=bool)
+DEBUG = True
 
 ALLOWED_HOSTS = [config("INTERNAL_HOST"),config("HEROKU_HOST"),config("AWS_HOST")]
 # Application definition
@@ -84,16 +85,16 @@ TEMPLATES = [
 WSGI_APPLICATION = 'unisealAPI.wsgi.application'
 # AWS DATABASE
 # Paused for development purposes will be back after development is completed
-# DATABASES = {
-#     'default': {
-#         'ENGINE': 'django.db.backends.postgresql_psycopg2',
-#         'NAME': config("AWS_DB_NAME"),
-#         'USER': config("AWS_DB_USER"),
-#         'PASSWORD': config("AWS_PASSWORD"),
-#         'HOST': config("AWS_HOST"),
-#         'PORT': 'config("AWS_PORT"),
-#     }
-# }
+DATABASES = {
+    'default': {
+        'ENGINE': 'django.db.backends.postgresql_psycopg2',
+        'NAME': config("AWS_DB_NAME"),
+        'USER': config("AWS_DB_USER"),
+        'PASSWORD': config("AWS_PASSWORD"),
+        'HOST': config("AWS_HOST"),
+        'PORT': config("AWS_PORT"),
+    }
+}
 # # Heroku DATABASE
 # DATABASES = {
 #     'default': {
@@ -106,16 +107,16 @@ WSGI_APPLICATION = 'unisealAPI.wsgi.application'
 #     }
 # }
 # RDS DATABASE
-DATABASES = {
-    'default': {
-        'ENGINE': 'django.db.backends.postgresql_psycopg2',
-        'NAME': config("RDS_DB_NAME"),
-        'USER':  config("RDS_DB_USER"),
-        'PASSWORD':  config("RDS_PASSWORD"),
-        'HOST':  config("RDS_HOST"),
-        'PORT':  config("RDS_PORT"),
-    }
-}
+# DATABASES = {
+#     'default': {
+#         'ENGINE': 'django.db.backends.postgresql_psycopg2',
+#         'NAME': config("RDS_DB_NAME"),
+#         'USER':  config("RDS_DB_USER"),
+#         'PASSWORD':  config("RDS_PASSWORD"),
+#         'HOST':  config("RDS_HOST"),
+#         'PORT':  config("RDS_PORT"),
+#     }
+# }
 # # temporary database
 # DATABASES = {
 #     'default': {

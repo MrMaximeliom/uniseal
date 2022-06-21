@@ -42,7 +42,7 @@
   <div class="col-sm-3 col-md-3 col-lg-3">
     <button type="submit" class="btn btn-primary mb-3 mr-1 ml-1" id="searchButton" value="category"  title="{{search_orders_tip}}"><span><i class="fas fa-search"></i></span></button>
     <button type="submit" name="clear" value="clear" class="btn btn-danger mb-3 mr-1 ml-1" title="{{clear_search_tip}}"><span><i class="fas fa-eraser" ></i></span></button>
-    {% if all_orders_data|length > 0 %}
+    {% if object_list|length > 0 %}
    <button type="button" class="btn btn-success mb-3 mr-1 ml-1" data-bs-toggle="modal" data-bs-target="#exportData" title="{{create_report_tip}}"><span><i class="fas fa-file-csv" ></i></span></button>
 {% endif %}
   </div>
@@ -58,6 +58,40 @@
         <form action="" method="post">
             {% csrf_token %}
       <div class="modal-body">
+                    <h3 class="mb-3">{% trans 'Please Select The Data Structure of Excel File' %}</h3>
+          <div>
+    <h5 class="mt-4">{% trans 'Choose Columns' %}</h5>
+    <i>{% trans '(By default all columns are selected)' %}</i>
+    <div class="pages-range mt-2">
+        <div class="form-check">
+          <label for="user_header" >{% trans 'User' %}</label>
+           <input id="user_header" class="form-check-input" type="checkbox" value="user" name="user_header">
+        </div>
+           <div class="form-check">
+          <label for="total_header" >{% trans 'Total' %}</label>
+           <input id="total_header" class="form-check-input" type="checkbox" value="total" name="total_header">
+        </div>
+          <div class="form-check">
+          <label for="created_at_header" >{% trans 'Created At' %}</label>
+           <input id="created_at_header" class="form-check-input" type="checkbox" value="created_at" name="created_at_header">
+        </div>
+          <div class="form-check">
+          <label for="modified_at_header" >{% trans 'Modified At' %}</label>
+           <input id="modified_at_header" class="form-check-input" type="checkbox" value="modified_at" name="modified_at_header">
+        </div>
+          <div class="form-check">
+          <label for="status_header" >{% trans 'Status' %}</label>
+           <input id="status_header" class="form-check-input" type="checkbox" value="status" name="status_header">
+        </div>
+         <div class="form-check">
+          <label for="products_header" >{% trans 'Number of Products' %}</label>
+           <input id="products_header" class="form-check-input" type="checkbox" value="products" name="products_header">
+        </div>
+
+
+
+    </div>
+</div>
 
              <h5 class="mt-3"> {% trans 'Export All Pages' %}</h5>
           <i>{% trans '(By default all pages will be exported)' %}</i>
@@ -102,7 +136,7 @@
 <h2>{% trans 'Showing Search Results For ' %}</h2>
 <h3>{{search_option}}="{{search_phrase}}"</h3>
 {% endif %}
-{% if all_orders_data|length %}
+{% if object_list|length %}
  <div class="row">
                     <div class="col-12 col-xl-12 mb-4 mb-lg-0">
                         <div class="card-light card-dark">
@@ -112,7 +146,8 @@
                                     <table class="table">
                                         <thead>
                                           <tr>
-                                            <th scope="col">{% trans 'ID' %}</th>
+                                            <th scope="col">{% trans 'User' %}</th>
+                                            <th scope="col">{% trans 'Total' %}</th>
                                             <th scope="col">{% trans 'Created At' %}</th>
                                             <th scope="col">{% trans 'Last Modification' %}</th>
                                             <th scope="col">{% trans 'Status' %}</th>
@@ -121,13 +156,14 @@
                                           </tr>
                                         </thead>
                                         <tbody>
-                                        {% for order in all_orders_data %}
+                                        {% for order in object_list %}
                                           <tr>
-                                            <th scope="row">{{order.id}}</th>
+                                            <th scope="row">{{order.user.full_name}}</th>
+                                            <th scope="row">{{order.total}}</th>
                                             <th scope="row">{{order.created_at}}</th>
                                             <th scope="row">{{order.modified_at}}</th>
                                             <th scope="row">{{order.status}}</th>
-                                            <td>{{ order.num_products }}</td>
+                                            <td>{{ order.number_of_products }}</td>
                                             <td><a href="{% url 'editOrder' slug=order.slug %}" class="btn btn-sm btn-primary">{% trans 'View Details' %}</a></td>
                                           </tr>
                                         {% endfor %}
@@ -177,7 +213,7 @@
        </nav>
   </div>
 {% endif %}
-{% if all_orders_data|length == 0 and not search %}
+{% if object_list|length == 0 and not search %}
 <h3 class="delete-warning">{% trans 'There are no orders yet .. you can add new ones from ' %} <a href="{% url 'addProducts' %}">{% trans 'Here' %}</a></h3>
 {% endif %}
 {% if search and search_result.count == 0 and search_result != "" %}

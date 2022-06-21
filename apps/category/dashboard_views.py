@@ -13,7 +13,6 @@ from Util.utils import (SearchMan,
 from apps.category.models import Category
 from apps.common_code.views import BaseListView
 
-categories = Category.objects.annotate(num_products=Count('product')).order_by('-num_products')
 report_man = ReportMan()
 
 class CategoryListView(BaseListView):
