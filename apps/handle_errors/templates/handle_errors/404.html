@@ -9,5 +9,6 @@
        
 {% block content %}
         <img src="{% static 'dashboard/images/404.png' %}">
-<h3>OOPS ERROR Man</h3>
+<h3>OOPS! This Page was not Found</h3>
+<h3><a href="{% url 'dashboard' %}">Go To Dashboard </a></h3>
 {% endblock content %}

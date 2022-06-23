@@ -11,7 +11,7 @@ SECRET_KEY = config('SECRET_KEY', default='qpxw@svn0mi40y_mzt5&l((_9vwynu5vv0u)r
 
 # SECURITY WARNING: don't run with debug turned on in production!
 # DEBUG = config('DEBUG', default=True, cast=bool)
-DEBUG = True
+DEBUG = False
 
 ALLOWED_HOSTS = [config("INTERNAL_HOST"),config("HEROKU_HOST"),config("AWS_HOST")]
 # Application definition
