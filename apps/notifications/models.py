@@ -10,7 +10,7 @@ from Util.utils import rand_slug
 class TokenIDs(models.Model):
     reg_id = models.CharField(
         verbose_name=_('Device Token'),
-        max_length=800
+        max_length=1500
     )
     slug = models.SlugField(
         default=slugify(rand_slug()),
