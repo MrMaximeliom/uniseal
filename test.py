@@ -19,6 +19,13 @@ create a function that takes the following arguments as inputs:
 - header array contains columns' names in the html page
 
 """
+from pathlib import Path
+
+from reportlab.lib import colors
+from reportlab.lib.enums import TA_JUSTIFY
+from reportlab.lib.pagesizes import letter
+
+
 def get_column_names_from_queryset(queryset):
     # for word in queryset:
     pass
@@ -57,9 +64,78 @@ def convert_header_names_to_readable_names(headers):
             result_word+=word.capitalize() + " "
         converted_names.append(result_word.strip(" "))
     return converted_names
+def create_report():
+    import os
+    from reportlab.platypus import SimpleDocTemplate,Table,TableStyle, Paragraph, Spacer
+    from reportlab.lib.styles import getSampleStyleSheet, ParagraphStyle
+
+    styles = getSampleStyleSheet()
+    styles.add(ParagraphStyle(name='Justify', alignment=TA_JUSTIFY,fontName="Courier",fontSize=12))
+    import datetime
+    today = datetime.date.today()
+    from datetime import datetime
+    now = datetime.now()
+    current_time = now.strftime("%H:%M:%S")
+    path = str(Path(__file__).resolve().parent)+"/apps" + str("/OrdersReports")
+    file_name = 'order_details_'+str(today)+ ".pdf"
+    complete_file_path = os.path.abspath(path) + "/" + file_name
+    user_details_headers = ["Full Username","Phone Number","Email"]
+    user_details = ["Mohammed Ali Abbas","0999627379","hysoca7@gmail.com"]
+    order_details_headers = ["Product Name","Product Price","Quantity","Total"]
+    order_data = []
+    order_data.append(order_details_headers)
+    first_order_details = ["A product",230,1,230]
+    second_order_details = ["B product",100,2,200]
+    third_order_details = ["C product",900,2,1800]
+    order_data.append(first_order_details)
+    order_data.append(second_order_details)
+    order_data.append(third_order_details)
+    pdf = SimpleDocTemplate(
+        complete_file_path,
+        pagesize=letter,
+        title="Order Details",
+        rightMargin=72, leftMargin=72,
+        topMargin=72, bottomMargin=18,
+
+    )
+
+    user_data = [
+        user_details_headers,
+        user_details
+    ]
+    order_table = Table(order_data)
+    user_table = Table(user_data)
+    # add style
+    style = TableStyle([
+        ("BACKGROUND",(0,0),(3,0),colors.cornflowerblue),
+        ("TEXTCOLOR",(0,0),(-1,0),colors.whitesmoke),
+        ("ALIGN",(0,0),(-1,-1),'CENTER'),
+        ("FONTNAME",(0,0),(-1,0),'Courier'),
+        ("FONTSIZE",(0,0),(-1,0) ,12),
+        ("BOTTOMPADDING",(0,0),(-1,0) ,12),
+        ("BACKGROUND", (0, 1), (-1, -1), colors.beige),
+        ("BOX", (0, 0), (-1, -1),1, colors.black),
+
+    ])
+    order_table.setStyle(style)
+    user_table.setStyle(style)
+    elems = []
+    elems.append(Paragraph("Order Details", styles["Justify"]))
+    elems.append(Spacer(1, 20))
+    elems.append(order_table)
+    elems.append(Spacer(1,40))
+    elems.append(Paragraph("User Details", styles["Justify"]))
+    elems.append(Spacer(1, 20))
+    elems.append(user_table)
+    elems.append(Spacer(1,40))
+    elems.append(Paragraph(f'Report Date and Time {today} -- {current_time} ', styles["Justify"]))
+    elems.append(Spacer(1, 20))
+
+    pdf.build(elems)
+    return complete_file_path,file_name
 
 
 
 
 if __name__ == "__main__":
-    print(convert_header_names_to_readable_names(["full_name","gender_name","name"]))
+    create_report()

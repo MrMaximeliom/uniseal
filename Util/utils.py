@@ -446,12 +446,9 @@ def download_file(request, file_path, file_name):
 
 
 def delete_temp_folder():
-    print("i am deleting your reports")
-
     import os.path
     from pathlib import Path
     reports_folder = str(Path(__file__).resolve().parent.parent) + str("/apps")+str("/OrdersReports")
-    print(reports_folder)
     myPath = os.path.dirname(os.path.abspath(__file__)) + "/Reports"
     for root, dirs, files in os.walk(myPath):
         for file in files:

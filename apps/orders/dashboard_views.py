@@ -6,6 +6,7 @@ from django.core.paginator import Paginator, PageNotAnInteger, EmptyPage
 from django.db.models import Count
 from django.shortcuts import render, get_object_or_404, redirect
 from django.utils.translation import gettext_lazy as _
+from reportlab.lib import colors
 from reportlab.lib.pagesizes import letter
 
 from Util.ListsOfData import ORDER_STATUSES
@@ -260,7 +261,7 @@ def edit_order(request, slug):
             delete_temp_folder()
     if  request.method == 'POST' and "update_order" not in request.POST and request.POST.get('create-order-report') != 'none' and request.POST.get('create-order-report') != '':
         request.session['temp_dir'] = 'delete man!'
-        complete_file_path,file_name = create_report(request, request.POST.get('create-order-report'))
+        complete_file_path,file_name = create_report(request,request.POST.get('create-order-report'))
         return redirect('downloadReport', str(complete_file_path), str(file_name))
 
     if request.method == 'POST' and "create-order-report" not in request.POST and request.POST.get("update_order") != 'none' and request.POST.get("update_order") != '' :
@@ -280,18 +281,20 @@ def edit_order(request, slug):
                   )
 
 @staff_member_required(login_url='login')
-def create_report(request, slug):
+def create_report(request,slug):
     import os
-    from reportlab.platypus import SimpleDocTemplate,Table
+    from reportlab.lib.enums import TA_JUSTIFY
+    from reportlab.platypus import SimpleDocTemplate,Table,TableStyle,Paragraph,Spacer
     from apps.orders.models import Order,Cart
+    from reportlab.lib.styles import getSampleStyleSheet, ParagraphStyle
+    import datetime
+    today = datetime.date.today()
     from datetime import datetime
+    now = datetime.now()
+    current_time = now.strftime("%H:%M:%S")
     path = str(Path(__file__).resolve().parent.parent) + str("/OrdersReports")
-    print("path is: ",path)
-    file_name = 'order_report_'+str(datetime.now().second)+ ".pdf"
-    print(file_name)
-
+    file_name = 'order_details_'+str(today)+ ".pdf"
     complete_file_path = os.path.abspath(path) + "/" + file_name
-    print("complete path is: ",complete_file_path)
     order = get_object_or_404(Order, slug=slug)
     user_details_headers = ["Full Username","Phone Number","Email"]
     user_details = []
@@ -299,37 +302,66 @@ def create_report(request, slug):
     user_details.append(order.user.phone_number)
     user_details.append(order.user.email)
     order_details_headers = ["Product Name","Product Price","Quantity","Total"]
-    order_product_names = []
-    order_product_prices = []
-    order_product_quantities = []
-    order_product_totals = []
     order_carts = Cart.objects.filter(order=order)
     order_data = []
     order_data.append(order_details_headers)
+    total = 0
     for product in order_carts:
         temp_arr = []
         temp_arr.append(product.product.name)
         temp_arr.append(product.product.price)
         temp_arr.append(product.quantity)
         temp_arr.append(product.quantity*product.product.price)
+        total += product.quantity*product.product.price
         order_data.append(temp_arr)
     pdf = SimpleDocTemplate(
         complete_file_path,
         pagesize=letter,
+        title="Order Details",
+
+
     )
-    from reportlab.platypus import Table
-    print("quantities are ",order_product_quantities)
-    print("totals are ",order_product_quantities)
+
+    styles = getSampleStyleSheet()
+    styles.add(ParagraphStyle(name='Justify', alignment=TA_JUSTIFY,fontName="Courier",fontSize=14))
     user_data = [
         user_details_headers,
         user_details
     ]
-
     order_table = Table(order_data)
+    user_table = Table(user_data)
+    # add style
+    style = TableStyle([
+        ("BACKGROUND",(0,0),(3,0),colors.cornflowerblue),
+        ("TEXTCOLOR",(0,0),(-1,0),colors.whitesmoke),
+        ("ALIGN",(0,0),(-1,-1),'CENTER'),
+        ("FONTNAME",(0,0),(-1,0),'Courier-Bold'),
+        ("FONTSIZE",(0,0),(-1,0) ,12),
+        ("BOTTOMPADDING",(0,0),(-1,0) ,14),
+        ("BACKGROUND", (0, 1), (-1, -1), colors.beige),
+        ("BOX", (0, 0), (-1, -1),1, colors.black),
+
+    ])
+    order_table.setStyle(style)
+    user_table.setStyle(style)
     elems = []
+    elems.append(Paragraph(f"Order Status: {str(order.status)}", styles["Justify"]))
+    elems.append(Spacer(1,40))
+    elems.append(Paragraph("Order Details:", styles["Justify"]))
+    elems.append(Spacer(1, 15))
     elems.append(order_table)
+    elems.append(Paragraph(f"Total: {str(total)}", styles["Justify"]))
+    elems.append(Spacer(1,40))
+    elems.append(Paragraph("User Details:", styles["Justify"]))
+    elems.append(Spacer(1, 15))
+    elems.append(user_table)
+    elems.append(Spacer(1, 40))
+    elems.append(Paragraph(f'Report Date and Time {today} -- {current_time} ', styles["Justify"]))
+    elems.append(Spacer(1, 20))
     pdf.build(elems)
     return complete_file_path,file_name
+
+
 
 
 
