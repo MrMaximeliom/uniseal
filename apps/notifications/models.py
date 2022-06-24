@@ -8,9 +8,8 @@ from Util.utils import rand_slug
 
 # Create your models here.
 class TokenIDs(models.Model):
-    reg_id = models.CharField(
+    reg_id = models.TextField(
         verbose_name=_('Device Token'),
-        max_length=1500
     )
     slug = models.SlugField(
         default=slugify(rand_slug()),
