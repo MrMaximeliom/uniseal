@@ -84,28 +84,28 @@ TEMPLATES = [
 
 WSGI_APPLICATION = 'unisealAPI.wsgi.application'
 # AWS DATABASE
-# Paused for development purposes will be back after development is completed
-DATABASES = {
-    'default': {
-        'ENGINE': 'django.db.backends.postgresql_psycopg2',
-        'NAME': config("AWS_DB_NAME"),
-        'USER': config("AWS_DB_USER"),
-        'PASSWORD': config("AWS_PASSWORD"),
-        'HOST': config("AWS_HOST"),
-        'PORT': config("AWS_PORT"),
-    }
-}
-# # Heroku DATABASE
+# Paused for development purposes will be back after development is completed (Paused Now)
 # DATABASES = {
 #     'default': {
 #         'ENGINE': 'django.db.backends.postgresql_psycopg2',
-#         'NAME': config("HEROKU_DB_NAME"),
-#         'USER': config("HEROKU_DB_USER"),
-#         'PASSWORD': config("HEROKU_PASSWORD"),
-#         'HOST': config("HEROKU_HOST"),
-#         'PORT': config("HEROKU_PORT"),
+#         'NAME': config("AWS_DB_NAME"),
+#         'USER': config("AWS_DB_USER"),
+#         'PASSWORD': config("AWS_PASSWORD"),
+#         'HOST': config("AWS_HOST"),
+#         'PORT': config("AWS_PORT"),
 #     }
 # }
+# # Heroku DATABASE
+DATABASES = {
+    'default': {
+        'ENGINE': 'django.db.backends.postgresql_psycopg2',
+        'NAME': config("HEROKU_DB_NAME"),
+        'USER': config("HEROKU_DB_USER"),
+        'PASSWORD': config("HEROKU_PASSWORD"),
+        'HOST': config("HEROKU_HOST"),
+        'PORT': config("HEROKU_PORT"),
+    }
+}
 # RDS DATABASE
 # DATABASES = {
 #     'default': {
