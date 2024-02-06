@@ -9,7 +9,7 @@ cffi==1.15.0
 chardet==4.0.0
 charset-normalizer==2.0.12
 constantly==15.1.0
-cryptography==37.0.2
+cryptography==42.0.0
 Django==4.0.6
 django-crispy-forms==1.14.0
 django-extra-views==0.14.0
